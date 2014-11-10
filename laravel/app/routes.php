@@ -13,5 +13,5 @@
 
 Route::get('/', function()
 {
-	return View::make('hello');
+	return File::get(public_path() . '/angularfrontend.html');
 });

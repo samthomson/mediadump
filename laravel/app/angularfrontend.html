@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+	<head>
+		<title>media-dump: sam thomsons pictures &amp; videos</title>
+
+		<!-- meta -->
+    	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+
+		<!-- css & fonts -->
+		<!-- fonts -->
+		<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+		<link href='http://fonts.googleapis.com/css?family=Muli' rel='stylesheet' type='text/css'>
+		<!-- bootstrap -->
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+		<!-- app specific -->
+		<link rel="stylesheet" href="/css/style.css" type="text/css">
+
+		<!-- flow player -->
+		<link rel="stylesheet" href="//releases.flowplayer.org/5.5.0/skin/minimalist.css">
+
+
+
+	</head>
+	<body ng-app="mediadumpApp">
+
+		<noscript>Sorry, this page uses Javascript, which isn't enabled in your browser. You need to turn it on.</noscript>
+
+		<!-- the actual webpage -->
+		<div id="mainBody" ng-controller="mediadumpCtrl">
+
+			<div id="header" class="clearfix">
+				<div class="container">
+
+					<nav class="navbar navbar-default" role="navigation">
+						<div class="container-fluid">
+						<!-- Brand and toggle get grouped for better mobile display -->
+							<div class="navbar-header">
+								<button type="button" class="navbar-toggle collapsed pull-left" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+									<span class="sr-only">Toggle navigation</span>
+									<span class="icon-bar"></span>
+									<span class="icon-bar"></span>
+									<span class="icon-bar"></span>
+								</button>
+								<a class="navbar-brand" ng-click="query = default_query">mediadump</a>
+							</div>
+
+							<!-- Collect the nav links, forms, and other content for toggling -->
+							<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+								<ul class="nav navbar-nav">
+									<li><a ng-click="setSearchInputMode('browse')" ng-class="{true:'active'}[search_input_mode === 'browse']">Browse</a></li>
+									<li><a ng-click="setSearchInputMode('map')" ng-class="{true:'active'}[search_input_mode === 'map']">Map</a></li>
+									<li><a ng-click="setSearchInputMode('shuffle')" ng-class="{true:'active'}[search_input_mode === 'shuffle']">Shuffle</a></li>
+								</ul>
+
+								
+								<form class="navbar-form navbar-right" role="search">
+									<div class="form-group">
+										<input type="text" class="form-control" placeholder="Search" ng-model="query">
+									</div>
+									<a id="toggle_advanced_search_form" ng-click="bShowAdvancedSearch = !bShowAdvancedSearch">advanced</a>
+								</form>
+
+
+								<div id="advanced_search" class="light_opacity" ng-show="bShowAdvancedSearch">
+									<div class="form-group">
+										<div class="refine_filters">
+											<a ng-click="addFilter($index)" ng-repeat="filter in available_filters" class="filter" ng-class="{true:'active'}[filter.add === true]">{{filter.value[0]}}: {{filter.value[1]}}</a>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-xs-9">					
+											sort by: 
+											<select ng-model="sort_mode" class="form-control" ng-disabled="search_mode != 'search'">
+												<option value="datetime">datetime</option>
+												<option value="elevation">elevation</option>
+											</select>
+											sort direction: 
+											<select ng-model="sort_direction" class="form-control" ng-disabled="search_mode != 'search'">
+												<option value="asc">asc</option>
+												<option value="desc">desc</option>
+											</select>
+										</div>
+										<div class="col-xs-3">
+											<div class="form-group">
+												<div class="btn-group operator_toggle">
+													<button type="button" class="btn btn-default" ng-class="{true:'active'}[operator === 'and']" ng-click="operator = 'and'">and</button>
+													<button type="button" class="btn btn-default" ng-class="{true:'active'}[operator === 'or']" ng-click="operator = 'or'">or</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								
+
+							</div><!-- /.navbar-collapse -->
+						</div><!-- /.container-fluid -->
+					</nav>
+
+				</div>
+			</div>
+
+
+
+
+			<div id="main">
+
+				<div id="nav" class="left_position">
+
+					<!-- Tab panes -->
+					<div class="tab-content">
+						<div ng-show="search_input_mode === 'map'" id="search_map" ng-if="bMapRefreshed">
+							<!-- TODO: map input -->
+							<google-map
+								center="search_map.center" 
+								zoom="search_map.zoom"
+								refresh="bMapRefreshed"
+								draggable='true'
+								events="search_map.events"
+								bounds="search_map.bounds"
+								options="media_dump_map_options"
+								>
+								<markers
+									models="markers"
+									coords="'self'"
+									doCluster="true"
+									icon="'icon'"
+									events="markersEvents"
+									>
+								</markers>
+							</google-map>
+						</div>
+						<div class="tab-pane" id="more">...</div>
+					</div>
+
+				</div>
+
+				<div id="results" class="right_position">
+					<!-- loading -->
+					<div id="loading" ng-show="bSearching"><i class="glyphicon glyphicon-refresh spin"></i> loading</div>
+
+					<!-- thumb results (grid search) -->
+					<div id="thumb_results" ng-show="search_mode === 'search' && query !== ''" justified>
+						<a class="thumb_result_link" ng-repeat="result in results" ng-mousedown="preload_thumb($index)" ng-click="thumb_click($index)" my-repeat-directive><img ng-src="{{urlFromHash('thumbs', result, '')}}" id="{{result.id}}" /></a>
+					</div>
+
+					<!-- browse -->
+					<div ng-show="search_input_mode === 'browse' && query === ''" class="container">
+						<div class="tree_link col-xs-6 col-sm-4" ng-repeat="path in default_queries" ng-click="do_default_query('directory.path_folders='+path.dir)" alt="{{path.dir}}" title="{{path.dir}}">
+							<div class="tree_image_container">
+								<img ng-src="{{sourceFromData(path['data_thumb'])}}"/>
+							</div>
+							<span class="tree_link_title">{{path.dir_text}}</span>
+						</div>
+					</div>
+
+				</div>
+				<div id="pagination" class="" ng-show="results.length > 0">
+					<div class="container">
+						<div id="map_pagination" ng-show="search_mode==='map'">
+							showing {{i_markers_showing}}/{{results.length}}
+						</div>
+						<div id="grid_pagination" ng-show="search_mode==='search'">
+							<a class="pull-left" ng-show="page > 1" ng-click="page = page - 1"><i class="glyphicon glyphicon-chevron-left"></i> previous</a>
+
+							<a class="pull-right" ng-show="page < (result_info.available_pages)" ng-click="page = page + 1">next <i class="glyphicon glyphicon-chevron-right"></i></a>
+
+							<span>showing {{results.length}}/{{result_info.count}}</span>
+							<span><i class="glyphicon glyphicon-flash"></i> found in ~{{result_info.speed | number:0}} ms</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div id="lightbox" ng-show="iLightIndex > -1">
+				<a class="lightbox_button" id="close_lightbox" ng-click="closeLightbox();">
+					<i class="fa fa-times"></i>
+				</a>
+				<a class="lightbox_button" id="left_lightbox" ng-click="lightChange(-1);">
+					<i class="fa fa-arrow-left"></i>
+				</a>
+				<a class="lightbox_button" id="right_lightbox" ng-click="lightChange(1);">
+					<i class="fa fa-arrow-right"></i>
+				</a>
+				<div id="lightbox_contents">
+					<a ng-click="lightChange(1);" >
+						<img ng-if="results[iLightIndex].type === 'image'" ng-src="{{lightboxURL()}}" />
+					</a>
+					<div id="player" ng-show="results[iLightIndex].type === 'video'"></div>
+				</div>
+			</div>
+		</div>
+
+		<!-- scripts & analytics -->
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
+		<!-- angular 
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular.min.js"></script>-->
+		<script src="/js/angular_1_2_fallback.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular-route.js"></script>
+
+        <script src='/js/lodash.min.js'></script>
+        <script src='//maps.googleapis.com/maps/api/js?sensor=false'></script>
+		<script src='/js/angular-google-maps.min.js'></script>
+		<!-- bootstrap -->
+		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+		<!-- app -->
+		<script src="/js/app.js"></script>
+
+		<!-- flow player -->
+		<script src="//releases.flowplayer.org/5.5.0/flowplayer.min.js"></script>
+
+		<!-- justified gallery script -->
+		<script src="/js/justify.js"></script>
+
+	</body>
+</html>
