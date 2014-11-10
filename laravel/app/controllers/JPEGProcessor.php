@@ -21,14 +21,33 @@ class JPEGProcessor extends BaseController {
 
 		$sFilePath = $oFile->rawPath();
 
-		//
-		// unique directory path
-		//
+		$sFilePath = strtolower($sFilePath);
 
+		$saDirs = explode(DIRECTORY_SEPARATOR, $sFilePath);
 
+		array_pop($saDirs);
 		//
 		// all directorys as tags
 		//
+		foreach ($saDirs as $sDir) {
+			if($sDir !== ""){
+				$oTag = new TagModel();
+				$oTag->type = "folder";
+				$oTag->file_id = $iFileID;
+				$oTag->value = $sDir;
+				$oTag->save();
+			}
+		}
+
+		//
+		// unique directory path
+		//
+		$sUniqueDirPath = implode(DIRECTORY_SEPARATOR, $saDirs);
+		$oTag = new TagModel();
+		$oTag->file_id = $iFileID;
+		$oTag->type = "uniquedirectorypath";
+		$oTag->value = $sUniqueDirPath;
+		$oTag->save();
 
 		//
 		// file name
