@@ -15,3 +15,5 @@ Route::get('/', function()
 {
 	return File::get(public_path() . '/angularfrontend.html');
 });
+
+Route::get('auto/checkfiles', array('uses' => 'Auto@checkFiles'));
