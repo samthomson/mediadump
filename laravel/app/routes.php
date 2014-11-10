@@ -17,3 +17,4 @@ Route::get('/', function()
 });
 
 Route::get('auto/checkfiles', array('uses' => 'Auto@checkFiles'));
+Route::get('auto/processqueue', array('uses' => 'Auto@processQueue'));

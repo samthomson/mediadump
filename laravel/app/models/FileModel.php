@@ -12,5 +12,9 @@ class FileModel extends Eloquent {
 	protected $table = 'files';
 
 
+	public function rawPath()
+	{
+		return substr($this->path, 0, strpos($this->path, Config::get('app.mediaFolderPath')));
+	}
 
 }

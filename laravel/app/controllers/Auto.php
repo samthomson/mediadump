@@ -25,7 +25,7 @@ class Auto extends BaseController {
 		//
 		$saFiles = [];
 
-		foreach(File::allFiles(public_path().'\media') as $sFile)
+		foreach(File::allFiles(public_path().Config::get('app.mediaFolderPath')) as $sFile)
 		{
 			if(file_exists((string)$sFile)){
 				array_push($saFiles, (string)$sFile);
@@ -68,6 +68,18 @@ class Auto extends BaseController {
 		$eFilesRemoved->name = "auto files removed";
 		$eFilesRemoved->value = (string)count($saLostFilesFromSystem);
 		$eFilesRemoved->save();
+	}
+	public function processQueue()
+	{
+		$aqiQueuedItems = QueueModel::where("started", "=", false);
+		foreach ($aqiQueuedItems as $qi) {
+			switch($qi->processor)
+			{
+				case "jpeg":
+					JPEGProcessor::process($qi->file_id);
+					break;
+			}
+		}
 	}
 
 	private function addFilesToSystem($saFiles)
