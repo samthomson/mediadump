@@ -77,6 +77,15 @@ class Auto extends BaseController {
 			$file = new FileModel();
 			$file->path = $sFilePath;
 			$file->save();
+
+			$sExt = substr(strtolower($sFilePath), strrpos(strtolower($sFilePath), '.')+1);
+			
+			if($sExt === "jpg" || $sExt === "jpg"){
+				$QueueItem = new QueueModel();
+				$QueueItem->file_id = $file->id;
+				$QueueItem->processor = "jpeg";
+				$QueueItem->save();
+			}			
 		}
 	}
 

@@ -1,7 +1,7 @@
 <?php
 
 
-class Queue extends Eloquent {
+class QueueModel extends Eloquent {
 
 
 	/**
