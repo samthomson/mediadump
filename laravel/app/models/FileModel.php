@@ -14,7 +14,7 @@ class FileModel extends Eloquent {
 
 	public function rawPath()
 	{
-		return substr($this->path, 0, strpos($this->path, Config::get('app.mediaFolderPath')));
+		return str_replace(Config::get('app.mediaFolderPath'), "", $this->path);
 	}
 
 }

@@ -21,8 +21,23 @@ class JPEGProcessor extends BaseController {
 
 		$sFilePath = $oFile->rawPath();
 
-		echo $sFilePath;
+		//
+		// unique directory path
+		//
 
+
+		//
+		// all directorys as tags
+		//
+
+		//
+		// file name
+		//
+
+		//
+		// type
+		//
+		/*
 		$eFilesFound = new EventModel();
 		$eFilesFound->name = "auto files found";
 		$eFilesFound->value = (string)count($saNewFilesForSystem);
@@ -32,5 +47,6 @@ class JPEGProcessor extends BaseController {
 		$eFilesRemoved->name = "auto files removed";
 		$eFilesRemoved->value = (string)count($saLostFilesFromSystem);
 		$eFilesRemoved->save();
+		*/
 	}
 }

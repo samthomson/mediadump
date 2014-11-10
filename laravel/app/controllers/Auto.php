@@ -25,7 +25,7 @@ class Auto extends BaseController {
 		//
 		$saFiles = [];
 
-		foreach(File::allFiles(public_path().Config::get('app.mediaFolderPath')) as $sFile)
+		foreach(File::allFiles(Config::get('app.mediaFolderPath')) as $sFile)
 		{
 			if(file_exists((string)$sFile)){
 				array_push($saFiles, (string)$sFile);
@@ -71,7 +71,7 @@ class Auto extends BaseController {
 	}
 	public function processQueue()
 	{
-		$aqiQueuedItems = QueueModel::where("started", "=", false);
+		$aqiQueuedItems = QueueModel::where("started", "=", "0")->get();
 		foreach ($aqiQueuedItems as $qi) {
 			switch($qi->processor)
 			{
