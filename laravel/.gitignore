@@ -7,3 +7,6 @@ composer.lock
 .DS_Store
 Thumbs.db
 /app/config/*.*
+
+/public/media/*
+/public/thumbs/*

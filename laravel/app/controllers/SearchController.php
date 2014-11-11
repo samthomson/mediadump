@@ -21,7 +21,12 @@ class SearchController extends BaseController {
 
 		if($sQuery !== ""){
 			$soFiles = TagModel::where("value", "=", $sQuery)->get();
-			return Response::json($soFiles);
+			if(!Input::get("render"))
+				return Response::json($soFiles);
+			else
+				foreach ($soFiles as $value) {
+					echo '<img src="/thumbs/medium/'.$value->file_id.'.jpg"/>';
+				}
 		}
 	}
 }

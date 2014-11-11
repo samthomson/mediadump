@@ -94,10 +94,18 @@ class JPEGProcessor extends BaseController {
 		//
 		// thumbs
 		//
-		$img = Image::make($oFile->path)->resize(null, 1200)->save(self::thumbPath("large").$oFile->id.".jpg");
-		$img = Image::make($oFile->path)->resize(null, 300)->save(self::thumbPath("medium").$oFile->id.".jpg");
-		$img = Image::make($oFile->path)->resize(null, 125)->save(self::thumbPath("small").$oFile->id.".jpg");
-		$img = Image::make($oFile->path)->resize(32, 32)->save(self::thumbPath("icon").$oFile->id.".jpg");
+		$img = Image::make($oFile->path)->resize(null, 1200, function ($constraint) {
+		    $constraint->aspectRatio();
+		})->save(self::thumbPath("large").$oFile->id.".jpg");
+		$img = Image::make($oFile->path)->resize(null, 300, function ($constraint) {
+		    $constraint->aspectRatio();
+		})->save(self::thumbPath("medium").$oFile->id.".jpg");
+		$img = Image::make($oFile->path)->resize(null, 125, function ($constraint) {
+		    $constraint->aspectRatio();
+		})->save(self::thumbPath("small").$oFile->id.".jpg");
+		$img = Image::make($oFile->path)->resize(32, 32, function ($constraint) {
+		    $constraint->aspectRatio();
+		})->save(self::thumbPath("icon").$oFile->id.".jpg");
 
 		//
 		// log how many tags were added
@@ -108,7 +116,7 @@ class JPEGProcessor extends BaseController {
 		$eFilesRemoved->value = (string)count($cTagsAdded);
 		$eFilesRemoved->save();
 		// done?
-		$oFile->finishTagging();
+		////$oFile->finishTagging();
 	}
 	private static function thumbPath($sSubFolder)
 	{

@@ -20,15 +20,18 @@ class FileModel extends Eloquent {
 	{
 		// set to live in db
 		$this->live = true;
-		$this->save();
 
 		// delete on disk maybe.
 		if(!Config::get('app.keepFilesAfterProcessing')){
 			// delete original
 			echo "delete: ".$this->path;
 			if(File::exists($this->path))
+			{
 				File::delete($this->path);
+				$this->have_original = false;
+			}
 		}
+		$this->save();
 	}
 
 }
