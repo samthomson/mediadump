@@ -116,6 +116,9 @@ class JPEGProcessor extends BaseController {
 
 			if(isset($data["DateTime"]))
 			{
+				$oFile->datetime = $data["DateTime"];
+				$oFile->save();
+
 				$oTag = new TagModel();
 				$oTag->file_id = $iFileID;
 				$oTag->type = "exif.datetime";

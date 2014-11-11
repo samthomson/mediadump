@@ -18,6 +18,9 @@ class Files extends Migration {
 			$table->string('path');
 			$table->boolean('live')->default(false);
 			$table->boolean('have_original')->default(true);
+
+			$table->datetime('datetime');
+
 			$table->date('created_at');
 			$table->date('updated_at');
 		});

@@ -23,7 +23,9 @@ class SearchController extends BaseController {
 			$soFiles = FileModel::whereHas("tags", function($q)
 				{
 					$q->where("value", "=", Input::get("query"));
-				})->where("live", "=", true)->get();
+				})->where("live", "=", true)->orderBy("datetime")->get();
+
+
 
 			if(!Input::get("render"))
 				return Response::json($soFiles);
