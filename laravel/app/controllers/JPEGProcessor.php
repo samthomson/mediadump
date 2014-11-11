@@ -17,6 +17,8 @@ class JPEGProcessor extends BaseController {
 
 	public static function process($iFileID)
 	{		
+		$cTagsAdded = 0;
+
 		$oFile = FileModel::find($iFileID);
 
 		$sFilePath = $oFile->rawPath();
@@ -25,7 +27,7 @@ class JPEGProcessor extends BaseController {
 
 		$saDirs = explode(DIRECTORY_SEPARATOR, $sFilePath);
 
-		array_pop($saDirs);
+		$sFileName = array_pop($saDirs);
 		//
 		// all directorys as tags
 		//
@@ -36,6 +38,7 @@ class JPEGProcessor extends BaseController {
 				$oTag->file_id = $iFileID;
 				$oTag->value = $sDir;
 				$oTag->save();
+				$cTagsAdded++;
 			}
 		}
 
@@ -48,26 +51,55 @@ class JPEGProcessor extends BaseController {
 		$oTag->type = "uniquedirectorypath";
 		$oTag->value = $sUniqueDirPath;
 		$oTag->save();
+		$cTagsAdded++;
 
 		//
 		// file name
 		//
+		$sFileName = exlode(".", $sFileName)[0];
+		$oTag = new TagModel();
+		$oTag->file_id = $iFileID;
+		$oTag->type = "filename";
+		$oTag->value = $sFileName;
+		$oTag->save();
+		$cTagsAdded++;
 
 		//
 		// type
 		//
-		/*
-		$eFilesFound = new EventModel();
-		$eFilesFound->name = "auto files found";
-		$eFilesFound->value = (string)count($saNewFilesForSystem);
-		$eFilesFound->save();
+		$oTag = new TagModel();
+		$oTag->file_id = $iFileID;
+		$oTag->type = "mediatype";
+		$oTag->value = "image";
+		$oTag->save();
+		$cTagsAdded++;
+
+		$oTag = new TagModel();
+		$oTag->file_id = $iFileID;
+		$oTag->type = "filetype";
+		$oTag->value = "jpeg";
+		$oTag->save();
+		$cTagsAdded++;
+		
+		
+
+		//
+		// exif
+		//
+
+		//
+		// geo
+		//
+
+		//
+		// thumbs
+		//
 
 		$eFilesRemoved = new EventModel();
-		$eFilesRemoved->name = "auto files removed";
-		$eFilesRemoved->value = (string)count($saLostFilesFromSystem);
+		$eFilesRemoved->name = "auto tags added";
+		$eFilesRemoved->message = "jpeg processor has added $cTagsAdded tags";
+		$eFilesRemoved->value = (string)count($cTagsAdded);
 		$eFilesRemoved->save();
-		*/
-
 		// done?
 		$oFile->finishTagging();
 	}
