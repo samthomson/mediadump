@@ -21,3 +21,11 @@ Route::get('auto/processqueue', array('uses' => 'Auto@processQueue'));
 
 
 Route::get('/api/search', array('uses' => 'SearchController@search'));
+
+
+Route::get('/test', function()
+{
+    $img = Image::make('C:\wamp\www\mediadump\laravel\public\media\africa\Atlas\DSC_7936.JPG')->resize(300, 200);
+
+    return $img->response('jpg');
+});

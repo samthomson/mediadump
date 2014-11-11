@@ -56,7 +56,7 @@ class JPEGProcessor extends BaseController {
 		//
 		// file name
 		//
-		$sFileName = exlode(".", $sFileName)[0];
+		$sFileName = explode(".", $sFileName)[0];
 		$oTag = new TagModel();
 		$oTag->file_id = $iFileID;
 		$oTag->type = "filename";
@@ -80,7 +80,7 @@ class JPEGProcessor extends BaseController {
 		$oTag->value = "jpeg";
 		$oTag->save();
 		$cTagsAdded++;
-		
+
 		
 
 		//
@@ -94,7 +94,14 @@ class JPEGProcessor extends BaseController {
 		//
 		// thumbs
 		//
+		$img = Image::make($oFile->path)->resize(null, 1200)->save(self::thumbPath("large").$oFile->id.".jpg");
+		$img = Image::make($oFile->path)->resize(null, 300)->save(self::thumbPath("medium").$oFile->id.".jpg");
+		$img = Image::make($oFile->path)->resize(null, 125)->save(self::thumbPath("small").$oFile->id.".jpg");
+		$img = Image::make($oFile->path)->resize(32, 32)->save(self::thumbPath("icon").$oFile->id.".jpg");
 
+		//
+		// log how many tags were added
+		//
 		$eFilesRemoved = new EventModel();
 		$eFilesRemoved->name = "auto tags added";
 		$eFilesRemoved->message = "jpeg processor has added $cTagsAdded tags";
@@ -102,5 +109,16 @@ class JPEGProcessor extends BaseController {
 		$eFilesRemoved->save();
 		// done?
 		$oFile->finishTagging();
+	}
+	private static function thumbPath($sSubFolder)
+	{
+
+		$sPath = public_path().DIRECTORY_SEPARATOR."thumbs".DIRECTORY_SEPARATOR;
+
+		if(isset($sSubFolder))
+			if($sSubFolder !== "")
+				$sPath .= $sSubFolder.DIRECTORY_SEPARATOR;
+
+		return $sPath;
 	}
 }
