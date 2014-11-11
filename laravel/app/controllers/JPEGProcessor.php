@@ -20,6 +20,16 @@ class JPEGProcessor extends BaseController {
 		$cTagsAdded = 0;
 
 		$oFile = FileModel::find($iFileID);
+		
+		//
+		// default tag
+		//
+		$oTag = new TagModel();
+		$oTag->file_id = $iFileID;
+		$oTag->type = "tag";
+		$oTag->value = "*";
+		$oTag->save();
+		$cTagsAdded++;
 
 		$sFilePath = $oFile->rawPath();
 
@@ -81,6 +91,7 @@ class JPEGProcessor extends BaseController {
 		$oTag->save();
 		$cTagsAdded++;
 
+
 		
 
 		//
@@ -96,16 +107,20 @@ class JPEGProcessor extends BaseController {
 		//
 		$img = Image::make($oFile->path)->resize(null, 1200, function ($constraint) {
 		    $constraint->aspectRatio();
-		})->save(self::thumbPath("large").$oFile->id.".jpg");
+		})->save(self::thumbPath("large").$oFile->id.".jpg")->destroy();
+
 		$img = Image::make($oFile->path)->resize(null, 300, function ($constraint) {
 		    $constraint->aspectRatio();
-		})->save(self::thumbPath("medium").$oFile->id.".jpg");
+		})->save(self::thumbPath("medium").$oFile->id.".jpg")->destroy();
+
 		$img = Image::make($oFile->path)->resize(null, 125, function ($constraint) {
 		    $constraint->aspectRatio();
-		})->save(self::thumbPath("small").$oFile->id.".jpg");
+		})->save(self::thumbPath("small").$oFile->id.".jpg")->destroy();
+
 		$img = Image::make($oFile->path)->resize(32, 32, function ($constraint) {
 		    $constraint->aspectRatio();
-		})->save(self::thumbPath("icon").$oFile->id.".jpg");
+		})->save(self::thumbPath("icon").$oFile->id.".jpg")->destroy();
+
 
 		//
 		// log how many tags were added
