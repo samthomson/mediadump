@@ -16,6 +16,7 @@ class FileModel extends Eloquent {
 	{
 		return str_replace(Config::get('app.mediaFolderPath'), "", $this->path);
 	}
+	
 	public function finishTagging()
 	{
 		// set to live in db

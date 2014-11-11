@@ -55,6 +55,10 @@ class Auto extends BaseController {
 		$saNewFilesForSystem = array_diff($saFiles, $saDBFiles);
 		$saLostFilesFromSystem = array_diff($saDBFiles, $saFiles);
 
+		if(!Config::get('app.keepFilesAfterProcessing')){
+			$saLostFilesFromSystem = [];
+		}
+
 		$this->addFilesToSystem($saNewFilesForSystem);
 		$this->removeFilesFromSystem($saLostFilesFromSystem);
 		// check for differences
@@ -72,11 +76,15 @@ class Auto extends BaseController {
 	public function processQueue()
 	{
 		$aqiQueuedItems = QueueModel::getItems();
+
 		foreach ($aqiQueuedItems as $qi) {
 			switch($qi->processor)
 			{
 				case "jpeg":
-					JPEGProcessor::process($qi->file_id);
+					$qi->snoozeAMinute();
+					$qi->save();
+					if(JPEGProcessor::process($qi->file_id))
+						$qi->delete();
 					break;
 			}
 		}
