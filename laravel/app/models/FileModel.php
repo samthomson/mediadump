@@ -18,6 +18,10 @@ class FileModel extends Eloquent {
 	{
 		return $this->hasMany('TagModel', "file_id", "id");
 	}
+	public function geoData()
+	{
+		return $this->hasOne('GeoDataModel', "file_id", "id");
+	}
 
 
 	public function rawPath()
@@ -33,7 +37,6 @@ class FileModel extends Eloquent {
 		// delete on disk maybe.
 		if(!Config::get('app.keepFilesAfterProcessing')){
 			// delete original
-			echo "delete: ".$this->path;
 			if(File::exists($this->path))
 			{
 				File::delete($this->path);

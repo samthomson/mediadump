@@ -17,9 +17,9 @@ class GeoData extends Migration {
 			$table->increments('id');
 			$table->integer('file_id');
 
-			$table->integer('latitude');
-			$table->integer('longitude');
-			$table->integer('elevation');
+			$table->float('latitude');
+			$table->float('longitude');
+			$table->float('elevation');
 			$table->string('literal_locations');
 
 			$table->date('created_at');

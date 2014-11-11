@@ -11,5 +11,9 @@ class TagModel extends Eloquent {
 	 */
 	protected $table = 'tags';
 
+	public function setValue($sValue)
+	{
+		$this->value = strtolower($sValue);
+	}
 	
 }

@@ -20,6 +20,7 @@ class JPEGProcessor extends BaseController {
 		try
 		{
 			$cTagsAdded = 0;
+			$cGeoDataAdded = 0;
 
 			$oFile = FileModel::find($iFileID);
 
@@ -99,6 +100,42 @@ class JPEGProcessor extends BaseController {
 			//
 			// exif
 			//
+			$data = Image::make($oFile->path)->exif();
+
+
+			if(isset($data["Make"]))
+			{
+				$oTag = new TagModel();
+				$oTag->file_id = $iFileID;
+				$oTag->type = "exif.cameramake";
+				$oTag->setValue($data["Make"]);
+				$oTag->save();
+				$cTagsAdded++;
+			}
+
+			$oGeoData = new GeoDataModel();
+			$oGeoData->file_id = $iFileID;
+
+			if(isset($data["GPSLongitude"]) && isset($data["GPSLongitude"]))
+			{
+				$lon = self::getGps($data["GPSLongitude"], $data['GPSLongitudeRef']);
+				$oGeoData->longitude = $lon;
+				$oGeoData->save();
+
+				$cGeoDataAdded++;
+			}
+
+			if(isset($data["GPSLatitude"]) && isset($data["GPSLatitudeRef"]))
+			{
+				$lat = self::getGps($data["GPSLatitude"], $data['GPSLatitudeRef']);
+				$oGeoData->latitude = $lat;
+				$oGeoData->save();
+
+				$cGeoDataAdded++;
+			}
+
+
+				
 
 			//
 			// geo
@@ -126,7 +163,6 @@ class JPEGProcessor extends BaseController {
 			    $constraint->aspectRatio();
 			})->save(self::thumbPath("large").$oFile->id.".jpg")->destroy();
 
-			echo " not here ";
 			$img = Image::make($oFile->path)->resize(null, 300, function ($constraint) {
 			    $constraint->aspectRatio();
 			})->save(self::thumbPath("medium").$oFile->id.".jpg")->destroy();
@@ -147,6 +183,12 @@ class JPEGProcessor extends BaseController {
 			$eFilesRemoved->name = "auto tags added";
 			$eFilesRemoved->message = "jpeg processor has added $cTagsAdded tags";
 			$eFilesRemoved->value = (string)count($cTagsAdded);
+			$eFilesRemoved->save();
+
+			$eFilesRemoved = new EventModel();
+			$eFilesRemoved->name = "geodata added";
+			$eFilesRemoved->message = "jpeg processor has added $cGeoDataAdded pieces of geodata";
+			$eFilesRemoved->value = (string)count($cGeoDataAdded);
 			$eFilesRemoved->save();
 
 			// done?
@@ -172,5 +214,30 @@ class JPEGProcessor extends BaseController {
 				$sPath .= $sSubFolder.DIRECTORY_SEPARATOR;
 
 		return $sPath;
+	}
+
+	private static function getGps($exifCoord, $hemi) {
+
+		$degrees = count($exifCoord) > 0 ? self::gps2Num($exifCoord[0]) : 0;
+		$minutes = count($exifCoord) > 1 ? self::gps2Num($exifCoord[1]) : 0;
+		$seconds = count($exifCoord) > 2 ? self::gps2Num($exifCoord[2]) : 0;
+
+		$flip = ($hemi == 'W' or $hemi == 'S') ? -1 : 1;
+
+		return $flip * ($degrees + $minutes / 60 + $seconds / 3600);
+
+	}
+
+	private static function gps2Num($coordPart) {
+
+		$parts = explode('/', $coordPart);
+
+		if (count($parts) <= 0)
+			return 0;
+
+		if (count($parts) == 1)
+			return $parts[0];
+
+		return floatval($parts[0]) / floatval($parts[1]);
 	}
 }
