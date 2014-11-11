@@ -11,12 +11,20 @@ class FileModel extends Eloquent {
 	 */
 	protected $table = 'files';
 
+	/*
+	relations
+	*/
+	public function tags()
+	{
+		return $this->hasMany('TagModel', "file_id", "id");
+	}
+
 
 	public function rawPath()
 	{
 		return str_replace(Config::get('app.mediaFolderPath'), "", $this->path);
 	}
-	
+
 	public function finishTagging()
 	{
 		// set to live in db
