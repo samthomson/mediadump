@@ -102,6 +102,7 @@ class JPEGProcessor extends BaseController {
 			//
 			$data = Image::make($oFile->path)->exif();
 
+			//print_r($data);
 
 			if(isset($data["Make"]))
 			{
@@ -109,6 +110,16 @@ class JPEGProcessor extends BaseController {
 				$oTag->file_id = $iFileID;
 				$oTag->type = "exif.cameramake";
 				$oTag->setValue($data["Make"]);
+				$oTag->save();
+				$cTagsAdded++;
+			}
+
+			if(isset($data["DateTime"]))
+			{
+				$oTag = new TagModel();
+				$oTag->file_id = $iFileID;
+				$oTag->type = "exif.datetime";
+				$oTag->setValue($data["DateTime"]);
 				$oTag->save();
 				$cTagsAdded++;
 			}
