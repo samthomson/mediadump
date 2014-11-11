@@ -40,14 +40,14 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 	$scope.s_media_dump_url = "http://mediadump.dev";
 	//$scope.s_media_dump_url = "http://mediadump-backend.samt.st";
 	
-	$scope.s_cdn_url = "http://mdcdn.samt.st";
+	$scope.s_cdn_url = "http://mediadump.dev";
 	//$scope.s_cdn_url = "http://mdcdn";
 	
 	
 	$scope.default_queries = [];
-	$http.get($scope.s_media_dump_url + '/tree/')
+	$http.get($scope.s_media_dump_url + '/api/tree/')
 	.then(function(res) {
-		$scope.default_queries = res.data.tree;
+		$scope.default_queries = res.data;
 	});
 	
 	// app stuff
@@ -546,6 +546,8 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 				break;
 			case 'thumbs':
 				return $scope.s_cdn_url + '/thumb/'+oObject.id+'.jpg';
+			case 'medium':
+				return $scope.s_cdn_url + '/thumbs/medium/'+oObject.id+'.jpg';
 			/*
 				var sType = "jpeg";
 				if(oObject.type === "video"){
