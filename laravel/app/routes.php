@@ -29,3 +29,12 @@ Route::get('/test', function()
 
     return $img->response('jpg');
 });
+
+
+
+
+
+App::missing(function($exception)
+{
+    return Response::make('404', 404);
+});
