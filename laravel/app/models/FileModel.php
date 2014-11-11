@@ -26,7 +26,8 @@ class FileModel extends Eloquent {
 		if(!Config::get('app.keepFilesAfterProcessing')){
 			// delete original
 			echo "delete: ".$this->path;
-			File::delete($this->path);
+			if(File::exists($this->path))
+				File::delete($this->path);
 		}
 	}
 
