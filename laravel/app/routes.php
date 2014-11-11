@@ -21,6 +21,7 @@ Route::get('auto/processqueue', array('uses' => 'Auto@processQueue'));
 
 
 Route::get('/api/search', array('uses' => 'SearchController@search'));
+Route::get('/api/tree', array('uses' => 'SearchController@tree'));
 
 
 Route::get('/test', function()
