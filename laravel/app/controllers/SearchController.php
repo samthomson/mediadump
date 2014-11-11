@@ -53,10 +53,11 @@ class SearchController extends BaseController {
 		->join("tags", function($join)
 			{
 				$join->on("files.id", "=", "tags.file_id")
-				->where("type", "=", "uniquedirectorypath");;
+				->where("type", "=", "uniquedirectorypath");
 			})
-		->where("live", "=", true)
+		->where("live", "=", true)->distinct("value")
 		->orderBy("datetime", "desc")
+        ->groupBy('value')
 		->get();
 
 
