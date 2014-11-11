@@ -71,7 +71,7 @@ class Auto extends BaseController {
 	}
 	public function processQueue()
 	{
-		$aqiQueuedItems = QueueModel::where("started", "=", "0")->get();
+		$aqiQueuedItems = QueueModel::getItems();
 		foreach ($aqiQueuedItems as $qi) {
 			switch($qi->processor)
 			{
@@ -96,6 +96,7 @@ class Auto extends BaseController {
 				$QueueItem = new QueueModel();
 				$QueueItem->file_id = $file->id;
 				$QueueItem->processor = "jpeg";
+				$QueueItem->date_from = date('Y-m-d H:i:s');
 				$QueueItem->save();
 			}			
 		}

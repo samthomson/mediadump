@@ -67,5 +67,8 @@ class JPEGProcessor extends BaseController {
 		$eFilesRemoved->value = (string)count($saLostFilesFromSystem);
 		$eFilesRemoved->save();
 		*/
+
+		// done?
+		$oFile->finishTagging();
 	}
 }
