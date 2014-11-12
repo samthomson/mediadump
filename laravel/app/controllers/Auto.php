@@ -32,22 +32,6 @@ class Auto extends BaseController {
 			}
 		}
 
-		/*
-		$rootpath = public_path().'\media';
-		echo $rootpath;
-		$fileinfos = new RecursiveIteratorIterator(
-		    new RecursiveDirectoryIterator($rootpath)
-		);
-		foreach($fileinfos as $pathname => $fileinfo) {
-		    if (!$fileinfo->isFile()){
-		    	
-		    	continue;
-		    }else{
-		    	//array_push($saFiles, $fileinfo);
-		    }		    
-		}
-		*/
-		//print_r($saFiles);
 		$saDBFiles = [];
 		foreach ($oFiles as $file) {
 			array_push($saDBFiles, $file->path);

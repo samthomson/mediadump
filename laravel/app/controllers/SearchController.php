@@ -17,27 +17,72 @@ class SearchController extends BaseController {
 
 	public static function search()
 	{		
+		$mtStart = microtime(true);
+
 		$oResults = array("info" => null, "results" => null);
 		
 		$sQuery = Input::get("query");
 
-		$soFiles = DB::table("files")
-		->join("tags", function($join)
-			{
-				$join->on("files.id", "=", "tags.file_id")
-				->where("value", "=", Input::get("query"));
-			})	
-		->join("geodata", function($joinGeoData)
+		$saQueries = explode("=", $sQuery);
+
+		$saStats = [];
+
+		if(count($saQueries) > 1)
 		{
-			$joinGeoData->on("files.id", "=", "geodata.file_id");
-		})	
-		->where("live", "=", true)->distinct("value")
-		->orderBy("datetime", "desc")
-        ->select("files.id", "tags.value", "geodata.latitude", "geodata.longitude")
-		->get();
+			// non standard query, check the type
+			switch ($saQueries[0]) {
+				case 'map':
+					$iaLatLonRange = $saQueries = explode(",", $saQueries[1]);
+					if(count($iaLatLonRange) === 4)
+					{
+						$soFiles = DB::table("files")
+						->join("tags", function($join)
+							{
+								//$join->on("files.id", "=", "tags.file_id")->where("value", "=", "*");
+								$join->on("files.id", "=", "tags.file_id");
+							})	
+						->join("geodata", function($joinGeoData) use ($iaLatLonRange)
+						{
+							$joinGeoData->on("files.id", "=", "geodata.file_id")
+							->where("latitude", ">", $iaLatLonRange[0])
+							->where("latitude", "<", $iaLatLonRange[1])
+							->where("longitude", ">", $iaLatLonRange[2])
+							->where("longitude", "<", $iaLatLonRange[3]);
+						})	
+						->where("live", "=", true)->distinct("value")
+						->orderBy("datetime", "desc")
+						->groupBy("id")
+				        ->select("files.id", "tags.value", "geodata.latitude", "geodata.longitude")
+						->get();
+					}
+					break;
+			}
+		}else{
+
+
+
+
+			$soFiles = DB::table("files")
+			->join("tags", function($join)
+				{
+					$join->on("files.id", "=", "tags.file_id")
+					->where("value", "=", Input::get("query"));
+				})	
+			->join("geodata", function($joinGeoData)
+			{
+				$joinGeoData->on("files.id", "=", "geodata.file_id");
+			})	
+			->where("live", "=", true)->distinct("value")
+			->orderBy("datetime", "desc")
+	        ->select("files.id", "tags.value", "geodata.latitude", "geodata.longitude")
+			->get();
+		}
+		$saStats["speed"] = (microtime(true) - $mtStart)*1000;
 
 
 		$oResults["results"] = $soFiles;
+		$oResults["info"] = $saStats;
+
 		return Response::json($oResults);
 		/*
 		if($sQuery !== ""){
