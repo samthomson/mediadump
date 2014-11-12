@@ -17,6 +17,8 @@ class SearchController extends BaseController {
 
 	public static function search()
 	{		
+		$oResults = array("info" => null, "results" => null);
+		
 		$sQuery = Input::get("query");
 
 		if($sQuery !== ""){
@@ -25,10 +27,11 @@ class SearchController extends BaseController {
 					$q->where("value", "=", Input::get("query"));
 				})->where("live", "=", true)->orderBy("datetime", "desc")->get();
 
+			$oResults["results"] = $soFiles;
 
 
 			if(!Input::get("render"))
-				return Response::json($soFiles);
+				return Response::json($oResults);
 			else
 				foreach ($soFiles as $value) {
 					echo '<img src="/thumbs/medium/'.$value->id.'.jpg"/>';
@@ -58,7 +61,7 @@ class SearchController extends BaseController {
 		->where("live", "=", true)->distinct("value")
 		->orderBy("datetime", "desc")
         ->groupBy('value')
-        ->select("files.id")
+        ->select("files.id", "tags.value")
 		->get();
 
 

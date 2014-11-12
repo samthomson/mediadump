@@ -712,15 +712,15 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 		        method  : 'GET',
 		        /*url     : 'http://media-dump-instant/api/search',
 		        url     : 'http://media-dump.samt.st/api/search',*/
-		        url     : $scope.s_media_dump_url + '/search/',
+		        url     : $scope.s_media_dump_url + '/api/search/',
 		        params    : {query: $scope.query, page: $scope.page, m: $scope.search_mode, operator: $scope.operator, sort: $scope.sort_mode, sort_direction: $scope.sort_direction, "search_input": $scope.search_input_mode}
 		    })
 	        .success(function(data) {
 	            if(data != undefined){
-	            	$scope.results = data.files;
+	            	$scope.results = data.results;
 	            	//$scope.justifyImages($("#thumb_results"));
 		            
-		            $scope.result_info = data.results_info;
+		            $scope.result_info = data.info;
 				}else{
 	            	// if not successful, bind errors to error variables
 					$scope.results = [];
