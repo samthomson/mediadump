@@ -371,13 +371,13 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 		for(var cResult = 0; cResult < $scope.results.length; cResult++){
 
 			// only make marker if geo tag exists
-			if(typeof $scope.results[cResult].lat !== "undefined" &&
-				typeof $scope.results[cResult].lon !== "undefined" &&
-				$scope.results[cResult].lat !== 0 &&
-				$scope.results[cResult].lon !== 0)
+			if(typeof $scope.results[cResult].latitude !== "undefined" &&
+				typeof $scope.results[cResult].longitude !== "undefined" &&
+				$scope.results[cResult].latitude !== 0 &&
+				$scope.results[cResult].longitude !== 0)
 			{
 				var pinIcon = new google.maps.MarkerImage(
-					$scope.urlFromHash('thumbs', $scope.results[cResult], ''),
+					$scope.urlFromHash('icon', $scope.results[cResult], ''),
 				    null, /* size is determined at runtime */
 				    null, /* origin is 0,0 */
 				    null, /* anchor is bottom center of the scaled image */
@@ -385,8 +385,8 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 				);  
 
 				mTempMarker = {
-		            latitude: $scope.results[cResult].lat,
-		            longitude: $scope.results[cResult].lon,
+		            latitude: $scope.results[cResult].latitude,
+		            longitude: $scope.results[cResult].longitude,
 		            title: 'm' + cResult,
 		            icon: pinIcon
 		        };
@@ -543,21 +543,13 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 			case 'lightbox':
 				return $scope.s_cdn_url + '/thumbs/large/'+oObject.id+'.jpg';
 				break;
-			case 'map_search':
-				return $scope.s_cdn_url + '/icon/'+oObject.id+'.jpg';
+			case 'icon':
+				return $scope.s_cdn_url + '/thumbs/icon/'+oObject.id+'.jpg';
 				break;
 			case 'thumbs':
 				return $scope.s_cdn_url + '/thumb/'+oObject.id+'.jpg';
 			case 'medium':
 				return $scope.s_cdn_url + '/thumbs/medium/'+oObject.id+'.jpg';
-			/*
-				var sType = "jpeg";
-				if(oObject.type === "video"){
-					return 'data:image/gif;base64, '+oObject.data_thumb[$scope.thumb_height];
-				}else{
-					return 'data:image/jpeg;base64, '+oObject.data_thumb[$scope.thumb_height];
-				}
-				*/
 				break;
 		}
 	};
