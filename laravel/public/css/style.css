@@ -47,6 +47,7 @@ Functional
 @-webkit-keyframes rotate {
   from {
     -webkit-transform: rotate(0deg); }
+
   to {
     -webkit-transform: rotate(359deg); } }
 .spin {
@@ -105,7 +106,7 @@ layout parts
   overflow: hidden;
   white-space: nowrap;
   background-color: #e74c3c;
-  color: #fff;
+  color: white;
   padding: 8px;
   padding-top: 0px;
   padding-bottom: 0px;
@@ -161,6 +162,9 @@ layout parts
   max-height: 100%;
   margin: auto;
   display: block;
+  position: absolute;
+  left: 0;
+  right: 0;
   opacity: 1.0;
   filter: alpha(opacity=100);
   /* For IE8 and earlier */ }
@@ -267,7 +271,7 @@ html {
   */ }
 
 #header {
-  background-color: #fff; }
+  background-color: white; }
 
 .btn, .form-control {
   font-size: large;
@@ -278,17 +282,17 @@ html {
 
 .btn.active {
   background: #e74c3c;
-  color: #fff;
+  color: white;
   border-color: #e74c3c !important;
   box-shadow: none !important;
   -webkit-box-shadow: none !important; }
 
 .btn.advanced_showing {
   background: #c0392b;
-  color: #fff; }
+  color: white; }
 
 .btn-media-dump:hover, .btn-media-dump:active, .btn-media-dump:visited {
-  color: #fff; }
+  color: white; }
 
 textarea:focus, input[type]:focus, .uneditable-input:focus {
   border-color: #e74c3c;
@@ -339,7 +343,7 @@ a.filter {
 a.filter:hover {
   text-decoration: none;
   background: #e74c3c;
-  color: #fff; }
+  color: white; }
 
 nav.navbar {
   z-index: 100;
@@ -362,7 +366,7 @@ nav.navbar button span.icon-bar {
   padding: 8px;
   height: auto;
   background-color: #e74c3c !important;
-  color: #fff !important;
+  color: white !important;
   border-radius: 4px;
   letter-spacing: 1.2px; }
 
@@ -391,5 +395,3 @@ ul.nav li a.active {
 .flowplayer .fp-embed{background: url('s.png') no-repeat top left; background-position: -1079px 0px; width: 24px; height: 18px;} 
 .flowplayer .fp-fullscreen{background: url('s.png') no-repeat top left;  background-position: -29px 0px; width: 24px; height: 24px;} 
 .flowplayer.is-fullscreen .fp-fullscreen{background: url('s.png') no-repeat top left;  background-position: 0px 0px; width: 24px; height: 24px;} */
-
-/*# sourceMappingURL=style.css.map */
