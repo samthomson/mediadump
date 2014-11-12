@@ -469,6 +469,7 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 	$scope.$watch('result_info', function(){
 		var oTempFilter = {};
 		$scope.available_filters = [];
+		/*
 		if(typeof $scope.result_info.distinct !== 'undefined')
 			for(var cFilter = 0; cFilter < $scope.result_info.distinct.length; cFilter++){
 				oTempFilter = {
@@ -477,6 +478,7 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 				};
 				$scope.available_filters.push(oTempFilter);
 			}
+		*/
 	});
 
 	
@@ -539,7 +541,7 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 			return "";
 		switch(sMode){
 			case 'lightbox':
-				return $scope.s_cdn_url + '/lightbox/'+oObject.id+'.jpg';
+				return $scope.s_cdn_url + '/thumbs/large/'+oObject.id+'.jpg';
 				break;
 			case 'map_search':
 				return $scope.s_cdn_url + '/icon/'+oObject.id+'.jpg';
@@ -595,9 +597,9 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 	}
 	$scope.lightboxURL = function(){
 		if(typeof $scope.results[$scope.iLightIndex] !== "undefined"){
-			if($scope.results[$scope.iLightIndex].type === "image"){
-				return $scope.s_cdn_url + "/lightbox/" + $scope.results[$scope.iLightIndex].id + ".jpg";
-			}
+			//if($scope.results[$scope.iLightIndex].type === "image"){
+				return $scope.s_cdn_url + "/thumbs/large/" + $scope.results[$scope.iLightIndex].id + ".jpg";
+			//}
 		}else{return "undefined item";}
 	}
 
