@@ -551,6 +551,11 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 			case 'medium':
 				return $scope.s_cdn_url + '/thumbs/medium/'+oObject.id+'.jpg';
 				break;
+			case 'results':
+				console.log($scope.search_input_mode);
+				var sThumbSize = ($scope.search_input_mode === "browse") ? "medium" : "small";
+				return $scope.s_cdn_url + '/thumbs/' + sThumbSize + '/'+oObject.id+'.jpg';
+				break;
 		}
 	};
 	$scope.videoSRC = function(oObject, sType){

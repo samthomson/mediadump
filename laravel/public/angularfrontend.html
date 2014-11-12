@@ -141,7 +141,7 @@
 
 					<!-- thumb results (grid search) -->
 					<div id="thumb_results" ng-show="search_mode === 'search' && query !== ''" justified>
-						<a class="thumb_result_link" ng-repeat="result in results" ng-mousedown="preload_thumb($index)" ng-click="thumb_click($index)" my-repeat-directive><img ng-src="{{urlFromHash('medium', result, '')}}" id="{{result.id}}" /></a>
+						<a class="thumb_result_link" ng-repeat="result in results" ng-mousedown="preload_thumb($index)" ng-click="thumb_click($index)" my-repeat-directive><img ng-src="{{urlFromHash('results', result, '')}}" id="{{result.id}}" /></a>
 
 					</div>
 
