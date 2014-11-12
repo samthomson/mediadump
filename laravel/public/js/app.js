@@ -237,11 +237,11 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 
 				    	var sQuery = "map=";
 				    	sQuery += llSouthWest.lat().toFixed(2);
-				    	sQuery += "|";			
+				    	sQuery += ",";			
 				    	sQuery += llNorthEast.lat().toFixed(2);
-				    	sQuery += "|";			
+				    	sQuery += ",";			
 				    	sQuery += llSouthWest.lng().toFixed(2);
-				    	sQuery += "|";			
+				    	sQuery += ",";			
 				    	sQuery += llNorthEast.lng().toFixed(2);
 
 				    	$scope.query = sQuery;  

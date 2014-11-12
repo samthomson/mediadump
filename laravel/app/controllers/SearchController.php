@@ -26,6 +26,7 @@ class SearchController extends BaseController {
 		$saQueries = explode("=", $sQuery);
 
 		$saStats = [];
+		$soFiles = [];
 
 		if(count($saQueries) > 1)
 		{
