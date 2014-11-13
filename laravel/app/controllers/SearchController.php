@@ -54,6 +54,7 @@ class SearchController extends BaseController {
 						->orderBy("datetime", "desc")
 						->groupBy("id")
 				        ->select("files.id", "tags.value", "geodata.latitude", "geodata.longitude")
+	        ->take(100)
 						->get();
 					}
 					break;
@@ -76,6 +77,7 @@ class SearchController extends BaseController {
 			->where("live", "=", true)->distinct("value")
 			->orderBy("datetime", "desc")
 	        ->select("files.id", "tags.value", "geodata.latitude", "geodata.longitude")
+	        ->take(100)
 			->get();
 		}
 		$saStats["speed"] = (microtime(true) - $mtStart)*1000;

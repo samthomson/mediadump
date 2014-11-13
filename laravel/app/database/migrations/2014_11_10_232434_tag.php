@@ -21,6 +21,8 @@ class Tag extends Migration {
 
 			$table->date('created_at');
 			$table->date('updated_at');
+
+			$table->dropTimestamps();
 		});
 	}
 

@@ -59,6 +59,7 @@ class Auto extends BaseController {
 	}
 	public function processQueue()
 	{
+		set_time_limit(6000);
 		$aqiQueuedItems = QueueModel::getItems();
 
 		foreach ($aqiQueuedItems as $qi) {
