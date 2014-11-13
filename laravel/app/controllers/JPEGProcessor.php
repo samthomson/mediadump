@@ -196,13 +196,13 @@ class JPEGProcessor extends BaseController {
 			$eFilesRemoved = new EventModel();
 			$eFilesRemoved->name = "auto tags added";
 			$eFilesRemoved->message = "jpeg processor has added $cTagsAdded tags";
-			$eFilesRemoved->value = (string)count($cTagsAdded);
+			$eFilesRemoved->value = (string)$cTagsAdded;
 			$eFilesRemoved->save();
 
 			$eFilesRemoved = new EventModel();
 			$eFilesRemoved->name = "geodata added";
 			$eFilesRemoved->message = "jpeg processor has added $cGeoDataAdded pieces of geodata";
-			$eFilesRemoved->value = (string)count($cGeoDataAdded);
+			$eFilesRemoved->value = (string)$cGeoDataAdded;
 			$eFilesRemoved->save();
 
 			// done?
