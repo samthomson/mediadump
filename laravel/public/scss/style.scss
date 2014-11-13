@@ -141,6 +141,12 @@ layout parts
 	right: $margin;
 	position: absolute;
 }
+.nav-search-form{
+	width: 50%;
+}
+.nav-search-form div.form-group, .nav-search-input{
+	width: 100% !important;
+}
 #advanced_search{
 	position: relative;
 	width:100%;
@@ -150,7 +156,6 @@ layout parts
 	border-radius: $border_radius;
 	padding-top:100px;
 	margin-top:-4px;
-
 }
 
 #loading{
