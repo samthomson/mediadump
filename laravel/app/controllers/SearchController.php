@@ -19,6 +19,8 @@ class SearchController extends BaseController {
 	{		
 		$mtStart = microtime(true);
 
+		$iPerPage = 100;
+
 		$oResults = array("info" => null, "results" => null);
 		
 		$sQuery = Input::get("query");
@@ -77,13 +79,19 @@ class SearchController extends BaseController {
 			->where("live", "=", true)->distinct("value")
 			->orderBy("datetime", "desc")
 	        ->select("files.id", "tags.value", "geodata.latitude", "geodata.longitude")
-	        ->take(100)
 			->get();
 		}
 		$saStats["speed"] = (microtime(true) - $mtStart)*1000;
+		$saStats["count"] = count($soFiles);
+		$saStats["available_pages"] = round((floor(count($soFiles)-1)/$iPerPage))+1;
 
 
-		$oResults["results"] = $soFiles;
+		$iPage = (Input::get("page")) ? Input::get("page") : 1;
+
+		$iMin = (($iPage * $iPerPage) - $iPerPage) + 1;
+		$iMax = $iMin + $iPerPage;
+
+		$oResults["results"] = array_slice($soFiles, $iMin, $iMax);
 		$oResults["info"] = $saStats;
 
 		return Response::json($oResults);
