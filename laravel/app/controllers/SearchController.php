@@ -51,7 +51,7 @@ class SearchController extends BaseController {
 							->where("longitude", "<", $iaLatLonRange[3]);
 						})	
 						->where("live", "=", true)->distinct("value")
-						->orderBy("datetime", "desc")
+						->orderBy(DB::Raw('RAND()'))
 						->groupBy("id")
 				        ->select("files.id", "tags.value", "geodata.latitude", "geodata.longitude")
 	        ->take(100)
