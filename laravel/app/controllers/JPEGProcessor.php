@@ -186,7 +186,6 @@ class JPEGProcessor extends BaseController {
 			})->save(self::thumbPath("small").$oFile->id.".jpg")->destroy();
 
 			$img = Image::make($oFile->path)->orientate()->resize(32, 32, function ($constraint) {
-			    $constraint->aspectRatio();
 			})->save(self::thumbPath("icon").$oFile->id.".jpg")->destroy();
 
 
