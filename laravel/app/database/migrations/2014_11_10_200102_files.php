@@ -19,6 +19,9 @@ class Files extends Migration {
 			$table->boolean('live')->default(false);
 			$table->boolean('have_original')->default(true);
 
+			$table->integer('medium_width')->default(0);
+			$table->integer('medium_height')->default(0);
+
 			$table->datetime('datetime');
 
 			$table->date('created_at');
