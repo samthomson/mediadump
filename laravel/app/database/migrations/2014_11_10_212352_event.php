@@ -19,8 +19,7 @@ class Event extends Migration {
 			$table->string('message');
 			$table->string('value');
 
-			$table->date('created_at');
-			$table->date('updated_at');
+			$table->datetime('datetime');
 		});
 	}
 

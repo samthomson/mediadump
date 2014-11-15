@@ -9,7 +9,15 @@ class EventModel extends Eloquent {
 	 *
 	 * @var string
 	 */
-	protected $table = 'events';
+	public $timestamps = false; 
 
-	
+	protected $table = 'events';	
+
+
+	/* overloads */
+	public function save(array $options = array())
+	{
+		$this->datetime = date("Y-m-d H:i:s");
+	   parent::save($options);
+	}
 }
