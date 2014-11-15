@@ -19,10 +19,7 @@ class Tag extends Migration {
 			$table->string('type');
 			$table->string('value');
 
-			$table->date('created_at');
-			$table->date('updated_at');
-
-			$table->dropTimestamps();
+			$table->index(array('file_id', 'type', 'value'));
 		});
 	}
 

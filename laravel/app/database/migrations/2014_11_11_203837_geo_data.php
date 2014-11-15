@@ -22,9 +22,7 @@ class GeoData extends Migration {
 			$table->float('elevation');
 			$table->string('literal_locations');
 
-			$table->dropTimestamps();
-
-			////$table->index(array('latitude', 'longitude'));
+			$table->index(array('file_id', 'latitude', 'longitude'));
 		});
 	}
 

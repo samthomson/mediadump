@@ -9,6 +9,9 @@ class TagModel extends Eloquent {
 	 *
 	 * @var string
 	 */
+
+	public $timestamps = false;
+	
 	protected $table = 'tags';
 
 	public function setValue($sValue)

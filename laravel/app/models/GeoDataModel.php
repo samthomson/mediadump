@@ -9,6 +9,10 @@ class GeoDataModel extends Eloquent {
 	 *
 	 * @var string
 	 */
+	
+	public $timestamps = false;
+
+
 	protected $table = 'geodata';
 
 	/*
