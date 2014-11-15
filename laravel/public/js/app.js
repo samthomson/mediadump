@@ -381,7 +381,7 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 				    null, /* size is determined at runtime */
 				    null, /* origin is 0,0 */
 				    null, /* anchor is bottom center of the scaled image */
-				    new google.maps.Size(48, 48)
+				    new google.maps.Size(32, 32)
 				);  
 
 				mTempMarker = {
