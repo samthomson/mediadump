@@ -88,8 +88,8 @@ class SearchController extends BaseController {
 
 		$iPage = (Input::get("page")) ? Input::get("page") : 1;
 
-		$iMin = (($iPage * $iPerPage) - $iPerPage) + 1;
-		$iMax = $iMin + $iPerPage;
+		$iMin = (($iPage * $iPerPage) - $iPerPage);
+		$iMax = ($iMin + $iPerPage);
 
 		$oResults["results"] = array_slice($soFiles, $iMin, $iMax);
 		$oResults["info"] = $saStats;
