@@ -23,6 +23,9 @@ Route::get('auto/processqueue', array('uses' => 'Auto@processQueue'));
 Route::get('/api/search', array('uses' => 'SearchController@search'));
 Route::get('/api/tree', array('uses' => 'SearchController@tree'));
 
+Route::get('/api/stats/auto/activity', array('uses' => 'StatsController@autoActivity'));
+Route::get('/api/stats/auto/summary', array('uses' => 'StatsController@autoSummary'));
+
 
 
 App::missing(function($exception)
