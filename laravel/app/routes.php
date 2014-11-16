@@ -30,13 +30,13 @@ Route::get('/api/tree', array('uses' => 'SearchController@tree'));
 Route::get('/api/stats/auto/overview', array('uses' => 'StatsController@autoOverview'));
 Route::get('/api/stats/auto/events', array('uses' => 'StatsController@autoEvents'));
 
-Route::get('/admin/summary', function()
+Route::get('/admin/events', function()
 {
-  return View::make('admin.summary');
+  return View::make('admin.events');
 });
-Route::get('/admin/activity', function()
+Route::get('/admin', function()
 {
-  return View::make('admin.activity');
+  return View::make('admin.overview');
 });
 
 

@@ -2,5 +2,6 @@
 
 
 @section('content')
-    <p>summary.</p>
+    <p>events</p>
+    <p>github style graph</p>
 @stop

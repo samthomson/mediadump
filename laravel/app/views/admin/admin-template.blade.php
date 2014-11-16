@@ -31,8 +31,8 @@
 
 				<!-- Nav tabs -->
 				<ul class="nav nav-tabs" role="tablist">
-					<li role="presentation" class="active"><a href="#daterange" aria-controls="daterange" role="tab" data-toggle="tab">Date range</a></li>
-					<li role="presentation"><a href="#granular" aria-controls="granular" role="tab" data-toggle="tab">Granular</a></li>
+					<li role="presentation" class="active"><a href="/admin" aria-controls="daterange">overview</a></li>
+					<li role="presentation"><a href="/admin/events" aria-controls="granular">events</a></li>
 				</ul>
 
 				<div class="admin-body-content">
