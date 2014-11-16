@@ -21,7 +21,7 @@ class StatsController extends BaseController {
 
 			if($vValidator->passes())
 			{
-				$oaEvents = EventModel::where("datetime", ">", $dtFrom)->where("datetime", "<", $dtTo);
+				$oaEvents = EventModel::where("datetime", ">", $dtFrom)->where("datetime", "<", $dtTo)->get();
 				return Response::json($oaEvents);
 			}
 		}
