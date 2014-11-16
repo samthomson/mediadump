@@ -2,25 +2,35 @@
 
 class StatsController extends BaseController {
 
-	/*
-	|--------------------------------------------------------------------------
-	| Default Home Controller
-	|--------------------------------------------------------------------------
-	|
-	| You may wish to use controllers instead of, or in addition to, Closure
-	| based routes. That's great! Here is an example controller method to
-	| get you started. To route to this controller, just add the route:
-	|
-	|	Route::get('/', 'HomeController@showWelcome');
-	|
-	*/
-
-	public function autoSummary()
+	public function autoEvents()
 	{
+		$dtFrom = Input::get("from");
+		$dtTo = Input::get("to");
+
+		//echo "from: $dtFrom, to: $dtTo";
+		
+		if(isset($dtFrom) && isset($dtTo))
+		{
+			$aaDatetimeRules = array(
+				array('from' => 'date_format:"Y-m-d H:i:s"'),
+				array('to' => 'date_format:"Y-m-d H:i:s"')
+			);
+
+			$vValidator = Validator::make(Input::all(), $aaDatetimeRules);
+
+
+			if($vValidator->passes())
+			{
+				$oaEvents = EventModel::where("datetime", ">", $dtFrom)->where("datetime", "<", $dtTo);
+				return Response::json($oaEvents);
+			}
+		}
+		$sTry = "?from=".date('Y-m-d H:i:s', strtotime('-1 day', time()))."&to=".date('Y-m-d H:i:s');
+		return Response::make("400: bad params. Try: $sTry", 400);
 		
 	}
 
-	public function autoActivity()
+	public function autoOverview()
 	{
 		
 	}

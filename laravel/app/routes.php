@@ -23,8 +23,8 @@ Route::get('auto/processqueue', array('uses' => 'Auto@processQueue'));
 Route::get('/api/search', array('uses' => 'SearchController@search'));
 Route::get('/api/tree', array('uses' => 'SearchController@tree'));
 
-Route::get('/api/stats/auto/activity', array('uses' => 'StatsController@autoActivity'));
-Route::get('/api/stats/auto/summary', array('uses' => 'StatsController@autoSummary'));
+Route::get('/api/stats/auto/overview', array('uses' => 'StatsController@autoOverview'));
+Route::get('/api/stats/auto/events', array('uses' => 'StatsController@autoEvents'));
 
 
 
