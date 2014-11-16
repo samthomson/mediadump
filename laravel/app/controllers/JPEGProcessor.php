@@ -19,6 +19,8 @@ class JPEGProcessor extends BaseController {
 	{		
 		try
 		{
+			$mtStart = microtime(true);
+
 			$cTagsAdded = 0;
 			$cGeoDataAdded = 0;
 
@@ -211,6 +213,17 @@ class JPEGProcessor extends BaseController {
 
 			// done?
 			$oFile->finishTagging();
+
+
+			$oEvent = new EventModel();
+			$oEvent->name = "jpeg process time";
+			$oEvent->message = "time to proess: ".$oFile->id." as jpeg";
+			$oEvent->value = (microtime(true) - $mtStart)*1000;
+			$oEvent->save();
+
+
+			// return true, so the processor can delete the work queue item
+			return true;
 		}
 		catch(Exception $ex)
 		{
