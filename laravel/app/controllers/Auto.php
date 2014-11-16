@@ -59,15 +59,17 @@ class Auto extends BaseController {
 	}
 	public function processQueue()
 	{
-		/*
+		
 		$aqiQueuedItems = QueueModel::getItems();
 
+		foreach ($aqiQueuedItems as $qi) {
+			$qi->snoozeAMinute();
+			$qi->save();
+		}
 		foreach ($aqiQueuedItems as $qi) {
 			switch($qi->processor)
 			{
 				case "jpeg":
-					$qi->snoozeAMinute();
-					$qi->save();
 					if(JPEGProcessor::process($qi->file_id))
 					{
 						$qi->delete();
@@ -76,7 +78,7 @@ class Auto extends BaseController {
 					break;
 			}
 		}
-		*/
+		/*
 		$qi = QueueModel::getSingleItem();
 
 		if($qi !== null)
@@ -93,6 +95,8 @@ class Auto extends BaseController {
 					}
 					break;
 			}
+
+		*/
 	}
 
 	private function addFilesToSystem($saFiles)
