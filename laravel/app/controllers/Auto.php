@@ -72,8 +72,9 @@ class Auto extends BaseController {
 				case "jpeg":
 					if(JPEGProcessor::process($qi->file_id))
 					{
-						$qi->delete();
-						$qi->save();
+						QueueModel::destroy($qi->id);
+						//$qi->delete();
+						//$qi->save();
 					}
 					break;
 			}
