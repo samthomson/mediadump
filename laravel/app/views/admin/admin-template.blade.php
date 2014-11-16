@@ -35,14 +35,8 @@
 					<li role="presentation"><a href="#granular" aria-controls="granular" role="tab" data-toggle="tab">Granular</a></li>
 				</ul>
 
-				<!-- Tab panes -->
-				<div class="tab-content">
-					<div role="tabpanel" class="tab-pane active" id="daterange">
-						date range
-					</div>
-					<div role="tabpanel" class="tab-pane" id="granular">
-						granular
-					</div>
+				<div class="admin-body-content">
+					 @yield('content')
 				</div>
 			</div>
 

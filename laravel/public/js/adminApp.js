@@ -1,5 +1,5 @@
 
-var adminApp = angular.module('adminApp', ['ngRoute', 'google-maps']).directive('myRepeatDirective', function() {
+var adminApp = angular.module('adminApp', ['ngRoute', 'google-maps', 'ui.bootstrap']).directive('myRepeatDirective', function() {
   return function(scope, element, attrs) {
 	    //scope.justifyImages($("#thumb_results")); 
 		//scope.$digest();
