@@ -18,29 +18,31 @@
     </form>
     <hr/>
    	
-    @if(count($events) > 0)
-    	<table class="table">
-			<thead>
-				<tr>
-					<th>datetime</th>
-					<th>name</th>
-					<th>message</th>
-					<th>value</th>					
-				</tr>
-			</thead>
-			<tbody>
-				@foreach($events as $event)
-				<tr>
-					<td>{{$event->datetime}}</td>
-					<td>{{$event->name}}</td>
-					<td>{{$event->message}}</td>
-					<td>{{$event->value}}</td>
-				</tr>
-				@endforeach
-			</tbody>
-		</table>
-    @else
-    	<p>No events for that date range ..</p>
+    @if(isset($events))
+	    @if(count($events) > 0)
+	    	<table class="table">
+				<thead>
+					<tr>
+						<th>datetime</th>
+						<th>name</th>
+						<th>message</th>
+						<th>value</th>					
+					</tr>
+				</thead>
+				<tbody>
+					@foreach($events as $event)
+					<tr>
+						<td>{{$event->datetime}}</td>
+						<td>{{$event->name}}</td>
+						<td>{{$event->message}}</td>
+						<td>{{$event->value}}</td>
+					</tr>
+					@endforeach
+				</tbody>
+			</table>
+	    @else
+	    	<p>No events for that date range ..</p>
+	    @endif
     @endif
 
 @stop
