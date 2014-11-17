@@ -2,7 +2,8 @@
 
 
 @section('content')
-    <p>form with cal for from and to</p>
-    <hr/>
-    <p>form submit results, big table of events</p>
+    <p>github style graph</p>
+    
+
+
 @stop

@@ -15,7 +15,7 @@
 		<!-- app specific
 		<link rel="stylesheet" href="/css/style.css" type="text/css"> -->
 
-
+		<link rel="stylesheet" type="text/css" href="/vendor/daterangepicker/daterangepicker-bs3.css" />
 
 	</head>
 	<body ng-app="adminApp">
@@ -43,20 +43,40 @@
 
 		</div>
 
+		
+
 		<!-- scripts & analytics -->
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 
-		<!-- angular 
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular.min.js"></script>-->
-		<script src="/js/angular_1_2_fallback.min.js"></script>
-		<script src="/vendor/bootstrap-ui/datepicker/datepicker.js"></script>
-        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular-route.js"></script>
+		<script type="text/javascript" src="/vendor/moment/moment.min.js"></script>
+		<script type="text/javascript" src="/vendor/daterangepicker/daterangepicker.js"></script>
 
 		<!-- bootstrap -->
 		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
-		<!-- app -->
-		<script src="/js/adminApp.js"></script>
-
+	    <script type="text/javascript">
+			$(document).ready(function() {
+				$("#fromto").daterangepicker(
+					{
+						format: 'DD/MM/YYYY',
+						showDropdowns: true,
+                    	separator: ' to ',
+						ranges: {
+	                       'Today': [moment(), moment()],
+	                       'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+	                       'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+	                       'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+	                       'This Month': [moment().startOf('month'), moment().endOf('month')],
+	                       'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+	                    }
+					},
+					function(start,end,label) {
+						$("input[name=from]").val(start.format("YYYY-MM-DD"));
+						$("input[name=to]").val(end.format("YYYY-MM-DD"));
+					}
+				);
+			});
+		</script>
+		
 	</body>
 </html>

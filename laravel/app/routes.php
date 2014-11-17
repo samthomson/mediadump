@@ -15,10 +15,7 @@ Route::get('/', function()
 {
 	return File::get(public_path() . '/angularfrontend.html');
 });
-Route::get('/admin', function()
-{
-	return File::get(public_path() . '/angularadmin.html');
-});
+
 
 Route::get('auto/checkfiles', array('uses' => 'Auto@checkFiles'));
 Route::get('auto/processqueue', array('uses' => 'Auto@processQueue'));
@@ -32,12 +29,14 @@ Route::get('/api/stats/auto/events', array('uses' => 'StatsController@autoEvents
 
 Route::get('/admin/events', function()
 {
-  return View::make('admin.events');
+	return View::make('admin.events');
 });
 Route::get('/admin', function()
 {
   return View::make('admin.overview');
 });
+
+Route::post('/admin/events', array('uses' => 'StatsController@makeAutoEvents'));
 
 
 App::missing(function($exception)
