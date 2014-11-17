@@ -178,22 +178,31 @@ class JPEGProcessor extends BaseController {
 			$img = Image::make($oFile->path)->orientate()->resize(null, 1200, function ($constraint) {
 			    $constraint->aspectRatio();
 			})->save(self::thumbPath("large").$oFile->id.".jpg")->destroy();
+			if(!File::exists(self::thumbPath("large").$oFile->id.".jpg"))
+				return false;
 
 			$img = Image::make($oFile->path)->orientate()->resize(null, 300, function ($constraint) {
 			    $constraint->aspectRatio();
 			})->save(self::thumbPath("medium").$oFile->id.".jpg");
 
+
 			$oFile->medium_width = $img->width();
 			$oFile->medium_height = $img->height();
 
 			$img->destroy();
+			if(!File::exists(self::thumbPath("medium").$oFile->id.".jpg"))
+				return false;
 
 			$img = Image::make($oFile->path)->orientate()->resize(null, 125, function ($constraint) {
 			    $constraint->aspectRatio();
 			})->save(self::thumbPath("small").$oFile->id.".jpg")->destroy();
+			if(!File::exists(self::thumbPath("small").$oFile->id.".jpg"))
+				return false;
 
 			$img = Image::make($oFile->path)->orientate()->resize(32, 32, function ($constraint) {
 			})->save(self::thumbPath("icon").$oFile->id.".jpg")->destroy();
+			if(!File::exists(self::thumbPath("icon").$oFile->id.".jpg"))
+				return false;
 
 
 			//
