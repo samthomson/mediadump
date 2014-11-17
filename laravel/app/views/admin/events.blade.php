@@ -5,7 +5,7 @@
     <form method="post" role="form">
     	<div class="form-group">
 		    <label for="exampleInputEmail1">Date range:</label>
-		    <input type="daterange" id="fromto" class="input-small form-control" value="{{$from ? date('d/m/Y', strtotime('-1 month', time()))}} - {{$to ? date('d/m/Y')}}" />
+		    <input type="daterange" id="fromto" class="input-small form-control" value="{{$from or date('d/m/Y', strtotime('-1 month', time()))}} - {{$to or date('d/m/Y')}}" />
 		    <input type="hidden" name="from" />
 		    <input type="hidden" name="to" />
 		</div>
