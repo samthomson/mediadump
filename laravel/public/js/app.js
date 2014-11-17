@@ -38,7 +38,7 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 	$scope.thumb_height = 180;
 
 	$scope.s_media_dump_url = "http://mediadump.samt.st";
-	//$scope.s_media_dump_url = "http://mediadump-backend.samt.st";
+	$scope.s_media_dump_url = "http://mediadump.dev";
 	
 	$scope.s_cdn_url = $scope.s_media_dump_url;
 	//$scope.s_cdn_url = "http://mdcdn";
