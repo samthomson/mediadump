@@ -16,6 +16,7 @@ class Files extends Migration {
 		{
 			$table->increments('id');
 			$table->string('path');
+			$table->string('hash')->unique();
 			$table->boolean('live')->default(false);
 			$table->boolean('have_original')->default(true);
 
@@ -26,6 +27,8 @@ class Files extends Migration {
 
 			$table->date('created_at');
 			$table->date('updated_at');
+
+			$table->index("path", "hash");
 		});
 	}
 
