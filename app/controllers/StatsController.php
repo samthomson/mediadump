@@ -38,7 +38,6 @@ class StatsController extends BaseController {
 
 	public function makeAutoEvents()
 	{
-		echo "make evnets";
 		$dtFrom = Input::get("from");
 		$dtTo = Input::get("to");
 
