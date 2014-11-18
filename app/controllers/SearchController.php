@@ -19,7 +19,7 @@ class SearchController extends BaseController {
 	{		
 		$mtStart = microtime(true);
 
-		$iPerPage = 5;
+		$iPerPage = 100;
 
 		$oResults = array("info" => null, "results" => null);
 		
