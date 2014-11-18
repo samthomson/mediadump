@@ -135,7 +135,7 @@ class SearchController extends BaseController {
 		->where("live", "=", true)->distinct("value")
 		->orderBy("datetime", "desc")
         ->groupBy('value')
-        ->select("files.id", "tags.value")
+        ->select("files.id", "files.hash", "tags.value")
 		->get();
 
 
