@@ -59,7 +59,7 @@ class Auto extends BaseController {
 	}
 	public function processQueue()
 	{
-		
+		/*
 		$aqiQueuedItems = QueueModel::getItems();
 
 		foreach ($aqiQueuedItems as $qi) {
@@ -79,7 +79,7 @@ class Auto extends BaseController {
 					break;
 			}
 		}
-		/*
+		*/
 		$qi = QueueModel::getSingleItem();
 
 		if($qi !== null)
@@ -97,7 +97,7 @@ class Auto extends BaseController {
 					break;
 			}
 
-		*/
+		
 	}
 
 	private function addFilesToSystem($saFiles)
@@ -106,6 +106,7 @@ class Auto extends BaseController {
 		foreach ($saFiles as $sFilePath) {
 			$file = new FileModel();
 			$file->path = $sFilePath;
+			$file->hash = md5($sFilePath);
 			$file->save();
 
 			$sExt = substr(strtolower($sFilePath), strrpos(strtolower($sFilePath), '.')+1);
