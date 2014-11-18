@@ -161,10 +161,10 @@ class JPEGProcessor extends BaseController {
 			// thumbs
 			//
 			$saThumbPaths = array(
-				self::thumbPath("large").$oFile->id.".jpg",
-				self::thumbPath("medium").$oFile->id.".jpg",
-				self::thumbPath("small").$oFile->id.".jpg",
-				self::thumbPath("icon").$oFile->id.".jpg"
+				self::thumbPath("large").$oFile->hash.".jpg",
+				self::thumbPath("medium").$oFile->hash.".jpg",
+				self::thumbPath("small").$oFile->hash.".jpg",
+				self::thumbPath("icon").$oFile->hash.".jpg"
 				);
 
 			
@@ -177,31 +177,31 @@ class JPEGProcessor extends BaseController {
 
 			$img = Image::make($oFile->path)->orientate()->resize(null, 1200, function ($constraint) {
 			    $constraint->aspectRatio();
-			})->save(self::thumbPath("large").$oFile->id.".jpg")->destroy();
-			if(!File::exists(self::thumbPath("large").$oFile->id.".jpg"))
+			})->save(self::thumbPath("large").$oFile->hash.".jpg")->destroy();
+			if(!File::exists(self::thumbPath("large").$oFile->hash.".jpg"))
 				return false;
 
 			$img = Image::make($oFile->path)->orientate()->resize(null, 300, function ($constraint) {
 			    $constraint->aspectRatio();
-			})->save(self::thumbPath("medium").$oFile->id.".jpg");
+			})->save(self::thumbPath("medium").$oFile->hash.".jpg");
 
 
 			$oFile->medium_width = $img->width();
 			$oFile->medium_height = $img->height();
 
 			$img->destroy();
-			if(!File::exists(self::thumbPath("medium").$oFile->id.".jpg"))
+			if(!File::exists(self::thumbPath("medium").$oFile->hash.".jpg"))
 				return false;
 
 			$img = Image::make($oFile->path)->orientate()->resize(null, 125, function ($constraint) {
 			    $constraint->aspectRatio();
-			})->save(self::thumbPath("small").$oFile->id.".jpg")->destroy();
-			if(!File::exists(self::thumbPath("small").$oFile->id.".jpg"))
+			})->save(self::thumbPath("small").$oFile->hash.".jpg")->destroy();
+			if(!File::exists(self::thumbPath("small").$oFile->hash.".jpg"))
 				return false;
 
 			$img = Image::make($oFile->path)->orientate()->resize(32, 32, function ($constraint) {
-			})->save(self::thumbPath("icon").$oFile->id.".jpg")->destroy();
-			if(!File::exists(self::thumbPath("icon").$oFile->id.".jpg"))
+			})->save(self::thumbPath("icon").$oFile->hash.".jpg")->destroy();
+			if(!File::exists(self::thumbPath("icon").$oFile->hash.".jpg"))
 				return false;
 
 
