@@ -536,6 +536,20 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 	};
 	*/
 
+	$scope.folderFromUniqueDir = function(sDir){
+		console.log(sDir);
+		var sa = sDir.split("\\");
+		var iIndex = sa.length - 1;
+		console.log("iIndex "+ iIndex);
+		if(iIndex < 0)
+			iIndex = 0;
+		
+		if(sa.length> 0)
+			return sa[iIndex];
+		else
+			return "";
+	}
+
 	$scope.urlFromHash = function(sMode, oObject, sExt){
 		if(typeof oObject === "undefined")
 			return "";
