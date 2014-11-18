@@ -43,9 +43,25 @@ class JPEGProcessor extends BaseController {
 			$saDirs = explode(DIRECTORY_SEPARATOR, $sFilePath);
 
 			$sFileName = array_pop($saDirs);
+
+			$saDirTags = [];
 			//
 			// all directorys as tags
 			//
+			// split dirs with spaces
+			foreach ($saDirs as $sDir)
+				foreach (explode(" ", $sDir) as $sDirPart) {
+					//array_push($saDirTags, $sDirPart);
+					if($sDirPart !== ""){
+						$oTag = new TagModel();
+						$oTag->type = "folder term";
+						$oTag->file_id = $iFileID;
+						$oTag->value = $sDirPart;
+						$oTag->save();
+						$cTagsAdded++;
+					}
+				}
+/*
 			foreach ($saDirs as $sDir) {
 				if($sDir !== ""){
 					$oTag = new TagModel();
@@ -55,7 +71,7 @@ class JPEGProcessor extends BaseController {
 					$oTag->save();
 					$cTagsAdded++;
 				}
-			}
+			}*/
 
 			//
 			// unique directory path
