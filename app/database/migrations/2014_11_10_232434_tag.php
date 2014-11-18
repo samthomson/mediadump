@@ -20,6 +20,7 @@ class Tag extends Migration {
 			$table->string('value');
 
 			$table->index(array('file_id', 'type', 'value'));
+			$table->unique(array('file_id', 'type', 'value'));
 		});
 	}
 
