@@ -19,7 +19,7 @@ class SearchController extends BaseController {
 	{		
 		$mtStart = microtime(true);
 
-		$iPerPage = 100;
+		$iPerPage = 5;
 
 		$oResults = array("info" => null, "results" => null);
 		
@@ -91,7 +91,7 @@ class SearchController extends BaseController {
 		$iMin = (($iPage * $iPerPage) - $iPerPage);
 		$iMax = ($iMin + $iPerPage);
 
-		$oResults["results"] = array_slice($soFiles, $iMin, $iMax);
+		$oResults["results"] = array_slice($soFiles, $iMin, $iPerPage);
 		$oResults["info"] = $saStats;
 
 		return Response::json($oResults);
