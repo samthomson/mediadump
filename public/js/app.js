@@ -541,19 +541,19 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 			return "";
 		switch(sMode){
 			case 'lightbox':
-				return $scope.s_cdn_url + '/thumbs/large/'+oObject.id+'.jpg';
+				return $scope.s_cdn_url + '/thumbs/large/'+oObject.hash+'.jpg';
 				break;
 			case 'icon':
-				return $scope.s_cdn_url + '/thumbs/icon/'+oObject.id+'.jpg';
+				return $scope.s_cdn_url + '/thumbs/icon/'+oObject.hash+'.jpg';
 				break;
 			case 'thumbs':
 				return $scope.s_cdn_url + '/thumb/'+oObject.id+'.jpg';
 			case 'medium':
-				return $scope.s_cdn_url + '/thumbs/medium/'+oObject.id+'.jpg';
+				return $scope.s_cdn_url + '/thumbs/medium/'+oObject.hash+'.jpg';
 				break;
 			case 'results':
 				var sThumbSize = ($scope.search_input_mode === "browse") ? "medium" : "small";
-				return $scope.s_cdn_url + '/thumbs/' + sThumbSize + '/'+oObject.id+'.jpg';
+				return $scope.s_cdn_url + '/thumbs/' + sThumbSize + '/'+oObject.hash+'.jpg';
 				break;
 		}
 	};
@@ -594,7 +594,7 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 	$scope.lightboxURL = function(){
 		if(typeof $scope.results[$scope.iLightIndex] !== "undefined"){
 			//if($scope.results[$scope.iLightIndex].type === "image"){
-				return $scope.s_cdn_url + "/thumbs/large/" + $scope.results[$scope.iLightIndex].id + ".jpg";
+				return $scope.s_cdn_url + "/thumbs/large/" + $scope.results[$scope.iLightIndex].hash + ".jpg";
 			//}
 		}else{return "undefined item";}
 	}
