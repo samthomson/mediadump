@@ -38,7 +38,7 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 	$scope.thumb_height = 180;
 
 	$scope.s_media_dump_url = "http://mediadump.samt.st";
-	$scope.s_media_dump_url = "http://mediadump.dev";
+	//$scope.s_media_dump_url = "http://mediadump.dev";
 	
 	$scope.s_cdn_url = $scope.s_media_dump_url;
 	//$scope.s_cdn_url = "http://mdcdn";
@@ -538,12 +538,12 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 
 	$scope.folderFromUniqueDir = function(sDir){
 		console.log(sDir);
-		var sa = sDir.split("\\");
+		var sa = sDir.split("/");
 		var iIndex = sa.length - 1;
 		console.log("iIndex "+ iIndex);
 		if(iIndex < 0)
 			iIndex = 0;
-		
+
 		if(sa.length> 0)
 			return sa[iIndex];
 		else
