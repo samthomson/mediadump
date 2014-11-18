@@ -393,6 +393,9 @@ ul.nav li a {
 ul.nav li a.active {
   border-bottom: 2px solid #e74c3c; }
 
+.navbar-brand {
+  padding: 7px; }
+
 /*
 .flowplayer .fp-mute{background: url('s.png') no-repeat top left;  background-position: -585px 0px; width: 24px; height: 18px;} */
 /*

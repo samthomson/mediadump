@@ -415,6 +415,10 @@ nav.navbar button span.icon-bar{
 ul.nav li{padding: $padding; margin-left: ($margin * 4);}
 ul.nav li a{color: $media_dump_colour;padding:0px;}
 ul.nav li a.active{border-bottom: 2px solid $media_dump_colour;}
+
+.navbar-brand{
+	padding: 7px;
+}
 /*
 .flowplayer .fp-mute{background: url('s.png') no-repeat top left;  background-position: -585px 0px; width: 24px; height: 18px;} */
 /*
