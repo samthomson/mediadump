@@ -39,11 +39,10 @@ class FileModel extends Eloquent {
 			// delete original
 			if(File::exists($this->path))
 			{
-				File::delete($this->path);
+				echo "deleted: ".File::delete($this->path);
 				$this->have_original = false;
 			}
 		}
 		$this->save();
 	}
-
 }
