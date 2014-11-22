@@ -405,7 +405,7 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 
 		
 	});
-/*
+
 	$scope.justifyImages = function(uniqueDiv){
 
 		var iRightMargin = 4;
@@ -449,7 +449,7 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 		    }
 		});
 	}
-*/
+
 
 	$scope.markersEvents = {
         click: function (gMarker, eventName, model) {            
