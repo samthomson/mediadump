@@ -433,8 +433,8 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 		        // calculate resize index
 		        var iRowHeight = Math.floor(115*(iAvailableWidth / iRunningRowWidth));
 
-		        //console.log("available width: " + iAvailableWidth);
-		        //console.log("row width: " + (iRunningRowWidth*(iAvailableWidth / iRunningRowWidth)));
+		        console.log("available width: " + iAvailableWidth);
+		        console.log("row width: " + (iRunningRowWidth*(iAvailableWidth / iRunningRowWidth)));
 
 		        
 		        // finish row, start next, resize row
@@ -541,7 +541,6 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 		console.log(sDir);
 		var sa = sDir.split("/");
 		var iIndex = sa.length - 1;
-		console.log("iIndex "+ iIndex);
 		if(iIndex < 0)
 			iIndex = 0;
 
