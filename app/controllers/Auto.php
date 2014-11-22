@@ -91,7 +91,7 @@ class Auto extends BaseController {
 				switch($qi->processor)
 				{
 					case "jpeg":
-						$qi->snoozeAMinute();
+						$qi->snooze();
 						$qi->save();
 						if(JPEGProcessor::process($qi->file_id))
 						{
@@ -99,6 +99,10 @@ class Auto extends BaseController {
 							QueueModel::destroy($qi->id);
 							//$qi->save();
 						}
+						break;
+					default:
+						$qi->snooze(1440);
+						$qi->save();
 						break;
 				}
 

@@ -25,8 +25,8 @@ class QueueModel extends Eloquent {
 		// get items that haven't been started yet and are not scheduled in the future
 		return QueueModel::where("date_from", "<", date('Y-m-d H:i:s'))->get();
 	}
-	public function snoozeAMinute()
+	public function snooze($iMinutes = 1)
 	{
-		$this->date_from = date('Y-m-d H:i:s', strtotime("+1 min"));
+		$this->date_from = date('Y-m-d H:i:s', strtotime("+$iMinutes min"));
 	}
 }
