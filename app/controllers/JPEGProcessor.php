@@ -26,229 +26,239 @@ class JPEGProcessor extends BaseController {
 
 			$oFile = FileModel::find($iFileID);
 
-			//
-			// default tag
-			//
-			$oTag = new TagModel();
-			$oTag->file_id = $iFileID;
-			$oTag->type = "tag";
-			$oTag->value = "*";
-			$oTag->save();
-			$cTagsAdded++;
+			//print_r($oFile);
 
-			$sFilePath = $oFile->rawPath();
+			if(file_exists($oFile->path))
+			{
+				//
+				// default tag
+				//
+				$oTag = new TagModel();
+				$oTag->file_id = $iFileID;
+				$oTag->type = "tag";
+				$oTag->value = "*";
+				$oTag->save();
+				$cTagsAdded++;
 
-			$sFilePath = strtolower($sFilePath);
+				$sFilePath = $oFile->rawPath();
 
-			$saDirs = explode(DIRECTORY_SEPARATOR, $sFilePath);
+				$sFilePath = strtolower($sFilePath);
 
-			$sFileName = array_pop($saDirs);
+				$saDirs = explode(DIRECTORY_SEPARATOR, $sFilePath);
 
-			$saDirTags = [];
-			//
-			// all directorys as tags
-			//
-			// split dirs with spaces
-			foreach ($saDirs as $sDir)
-				foreach (explode(" ", $sDir) as $sDirPart) {
-					//array_push($saDirTags, $sDirPart);
-					if($sDirPart !== ""){
+				$sFileName = array_pop($saDirs);
+
+				$saDirTags = [];
+				//
+				// all directorys as tags
+				//
+				// split dirs with spaces
+				foreach ($saDirs as $sDir)
+					foreach (explode(" ", $sDir) as $sDirPart) {
+						//array_push($saDirTags, $sDirPart);
+						if($sDirPart !== ""){
+							$oTag = new TagModel();
+							$oTag->type = "folder term";
+							$oTag->file_id = $iFileID;
+							$oTag->value = $sDirPart;
+							$oTag->save();
+							$cTagsAdded++;
+						}
+					}
+	/*
+				foreach ($saDirs as $sDir) {
+					if($sDir !== ""){
 						$oTag = new TagModel();
-						$oTag->type = "folder term";
+						$oTag->type = "folder";
 						$oTag->file_id = $iFileID;
-						$oTag->value = $sDirPart;
+						$oTag->value = $sDir;
 						$oTag->save();
 						$cTagsAdded++;
 					}
-				}
-/*
-			foreach ($saDirs as $sDir) {
-				if($sDir !== ""){
-					$oTag = new TagModel();
-					$oTag->type = "folder";
-					$oTag->file_id = $iFileID;
-					$oTag->value = $sDir;
-					$oTag->save();
-					$cTagsAdded++;
-				}
-			}*/
+				}*/
 
-			//
-			// unique directory path
-			//
-			$sUniqueDirPath = implode(DIRECTORY_SEPARATOR, $saDirs);
-			$oTag = new TagModel();
-			$oTag->file_id = $iFileID;
-			$oTag->type = "uniquedirectorypath";
-			$oTag->value = $sUniqueDirPath;
-			$oTag->save();
-			$cTagsAdded++;
-
-			//
-			// file name
-			//
-			$sFileName = explode(".", $sFileName)[0];
-			$oTag = new TagModel();
-			$oTag->file_id = $iFileID;
-			$oTag->type = "filename";
-			$oTag->value = $sFileName;
-			$oTag->save();
-			$cTagsAdded++;
-
-			//
-			// type
-			//
-			$oTag = new TagModel();
-			$oTag->file_id = $iFileID;
-			$oTag->type = "mediatype";
-			$oTag->value = "image";
-			$oTag->save();
-			$cTagsAdded++;
-
-			$oTag = new TagModel();
-			$oTag->file_id = $iFileID;
-			$oTag->type = "filetype";
-			$oTag->value = "jpeg";
-			$oTag->save();
-			$cTagsAdded++;
-
-
-			
-
-			//
-			// exif
-			//
-			$data = Image::make($oFile->path)->exif();
-
-			//print_r($data);
-
-			if(isset($data["Make"]))
-			{
+				//
+				// unique directory path
+				//
+				$sUniqueDirPath = implode(DIRECTORY_SEPARATOR, $saDirs);
 				$oTag = new TagModel();
 				$oTag->file_id = $iFileID;
-				$oTag->type = "exif.cameramake";
-				$oTag->setValue($data["Make"]);
+				$oTag->type = "uniquedirectorypath";
+				$oTag->value = $sUniqueDirPath;
 				$oTag->save();
 				$cTagsAdded++;
-			}
 
-			if(isset($data["DateTime"]))
-			{
-				$oFile->datetime = $data["DateTime"];
-				$oFile->save();
+				//
+				// file name
+				//
+				$sFileName = explode(".", $sFileName)[0];
+				$oTag = new TagModel();
+				$oTag->file_id = $iFileID;
+				$oTag->type = "filename";
+				$oTag->value = $sFileName;
+				$oTag->save();
+				$cTagsAdded++;
+
+				//
+				// type
+				//
+				$oTag = new TagModel();
+				$oTag->file_id = $iFileID;
+				$oTag->type = "mediatype";
+				$oTag->value = "image";
+				$oTag->save();
+				$cTagsAdded++;
 
 				$oTag = new TagModel();
 				$oTag->file_id = $iFileID;
-				$oTag->type = "exif.datetime";
-				$oTag->setValue($data["DateTime"]);
+				$oTag->type = "filetype";
+				$oTag->value = "jpeg";
 				$oTag->save();
 				$cTagsAdded++;
-			}
-
-			$oGeoData = new GeoDataModel();
-			$oGeoData->file_id = $iFileID;
-
-			if(isset($data["GPSLongitude"]) && isset($data["GPSLongitude"]))
-			{
-				$lon = self::getGps($data["GPSLongitude"], $data['GPSLongitudeRef']);
-				$oGeoData->longitude = $lon;
-				$oGeoData->save();
-
-				$cGeoDataAdded++;
-			}
-
-			if(isset($data["GPSLatitude"]) && isset($data["GPSLatitudeRef"]))
-			{
-				$lat = self::getGps($data["GPSLatitude"], $data['GPSLatitudeRef']);
-				$oGeoData->latitude = $lat;
-				$oGeoData->save();
-
-				$cGeoDataAdded++;
-			}
 
 
 				
 
-			//
-			// geo
-			//
+				//
+				// exif
+				//
+				$data = Image::make($oFile->path)->exif();
 
-			//
-			// thumbs
-			//
-			$saThumbPaths = array(
-				self::thumbPath("large").$oFile->hash.".jpg",
-				self::thumbPath("medium").$oFile->hash.".jpg",
-				self::thumbPath("small").$oFile->hash.".jpg",
-				self::thumbPath("icon").$oFile->hash.".jpg"
-				);
+				//print_r($data);
 
-			
-			foreach ($saThumbPaths as $sPath) {
-				// delete previous thumb of same name
-				if(File::exists($sPath))
-					File::delete($sPath);
+				if(isset($data["Make"]))
+				{
+					$oTag = new TagModel();
+					$oTag->file_id = $iFileID;
+					$oTag->type = "exif.cameramake";
+					$oTag->setValue($data["Make"]);
+					$oTag->save();
+					$cTagsAdded++;
+				}
+
+				if(isset($data["DateTime"]))
+				{
+					$oFile->datetime = $data["DateTime"];
+					$oFile->save();
+
+					$oTag = new TagModel();
+					$oTag->file_id = $iFileID;
+					$oTag->type = "exif.datetime";
+					$oTag->setValue($data["DateTime"]);
+					$oTag->save();
+					$cTagsAdded++;
+				}
+
+				$oGeoData = new GeoDataModel();
+				$oGeoData->file_id = $iFileID;
+
+				if(isset($data["GPSLongitude"]) && isset($data["GPSLongitude"]))
+				{
+					$lon = self::getGps($data["GPSLongitude"], $data['GPSLongitudeRef']);
+					$oGeoData->longitude = $lon;
+					$oGeoData->save();
+
+					$cGeoDataAdded++;
+				}
+
+				if(isset($data["GPSLatitude"]) && isset($data["GPSLatitudeRef"]))
+				{
+					$lat = self::getGps($data["GPSLatitude"], $data['GPSLatitudeRef']);
+					$oGeoData->latitude = $lat;
+					$oGeoData->save();
+
+					$cGeoDataAdded++;
+				}
+
+
+					
+
+				//
+				// geo
+				//
+
+				//
+				// thumbs
+				//
+				$saThumbPaths = array(
+					self::thumbPath("large").$oFile->hash.".jpg",
+					self::thumbPath("medium").$oFile->hash.".jpg",
+					self::thumbPath("small").$oFile->hash.".jpg",
+					self::thumbPath("icon").$oFile->hash.".jpg"
+					);
+
+				
+				foreach ($saThumbPaths as $sPath) {
+					// delete previous thumb of same name
+					if(File::exists($sPath))
+						File::delete($sPath);
+				}
+				
+
+				$img = Image::make($oFile->path)->orientate()->resize(null, 1200, function ($constraint) {
+				    $constraint->aspectRatio();
+				})->save(self::thumbPath("large").$oFile->hash.".jpg")->destroy();
+				if(!File::exists(self::thumbPath("large").$oFile->hash.".jpg"))
+					return false;
+
+				$img = Image::make($oFile->path)->orientate()->resize(null, 300, function ($constraint) {
+				    $constraint->aspectRatio();
+				})->save(self::thumbPath("medium").$oFile->hash.".jpg");
+
+
+				$oFile->medium_width = $img->width();
+				$oFile->medium_height = $img->height();
+
+				$img->destroy();
+				if(!File::exists(self::thumbPath("medium").$oFile->hash.".jpg"))
+					return false;
+
+				$img = Image::make($oFile->path)->orientate()->resize(null, 125, function ($constraint) {
+				    $constraint->aspectRatio();
+				})->save(self::thumbPath("small").$oFile->hash.".jpg")->destroy();
+				if(!File::exists(self::thumbPath("small").$oFile->hash.".jpg"))
+					return false;
+
+				$img = Image::make($oFile->path)->orientate()->resize(32, 32, function ($constraint) {
+				})->save(self::thumbPath("icon").$oFile->hash.".jpg")->destroy();
+				if(!File::exists(self::thumbPath("icon").$oFile->hash.".jpg"))
+					return false;
+
+
+				//
+				// log how many tags were added
+				//
+				$eFilesRemoved = new EventModel();
+				$eFilesRemoved->name = "auto tags added";
+				$eFilesRemoved->message = "jpeg processor has added $cTagsAdded tags";
+				$eFilesRemoved->value = (string)$cTagsAdded;
+				$eFilesRemoved->save();
+
+				$eFilesRemoved = new EventModel();
+				$eFilesRemoved->name = "geodata added";
+				$eFilesRemoved->message = "jpeg processor has added $cGeoDataAdded pieces of geodata";
+				$eFilesRemoved->value = (string)$cGeoDataAdded;
+				$eFilesRemoved->save();
+
+				// done?
+				$oFile->finishTagging();
+
+
+				$oEvent = new EventModel();
+				$oEvent->name = "jpeg process time";
+				$oEvent->message = "time to proess: ".$oFile->id." as jpeg";
+				$oEvent->value = (microtime(true) - $mtStart)*1000;
+				$oEvent->save();
+
+
+				// return true, so the processor can delete the work queue item
+				return true;
+			}else{
+				echo "couldn't find: ".$oFile->path;
+				// file no longer exists, remove it from system
+				$oFile->removeFromSystem();
 			}
-			
 
-			$img = Image::make($oFile->path)->orientate()->resize(null, 1200, function ($constraint) {
-			    $constraint->aspectRatio();
-			})->save(self::thumbPath("large").$oFile->hash.".jpg")->destroy();
-			if(!File::exists(self::thumbPath("large").$oFile->hash.".jpg"))
-				return false;
-
-			$img = Image::make($oFile->path)->orientate()->resize(null, 300, function ($constraint) {
-			    $constraint->aspectRatio();
-			})->save(self::thumbPath("medium").$oFile->hash.".jpg");
-
-
-			$oFile->medium_width = $img->width();
-			$oFile->medium_height = $img->height();
-
-			$img->destroy();
-			if(!File::exists(self::thumbPath("medium").$oFile->hash.".jpg"))
-				return false;
-
-			$img = Image::make($oFile->path)->orientate()->resize(null, 125, function ($constraint) {
-			    $constraint->aspectRatio();
-			})->save(self::thumbPath("small").$oFile->hash.".jpg")->destroy();
-			if(!File::exists(self::thumbPath("small").$oFile->hash.".jpg"))
-				return false;
-
-			$img = Image::make($oFile->path)->orientate()->resize(32, 32, function ($constraint) {
-			})->save(self::thumbPath("icon").$oFile->hash.".jpg")->destroy();
-			if(!File::exists(self::thumbPath("icon").$oFile->hash.".jpg"))
-				return false;
-
-
-			//
-			// log how many tags were added
-			//
-			$eFilesRemoved = new EventModel();
-			$eFilesRemoved->name = "auto tags added";
-			$eFilesRemoved->message = "jpeg processor has added $cTagsAdded tags";
-			$eFilesRemoved->value = (string)$cTagsAdded;
-			$eFilesRemoved->save();
-
-			$eFilesRemoved = new EventModel();
-			$eFilesRemoved->name = "geodata added";
-			$eFilesRemoved->message = "jpeg processor has added $cGeoDataAdded pieces of geodata";
-			$eFilesRemoved->value = (string)$cGeoDataAdded;
-			$eFilesRemoved->save();
-
-			// done?
-			$oFile->finishTagging();
-
-
-			$oEvent = new EventModel();
-			$oEvent->name = "jpeg process time";
-			$oEvent->message = "time to proess: ".$oFile->id." as jpeg";
-			$oEvent->value = (microtime(true) - $mtStart)*1000;
-			$oEvent->save();
-
-
-			// return true, so the processor can delete the work queue item
-			return true;
 		}
 		catch(Exception $ex)
 		{

@@ -39,10 +39,26 @@ class FileModel extends Eloquent {
 			// delete original
 			if(File::exists($this->path))
 			{
-				echo "deleted: ".File::delete($this->path);
+				//unlink()
+				echo "deleted (".$this->path."): ".unlink($this->path);
 				$this->have_original = false;
+			}else{
+				echo "file didn't exist";
 			}
 		}
 		$this->save();
+	}
+
+	public function removeFromSystem()
+	{
+		// queue items
+		QueueModel::where("file_id", "=", $this->id)->delete();
+		// tags
+		TagModel::where("file_id", "=", $this->id)->delete();
+		// geodata
+		GeoDataModel::where("file_id", "=", $this->id)->delete();
+
+		// file
+		self::delete();
 	}
 }

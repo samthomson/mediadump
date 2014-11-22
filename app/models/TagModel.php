@@ -18,5 +18,19 @@ class TagModel extends Eloquent {
 	{
 		$this->value = strtolower($sValue);
 	}
+
+	/*
+	overloaded
+	*/
+	public function save(array $options = array())
+	{
+		try{
+	   		parent::save($options);
+   		}
+   		catch(Exception $e)
+   		{
+   			// silent fail, duplicate index
+   		}
+	}
 	
 }

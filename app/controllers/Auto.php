@@ -134,8 +134,8 @@ class Auto extends BaseController {
 			FileModel::where('path', '=', $sFilePath)->delete();
 		}
 	}
-	private bAutoOn()
+	private static function bAutoOn()
 	{
-		return Config::get('app.keepFilesAfterProcessing');
+		return Config::get('app.autoOn');
 	}
 }
