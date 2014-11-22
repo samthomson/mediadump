@@ -46,7 +46,7 @@ class Auto extends BaseController {
 			}
 
 			$this->addFilesToSystem($saNewFilesForSystem);
-			$this->removeFilesFromSystem($saLostFilesFromSystem);
+			//$this->removeFilesFromSystem($saLostFilesFromSystem);
 			// check for differences
 
 			$eFilesFound = new EventModel();
@@ -54,10 +54,12 @@ class Auto extends BaseController {
 			$eFilesFound->value = (string)count($saNewFilesForSystem);
 			$eFilesFound->save();
 
+			/*
 			$eFilesRemoved = new EventModel();
 			$eFilesRemoved->name = "auto files removed";
 			$eFilesRemoved->value = (string)count($saLostFilesFromSystem);
 			$eFilesRemoved->save();
+			*/
 		}
 	}
 	public function processQueue()
