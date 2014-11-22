@@ -17,87 +17,92 @@ class Auto extends BaseController {
 
 	public function checkFiles()
 	{
-		// get files from db
-		$oFiles = FileModel::all();
-
-		//
-		// get files locally
-		//
-		$saFiles = [];
-
-		foreach(File::allFiles(Config::get('app.mediaFolderPath')) as $sFile)
+		if(self::bAutoOn())
 		{
-			if(file_exists((string)$sFile)){
-				array_push($saFiles, (string)$sFile);
+			// get files from db
+			$oFiles = FileModel::all();
+
+			//
+			// get files locally
+			//
+			$saFiles = [];
+
+			foreach(File::allFiles(Config::get('app.mediaFolderPath')) as $sFile)
+			{
+				if(file_exists((string)$sFile)){
+					array_push($saFiles, (string)$sFile);
+				}
 			}
+
+			$saDBFiles = [];
+			foreach ($oFiles as $file) {
+				array_push($saDBFiles, $file->path);
+			}
+			$saNewFilesForSystem = array_diff($saFiles, $saDBFiles);
+			$saLostFilesFromSystem = array_diff($saDBFiles, $saFiles);
+
+			if(!Config::get('app.keepFilesAfterProcessing')){
+				$saLostFilesFromSystem = [];
+			}
+
+			$this->addFilesToSystem($saNewFilesForSystem);
+			$this->removeFilesFromSystem($saLostFilesFromSystem);
+			// check for differences
+
+			$eFilesFound = new EventModel();
+			$eFilesFound->name = "auto files found";
+			$eFilesFound->value = (string)count($saNewFilesForSystem);
+			$eFilesFound->save();
+
+			$eFilesRemoved = new EventModel();
+			$eFilesRemoved->name = "auto files removed";
+			$eFilesRemoved->value = (string)count($saLostFilesFromSystem);
+			$eFilesRemoved->save();
 		}
-
-		$saDBFiles = [];
-		foreach ($oFiles as $file) {
-			array_push($saDBFiles, $file->path);
-		}
-		$saNewFilesForSystem = array_diff($saFiles, $saDBFiles);
-		$saLostFilesFromSystem = array_diff($saDBFiles, $saFiles);
-
-		if(!Config::get('app.keepFilesAfterProcessing')){
-			$saLostFilesFromSystem = [];
-		}
-
-		$this->addFilesToSystem($saNewFilesForSystem);
-		$this->removeFilesFromSystem($saLostFilesFromSystem);
-		// check for differences
-
-		$eFilesFound = new EventModel();
-		$eFilesFound->name = "auto files found";
-		$eFilesFound->value = (string)count($saNewFilesForSystem);
-		$eFilesFound->save();
-
-		$eFilesRemoved = new EventModel();
-		$eFilesRemoved->name = "auto files removed";
-		$eFilesRemoved->value = (string)count($saLostFilesFromSystem);
-		$eFilesRemoved->save();
 	}
 	public function processQueue()
 	{
-		/*
-		$aqiQueuedItems = QueueModel::getItems();
+		if(self::bAutoOn())
+		{
+			/*
+			$aqiQueuedItems = QueueModel::getItems();
 
-		foreach ($aqiQueuedItems as $qi) {
-			$qi->snoozeAMinute();
-			$qi->save();
-		}
-		foreach ($aqiQueuedItems as $qi) {
-			switch($qi->processor)
-			{
-				case "jpeg":
-					if(JPEGProcessor::process($qi->file_id))
-					{
-						QueueModel::destroy($qi->id);
-						//$qi->delete();
-						//$qi->save();
-					}
-					break;
+			foreach ($aqiQueuedItems as $qi) {
+				$qi->snoozeAMinute();
+				$qi->save();
 			}
-		}
-		*/
-		$qi = QueueModel::getSingleItem();
-
-		if($qi !== null)
-			switch($qi->processor)
-			{
-				case "jpeg":
-					$qi->snoozeAMinute();
-					$qi->save();
-					if(JPEGProcessor::process($qi->file_id))
-					{
-						//$qi->delete();
-						QueueModel::destroy($qi->id);
-						//$qi->save();
-					}
-					break;
+			foreach ($aqiQueuedItems as $qi) {
+				switch($qi->processor)
+				{
+					case "jpeg":
+						if(JPEGProcessor::process($qi->file_id))
+						{
+							QueueModel::destroy($qi->id);
+							//$qi->delete();
+							//$qi->save();
+						}
+						break;
+				}
 			}
+			*/
+			$qi = QueueModel::getSingleItem();
 
-		
+			if($qi !== null)
+				switch($qi->processor)
+				{
+					case "jpeg":
+						$qi->snoozeAMinute();
+						$qi->save();
+						if(JPEGProcessor::process($qi->file_id))
+						{
+							//$qi->delete();
+							QueueModel::destroy($qi->id);
+							//$qi->save();
+						}
+						break;
+				}
+
+		}
 	}
 
 	private function addFilesToSystem($saFiles)
@@ -128,5 +133,9 @@ class Auto extends BaseController {
 		{
 			FileModel::where('path', '=', $sFilePath)->delete();
 		}
+	}
+	private bAutoOn()
+	{
+		return Config::get('app.keepFilesAfterProcessing');
 	}
 }
