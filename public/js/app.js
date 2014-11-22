@@ -424,14 +424,23 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 		    aRowImageIds.push(index);
 
 		    var img = new Image();
-			img.src = $scope.urlFromHash("medium", result);
+		    img.src = $scope.urlFromHash("medium", result);
+		    /*
+		    if($scope.search_mode === "browse"){
+		    	img.src = $scope.urlFromHash("medium", result);
+		    }else{
+		    	img.src = $scope.urlFromHash("small", result);
+		    }
+			*/
 
 		    // add up height
 		    iRunningRowWidth += (img.width + iRightMargin);
 		    // check row size
 		    if(iRunningRowWidth > iAvailableWidth){
 		        // calculate resize index
-		        var iRowHeight = Math.floor(result.height*(iAvailableWidth / iRunningRowWidth));
+		        var iHeight = img.height;
+		        console.log("image height: "+ iHeight);
+		        var iRowHeight = Math.floor(iHeight*(iAvailableWidth / iRunningRowWidth));
 
 		        console.log("available width: " + iAvailableWidth);
 		        console.log("row width: " + (iRunningRowWidth*(iAvailableWidth / iRunningRowWidth)));
@@ -538,7 +547,6 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 	*/
 
 	$scope.folderFromUniqueDir = function(sDir){
-		console.log(sDir);
 		var sa = sDir.split("/");
 		var iIndex = sa.length - 1;
 		if(iIndex < 0)
