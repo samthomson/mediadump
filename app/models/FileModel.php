@@ -40,8 +40,16 @@ class FileModel extends Eloquent {
 			if(File::exists($this->path))
 			{
 				//unlink()
-				echo "deleted (".$this->path."): ".unlink($this->path);
-				$this->have_original = false;
+				if(!File::delete($this->path)){
+					// couldn't delete file, queue it for later deletion when permissions allow
+					$QueueItem = new QueueModel();
+					$QueueItem->file_id = $this->id;
+					$QueueItem->processor = "delete";
+					$QueueItem->date_from = date('Y-m-d H:i:s');
+					$QueueItem->save();
+				}else{
+					$this->have_original = false;
+				}
 			}else{
 				echo "file didn't exist";
 			}

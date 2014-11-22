@@ -257,6 +257,7 @@ class JPEGProcessor extends BaseController {
 				echo "couldn't find: ".$oFile->path;
 				// file no longer exists, remove it from system
 				$oFile->removeFromSystem();
+				return true;
 			}
 
 		}
