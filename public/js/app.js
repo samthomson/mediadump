@@ -424,7 +424,7 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 		    aRowImageIds.push(index);
 
 		    var img = new Image();
-			img.src = $scope.urlFromHash("thumbs", result);
+			img.src = $scope.urlFromHash("medium", result);
 
 		    // add up height
 		    iRunningRowWidth += (img.width + iRightMargin);
@@ -731,7 +731,7 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 	        .success(function(data) {
 	            if(data != undefined){
 	            	$scope.results = data.results;
-	            	//$scope.justifyImages($("#thumb_results"));
+	            	$scope.justifyImages($("#thumb_results"));
 		            
 		            $scope.result_info = data.info;
 				}else{
