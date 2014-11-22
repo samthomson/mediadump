@@ -411,7 +411,7 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 		var iRightMargin = 4;
 		var allImages = $('img', uniqueDiv);
 
-		var iAvailableWidth = Math.ceil($(uniqueDiv).innerWidth()) - 10;
+		var iAvailableWidth = Math.ceil($(uniqueDiv).innerWidth()) - 0;
 		
 		var sGalleryHTMLBuilder = '';
 
@@ -431,7 +431,7 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 		    // check row size
 		    if(iRunningRowWidth > iAvailableWidth){
 		        // calculate resize index
-		        var iRowHeight = Math.floor(115*(iAvailableWidth / iRunningRowWidth));
+		        var iRowHeight = Math.floor(result.height*(iAvailableWidth / iRunningRowWidth));
 
 		        console.log("available width: " + iAvailableWidth);
 		        console.log("row width: " + (iRunningRowWidth*(iAvailableWidth / iRunningRowWidth)));
