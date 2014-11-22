@@ -55,7 +55,7 @@ class SearchController extends BaseController {
 						->where("live", "=", true)->distinct("value")
 						->orderBy(DB::Raw('RAND()'))
 						->groupBy("id")
-				        ->select("files.id", "files.hash", "tags.value", "geodata.latitude", "geodata.longitude")
+				        ->select("files.id", "files.hash", "tags.value", "geodata.latitude", "geodata.longitude", "files.medium_width AS width", "files.medium_height AS height")
 	        ->take(100)
 						->get();
 					}
@@ -78,7 +78,7 @@ class SearchController extends BaseController {
 			})	
 			->where("live", "=", true)->distinct("value")
 			->orderBy("datetime", "desc")
-	        ->select("files.id", "files.hash", "tags.value", "geodata.latitude", "geodata.longitude")
+	        ->select("files.id", "files.hash", "tags.value", "geodata.latitude", "geodata.longitude", "files.medium_width AS width", "files.medium_height AS height")
 			->get();
 		}
 		$saStats["speed"] = (microtime(true) - $mtStart)*1000;
