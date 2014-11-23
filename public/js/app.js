@@ -408,10 +408,12 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 
 	$scope.justifyImages = function(uniqueDiv){
 
+		console.log("justify images");
+
 		var iRightMargin = 4;
 		var allImages = $('img', uniqueDiv);
 
-		iAvailableWidth = $scope.widthWithoutScrollbar(uniqueDiv)-10;
+		iAvailableWidth = $scope.widthWithoutScrollbar(uniqueDiv)-iRightMargin;
 		
 		var sGalleryHTMLBuilder = '';
 
@@ -434,7 +436,7 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 			*/
 
 		    // add up height
-		    iRunningRowWidth += (parseInt(result.width) + iRightMargin);
+		    iRunningRowWidth += parseInt(result.width);
 		    // check row size
 		    if(iRunningRowWidth > iAvailableWidth){
 		        // calculate resize index
@@ -444,7 +446,9 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 		        ////console.log("iRowCumMargins: "+ iRowCumMargins);
 		        ////console.log("aRowImageIds.length: "+ aRowImageIds.length);
 
-		        var iRowHeight = Math.floor(iHeight*((iAvailableWidth - iRowCumMargins) / (iRunningRowWidth - iRowCumMargins)));
+		        var iResizeIndex = ((iAvailableWidth - iRowCumMargins) / iRunningRowWidth);
+		        var iRowHeight = Math.floor(iHeight*iResizeIndex);
+				var iRowHeight = (iHeight*iResizeIndex);
 
 		        ////console.log("available width: " + iAvailableWidth);
 		        ////console.log("row width: " + iRunningRowWidth);
@@ -453,6 +457,7 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 		        // finish row, start next, resize row
 		        for(var cImage = 0; cImage < aRowImageIds.length; cImage++){
 		        	$scope.results[aRowImageIds[cImage]].height = iRowHeight;
+		        	$scope.results[aRowImageIds[cImage]].width *= iResizeIndex;
 		        }
 		        // reset row
 		        iRunningRowWidth = 0;
@@ -464,7 +469,7 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 				*/
 		    }else{
 		        // nothing, carry on to add next image
-		        console.log("no resize");
+		        ////console.log("no resize");
 		    }
 		});
 	}
