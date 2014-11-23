@@ -412,6 +412,10 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 		var allImages = $('img', uniqueDiv);
 
 		var iAvailableWidth = Math.ceil($(uniqueDiv).innerWidth()) - 0;
+		console.log("available width was: " + iAvailableWidth);
+		iAvailableWidth = $scope.widthWithoutScrollbar(uniqueDiv);
+		console.log("available width is: " + iAvailableWidth);
+		console.log("");
 		
 		var sGalleryHTMLBuilder = '';
 
@@ -442,8 +446,8 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 		        console.log("image height: "+ iHeight);
 		        var iRowHeight = Math.floor(iHeight*(iAvailableWidth / iRunningRowWidth));
 
-		        console.log("available width: " + iAvailableWidth);
-		        console.log("row width: " + (iRunningRowWidth*(iAvailableWidth / iRunningRowWidth)));
+		        //console.log("available width: " + iAvailableWidth);
+		        //console.log("row width: " + (iRunningRowWidth*(iAvailableWidth / iRunningRowWidth)));
 
 		        
 		        // finish row, start next, resize row
@@ -841,8 +845,6 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 
 	$scope.status = function(){
 		var s_message = "";
-
-
 		return s_message;
 	}
 
@@ -880,4 +882,12 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 		$scope.$apply();
 	}
 	*/
+
+	$scope.widthWithoutScrollbar = function(selector) {
+		var tempDiv = $("<div/>");
+		$(selector).append(tempDiv);
+		var elemwidth = tempDiv.width();
+		tempDiv.remove();
+		return elemwidth;
+	};
 });
