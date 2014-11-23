@@ -26,6 +26,7 @@ $scope.$apply();
 */
 
 mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $routeParams, $http) {
+	$scope.bEventsOn = false;
 
 	$scope.query = "";
 	$scope.default_query = "";
@@ -58,6 +59,7 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 	// search stuff
 	$scope.search_input_mode = "browse";
 	$scope.search_mode = "search";
+
 	$scope.setSearchInputMode = function(sMode){
 		$scope.search_input_mode = sMode;
 		if(sMode === "map"){
@@ -82,8 +84,7 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 	$scope.i_markers_showing = 0;
 
 	$scope.bShowAdvancedSearch = false;
-	$scope.bEventsOn = false;
-
+	
 	var s_land = "#c0c0c0";
 	var s_media_dump_color = "#e74c3c";
 	var s_silver_colour = "#bdc3c7";
@@ -168,6 +169,7 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 	var jo_url_vars = $location.search();
 	
 	
+
 	if(jo_url_vars.search_mode != undefined){
 		$scope.search_mode = jo_url_vars.search_mode;
 	}
@@ -180,7 +182,6 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 	if(jo_url_vars.file  != undefined){
 		$scope.iLightIndex = parseInt(jo_url_vars.file);
 	}
-	$scope.bEventsOn = true;
 
 	$scope.results = [];
 	$scope.available_filters = [];
@@ -209,6 +210,7 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 	$scope.result_info = [];
 	$scope.bSearching = false;
 
+	$scope.bEventsOn = true;
 
 	// ui stuff
 	$scope.sLightboxURL = "";
@@ -314,49 +316,72 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 	//
 	$scope.$watch('query', function(){
 		if($scope.bEventsOn)
+		{
 			$scope.page = 1;
-		$scope.do_search();
-		$scope.reconstruct_url();
+			$scope.do_search();
+			$scope.reconstruct_url();
+		}
 	});
 	$scope.$watch('page', function(){
-		if($scope.page < 1 && $scope.bEventsOn){
-			$scope.page = 1;
+		if($scope.bEventsOn)
+		{
+			if($scope.page < 1){
+				$scope.page = 1;
+			}
+			$scope.do_search();
+			$scope.reconstruct_url();
 		}
-		$scope.do_search();
-		$scope.reconstruct_url();
 	});
 	$scope.$watch('sort_mode', function(){
-		$scope.do_search();
-		$scope.reconstruct_url();
+		if($scope.bEventsOn)
+		{
+			$scope.do_search();
+			$scope.reconstruct_url();
+		}
 	});
 	$scope.$watch('operator', function(){
-		$scope.do_search();
-		$scope.reconstruct_url();
+		if($scope.bEventsOn)
+		{
+			$scope.do_search();
+			$scope.reconstruct_url();
+		}
 	});
 	$scope.$watch('sort_direction', function(){
-		$scope.do_search();
-		$scope.reconstruct_url();
+		if($scope.bEventsOn)
+		{
+			$scope.do_search();
+			$scope.reconstruct_url();
+		}
 	});
 	$scope.$watch('iLightIndex', function(){
 		
-		$scope.reconstruct_url();	
-		$scope.stop_videos();	
-		if($scope.iLightIndex > -1){
+		if($scope.bEventsOn)
+		{
+			$scope.reconstruct_url();	
+			$scope.stop_videos();	
+			if($scope.iLightIndex > -1){
 
-			if($scope.results.length === 0){
-				//console.log("results not ready yet, despite index");
-			}else{
-				$scope.preload_around();
-				$scope.showVideoInLightbox();
+				if($scope.results.length === 0){
+					//console.log("results not ready yet, despite index");
+				}else{
+					$scope.preload_around();
+					$scope.showVideoInLightbox();
+				}
 			}
 		}
 	});
 	$scope.$watch('search_mode', function(){
-		$scope.do_search();
-		$scope.reconstruct_url();
+		if($scope.bEventsOn)
+		{
+			$scope.do_search();
+			$scope.reconstruct_url();
+		}
 	});
 	$scope.$watch('search_input_mode', function(){
-		$scope.setNavSize($scope.search_input_mode);
+		if($scope.bEventsOn)
+		{
+			$scope.setNavSize($scope.search_input_mode);
+		}
 	});
 
 
@@ -427,13 +452,7 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 
 		    var img = new Image();
 		    img.src = $scope.urlFromHash("medium", result);
-		    /*
-		    if($scope.search_mode === "browse"){
-		    	img.src = $scope.urlFromHash("medium", result);
-		    }else{
-		    	img.src = $scope.urlFromHash("small", result);
-		    }
-			*/
+
 
 		    // add up height
 		    iRunningRowWidth += parseInt(result.width);
@@ -737,6 +756,7 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 	}
 
 	$scope.do_search = function() {
+		//console.log("caller is " + arguments.callee.caller.toString());
 		$scope.results = [];
 		$scope.search_info = [];
 
@@ -800,6 +820,7 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 		$scope.$apply();
 	}*/
 	$scope.map_changed = function(event) {
+		//console.log("map changed");
 		// only fire this event if we're actually doing a geo search
 		if($scope.search_mode == 'map' || $scope.search_mode == 'search_map'){
 			// the map has been interacted with, so we'll make a geo search for the user
