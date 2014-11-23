@@ -411,7 +411,7 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 		var iRightMargin = 4;
 		var allImages = $('img', uniqueDiv);
 
-		iAvailableWidth = $scope.widthWithoutScrollbar(uniqueDiv);
+		iAvailableWidth = $scope.widthWithoutScrollbar(uniqueDiv)-10;
 		
 		var sGalleryHTMLBuilder = '';
 
@@ -434,19 +434,20 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 			*/
 
 		    // add up height
-		    iRunningRowWidth += (img.width + iRightMargin);
+		    iRunningRowWidth += (parseInt(result.width) + iRightMargin);
 		    // check row size
 		    if(iRunningRowWidth > iAvailableWidth){
 		        // calculate resize index
-		        var iHeight = img.height;
+		        var iHeight = parseInt(result.height);
 
 		        var iRowCumMargins = aRowImageIds.length * iRightMargin;
-		        console.log("iRowCumMargins: "+ iRowCumMargins);
+		        ////console.log("iRowCumMargins: "+ iRowCumMargins);
+		        ////console.log("aRowImageIds.length: "+ aRowImageIds.length);
 
 		        var iRowHeight = Math.floor(iHeight*((iAvailableWidth - iRowCumMargins) / (iRunningRowWidth - iRowCumMargins)));
 
-		        //console.log("available width: " + iAvailableWidth);
-		        //console.log("row width: " + (iRunningRowWidth*(iAvailableWidth / iRunningRowWidth)));
+		        ////console.log("available width: " + iAvailableWidth);
+		        ////console.log("row width: " + iRunningRowWidth);
 
 		        
 		        // finish row, start next, resize row
@@ -456,8 +457,14 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 		        // reset row
 		        iRunningRowWidth = 0;
 		        aRowImageIds = [];
+		        /*
+		        while(aRowImageIds.length) {
+				    aRowImageIds.pop();
+				}
+				*/
 		    }else{
 		        // nothing, carry on to add next image
+		        console.log("no resize");
 		    }
 		});
 	}
