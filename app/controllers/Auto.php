@@ -66,37 +66,43 @@ class Auto extends BaseController {
 	{
 		if(self::bAutoOn())
 		{
-			$qi = QueueModel::getSingleItem();
+			$iProcessLimit = 2;
+			$cProcessedThisCycle = 0;
+			while($cProcessedThisCycle < $iProcessLimit)
+			{
+				$qi = QueueModel::getSingleItem();
 
-			if($qi !== null)
-				switch($qi->processor)
-				{
-					case "jpeg":
-						$qi->snooze();
-						$qi->save();
-						if(JPEGProcessor::process($qi->file_id))
-						{
-							//$qi->delete();
-							QueueModel::destroy($qi->id);
-							//$qi->save();
-						}else{
-							$eFilesFound = new EventModel();
-							$eFilesFound->name = "auto processor";
-							$eFilesFound->message = "jpeg processor failed";
-							$eFilesFound->save();
+				if($qi !== null)
+					switch($qi->processor)
+					{
+						case "jpeg":
+							$qi->snooze();
+							$qi->save();
+							if(JPEGProcessor::process($qi->file_id))
+							{
+								//$qi->delete();
+								QueueModel::destroy($qi->id);
+								//$qi->save();
+							}else{
+								$eFilesFound = new EventModel();
+								$eFilesFound->name = "auto processor";
+								$eFilesFound->message = "jpeg processor failed";
+								$eFilesFound->save();
 
-							$oStat = new StatModel();
-							$oStat->name = "jpeg processor fail";
-							$oStat->group = "auto";
-							$oStat->value = 1;
-							$oStat->save();
-						}
-						break;
-					default:
-						$qi->snooze(1440);
-						$qi->save();
-						break;
-				}
+								$oStat = new StatModel();
+								$oStat->name = "jpeg processor fail";
+								$oStat->group = "auto";
+								$oStat->value = 1;
+								$oStat->save();
+							}
+							break;
+						default:
+							$qi->snooze(1440);
+							$qi->save();
+							break;
+					}
+				$cProcessedThisCycle++;
+			}
 
 		}
 	}
