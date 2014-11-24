@@ -773,7 +773,7 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 	        .success(function(data) {
 	            if(data != undefined){
 	            	$scope.results = data.results;
-	            	$scope.justifyImages($("#thumb_results"));
+	            	//$scope.justifyImages($("#thumb_results"));
 		            
 		            $scope.result_info = data.info;
 				}else{
