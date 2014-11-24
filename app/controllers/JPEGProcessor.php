@@ -225,7 +225,7 @@ class JPEGProcessor extends BaseController {
 							$constraint->aspectRatio();
 						});
 					}else{
-						$img->resize($saMakeThumb["width"], $saMakeThumb["height"]);
+						$img->fit($saMakeThumb["width"], $saMakeThumb["height"]);
 					}
 
 					$img->save($saMakeThumb["path"]);

@@ -108,12 +108,12 @@ class Auto extends BaseController {
 				}
 			}catch(Exception $eTimedOut)
 			{
-				$oStat = new StatModel();
-				$oStat->name = "jpeg processor run count";
-				$oStat->group = "auto";
-				$oStat->value = $cProcessedThisCycle;
-				$oStat->save();
 			}
+			$oStat = new StatModel();
+			$oStat->name = "jpeg processor run count";
+			$oStat->group = "auto";
+			$oStat->value = $cProcessedThisCycle;
+			$oStat->save();
 
 		}
 	}
