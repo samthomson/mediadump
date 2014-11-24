@@ -66,43 +66,53 @@ class Auto extends BaseController {
 	{
 		if(self::bAutoOn())
 		{
-			$iProcessLimit = self::iJpegsThisCycle();
-
 			$cProcessedThisCycle = 0;
-			while($cProcessedThisCycle < $iProcessLimit)
+			try
 			{
-				$qi = QueueModel::getSingleItem();
+				$iProcessLimit = self::iJpegsThisCycle();
 
-				if($qi !== null)
-					switch($qi->processor)
-					{
-						case "jpeg":
-							$qi->snooze();
-							$qi->save();
-							if(JPEGProcessor::process($qi->file_id))
-							{
-								//$qi->delete();
-								QueueModel::destroy($qi->id);
-								//$qi->save();
-							}else{
-								$eFilesFound = new EventModel();
-								$eFilesFound->name = "auto processor";
-								$eFilesFound->message = "jpeg processor failed";
-								$eFilesFound->save();
+				while($cProcessedThisCycle < $iProcessLimit)
+				{
+					$qi = QueueModel::getSingleItem();
 
-								$oStat = new StatModel();
-								$oStat->name = "jpeg processor fail";
-								$oStat->group = "auto";
-								$oStat->value = 1;
-								$oStat->save();
-							}
-							break;
-						default:
-							$qi->snooze(1440);
-							$qi->save();
-							break;
-					}
-				$cProcessedThisCycle++;
+					if($qi !== null)
+						switch($qi->processor)
+						{
+							case "jpeg":
+								$qi->snooze();
+								$qi->save();
+								if(JPEGProcessor::process($qi->file_id))
+								{
+									//$qi->delete();
+									QueueModel::destroy($qi->id);
+									//$qi->save();
+								}else{
+									$eFilesFound = new EventModel();
+									$eFilesFound->name = "auto processor";
+									$eFilesFound->message = "jpeg processor failed";
+									$eFilesFound->save();
+
+									$oStat = new StatModel();
+									$oStat->name = "jpeg processor fail";
+									$oStat->group = "auto";
+									$oStat->value = 1;
+									$oStat->save();
+								}
+								break;
+							default:
+								$qi->snooze(1440);
+								$qi->save();
+								break;
+						}
+					$cProcessedThisCycle++;
+				}
+			}catch(Exception $eTimedOut)
+			{
+				$oStat = new StatModel();
+				$oStat->name = "jpeg processor run count";
+				$oStat->group = "auto";
+				$oStat->value = $cProcessedThisCycle;
+				$oStat->save();
 			}
 
 		}
@@ -150,7 +160,7 @@ class Auto extends BaseController {
 
 		// how many files should we attempt to process now
 		if(isset($iAverageProcessTime))
-			return round(floor(($iMaxMilliseconds*.66)/$iAverageProcessTime));
+			return round(floor(($iMaxMilliseconds*.7)/$iAverageProcessTime));
 		else
 			return 1;
 	}
