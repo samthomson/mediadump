@@ -22,8 +22,11 @@ class Queue extends Migration {
 			$table->date('created_at');
 			$table->date('updated_at');
 
-			$table->index("file_id", "processor", "datefrom");
 			$table->unique(array('file_id', 'processor'));
+
+			$table->index('file_id', "queue_file_id");
+			$table->index('processor', "queue_processor");
+			$table->index('date_from', "queue_datefrom");
 		});
 	}
 

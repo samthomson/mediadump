@@ -19,7 +19,10 @@ class Tag extends Migration {
 			$table->string('type');
 			$table->string('value');
 
-			$table->index(array('file_id', 'type', 'value'));
+			$table->index('file_id', "tags_fileid");
+			$table->index('type', "tags_type");
+			$table->index('value', "tags_value");
+
 			$table->unique(array('file_id', 'type', 'value'));
 		});
 	}
@@ -33,5 +36,4 @@ class Tag extends Migration {
 	{
 		Schema::drop('tags');
 	}
-
 }

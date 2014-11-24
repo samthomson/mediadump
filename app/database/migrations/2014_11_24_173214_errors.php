@@ -17,11 +17,12 @@ class Errors extends Migration {
 			$table->increments('id');
 			$table->string('location');
 			$table->text('message');
-			$table->int('value');
+			$table->integer('value');
 
 			$table->datetime('datetime');
 
-			$table->index("name", "group", "value");
+			$table->index('location', "errors_location");
+			$table->index('datetime', "errors_datetime");
 		});
 	}
 
@@ -34,5 +35,4 @@ class Errors extends Migration {
 	{
 		Schema::drop('errors');
 	}
-
 }

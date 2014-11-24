@@ -28,7 +28,8 @@ class Files extends Migration {
 			$table->date('created_at');
 			$table->date('updated_at');
 
-			$table->index("path", "hash");
+			$table->index('path', "files_path");
+			$table->index('hash', "files_hash");
 		});
 	}
 

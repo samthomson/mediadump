@@ -263,11 +263,11 @@ class JPEGProcessor extends BaseController {
 				$oFile->finishTagging();
 
 
-				$oEvent = new EventModel();
-				$oEvent->name = "jpeg process time";
-				$oEvent->message = "time to proess: ".$oFile->id." as jpeg";
-				$oEvent->value = (microtime(true) - $mtStart)*1000;
-				$oEvent->save();
+				$oStat = new StatModel();
+				$oStat->name = "jpeg process time";
+				$oStat->group = "auto";
+				$oStat->value = (microtime(true) - $mtStart)*1000;
+				$oStat->save();
 
 
 				// return true, so the processor can delete the work queue item
@@ -283,7 +283,7 @@ class JPEGProcessor extends BaseController {
 		catch(Exception $ex)
 		{
 			//print_r($ex);
-			$eProcessingFailed = new EventModel();
+			$eProcessingFailed = new ErrorModel();
 			$eProcessingFailed->name = "error - jpeg processor";
 			$eProcessingFailed->message = (string)$ex;
 			$eProcessingFailed->value = "0";
