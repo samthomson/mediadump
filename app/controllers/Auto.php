@@ -67,6 +67,7 @@ class Auto extends BaseController {
 		if(self::bAutoOn())
 		{
 			$iProcessLimit = self::iJpegsThisCycle();
+
 			$cProcessedThisCycle = 0;
 			while($cProcessedThisCycle < $iProcessLimit)
 			{
