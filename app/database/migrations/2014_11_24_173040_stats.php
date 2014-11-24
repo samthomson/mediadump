@@ -17,7 +17,7 @@ class Stats extends Migration {
 			$table->increments('id');
 			$table->string('name');
 			$table->string('group');
-			$table->int('value');
+			$table->integer('value');
 
 
 			$table->index("name", "group", "value");

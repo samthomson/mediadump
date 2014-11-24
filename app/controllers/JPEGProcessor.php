@@ -180,49 +180,68 @@ class JPEGProcessor extends BaseController {
 				//
 				// thumbs
 				//
-				$saThumbPaths = array(
-					self::thumbPath("large").$oFile->hash.".jpg",
-					self::thumbPath("medium").$oFile->hash.".jpg",
-					self::thumbPath("small").$oFile->hash.".jpg",
-					self::thumbPath("icon").$oFile->hash.".jpg"
-					);
+				$aaThumbPaths = [];
 
-				
-				foreach ($saThumbPaths as $sPath) {
+				array_push($aaThumbPaths, array(
+					"size" => "large",
+					"path" => self::thumbPath("large").$oFile->hash.".jpg",
+					"width" => null,
+					"height" => 1200,
+					"aspectRatio" => true
+				));
+				array_push($aaThumbPaths, array(
+					"size" => "medium",
+					"path" => self::thumbPath("medium").$oFile->hash.".jpg",
+					"width" => null,
+					"height" => 300,
+					"aspectRatio" => true
+				));
+				array_push($aaThumbPaths, array(
+					"size" => "small",
+					"path" => self::thumbPath("small").$oFile->hash.".jpg",
+					"width" => 125,
+					"height" => 125,
+					"aspectRatio" => false
+				));
+				array_push($aaThumbPaths, array(
+					"size" => "icon",
+					"path" => self::thumbPath("icon").$oFile->hash.".jpg",
+					"width" => 32,
+					"height" => 32,
+					"aspectRatio" => false
+				));
+
+
+				foreach ($aaThumbPaths as $key => $saMakeThumb) {
 					// delete previous thumb of same name
-					if(File::exists($sPath))
-						File::delete($sPath);
+					if(File::exists($saMakeThumb["path"]))
+						File::delete($saMakeThumb["path"]);
+
+					$img = Image::make($oFile->path)->orientate();
+
+					if($saMakeThumb["aspectRatio"])
+					{
+						$img->resize($saMakeThumb["width"], $saMakeThumb["height"], function ($constraint) {
+							$constraint->aspectRatio();
+						});
+					}else{
+						$img->resize($saMakeThumb["width"], $saMakeThumb["height"]);
+					}
+
+					$img->save($saMakeThumb["path"]);
+
+					if($saMakeThumb["path"] === "medium")
+					{
+						$oFile->medium_width = $img->width();
+						$oFile->medium_height = $img->height();
+					}
+
+					$img->destroy();
+
+					if(!File::exists($saMakeThumb["path"])){
+						return false;
+					}
 				}
-				
-
-				$img = Image::make($oFile->path)->orientate()->resize(null, 1200, function ($constraint) {
-				    $constraint->aspectRatio();
-				})->save(self::thumbPath("large").$oFile->hash.".jpg")->destroy();
-				if(!File::exists(self::thumbPath("large").$oFile->hash.".jpg"))
-					return false;
-
-				$img = Image::make($oFile->path)->orientate()->resize(null, 300, function ($constraint) {
-				    $constraint->aspectRatio();
-				})->save(self::thumbPath("medium").$oFile->hash.".jpg");
-
-
-				$oFile->medium_width = $img->width();
-				$oFile->medium_height = $img->height();
-
-				$img->destroy();
-				if(!File::exists(self::thumbPath("medium").$oFile->hash.".jpg"))
-					return false;
-
-				$img = Image::make($oFile->path)->orientate()->resize(null, 125, function ($constraint) {
-				    $constraint->aspectRatio();
-				})->save(self::thumbPath("small").$oFile->hash.".jpg")->destroy();
-				if(!File::exists(self::thumbPath("small").$oFile->hash.".jpg"))
-					return false;
-
-				$img = Image::make($oFile->path)->orientate()->resize(32, 32, function ($constraint) {
-				})->save(self::thumbPath("icon").$oFile->hash.".jpg")->destroy();
-				if(!File::exists(self::thumbPath("icon").$oFile->hash.".jpg"))
-					return false;
 
 
 				//
