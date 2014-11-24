@@ -50,43 +50,22 @@ class Auto extends BaseController {
 			// check for differences
 
 			$eFilesFound = new EventModel();
-			$eFilesFound->name = "auto files found";
-			$eFilesFound->value = (string)count($saNewFilesForSystem);
+			$eFilesFound->name = "auto files checker ran";
 			$eFilesFound->save();
 
-			/*
-			$eFilesRemoved = new EventModel();
-			$eFilesRemoved->name = "auto files removed";
-			$eFilesRemoved->value = (string)count($saLostFilesFromSystem);
-			$eFilesRemoved->save();
-			*/
+			
+
+			$oStat = new StatModel();
+			$oStat->name = "auth files found";
+			$oStat->group = "auto";
+			$oStat->value = count($saNewFilesForSystem);
+			$oStat->save();
 		}
 	}
 	public function processQueue()
 	{
 		if(self::bAutoOn())
 		{
-			/*
-			$aqiQueuedItems = QueueModel::getItems();
-
-			foreach ($aqiQueuedItems as $qi) {
-				$qi->snoozeAMinute();
-				$qi->save();
-			}
-			foreach ($aqiQueuedItems as $qi) {
-				switch($qi->processor)
-				{
-					case "jpeg":
-						if(JPEGProcessor::process($qi->file_id))
-						{
-							QueueModel::destroy($qi->id);
-							//$qi->delete();
-							//$qi->save();
-						}
-						break;
-				}
-			}
-			*/
 			$qi = QueueModel::getSingleItem();
 
 			if($qi !== null)
@@ -100,6 +79,17 @@ class Auto extends BaseController {
 							//$qi->delete();
 							QueueModel::destroy($qi->id);
 							//$qi->save();
+						}else{
+							$eFilesFound = new EventModel();
+							$eFilesFound->name = "auto processor";
+							$eFilesFound->message = "jpeg processor failed";
+							$eFilesFound->save();
+
+							$oStat = new StatModel();
+							$oStat->name = "jpeg processor fail";
+							$oStat->group = "auto";
+							$oStat->value = 1;
+							$oStat->save();
 						}
 						break;
 					default:

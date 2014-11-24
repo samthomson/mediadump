@@ -248,15 +248,9 @@ class JPEGProcessor extends BaseController {
 				// log how many tags were added
 				//
 				$eFilesRemoved = new EventModel();
-				$eFilesRemoved->name = "auto tags added";
-				$eFilesRemoved->message = "jpeg processor has added $cTagsAdded tags";
-				$eFilesRemoved->value = (string)$cTagsAdded;
-				$eFilesRemoved->save();
-
-				$eFilesRemoved = new EventModel();
-				$eFilesRemoved->name = "geodata added";
-				$eFilesRemoved->message = "jpeg processor has added $cGeoDataAdded pieces of geodata";
-				$eFilesRemoved->value = (string)$cGeoDataAdded;
+				$eFilesRemoved->name = "auto jpeg processor";
+				$eFilesRemoved->message = "prcoessed a file";
+				$eFilesRemoved->value = 1;
 				$eFilesRemoved->save();
 
 				// done?
@@ -264,7 +258,19 @@ class JPEGProcessor extends BaseController {
 
 
 				$oStat = new StatModel();
-				$oStat->name = "jpeg process time";
+				$oStat->name = "auto tags added";
+				$oStat->group = "auto";
+				$oStat->value = $cTagsAdded;
+				$oStat->save();
+
+				$oStat = new StatModel();
+				$oStat->name = "geodata added";
+				$oStat->group = "auto";
+				$oStat->value = $cGeoDataAdded;
+				$oStat->save();
+
+				$oStat = new StatModel();
+				$oStat->name = "jpeg proccess time";
 				$oStat->group = "auto";
 				$oStat->value = (microtime(true) - $mtStart)*1000;
 				$oStat->save();
