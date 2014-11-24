@@ -66,7 +66,7 @@ class Auto extends BaseController {
 	{
 		if(self::bAutoOn())
 		{
-			$iProcessLimit = 2;
+			$iProcessLimit = self::iJpegsThisCycle();
 			$cProcessedThisCycle = 0;
 			while($cProcessedThisCycle < $iProcessLimit)
 			{
@@ -139,5 +139,18 @@ class Auto extends BaseController {
 	private static function bAutoOn()
 	{
 		return Config::get('app.autoOn');
+	}
+	private static function iJpegsThisCycle()
+	{
+		// average process time of last files
+		$iAverageProcessTime = StatModel::where("name", "=", "jpeg proccess time")->orderBy("id", "desc")->take(3)->avg("value");
+		// max execution time
+		$iMaxMilliseconds = ini_get('max_execution_time') * 1000;
+
+		// how many files should we attempt to process now
+		if(isset($iAverageProcessTime))
+			return round(floor(($iMaxMilliseconds*.66)/$iAverageProcessTime));
+		else
+			return 1;
 	}
 }

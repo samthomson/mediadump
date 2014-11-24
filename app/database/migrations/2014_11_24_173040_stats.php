@@ -18,10 +18,12 @@ class Stats extends Migration {
 			$table->string('name');
 			$table->string('group');
 			$table->integer('value');
+			$table->datetime('datetime');
 
 			$table->index('name', "stats_name");
 			$table->index('group', "stats_group");
 			$table->index('value', "stats_value");
+			$table->index('datetime', "stats_datetime");
 		});
 	}
 
