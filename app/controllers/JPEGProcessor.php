@@ -230,7 +230,7 @@ class JPEGProcessor extends BaseController {
 
 					$img->save($saMakeThumb["path"]);
 
-					if($saMakeThumb["path"] === "medium")
+					if($saMakeThumb["size"] === "medium")
 					{
 						$oFile->medium_width = $img->width();
 						$oFile->medium_height = $img->height();
