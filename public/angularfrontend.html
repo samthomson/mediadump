@@ -52,7 +52,6 @@
 									<li><a ng-click="setSearchInputMode('shuffle')" ng-class="{true:'active'}[search_input_mode === 'shuffle']">Shuffle</a></li>
 									-->
 								</ul>
-
 								
 								<form class="navbar-form navbar-right nav-search-form" role="search">
 									<div class="form-group">
@@ -67,8 +66,6 @@
 
 				</div>
 			</div>
-
-
 
 
 			<div id="main">
@@ -109,7 +106,7 @@
 
 					<!-- thumb results (grid search) -->
 					<div id="thumb_results" ng-show="search_mode === 'search' && query !== ''" justified>
-						<a class="thumb_result_link" ng-repeat="result in results" ng-mousedown="preload_thumb($index)" ng-click="thumb_click($index)" my-repeat-directive><img ng-src="{{urlFromHash('results', result, '')}}" id="{{result.id}}" width="{{result.width}}" height="{{result.height}}" /></a>
+						<a class="thumb_result_link" ng-repeat="result in results" ng-mousedown="preload_thumb($index)" ng-click="thumb_click($index)" my-repeat-directive><img ng-src="{{urlFromHash('results', result, '')}}" id="{{result.id}}"/></a>
 
 					</div>
 

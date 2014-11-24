@@ -602,13 +602,11 @@ mediadumpApp.controller('mediadumpCtrl', function ($location, $scope, $route, $r
 			case 'icon':
 				return $scope.s_cdn_url + '/thumbs/icon/'+oObject.hash+'.jpg';
 				break;
-			case 'thumbs':
-				return $scope.s_cdn_url + '/thumb/'+oObject.id+'.jpg';
 			case 'medium':
 				return $scope.s_cdn_url + '/thumbs/medium/'+oObject.hash+'.jpg';
 				break;
 			case 'results':
-				var sThumbSize = ($scope.search_input_mode === "browse") ? "medium" : "small";
+				var sThumbSize = ($scope.search_input_mode === "browse") ? "small" : "small";
 				return $scope.s_cdn_url + '/thumbs/' + sThumbSize + '/'+oObject.hash+'.jpg';
 				break;
 		}
