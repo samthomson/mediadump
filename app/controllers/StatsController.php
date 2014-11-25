@@ -65,10 +65,27 @@ class StatsController extends BaseController {
 	}
 	public static function iTotalFiles()
 	{
-
+		return DB::table("files")->count();
 	}
 	public static function iTotalLiveFiles()
 	{
+		return DB::table("files")->where("live", "=", 1)->count();
+	}
+	public static function iTotalTags()
+	{
+		return DB::table("tags")->count();
+	}
 
+	public static function iLastFoundFiles()
+	{
+		return StatModel::where("name", "=", "auth files found")->orderBy("id", "desc")->take(1)->max("value");
+	}
+	public static function iLastAverageProcessedFiles()
+	{
+		return StatModel::where("name", "=", "jpeg processor run count")->orderBy("id", "desc")->take(3)->avg("value");
+	}
+	public static function iLastAverageProcessTimme()
+	{
+		return StatModel::where("name", "=", "jpeg proccess time")->orderBy("id", "desc")->take(3)->avg("value");
 	}
 }
