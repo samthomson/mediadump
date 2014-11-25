@@ -47,8 +47,8 @@ class StatsController extends BaseController {
 		if(isset($dtFrom) && isset($dtTo))
 		{
 			$aaDatetimeRules = array(
-				array('from' => 'date_format:"Y-m-d H:i:s"'),
-				array('to' => 'date_format:"Y-m-d H:i:s"')
+				array('from' => 'date_format:"d-m-Y"'),
+				array('to' => 'date_format:"d-m-Y"')
 			);
 
 			$vValidator = Validator::make(Input::all(), $aaDatetimeRules);
@@ -62,5 +62,13 @@ class StatsController extends BaseController {
 			}
 		}
 		return View::make("admin.events")->with("events", $oaEvents)->with("from", $dtFrom)->with("to", $dtTo);
+	}
+	public static function iTotalFiles()
+	{
+
+	}
+	public static function iTotalLiveFiles()
+	{
+
 	}
 }

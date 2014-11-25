@@ -5,9 +5,9 @@
     <form method="post" role="form">
     	<div class="form-group">
 		    <label for="exampleInputEmail1">Date range:</label>
-		    <input type="daterange" id="fromto" class="input-small form-control" value="{{$from or date('d/m/Y', strtotime('-1 month', time()))}} - {{$to or date('d/m/Y')}}" />
-		    <input type="hidden" name="from" />
-		    <input type="hidden" name="to" />
+		    <input type="daterange" id="fromto" class="input-small form-control" value="{{$from or date('d/m/Y', strtotime('-1 month', time()))}} to {{$to or date('d/m/Y', strtotime('+1 day', time()))}}" />
+		    <input type="hidden" name="from" value="{{$from or date('d/m/Y', strtotime('-1 month', time()))}}"/>
+		    <input type="hidden" name="to" value="{{$to or date('d/m/Y', strtotime('+1 day', time()))}}" />
 		</div>
     	<div class="form-group">
 		    <input type="submit" class="btn btn-default form-control" value="show events"/>
@@ -31,9 +31,23 @@
 				</thead>
 				<tbody>
 					@foreach($events as $event)
+					<?php
+						$sLabelClass = "";
+						switch ($event->name) {
+							case 'auto files checker ran':
+								$sLabelClass = "checkfiles";
+								break;
+							case 'auto jpeg processor':
+								$sLabelClass = "jpegprocessor";
+								break;							
+							default:
+								$sLabelClass = "unknown";
+								break;
+						}
+					?>
 					<tr>
 						<td>{{$event->datetime}}</td>
-						<td>{{$event->name}}</td>
+						<td><span class="label {{$sLabelClass}}">{{$event->name}}</span></td>
 						<td>{{$event->message}}</td>
 						<td>{{$event->value}}</td>
 					</tr>

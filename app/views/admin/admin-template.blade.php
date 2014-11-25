@@ -12,8 +12,24 @@
 		<link href='http://fonts.googleapis.com/css?family=Muli' rel='stylesheet' type='text/css'>
 		<!-- bootstrap -->
 		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-		<!-- app specific
-		<link rel="stylesheet" href="/css/style.css" type="text/css"> -->
+		<!-- app specific-->
+		<style>
+			/*
+			ADMIN
+			*/
+			.label.checkfiles{
+				background:#3498db;
+				color:#fff;
+			}
+			.label.jpegprocessor{
+				background:#27ae60;
+				color:#fff;
+			}
+			.label.unknown{
+				background:#8e44ad;
+				color:#fff;
+			}
+		</style>
 
 		<link rel="stylesheet" type="text/css" href="/vendor/daterangepicker/daterangepicker-bs3.css" />
 
@@ -58,7 +74,7 @@
 			$(document).ready(function() {
 				$("#fromto").daterangepicker(
 					{
-						format: 'DD/MM/YYYY',
+						format: 'DD-MM-YYYY',
 						showDropdowns: true,
                     	separator: ' to ',
 						ranges: {
@@ -71,8 +87,8 @@
 	                    }
 					},
 					function(start,end,label) {
-						$("input[name=from]").val(start.format("YYYY-MM-DD"));
-						$("input[name=to]").val(end.format("YYYY-MM-DD"));
+						$("input[name=from]").val(start.format("DD-MM-YYYY"));
+						$("input[name=to]").val(end.format("DD-MM-YYYY"));
 					}
 				);
 			});
