@@ -73,7 +73,7 @@ class Auto extends BaseController {
 			{
 				$iProcessLimit = self::iJpegsThisCycle();
 
-				while($cProcessedThisCycle < $iProcessLimit)
+				while(self::bTimeForTwoJpegs($mtProcessQueueStart))
 				{
 					$qi = QueueModel::getSingleItem();
 

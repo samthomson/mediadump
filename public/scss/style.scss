@@ -10,6 +10,7 @@ $media_dump_dark_colour: #c0392b;
 $media_dump_inverse_colour: #ecf0f1;
 $media_dump_inverse_colour: #fff;
 $silver_colour: #bdc3c7;
+$black: #000;
 
 /*
 $small_thumb_width: 115px;
@@ -268,6 +269,7 @@ layout parts
 .tree_link img{
 	max-width:100%;
 	height: auto;
+	max-height: 300px;
     display: block;
     margin-left: auto;
     margin-right: auto 
@@ -275,9 +277,13 @@ layout parts
 .tree_link_title{
 	margin-bottom:$margin;
 	width: 100%;
-	font-size: large;
 	text-align: center;
 	display: block;
+	font-size: 1em;
+	margin: 1.5em 0 0.5em;
+	color: $black;
+	text-transform:capitalize;
+	font-weight:800;
 }
 .tree_link:hover{
 	cursor: pointer;
