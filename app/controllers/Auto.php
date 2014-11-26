@@ -184,7 +184,7 @@ class Auto extends BaseController {
 		else
 			return 1;
 	}
-	private bTimeForTwoJpegs($mtStarted)
+	private function bTimeForTwoJpegs($mtStarted)
 	{
 		// estiamtes current jpeg process time, gets time remaining, returns true if less than
 		$iMaxMilliseconds = ini_get('max_execution_time') * 1000;
