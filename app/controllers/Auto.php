@@ -193,6 +193,9 @@ class Auto extends BaseController {
 
 		$iAverageProcessTime = StatModel::where("name", "=", "jpeg proccess time")->orderBy("id", "desc")->take(3)->avg("value");
 
-		return (($iAverageProcessTime * 2) < ($iMaxMilliseconds - $iCurrentExecutionTime));
+		if(($iAverageProcessTime * 2) < ($iMaxMilliseconds - $iCurrentExecutionTime))
+			return true;
+		else
+			return false;
 	}
 }
