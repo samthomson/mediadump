@@ -117,8 +117,6 @@ class JPEGProcessor extends BaseController {
 				$cTagsAdded++;
 
 
-				
-
 				//
 				// exif
 				//
@@ -170,8 +168,6 @@ class JPEGProcessor extends BaseController {
 					$cGeoDataAdded++;
 				}
 
-
-					
 
 				//
 				// geo

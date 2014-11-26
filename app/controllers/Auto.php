@@ -64,6 +64,8 @@ class Auto extends BaseController {
 	}
 	public function processQueue()
 	{
+		$mtProcessQueueStart = microtime(true);
+
 		if(self::bAutoOn())
 		{
 			$cProcessedThisCycle = 0;
@@ -97,6 +99,24 @@ class Auto extends BaseController {
 									$oStat->group = "auto";
 									$oStat->value = 1;
 									$oStat->save();
+								}
+								break;
+							case "delete":
+								$qi->snooze();
+								$qi->save();
+								if(DeleteProcessor::process($qi->file_id))
+								{
+									QueueModel::destroy($qi->id);
+
+									$eFilesFound = new EventModel();
+									$eFilesFound->name = "auto processor";
+									$eFilesFound->message = "delete processor deleleted a file";
+									$eFilesFound->save();
+								}else{
+									$eFilesFound = new EventModel();
+									$eFilesFound->name = "auto processor";
+									$eFilesFound->message = "delete processor failed";
+									$eFilesFound->save();
 								}
 								break;
 							default:
@@ -163,5 +183,16 @@ class Auto extends BaseController {
 			return round(floor(($iMaxMilliseconds*.7)/$iAverageProcessTime));
 		else
 			return 1;
+	}
+	private bTimeForTwoJpegs($mtStarted)
+	{
+		// estiamtes current jpeg process time, gets time remaining, returns true if less than
+		$iMaxMilliseconds = ini_get('max_execution_time') * 1000;
+
+		$iCurrentExecutionTime = (microtime(true) - $mtStart)*1000;
+
+		$iAverageProcessTime = StatModel::where("name", "=", "jpeg proccess time")->orderBy("id", "desc")->take(3)->avg("value");
+
+		return (($iCurrentExecutionTime * 2) < ($iMaxMilliseconds - $iCurrentExecutionTime));
 	}
 }
