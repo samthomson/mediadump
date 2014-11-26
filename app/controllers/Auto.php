@@ -189,10 +189,10 @@ class Auto extends BaseController {
 		// estiamtes current jpeg process time, gets time remaining, returns true if less than
 		$iMaxMilliseconds = ini_get('max_execution_time') * 1000;
 
-		$iCurrentExecutionTime = (microtime(true) - $mtStart)*1000;
+		$iCurrentExecutionTime = (microtime(true) - $mtStarted)*1000;
 
 		$iAverageProcessTime = StatModel::where("name", "=", "jpeg proccess time")->orderBy("id", "desc")->take(3)->avg("value");
 
-		return (($iCurrentExecutionTime * 2) < ($iMaxMilliseconds - $iCurrentExecutionTime));
+		return (($iAverageProcessTime * 2) < ($iMaxMilliseconds - $iCurrentExecutionTime));
 	}
 }
