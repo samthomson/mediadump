@@ -53,8 +53,6 @@ class Auto extends BaseController {
 			$eFilesFound->name = "auto files checker ran";
 			$eFilesFound->save();
 
-			
-
 			$oStat = new StatModel();
 			$oStat->name = "auth files found";
 			$oStat->group = "auto";
@@ -73,7 +71,7 @@ class Auto extends BaseController {
 			{
 				$iProcessLimit = self::iJpegsThisCycle();
 
-				while(self::bTimeForTwoJpegs($mtProcessQueueStart))
+				while(self::bTimeForTwoJpegs($mtProcessQueueStart) || $cProcessedThisCycle === 0)
 				{
 					$qi = QueueModel::getSingleItem();
 
