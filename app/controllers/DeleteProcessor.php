@@ -26,13 +26,23 @@ class DeleteProcessor extends BaseController {
 			{
 				File::delete($oFile->path);
 
-				return !File::exists($oFile->path);
-
+				if(File::exists($oFile->path))
+					return false;
+				else{
+					$oFile->have_original = false;
+					return true;
+				}
 				
 			}else{
-				echo "couldn't find: ".$oFile->path;
+
+				// original file has already been deleted
+
+				
 				// file no longer exists, remove it from system
-				$oFile->removeFromSystem();
+				//// ah don't do this!!!!!!! $oFile->removeFromSystem();
+
+				$oFile->have_original = false;
+				$oFile->save();
 				return true;
 			}
 
