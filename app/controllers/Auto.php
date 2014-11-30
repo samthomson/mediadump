@@ -53,11 +53,14 @@ class Auto extends BaseController {
 			$eFilesFound->name = "auto files checker ran";
 			$eFilesFound->save();
 
-			$oStat = new StatModel();
-			$oStat->name = "auth files found";
-			$oStat->group = "auto";
-			$oStat->value = count($saNewFilesForSystem);
-			$oStat->save();
+			if(count($saNewFilesForSystem))
+			{
+				$oStat = new StatModel();
+				$oStat->name = "auth files found";
+				$oStat->group = "auto";
+				$oStat->value = count($saNewFilesForSystem);
+				$oStat->save();
+			}
 		}
 	}
 	public function processQueue()
