@@ -22,11 +22,11 @@ class DeleteProcessor extends BaseController {
 			$oFile = FileModel::find($iFileID);
 
 
-			if(File::exist($oFile->path))
+			if(File::exists($oFile->path))
 			{
 				File::delete($oFile->path);
 
-				return !File::exist($oFile->path);
+				return !File::exists($oFile->path);
 
 				
 			}else{
