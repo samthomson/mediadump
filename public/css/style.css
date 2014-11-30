@@ -342,7 +342,8 @@ select.form-control {
 #thumb_results img {
   margin-right: 4px;
   margin-bottom: 2px;
-  width: auto; }
+  width: 125px;
+  height: 125px; }
 
 a.filter {
   display: inline-block;

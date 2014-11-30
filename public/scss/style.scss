@@ -26,6 +26,8 @@ $i_nav_width: 40%;
 $i_header_height: 50px;
 $i_footer_height: 50px;
 
+$small_icon_size: 125px;
+
 /* general */
 body{
 	font-family: Muli;
@@ -374,7 +376,8 @@ select.form-control{
 #thumb_results img{	
 	margin-right:4px;
 	margin-bottom:$margin/2;
-	width:auto;
+	width:$small_icon_size;
+	height:$small_icon_size;
 }
 a.filter{
 	display:inline-block;
