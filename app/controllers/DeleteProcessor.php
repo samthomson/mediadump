@@ -24,7 +24,8 @@ class DeleteProcessor extends BaseController {
 
 			if(File::exists($oFile->path))
 			{
-				File::delete($oFile->path);
+				//File::delete($oFile->path);
+				unlink($oFile->path);
 
 				if(File::exists($oFile->path))
 					return false;
@@ -34,7 +35,8 @@ class DeleteProcessor extends BaseController {
 				}
 				
 			}else{
-
+				// already deleted, do nothing other than update our records
+				//echo "deleted file";
 				// original file has already been deleted
 
 				
@@ -45,7 +47,6 @@ class DeleteProcessor extends BaseController {
 				$oFile->save();
 				return true;
 			}
-
 		}
 		catch(Exception $ex)
 		{
@@ -55,6 +56,8 @@ class DeleteProcessor extends BaseController {
 			$eProcessingFailed->message = (string)$ex;
 			$eProcessingFailed->value = "0";
 			$eProcessingFailed->save();
+
+			return false;
 		}
 	}
 }

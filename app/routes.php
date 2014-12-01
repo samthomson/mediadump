@@ -43,3 +43,43 @@ App::missing(function($exception)
 {
     return Response::make('404', 404);
 });
+Route::get('/test', function()
+{
+	$oResults = QueueModel::where("date_from", "<", date('Y-m-d H:i:s'))
+	->where("processor", "=", "delete")
+	->take(1)
+	->get();
+
+	if(count($oResults) > 0){
+		
+
+		try
+		{
+			$oQi = $oResults[0];
+			$oFile = FileModel::find($oQi->file_id);
+
+			if(isset($oFile)){
+				if(File::exists($oFile->path)){
+					echo "file exists, proceed to delete<br/>";
+					File::delete($oFile->path);
+					if(File::exists($oFile->path)){
+						echo "file found after delete: FAILURE<br/>";
+					}else{
+						echo "file not found after delete: SUCCESS<br/>";
+					}
+				}else{
+					echo "file not found in first place<br/>";
+				}
+			}else{
+				echo "couldn't orm file object from id<br/>";
+			}
+
+			
+		}catch(Exception $er)
+		{
+			print_r($er);
+		}
+	}else{
+		echo "no items to delete";
+	}
+});

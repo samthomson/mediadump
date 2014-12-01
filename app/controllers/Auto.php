@@ -72,6 +72,7 @@ class Auto extends BaseController {
 			$cProcessedThisCycle = 0;
 			try
 			{
+				////echo "process queue<br/>";
 				$iProcessLimit = self::iJpegsThisCycle();
 
 				while(self::bTimeForTwoJpegs($mtProcessQueueStart) || $cProcessedThisCycle === 0)
@@ -82,6 +83,7 @@ class Auto extends BaseController {
 						switch($qi->processor)
 						{
 							case "jpeg":
+								////echo "jpeg processor<br/>";
 								$qi->snooze();
 								$qi->save();
 								if(JPEGProcessor::process($qi->file_id))
@@ -103,6 +105,7 @@ class Auto extends BaseController {
 								}
 								break;
 							case "delete":
+								////echo "delete processor<br/>";
 								$qi->snooze();
 								$qi->save();
 								if(DeleteProcessor::process($qi->file_id))
