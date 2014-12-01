@@ -45,6 +45,7 @@ App::missing(function($exception)
 });
 Route::get('/test', function()
 {
+	/*
 	$oResults = QueueModel::where("date_from", "<", date('Y-m-d H:i:s'))
 	->where("processor", "=", "delete")
 	->take(1)
@@ -60,8 +61,9 @@ Route::get('/test', function()
 
 			if(isset($oFile)){
 				if(File::exists($oFile->path)){
-					echo "file exists, proceed to delete<br/>";
-					File::delete($oFile->path);
+					echo "file exists (".$oFile->path."), proceed to delete<br/>";
+					//File::delete($oFile->path);
+					unlink(realpath($oFile->path));
 					if(File::exists($oFile->path)){
 						echo "file found after delete: FAILURE<br/>";
 					}else{
@@ -77,9 +79,10 @@ Route::get('/test', function()
 			
 		}catch(Exception $er)
 		{
-			print_r($er);
+			echo "<hr/>".$er;
 		}
 	}else{
 		echo "no items to delete";
 	}
+	*/
 });
