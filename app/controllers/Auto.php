@@ -83,7 +83,6 @@ class Auto extends BaseController {
 						switch($qi->processor)
 						{
 							case "jpeg":
-								////echo "jpeg processor<br/>";
 								$qi->snooze();
 								$qi->save();
 								if(JPEGProcessor::process($qi->file_id))
@@ -97,6 +96,25 @@ class Auto extends BaseController {
 
 									$oStat = new StatModel();
 									$oStat->name = "jpeg processor fail";
+									$oStat->group = "auto";
+									$oStat->value = 1;
+									$oStat->save();
+								}
+								break;
+							case "imagga":
+								$qi->snooze(3);
+								$qi->save();
+								if(ImaggaProcessor::process($qi->file_id))
+								{
+									$qi->done();
+								}else{
+									$eFilesFound = new EventModel();
+									$eFilesFound->name = "auto processor";
+									$eFilesFound->message = "imagga processor failed";
+									$eFilesFound->save();
+
+									$oStat = new StatModel();
+									$oStat->name = "imagga processor fail";
 									$oStat->group = "auto";
 									$oStat->value = 1;
 									$oStat->save();
