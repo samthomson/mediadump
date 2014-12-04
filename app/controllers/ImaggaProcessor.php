@@ -18,7 +18,8 @@ class ImaggaProcessor extends BaseController {
 			{
 				// what is the web url?
 
-				$sWebThumbPath = "http://0.cdn.samt.st/lightbox/c859b21ac4bcc9e59335f192e04bb79ab09d4895.jpg";
+				$sWebThumbPath = "http://0.cdn.samt.st/lightbox/".$oFile->hash.".jpg";
+
 				// make request
 				$service_url = 'http://api.imagga.com/v1/tagging?url='.$sWebThumbPath;
 

@@ -45,44 +45,33 @@ App::missing(function($exception)
 });
 Route::get('/test', function()
 {
-	/*
-	$oResults = QueueModel::where("date_from", "<", date('Y-m-d H:i:s'))
-	->where("processor", "=", "delete")
-	->take(1)
-	->get();
 
-	if(count($oResults) > 0){
-		
+	// get all files
+	$oFiles = FileModel::all();
 
-		try
-		{
-			$oQi = $oResults[0];
-			$oFile = FileModel::find($oQi->file_id);
+	$saFiles = [];
 
-			if(isset($oFile)){
-				if(File::exists($oFile->path)){
-					echo "file exists (".$oFile->path."), proceed to delete<br/>";
-					//File::delete($oFile->path);
-					unlink(realpath($oFile->path));
-					if(File::exists($oFile->path)){
-						echo "file found after delete: FAILURE<br/>";
-					}else{
-						echo "file not found after delete: SUCCESS<br/>";
-					}
-				}else{
-					echo "file not found in first place<br/>";
-				}
-			}else{
-				echo "couldn't orm file object from id<br/>";
-			}
-
-			
-		}catch(Exception $er)
-		{
-			echo "<hr/>".$er;
-		}
-	}else{
-		echo "no items to delete";
+	foreach ($oFiles as $file) {
+		$saFiles[$file->id] = $file->path;
 	}
-	*/
+	$iQueued = 0;
+	foreach ($saFiles as $keyId => $keyPath) {
+		$sExt = substr(strtolower($keyPath), strrpos(strtolower($keyPath), '.')+1);
+			
+		switch($sExt)
+		{
+			case "jpg":
+			case "jpeg":
+				// imagga processor afterwards
+				$qiImagga = new QueueModel();
+				$qiImagga->file_id = $keyId;
+				$qiImagga->processor = "imagga";
+				$qiImagga->date_from = date('Y-m-d H:i:s');
+				$qiImagga->save();
+
+				$iQueued++;
+				break;
+		}
+	}
+	echo "queued $iQueued files for imagga";
 });
