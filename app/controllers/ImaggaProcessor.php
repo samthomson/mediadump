@@ -16,7 +16,6 @@ class ImaggaProcessor extends BaseController {
 			$sThumbPath = Helper::thumbPath("large").$oFile->hash.".jpg";
 			if(file_exists($sThumbPath))
 			{
-				echo "imagga processor<br/>";
 				// what is the web url?
 
 				$sWebThumbPath = "http://0.cdn.samt.st/lightbox/c859b21ac4bcc9e59335f192e04bb79ab09d4895.jpg";
@@ -87,7 +86,7 @@ class ImaggaProcessor extends BaseController {
 
 
 
-				return false;
+				return true;
 			}else{
 				$eProcessingFailed = new ErrorModel();
 				$eProcessingFailed->location = "imagga processor";

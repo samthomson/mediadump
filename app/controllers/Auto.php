@@ -75,8 +75,8 @@ class Auto extends BaseController {
 				////echo "process queue<br/>";
 				$iProcessLimit = self::iJpegsThisCycle();
 
-				//while(self::bTimeForTwoJpegs($mtProcessQueueStart) || $cProcessedThisCycle === 0)
-				while($cProcessedThisCycle === 0) // just one (debug)
+				while(self::bTimeForTwoJpegs($mtProcessQueueStart) || $cProcessedThisCycle === 0)
+				//while($cProcessedThisCycle === 0) // just one (debug)
 				{
 					$qi = QueueModel::getSingleItem();
 
@@ -103,7 +103,7 @@ class Auto extends BaseController {
 								}
 								break;
 							case "imagga":
-								$qi->snooze(0);
+								$qi->snooze(3);
 								$qi->save();
 								if(ImaggaProcessor::process($qi->file_id))
 								{

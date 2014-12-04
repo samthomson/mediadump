@@ -54,6 +54,7 @@ class JPEGProcessor extends BaseController {
 				//
 				// split dirs with spaces
 				foreach ($saDirs as $sDir)
+				{
 					foreach (explode(" ", $sDir) as $sDirPart) {
 						//array_push($saDirTags, $sDirPart);
 						if($sDirPart !== ""){
@@ -65,17 +66,7 @@ class JPEGProcessor extends BaseController {
 							$cTagsAdded++;
 						}
 					}
-	/*
-				foreach ($saDirs as $sDir) {
-					if($sDir !== ""){
-						$oTag = new TagModel();
-						$oTag->type = "folder";
-						$oTag->file_id = $iFileID;
-						$oTag->value = $sDir;
-						$oTag->save();
-						$cTagsAdded++;
-					}
-				}*/
+				}
 
 				//
 				// unique directory path
