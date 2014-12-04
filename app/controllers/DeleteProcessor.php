@@ -52,7 +52,7 @@ class DeleteProcessor extends BaseController {
 		{
 			//print_r($ex);
 			$eProcessingFailed = new ErrorModel();
-			$eProcessingFailed->name = "error - delete processor";
+			$eProcessingFailed->location = "error - delete processor";
 			$eProcessingFailed->message = (string)$ex;
 			$eProcessingFailed->value = "0";
 			$eProcessingFailed->save();
