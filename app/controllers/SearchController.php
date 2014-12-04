@@ -77,6 +77,8 @@ class SearchController extends BaseController {
 				$joinGeoData->on("files.id", "=", "geodata.file_id");
 			})	
 			->where("live", "=", true)->distinct("value")
+			->where("confidence", ">", Helper::iConfidenceThreshold())
+			->orderBy("confidence", "desc")
 			->orderBy("datetime", "desc")
 	        ->select("files.id", "files.hash", "tags.value", "geodata.latitude", "geodata.longitude", "files.medium_width AS width", "files.medium_height AS height")
 			->get();

@@ -12,6 +12,10 @@ class Helper {
 
 		return $sPath;
 	}
+	public static function iConfidenceThreshold()
+	{
+		return Config::get('app.confidenceThreshold');
+	}
 
 }
 
