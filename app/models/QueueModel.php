@@ -38,8 +38,9 @@ class QueueModel extends Eloquent {
 	public function done()
 	{
 		// set dependents as done
-		foreach (QueueModel::where("after", "=", $this->id) as $qiDep) {
+		foreach (QueueModel::where("after", "=", $this->id)->get() as $qiDep) {
 			$qiDep->after = -1; // default
+			$qiDep->save();
 		}
 		// remove from system
 		$this->delete();
