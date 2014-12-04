@@ -57,7 +57,16 @@ class ImaggaProcessor extends BaseController {
 							foreach($oImageResult->tags as $oTag){
 								$oTag = (array)$oTag;
 								print_r($oTag);
-								
+
+
+								$oNewTag = new TagModel();
+								$oNewTag->file_id = $iFileID;
+								$oNewTag->type = "imagga";
+								$oNewTag->setValue($oTag["tag"]);
+								$oNewTag->confidence = $oTag["confidence"];
+								$oNewTag->save();
+								$cTagsAdded++;
+
 							}
 					}					
 				
