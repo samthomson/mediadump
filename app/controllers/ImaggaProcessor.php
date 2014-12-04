@@ -46,7 +46,21 @@ class ImaggaProcessor extends BaseController {
 
 				$jsonurl = $service_url;
 				$json = file_get_contents($jsonurl, false, $context);
-				var_dump(json_decode($json));
+				$oObj = json_decode($json);
+				//print_r($oObj);
+				
+				if(isset($oObj->results))
+					foreach($oObj->results as $oImageResult)
+					{
+						//print_r($oObj->results);
+						if(isset($oImageResult->tags))
+							foreach($oImageResult->tags as $oTag){
+								$oTag = (array)$oTag;
+								print_r($oTag);
+								
+							}
+					}					
+				
 
 				// for each tag back, add to db
 				//$cTagsAdded++;
