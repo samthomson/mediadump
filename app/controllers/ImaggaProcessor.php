@@ -16,9 +16,37 @@ class ImaggaProcessor extends BaseController {
 			$sThumbPath = Helper::thumbPath("large").$oFile->hash.".jpg";
 			if(file_exists($sThumbPath))
 			{
+				echo "imagga processor<br/>";
 				// what is the web url?
 
+				$sWebThumbPath = "http://0.cdn.samt.st/lightbox/c859b21ac4bcc9e59335f192e04bb79ab09d4895.jpg";
 				// make request
+				$service_url = 'http://api.imagga.com/v1/tagging?url='.$sWebThumbPath;
+
+				/*
+				$curl = curl_init($service_url);
+				curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+				curl_setopt($curl, CURLOPT_USERPWD, "acc_19db373c6879755:d397f1a6ab0323a3a7a46ebf0a5af625");
+				curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+				curl_setopt($curl, CURLOPT_POST, true);
+				////curl_setopt($curl, CURLOPT_POSTFIELDS, $curl_post_data);
+				$curl_response = curl_exec($curl);
+				$response = json_decode($curl_response);
+				curl_close($curl);
+
+				var_dump($response);
+
+*/
+
+				$context = stream_context_create(array(
+				    'http' => array(
+				        'header'  => "Authorization: Basic " . base64_encode("acc_19db373c6879755:d397f1a6ab0323a3a7a46ebf0a5af625")
+				    )
+				));
+
+				$jsonurl = $service_url;
+				$json = file_get_contents($jsonurl, false, $context);
+				var_dump(json_decode($json));
 
 				// for each tag back, add to db
 				//$cTagsAdded++;
@@ -32,8 +60,6 @@ class ImaggaProcessor extends BaseController {
 				$eFilesRemoved->value = 1;
 				$eFilesRemoved->save();
 
-				// done?
-				$oFile->finishTagging();
 
 
 				$oStat = new StatModel();
@@ -62,7 +88,7 @@ class ImaggaProcessor extends BaseController {
 		}
 		catch(Exception $ex)
 		{
-			//print_r($ex);
+			print_r($ex);
 			$eProcessingFailed = new ErrorModel();
 			$eProcessingFailed->location = "imagga processor";
 			$eProcessingFailed->message = (string)$ex;

@@ -103,7 +103,7 @@ class Auto extends BaseController {
 								}
 								break;
 							case "imagga":
-								$qi->snooze(3);
+								$qi->snooze(0);
 								$qi->save();
 								if(ImaggaProcessor::process($qi->file_id))
 								{
