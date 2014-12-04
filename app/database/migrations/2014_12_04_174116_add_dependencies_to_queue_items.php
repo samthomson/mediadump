@@ -27,8 +27,7 @@ class AddDependenciesToQueueItems extends Migration {
 	{
 		Schema::table('queue', function(Blueprint $table)
 		{
-			//
+    		$table->dropColumn('after');
 		});
 	}
-
 }
