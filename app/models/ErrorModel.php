@@ -13,5 +13,10 @@ class ErrorModel extends Eloquent {
 
 	protected $table = 'errors';	
 
-
+	/* overloads */
+	public function save(array $options = array())
+	{
+		$this->datetime = date("Y-m-d H:i:s");
+	   	parent::save($options);
+	}
 }

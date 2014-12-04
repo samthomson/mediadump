@@ -64,7 +64,7 @@ class ImaggaProcessor extends BaseController {
 		{
 			//print_r($ex);
 			$eProcessingFailed = new ErrorModel();
-			$eProcessingFailed->name = "error - imagga processor";
+			$eProcessingFailed->location = "imagga processor";
 			$eProcessingFailed->message = (string)$ex;
 			$eProcessingFailed->value = "0";
 			$eProcessingFailed->save();

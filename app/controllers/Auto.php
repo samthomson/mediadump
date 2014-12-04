@@ -75,7 +75,8 @@ class Auto extends BaseController {
 				////echo "process queue<br/>";
 				$iProcessLimit = self::iJpegsThisCycle();
 
-				while(self::bTimeForTwoJpegs($mtProcessQueueStart) || $cProcessedThisCycle === 0)
+				//while(self::bTimeForTwoJpegs($mtProcessQueueStart) || $cProcessedThisCycle === 0)
+				while($cProcessedThisCycle === 0) // just one (debug)
 				{
 					$qi = QueueModel::getSingleItem();
 
@@ -148,6 +149,7 @@ class Auto extends BaseController {
 				}
 			}catch(Exception $eTimedOut)
 			{
+				echo $eTimedOut;
 			}
 			$oStat = new StatModel();
 			$oStat->name = "jpeg processor run count";
