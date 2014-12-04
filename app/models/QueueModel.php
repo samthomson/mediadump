@@ -14,7 +14,11 @@ class QueueModel extends Eloquent {
 	public static function getSingleItem()
 	{
 		// get items that haven't been started yet and are not scheduled in the future
-		$oResults = QueueModel::where("date_from", "<", date('Y-m-d H:i:s'))->orderBy("date_from", "asc")->take(1)->get();
+		$oResults = QueueModel::where("date_from", "<", date('Y-m-d H:i:s'))
+		->where("after", ">", -1)
+		->orderBy("date_from", "asc")
+		->take(1)
+		->get();
 		if(count($oResults) > 0)
 			return $oResults[0];
 
@@ -23,7 +27,9 @@ class QueueModel extends Eloquent {
 	public static function getItems()
 	{
 		// get items that haven't been started yet and are not scheduled in the future
-		return QueueModel::where("date_from", "<", date('Y-m-d H:i:s'))->get();
+		return QueueModel::where("date_from", "<", date('Y-m-d H:i:s'))
+		->where("after", ">", -1)
+		->get();
 	}
 	public function snooze($iMinutes = 1)
 	{
