@@ -155,11 +155,20 @@ class Auto extends BaseController {
 			{
 				case "jpg":
 				case "jpeg":
-					$QueueItem = new QueueModel();
-					$QueueItem->file_id = $file->id;
-					$QueueItem->processor = "jpeg";
-					$QueueItem->date_from = date('Y-m-d H:i:s');
-					$QueueItem->save();
+					// jpeg processor
+					$qiJpegQueue = new QueueModel();
+					$qiJpegQueue->file_id = $file->id;
+					$qiJpegQueue->processor = "jpeg";
+					$qiJpegQueue->date_from = date('Y-m-d H:i:s');
+					$qiJpegQueue->save();
+
+					// imagga processor afterwards
+					$qiImagga = new QueueModel();
+					$qiImagga->file_id = $file->id;
+					$qiImagga->processor = "imagga";
+					$qiImagga->date_from = date('Y-m-d H:i:s');
+					$qiImagga->after = $qiJpegQueue->id;
+					$qiImagga->save();
 					break;
 			}	
 		}
