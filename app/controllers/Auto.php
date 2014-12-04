@@ -48,13 +48,14 @@ class Auto extends BaseController {
 			$this->addFilesToSystem($saNewFilesForSystem);
 			//$this->removeFilesFromSystem($saLostFilesFromSystem);
 			// check for differences
-
-			$eFilesFound = new EventModel();
-			$eFilesFound->name = "auto files checker ran";
-			$eFilesFound->save();
+			
 
 			if(count($saNewFilesForSystem))
 			{
+				$eFilesFound = new EventModel();
+				$eFilesFound->name = "auto files checker ran";
+				$eFilesFound->save();
+
 				$oStat = new StatModel();
 				$oStat->name = "auth files found";
 				$oStat->group = "auto";
