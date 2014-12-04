@@ -180,28 +180,28 @@ class JPEGProcessor extends BaseController {
 
 				array_push($aaThumbPaths, array(
 					"size" => "large",
-					"path" => self::thumbPath("large").$oFile->hash.".jpg",
+					"path" => Helper::thumbPath("large").$oFile->hash.".jpg",
 					"width" => null,
 					"height" => 1200,
 					"aspectRatio" => true
 				));
 				array_push($aaThumbPaths, array(
 					"size" => "medium",
-					"path" => self::thumbPath("medium").$oFile->hash.".jpg",
+					"path" => Helper::thumbPath("medium").$oFile->hash.".jpg",
 					"width" => null,
 					"height" => 300,
 					"aspectRatio" => true
 				));
 				array_push($aaThumbPaths, array(
 					"size" => "small",
-					"path" => self::thumbPath("small").$oFile->hash.".jpg",
+					"path" => Helper::thumbPath("small").$oFile->hash.".jpg",
 					"width" => 125,
 					"height" => 125,
 					"aspectRatio" => false
 				));
 				array_push($aaThumbPaths, array(
 					"size" => "icon",
-					"path" => self::thumbPath("icon").$oFile->hash.".jpg",
+					"path" => Helper::thumbPath("icon").$oFile->hash.".jpg",
 					"width" => 32,
 					"height" => 32,
 					"aspectRatio" => false
@@ -292,17 +292,7 @@ class JPEGProcessor extends BaseController {
 			$eProcessingFailed->save();
 		}
 	}
-	private static function thumbPath($sSubFolder)
-	{
-
-		$sPath = public_path().DIRECTORY_SEPARATOR."thumbs".DIRECTORY_SEPARATOR;
-
-		if(isset($sSubFolder))
-			if($sSubFolder !== "")
-				$sPath .= $sSubFolder.DIRECTORY_SEPARATOR;
-
-		return $sPath;
-	}
+	
 
 	private static function getGps($exifCoord, $hemi) {
 
