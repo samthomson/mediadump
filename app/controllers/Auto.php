@@ -122,7 +122,7 @@ class Auto extends BaseController {
 								}
 								break;
 							default:
-								$qi->snooze(1440);
+								$qi->snooze(1440); // snooze one day
 								$qi->save();
 								break;
 						}
@@ -151,13 +151,17 @@ class Auto extends BaseController {
 
 			$sExt = substr(strtolower($sFilePath), strrpos(strtolower($sFilePath), '.')+1);
 			
-			if($sExt === "jpg" || $sExt === "jpg"){
-				$QueueItem = new QueueModel();
-				$QueueItem->file_id = $file->id;
-				$QueueItem->processor = "jpeg";
-				$QueueItem->date_from = date('Y-m-d H:i:s');
-				$QueueItem->save();
-			}			
+			switch($sExt)
+			{
+				case "jpg":
+				case "jpeg":
+					$QueueItem = new QueueModel();
+					$QueueItem->file_id = $file->id;
+					$QueueItem->processor = "jpeg";
+					$QueueItem->date_from = date('Y-m-d H:i:s');
+					$QueueItem->save();
+					break;
+			}	
 		}
 	}
 
