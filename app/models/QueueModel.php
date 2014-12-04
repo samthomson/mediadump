@@ -29,4 +29,13 @@ class QueueModel extends Eloquent {
 	{
 		$this->date_from = date('Y-m-d H:i:s', strtotime("+$iMinutes min"));
 	}
+	public function done()
+	{
+		// set dependents as done
+		foreach (QueueModel::where("after", "=", $this->id) as $qiDep) {
+			$qiDep->after = -1; // default
+		}
+		// remove from system
+		$this->delete();
+	}
 }

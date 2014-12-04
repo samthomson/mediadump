@@ -88,7 +88,7 @@ class Auto extends BaseController {
 								$qi->save();
 								if(JPEGProcessor::process($qi->file_id))
 								{
-									QueueModel::destroy($qi->id);
+									$qi->done();
 								}else{
 									$eFilesFound = new EventModel();
 									$eFilesFound->name = "auto processor";
@@ -108,7 +108,7 @@ class Auto extends BaseController {
 								$qi->save();
 								if(DeleteProcessor::process($qi->file_id))
 								{
-									QueueModel::destroy($qi->id);
+									$qi->done();
 
 									$eFilesFound = new EventModel();
 									$eFilesFound->name = "auto processor";
