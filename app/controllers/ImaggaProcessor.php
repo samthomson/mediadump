@@ -23,21 +23,7 @@ class ImaggaProcessor extends BaseController {
 				// make request
 				$service_url = 'http://api.imagga.com/v1/tagging?url='.$sWebThumbPath;
 
-				/*
-				$curl = curl_init($service_url);
-				curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-				curl_setopt($curl, CURLOPT_USERPWD, "acc_19db373c6879755:d397f1a6ab0323a3a7a46ebf0a5af625");
-				curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-				curl_setopt($curl, CURLOPT_POST, true);
-				////curl_setopt($curl, CURLOPT_POSTFIELDS, $curl_post_data);
-				$curl_response = curl_exec($curl);
-				$response = json_decode($curl_response);
-				curl_close($curl);
-
-				var_dump($response);
-
-*/
-
+				
 				$context = stream_context_create(array(
 				    'http' => array(
 				        'header'  => "Authorization: Basic " . base64_encode("acc_19db373c6879755:d397f1a6ab0323a3a7a46ebf0a5af625")
@@ -50,15 +36,15 @@ class ImaggaProcessor extends BaseController {
 				//print_r($oObj);
 				
 				if(isset($oObj->results))
+				{
 					foreach($oObj->results as $oImageResult)
 					{
 						//print_r($oObj->results);
 						if(isset($oImageResult->tags))
+						{
 							foreach($oImageResult->tags as $oTag){
 								$oTag = (array)$oTag;
-								print_r($oTag);
-
-
+								
 								$oNewTag = new TagModel();
 								$oNewTag->file_id = $iFileID;
 								$oNewTag->type = "imagga";
@@ -68,7 +54,9 @@ class ImaggaProcessor extends BaseController {
 								$cTagsAdded++;
 
 							}
-					}					
+						}
+					}
+				}					
 				
 
 				// for each tag back, add to db

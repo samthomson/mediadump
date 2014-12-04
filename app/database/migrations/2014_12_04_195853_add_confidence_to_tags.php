@@ -14,7 +14,7 @@ class AddConfidenceToTags extends Migration {
 	{
 		Schema::table('tags', function(Blueprint $table)
 		{
-			$table->tinyInteger('tags')->default(50); 
+			$table->tinyInteger('confidence')->default(50); 
 		});
 	}
 
