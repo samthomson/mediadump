@@ -15,7 +15,7 @@ class QueueModel extends Eloquent {
 	{
 		// get items that haven't been started yet and are not scheduled in the future
 		$oResults = QueueModel::where("date_from", "<", date('Y-m-d H:i:s'))
-		->where("after", ">", -1)
+		->where("after", "=", -1)
 		->orderBy("date_from", "asc")
 		->take(1)
 		->get();
@@ -28,7 +28,7 @@ class QueueModel extends Eloquent {
 	{
 		// get items that haven't been started yet and are not scheduled in the future
 		return QueueModel::where("date_from", "<", date('Y-m-d H:i:s'))
-		->where("after", ">", -1)
+		->where("after", "=", -1)
 		->get();
 	}
 	public function snooze($iMinutes = 1)

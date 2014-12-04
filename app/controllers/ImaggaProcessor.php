@@ -13,8 +13,8 @@ class ImaggaProcessor extends BaseController {
 			$oFile = FileModel::find($iFileID);
 
 
-
-			if(file_exists(Helper::thumbPath("large").$oFile->hash.".jpg"))
+			$sThumbPath = Helper::thumbPath("large").$oFile->hash.".jpg";
+			if(file_exists($sThumbPath))
 			{
 				// what is the web url?
 
@@ -53,8 +53,8 @@ class ImaggaProcessor extends BaseController {
 				return false;
 			}else{
 				$eProcessingFailed = new ErrorModel();
-				$eProcessingFailed->name = "error - imagga processor";
-				$eProcessingFailed->message = "original file existed b";
+				$eProcessingFailed->location = "imagga processor";
+				$eProcessingFailed->message = "no thumb to send to imagga at: $sThumbPath";
 				$eProcessingFailed->value = "0";
 				$eProcessingFailed->save();
 				return false;
