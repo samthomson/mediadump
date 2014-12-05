@@ -32,69 +32,89 @@ class ImaggaProcessor extends BaseController {
 
 				$jsonurl = $service_url;
 				$json = file_get_contents($jsonurl, false, $context);
-				$oObj = json_decode($json);
-				//print_r($oObj);
-				
-				if(isset($oObj->results))
+
+
+				list($version,$status_code,$msg) = explode(' ',$http_response_header[0], 3);
+
+				// Check the HTTP Status code
+				switch($status_code)
 				{
-					foreach($oObj->results as $oImageResult)
-					{
-						//print_r($oObj->results);
-						if(isset($oImageResult->tags))
+				    case 200:
+						$oObj = json_decode($json);
+
+						if(isset($oObj->results))
 						{
-							foreach($oImageResult->tags as $oTag){
-								$oTag = (array)$oTag;
-								
-								$oNewTag = new TagModel();
-								$oNewTag->file_id = $iFileID;
-								$oNewTag->type = "imagga";
-								$oNewTag->setValue($oTag["tag"]);
-								$oNewTag->confidence = $oTag["confidence"];
-								$oNewTag->save();
-								$cTagsAdded++;
+							foreach($oObj->results as $oImageResult)
+							{
+								if(isset($oImageResult->tags))
+								{
+									foreach($oImageResult->tags as $oTag){
+										$oTag = (array)$oTag;
+										
+										$oNewTag = new TagModel();
+										$oNewTag->file_id = $iFileID;
+										$oNewTag->type = "imagga";
+										$oNewTag->setValue($oTag["tag"]);
+										$oNewTag->confidence = $oTag["confidence"];
+										$oNewTag->save();
+										$cTagsAdded++;
+									}
+								}
+							}				
+						
 
-							}
-						}
-					}
-				}					
+							// for each tag back, add to db
+							//$cTagsAdded++;
+
+							//
+							// log how many tags were added
+							//
+							$eFilesRemoved = new EventModel();
+							$eFilesRemoved->name = "auto imagga processor";
+							$eFilesRemoved->message = "prcoessed a file";
+							$eFilesRemoved->value = 1;
+							$eFilesRemoved->save();
+
+
+
+							$oStat = new StatModel();
+							$oStat->name = "auto tags added";
+							$oStat->group = "auto";
+							$oStat->value = $cTagsAdded;
+							$oStat->save();
+
+							$oStat = new StatModel();
+							$oStat->name = "imagga proccess time";
+							$oStat->group = "auto";
+							$oStat->value = (microtime(true) - $mtStart)*1000;
+							$oStat->save();
+						}	
+
+
+
+						return "ok";
+				        break;
+				    default:
+				         $error_status="Undocumented error: " . $status_code;
+				         return "throttle";
+				         break;
+				}
+
+
+
 				
-
-				// for each tag back, add to db
-				//$cTagsAdded++;
-
-				//
-				// log how many tags were added
-				//
-				$eFilesRemoved = new EventModel();
-				$eFilesRemoved->name = "auto imagga processor";
-				$eFilesRemoved->message = "prcoessed a file";
-				$eFilesRemoved->value = 1;
-				$eFilesRemoved->save();
+				//print_r($oObj);
 
 
-
-				$oStat = new StatModel();
-				$oStat->name = "auto tags added";
-				$oStat->group = "auto";
-				$oStat->value = $cTagsAdded;
-				$oStat->save();
-
-				$oStat = new StatModel();
-				$oStat->name = "imagga proccess time";
-				$oStat->group = "auto";
-				$oStat->value = (microtime(true) - $mtStart)*1000;
-				$oStat->save();
-
-
-
-				return true;
+				
+				
 			}else{
 				$eProcessingFailed = new ErrorModel();
 				$eProcessingFailed->location = "imagga processor";
 				$eProcessingFailed->message = "no thumb to send to imagga at: $sThumbPath";
 				$eProcessingFailed->value = "0";
 				$eProcessingFailed->save();
-				return false;
+				return "fail";
 			}
 		}
 		catch(Exception $ex)
@@ -105,7 +125,7 @@ class ImaggaProcessor extends BaseController {
 			$eProcessingFailed->message = (string)$ex;
 			$eProcessingFailed->value = "0";
 			$eProcessingFailed->save();
-			return false;
+			return "fail";
 		}
 	}
 }
