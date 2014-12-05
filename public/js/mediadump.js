@@ -22,11 +22,10 @@ $( document ).ready(function() {
     $('#search-input').tags({
     	promptText: "search..",
     	afterAddingTag: function(sTag){
-    		console.log("tag added: " + sTag);
     		addQuery(sTag, sTag);
     	},
     	afterDeletingTag: function(sTag){
-    		console.log("tag removed: " + sTag);
+    		removeQuery(sTag);
     	}
     });
 });
@@ -193,6 +192,19 @@ function addQuery(sDisplay, sValue){
 	performSearch();
 	queryChange();
 }
+function removeQuery(sDisplayTag){
+
+	// find the query with matching display and remove it
+	oaQueries.forEach(function(oQuery, cIndex){
+		if(oQuery.display == sDisplayTag)
+		{
+			oaQueries.splice(cIndex, 1);
+		}
+	});
+	
+	performSearch();
+	queryChange();
+}
 
 /*
 
@@ -284,7 +296,7 @@ function evaluateBrowseOrResults(){
 }
 function queryChange(){
 	// if there are queries show thumb results
-	if(oaQueries.length > 0){
+	if(oaQueries.length > 0){		
 		$("#browse_tree").hide();
 		$("#thumb_results").show();
 	}else{
