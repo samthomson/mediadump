@@ -89,6 +89,7 @@ function urlFromHash(sMode, oObject, sExt){
 }
 function sFilterQuery(sQuery){
 	return sQuery.toLowerCase();
+	return encodeURIComponent(sQuery.toLowerCase());
 }
 /*
 
@@ -103,7 +104,7 @@ function renderTree(oTree)
 
 		var sSingleTreeItem = "";
 
-		sSingleTreeItem +='<a class="tree_link col-xs-6 col-sm-4" href="javascript: setSolitaryQuery(\'' + oLink.value + '\');" alt="' + oLink.value + '" title="' + oLink.value + '">';
+		sSingleTreeItem +='<a class="tree_link col-xs-6 col-sm-4" href="javascript: setSolitaryQuery(\'' + encodeURIComponent(oLink.value) + '\');" alt="' + oLink.value + '" title="' + oLink.value + '">';
 
 		sSingleTreeItem +='<div class="tree_image_container">';
 		sSingleTreeItem +='<img src="' + urlFromHash('medium', oLink, '') + '"/>';
@@ -126,6 +127,7 @@ UI EVENTS / LOGIC
 
 */
 function setSolitaryQuery(sQuery){
+	console.log("set query: " + sQuery);
 	saQueries = [sFilterQuery(sQuery)];
 	console.log(saQueries);
 	performSearch();
