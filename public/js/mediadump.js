@@ -1,7 +1,9 @@
 
 // object array containing files from tree request
-var oTree = Array();
+var oTree = [];
 var sCdnURL = "";
+
+var saQueries = [];
 
 $( document ).ready(function() {
     // get tree
