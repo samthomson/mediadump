@@ -1,7 +1,10 @@
 
-
-var sCdnURL = "";
+/* UI VARS */
 var bLoading = false;
+var sViewMode = "browse";
+
+/* logic vars */
+var sCdnURL = "";
 
 var oaQueries = [];
 
@@ -127,7 +130,7 @@ function renderTree()
 
 /*
 
-UI EVENTS / LOGIC
+LOGIC
 
 */
 function setSolitaryQuery(sDisplay, sValue){
@@ -140,6 +143,13 @@ function setSolitaryQuery(sDisplay, sValue){
 	oaQueries.push(aaQuery);
 	performSearch();
 }
+
+/*
+
+UI EVENTS
+
+*/
+
 function setLoading(bLoadingNew){	
 	if(bLoading != bLoadingNew){
 		bLoading = bLoadingNew;
@@ -153,6 +163,42 @@ function updateLoading(){
 		$("#loading").hide();
 	}
 }
+
+function setLoading(bLoadingNew){	
+	if(bLoading != bLoadingNew){
+		bLoading = bLoadingNew;
+		updateLoading();
+	}	
+}
+function updateLoading(){
+	if(bLoading){
+		$("#loading").show();
+	}else{
+		$("#loading").hide();
+	}
+}
+
+function setViewMode(sNewViewMode){	
+	if(sViewMode != sNewViewMode){
+		sViewMode = sNewViewMode;
+		updateViewMode();
+	}	
+}
+function updateViewMode(){
+	switch(sViewMode)
+	{
+		case "results":
+			break;
+		case "map":
+			break;
+		// browse
+		default:
+			break;
+
+	}
+}
+
+sViewMode
 
 /*
 
