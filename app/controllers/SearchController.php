@@ -143,4 +143,9 @@ class SearchController extends BaseController {
 
 		return Response::json($soFiles);
 	}
+
+	public static function suggest()
+	{
+		return Response::json(CacheController::getSearchSuggestions(Input::get("match")));
+	}
 }

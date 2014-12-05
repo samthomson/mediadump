@@ -10,6 +10,18 @@ class CacheController extends BaseController {
 	}
 	public static function getSearchSuggestions($sTerm)
 	{
-		
+		$soFiles = DB::table("files")
+		->join("tags", function($join)
+			{
+				$join->on("files.id", "=", "tags.file_id");
+			})	
+		->where("tags.value", "LIKE", "%$sTerm%")->distinct("value")
+		->orderBy("tags.confidence")
+		->groupBy("tags.value")
+        ->select("files.id", "files.hash", "tags.value")
+		->take(10)
+		->get();
+
+		return $soFiles;
 	}
 }
