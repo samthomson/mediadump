@@ -2,7 +2,7 @@
 
 var sCdnURL = "";
 
-var saQueries = [];
+var oaQueries = [];
 
 var oTree = [];
 
@@ -29,8 +29,8 @@ function getTree(){
 }
 function performSearch()
 {
-	if(saQueries.length > 0){
-		$.get("/api/search", {query:saQueries[0]}, function(results){
+	if(oaQueries.length > 0){
+		$.get("/api/search", {query:oaQueries[0].value}, function(results){
 			console.log(results.results);
 			console.log(results.info);
 			oResults = results.results;
@@ -102,14 +102,19 @@ function renderTree(oTree)
 
 	oTree.forEach(function(oLink){
 
+		console.log("olink: " + oLink);
+
 		var sSingleTreeItem = "";
 
-		sSingleTreeItem +='<a class="tree_link col-xs-6 col-sm-4" href="javascript: setSolitaryQuery(\'' + encodeURIComponent(oLink.value) + '\');" alt="' + oLink.value + '" title="' + oLink.value + '">';
+		var sDisplay = folderFromUniqueDir(oLink.value);
+		var sValue = oLink.value;
+
+		sSingleTreeItem +='<a class="tree_link col-xs-6 col-sm-4" href="javascript: setSolitaryQuery(\'' + sDisplay + '\', \'' + sValue + '\');" alt="' + sDisplay + '" title="' + sDisplay + '">';
 
 		sSingleTreeItem +='<div class="tree_image_container">';
 		sSingleTreeItem +='<img src="' + urlFromHash('medium', oLink, '') + '"/>';
 		sSingleTreeItem +='</div>';
-		sSingleTreeItem +='<span class="tree_link_title">' + folderFromUniqueDir(oLink.value) + '</span>';
+		sSingleTreeItem +='<span class="tree_link_title">' + sDisplay + '</span>';
 
 
 		sSingleTreeItem +='</a>';
@@ -126,9 +131,14 @@ function renderTree(oTree)
 UI EVENTS / LOGIC
 
 */
-function setSolitaryQuery(sQuery){
-	console.log("set query: " + sQuery);
-	saQueries = [sFilterQuery(sQuery)];
-	console.log(saQueries);
+function setSolitaryQuery(sDisplay, sValue){
+	var aaQuery = {};
+	aaQuery["display"] = sDisplay;
+	aaQuery["value"] = sValue;
+
+	console.log("set query: " + aaQuery);
+	oaQueries = Array();
+	oaQueries.push(aaQuery);
+	console.log(oaQueries);
 	performSearch();
 }
