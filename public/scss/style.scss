@@ -166,14 +166,14 @@ layout parts
 	font-size: xx-large;
 	z-index: 50;
 	color:$media_dump_colour;
-
+	display:none;
+	
     width:200px;
     height:50px;
     position:absolute;
     left:50%;
     top:40%;
     margin:-25px 0 0 -100px;
-
 }
 
 #lightbox{

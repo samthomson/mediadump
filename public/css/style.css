@@ -137,6 +137,7 @@ layout parts
   font-size: xx-large;
   z-index: 50;
   color: #e74c3c;
+  display: none;
   width: 200px;
   height: 50px;
   position: absolute;

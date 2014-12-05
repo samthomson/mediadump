@@ -1,6 +1,7 @@
 
 
 var sCdnURL = "";
+var bLoading = false;
 
 var oaQueries = [];
 
@@ -31,11 +32,11 @@ function getTree(){
 function performSearch()
 {
 	if(oaQueries.length > 0){
+		setLoading(true);
 		$.get("/api/search", {query:oaQueries[0].value}, function(results){
-
 			oResults = results.results;
 			oResultsData = results.info;
-			renderTree(oTree);
+			setLoading(false);
 		});
 	}
 }
@@ -139,7 +140,19 @@ function setSolitaryQuery(sDisplay, sValue){
 	oaQueries.push(aaQuery);
 	performSearch();
 }
-
+function setLoading(bLoadingNew){	
+	if(bLoading != bLoadingNew){
+		bLoading = bLoadingNew;
+		updateLoading();
+	}	
+}
+function updateLoading(){
+	if(bLoading){
+		$("#loading").show();
+	}else{
+		$("#loading").hide();
+	}
+}
 
 /*
 
