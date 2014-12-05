@@ -26,7 +26,8 @@ $( document ).ready(function() {
     	},
     	afterDeletingTag: function(sTag){
     		removeQuery(sTag);
-    	}
+    	},
+    	tagClass: "search-tag"
     });
 });
 

@@ -413,3 +413,5 @@ ul.nav li a.active {
 .flowplayer .fp-embed{background: url('s.png') no-repeat top left; background-position: -1079px 0px; width: 24px; height: 18px;} 
 .flowplayer .fp-fullscreen{background: url('s.png') no-repeat top left;  background-position: -29px 0px; width: 24px; height: 24px;} 
 .flowplayer.is-fullscreen .fp-fullscreen{background: url('s.png') no-repeat top left;  background-position: 0px 0px; width: 24px; height: 24px;} */
+.search-tag {
+  background: #e74c3c; }
