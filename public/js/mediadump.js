@@ -27,7 +27,7 @@ function renderTree(oTree)
 		sSingleTreeItem +='<div class="tree_link col-xs-6 col-sm-4" ng-click="do_default_query(' + oLink.value + ')" alt="' + oLink.value + '" title="' + oLink.value + '">';
 
 		sSingleTreeItem +='<div class="tree_image_container">';
-		sSingleTreeItem +='<img ng-src="' + urlFromHash('medium', oLink, '') + '"/>';
+		sSingleTreeItem +='<img src="' + urlFromHash('medium', oLink, '') + '"/>';
 		sSingleTreeItem +='</div>';
 		sSingleTreeItem +='<span class="tree_link_title">' + folderFromUniqueDir(oLink.value) + '</span>';
 
@@ -44,6 +44,17 @@ function renderTree(oTree)
 
 function folderFromUniqueDir(sDir){
 	var sa = sDir.split("/");
+		var iIndex = sa.length - 1;
+		if(iIndex < 0)
+			iIndex = 0;
+
+		if(sa.length> 0)
+			sDir = sa[iIndex];
+		else
+			sDir = "";
+
+
+	sa = sDir.split("\\");
 		var iIndex = sa.length - 1;
 		if(iIndex < 0)
 			iIndex = 0;
