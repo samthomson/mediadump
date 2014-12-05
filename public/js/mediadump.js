@@ -1,20 +1,22 @@
 
 // object array containing files from tree request
-var oTree = [];
+var oTree = Array();
+var sCdnURL = "";
 
 $( document ).ready(function() {
     // get tree
-
+    getTree();
     // get header vars
 });
 
 function getTree(){
 	$.get("/api/tree", function(results){
-		oTree = results.data;
-		renderTree();
+		console.log(results);
+		oTree = results;
+		renderTree(oTree);
 	});
 }
-function renderTree()
+function renderTree(oTree)
 {
 	var htmlTree = "";
 
@@ -37,4 +39,37 @@ function renderTree()
 	});
 
 	$("#browse_tree").html(htmlTree);
+}
+
+
+function folderFromUniqueDir(sDir){
+	var sa = sDir.split("/");
+		var iIndex = sa.length - 1;
+		if(iIndex < 0)
+			iIndex = 0;
+
+		if(sa.length> 0)
+			return sa[iIndex];
+		else
+			return "";
+}
+
+function urlFromHash(sMode, oObject, sExt){
+	if(typeof oObject === "undefined")
+			return "";
+		switch(sMode){
+			case 'lightbox':
+				return sCdnURL + '/thumbs/large/'+oObject.hash+'.jpg';
+				break;
+			case 'icon':
+				return sCdnURL + '/thumbs/icon/'+oObject.hash+'.jpg';
+				break;
+			case 'medium':
+				return sCdnURL + '/thumbs/medium/'+oObject.hash+'.jpg';
+				break;
+			case 'results':
+				var sThumbSize = ($scope.search_input_mode === "browse") ? "small" : "small";
+				return sCdnURL + '/thumbs/' + sThumbSize + '/'+oObject.hash+'.jpg';
+				break;
+		}
 }
