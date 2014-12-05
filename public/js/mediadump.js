@@ -19,7 +19,16 @@ $( document ).ready(function() {
     getTree();
     // get header vars
 
-    $('#search-input').tag();
+    $('#search-input').tags({
+    	promptText: "search..",
+    	afterAddingTag: function(sTag){
+    		console.log("tag added: " + sTag);
+    		addQuery(sTag, sTag);
+    	},
+    	afterDeletingTag: function(sTag){
+    		console.log("tag removed: " + sTag);
+    	}
+    });
 });
 
 /*
@@ -169,6 +178,17 @@ function setSolitaryQuery(sDisplay, sValue){
 	aaQuery["value"] = sValue;
 	
 	oaQueries = Array();
+	oaQueries.push(aaQuery);
+	performSearch();
+	queryChange();
+}
+function addQuery(sDisplay, sValue){
+
+	// called as a result of tag add event
+	var aaQuery = {};
+	aaQuery["display"] = sDisplay;
+	aaQuery["value"] = sValue;
+	
 	oaQueries.push(aaQuery);
 	performSearch();
 	queryChange();
