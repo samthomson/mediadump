@@ -46,8 +46,8 @@
 							<!-- Collect the nav links, forms, and other content for toggling -->
 							<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 								<ul class="nav navbar-nav">
-									<li><a ng-click="setSearchInputMode('browse')" ng-class="{true:'active'}[search_input_mode === 'browse']">Browse</a></li>
-									<li><a ng-click="setSearchInputMode('map')" ng-class="{true:'active'}[search_input_mode === 'map']">Map</a></li>
+									<li><a href="javascript:setMode('browse');">Browse</a></li>
+									<li><a href="javascript:setMode('map');">Map</a></li>
 									<!--
 									<li><a ng-click="setSearchInputMode('shuffle')" ng-class="{true:'active'}[search_input_mode === 'shuffle']">Shuffle</a></li>
 									-->
@@ -105,9 +105,10 @@
 					<div id="loading"><i class="glyphicon glyphicon-refresh spin"></i> loading</div>
 
 					<!-- thumb results (grid search) -->
-					<div id="thumb_results" ng-show="search_mode === 'search' && query !== ''" justified>
+					<div id="thumb_results">
+						<!--
 						<a class="thumb_result_link" ng-repeat="result in results" ng-mousedown="preload_thumb($index)" ng-click="thumb_click($index)" my-repeat-directive><img ng-src="{{urlFromHash('results', result, '')}}" id="{{result.id}}"/></a>
-
+						-->
 					</div>
 
 					<!-- browse -->

@@ -1,7 +1,7 @@
 
 /* UI VARS */
 var bLoading = false;
-var sViewMode = "browse";
+var sSearchMode = "browse";
 
 /* logic vars */
 var sCdnURL = "";
@@ -40,6 +40,8 @@ function performSearch()
 			oResults = results.results;
 			oResultsData = results.info;
 			setLoading(false);
+
+			renderResults();
 		});
 	}
 }
@@ -85,9 +87,8 @@ function urlFromHash(sMode, oObject, sExt){
 			case 'medium':
 				return sCdnURL + '/thumbs/medium/'+oObject.hash+'.jpg';
 				break;
-			case 'results':
-				var sThumbSize = ($scope.search_input_mode === "browse") ? "small" : "small";
-				return sCdnURL + '/thumbs/' + sThumbSize + '/'+oObject.hash+'.jpg';
+			case 'small':
+				return sCdnURL + '/thumbs/small/'+oObject.hash+'.jpg';
 				break;
 		}
 }
@@ -128,6 +129,32 @@ function renderTree()
 	$("#browse_tree").html(htmlTree);
 }
 
+function renderResults(){
+
+	var htmlThumbs = "";
+
+	if(oResults.length > 0){
+		// there are results, display them
+		oResults.forEach(function(oFile, cIndex){
+			var sSingleFileItem = "";
+
+			sSingleFileItem +='<a class="thumb_result_link" mousedown="preload_thumb('+cIndex+')" href="javascript:thumb_click('+cIndex+');">';
+
+			sSingleFileItem +='<div class="tree_image_container">';
+			sSingleFileItem +='<img src="' + urlFromHash('small', oFile, '') + '" id="' + oFile.id + '"/>';
+
+
+			sSingleFileItem +='</a>';
+
+			htmlThumbs += sSingleFileItem;
+		});
+	}else{
+		// no results
+		htmlThumbs = "no results :(";
+	}
+	$("#thumb_results").html(htmlThumbs)
+}
+
 /*
 
 LOGIC
@@ -146,7 +173,7 @@ function setSolitaryQuery(sDisplay, sValue){
 
 /*
 
-UI EVENTS
+MODEL EVENTS
 
 */
 
@@ -178,27 +205,74 @@ function updateLoading(){
 	}
 }
 
-function setViewMode(sNewViewMode){	
-	if(sViewMode != sNewViewMode){
-		sViewMode = sNewViewMode;
-		updateViewMode();
+function setSearchMode(sNewSearchMode){	
+	if(sSearchMode != sNewSearchMode){
+		sSearchMode = sNewSearchMode;
+		updateSearchMode();
 	}	
 }
-function updateViewMode(){
-	switch(sViewMode)
+function updateSearchMode(){
+	// clear previous
+	$("#browse_tree").hide();
+	$("#thumb_results").hide();
+
+	$("search_map").html('');
+	$("thumb_results").html('');
+
+	switch(sSearchMode)
 	{
-		case "results":
-			break;
 		case "map":
+			$(".left_position").width("45%");
+			$("#thumb_results").show();
+			break;
+		default:
+			$(".left_position").width("0%");
+			$("#results").show();
 			break;
 		// browse
 		default:
+			$(".left_position").width("0%");
+			$("#browse_tree").show();
 			break;
 
 	}
 }
+function evaluateBrowseOrResults(){
+	// if we're on browse mode either we show nav tree or thumb results if there are any
+	if(sSearchMode == "browse"){
+		$(".left_position").width("0%");
+		$("#thumb_results").show();
 
-sViewMode
+
+		if(oaQueries.length > 0){
+			// queries, render results outcome
+		}else{
+			// no queries, show browse ui
+			//$("#thumb_results").hide();
+			//$("#browse_tree").show();
+		}
+
+	}else{
+		// map
+		$(".left_position").width("45%");
+		$("#thumb_results").show();
+
+	}
+}
+
+
+/*
+
+UI EVENTS
+
+*/
+function setMode(sMode){
+	if(sSearchMode != sMode)
+	{
+		sSearchMode = sMode;
+		evaluateBrowseOrResults();
+	}
+}
 
 /*
 

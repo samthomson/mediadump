@@ -105,7 +105,7 @@ Layout
 	position: absolute;
 	top:$i_header_height + $padding;
 	bottom:$i_footer_height;
-	left:$i_nav_width;
+	left:0px;
 	right:0px;
 	padding:$padding;
 	padding-left:0px;
@@ -167,7 +167,7 @@ layout parts
 	z-index: 50;
 	color:$media_dump_colour;
 	display:none;
-	
+
     width:200px;
     height:50px;
     position:absolute;
