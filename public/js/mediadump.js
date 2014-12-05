@@ -1,9 +1,14 @@
 
-// object array containing files from tree request
-var oTree = [];
+
 var sCdnURL = "";
 
 var saQueries = [];
+
+var oTree = [];
+
+var oResults = [];
+var oResultsData = [];
+
 
 $( document ).ready(function() {
     // get tree
@@ -11,39 +16,35 @@ $( document ).ready(function() {
     // get header vars
 });
 
+/*
+
+GET DATA
+
+*/
 function getTree(){
 	$.get("/api/tree", function(results){
-		console.log(results);
 		oTree = results;
 		renderTree(oTree);
 	});
 }
-function renderTree(oTree)
+function performSearch()
 {
-	var htmlTree = "";
-
-	oTree.forEach(function(oLink){
-
-		var sSingleTreeItem = "";
-
-		sSingleTreeItem +='<div class="tree_link col-xs-6 col-sm-4" ng-click="do_default_query(' + oLink.value + ')" alt="' + oLink.value + '" title="' + oLink.value + '">';
-
-		sSingleTreeItem +='<div class="tree_image_container">';
-		sSingleTreeItem +='<img src="' + urlFromHash('medium', oLink, '') + '"/>';
-		sSingleTreeItem +='</div>';
-		sSingleTreeItem +='<span class="tree_link_title">' + folderFromUniqueDir(oLink.value) + '</span>';
-
-
-		sSingleTreeItem +='</div>';
-
-
-		htmlTree += sSingleTreeItem;
-	});
-
-	$("#browse_tree").html(htmlTree);
+	if(saQueries.length > 0){
+		$.get("/api/search", {query:saQueries[0]}, function(results){
+			console.log(results.results);
+			console.log(results.info);
+			oResults = results.results;
+			oResultsData = results.info;
+			renderTree(oTree);
+		});
+	}
 }
 
+/*
 
+FORMAT DATA
+
+*/
 function folderFromUniqueDir(sDir){
 	var sa = sDir.split("/");
 		var iIndex = sa.length - 1;
@@ -85,4 +86,47 @@ function urlFromHash(sMode, oObject, sExt){
 				return sCdnURL + '/thumbs/' + sThumbSize + '/'+oObject.hash+'.jpg';
 				break;
 		}
+}
+function sFilterQuery(sQuery){
+	return sQuery.toLowerCase();
+}
+/*
+
+BUILD UI
+
+*/
+function renderTree(oTree)
+{
+	var htmlTree = "";
+
+	oTree.forEach(function(oLink){
+
+		var sSingleTreeItem = "";
+
+		sSingleTreeItem +='<a class="tree_link col-xs-6 col-sm-4" href="javascript: setSolitaryQuery(\'' + oLink.value + '\');" alt="' + oLink.value + '" title="' + oLink.value + '">';
+
+		sSingleTreeItem +='<div class="tree_image_container">';
+		sSingleTreeItem +='<img src="' + urlFromHash('medium', oLink, '') + '"/>';
+		sSingleTreeItem +='</div>';
+		sSingleTreeItem +='<span class="tree_link_title">' + folderFromUniqueDir(oLink.value) + '</span>';
+
+
+		sSingleTreeItem +='</a>';
+
+
+		htmlTree += sSingleTreeItem;
+	});
+
+	$("#browse_tree").html(htmlTree);
+}
+
+/*
+
+UI EVENTS / LOGIC
+
+*/
+function setSolitaryQuery(sQuery){
+	saQueries = [sFilterQuery(sQuery)];
+	console.log(saQueries);
+	performSearch();
 }
