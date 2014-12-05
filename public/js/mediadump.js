@@ -23,16 +23,16 @@ GET DATA
 */
 function getTree(){
 	$.get("/api/tree", function(results){
+		//oTree = $.parseJSON(results);
 		oTree = results;
-		renderTree(oTree);
+		renderTree();
 	});
 }
 function performSearch()
 {
 	if(oaQueries.length > 0){
 		$.get("/api/search", {query:oaQueries[0].value}, function(results){
-			console.log(results.results);
-			console.log(results.info);
+
 			oResults = results.results;
 			oResultsData = results.info;
 			renderTree(oTree);
@@ -89,25 +89,23 @@ function urlFromHash(sMode, oObject, sExt){
 }
 function sFilterQuery(sQuery){
 	return sQuery.toLowerCase();
-	return encodeURIComponent(sQuery.toLowerCase());
 }
 /*
 
 BUILD UI
 
 */
-function renderTree(oTree)
+function renderTree()
 {
 	var htmlTree = "";
 
-	oTree.forEach(function(oLink){
 
-		console.log("olink: " + oLink);
+	oTree.forEach(function(oLink){
 
 		var sSingleTreeItem = "";
 
-		var sDisplay = folderFromUniqueDir(oLink.value);
-		var sValue = oLink.value;
+		var sValue = sLinkSafeJSString(oLink.value);
+		var sDisplay = folderFromUniqueDir(sValue);
 
 		sSingleTreeItem +='<a class="tree_link col-xs-6 col-sm-4" href="javascript: setSolitaryQuery(\'' + sDisplay + '\', \'' + sValue + '\');" alt="' + sDisplay + '" title="' + sDisplay + '">';
 
@@ -132,13 +130,23 @@ UI EVENTS / LOGIC
 
 */
 function setSolitaryQuery(sDisplay, sValue){
+
 	var aaQuery = {};
 	aaQuery["display"] = sDisplay;
 	aaQuery["value"] = sValue;
-
-	console.log("set query: " + aaQuery);
+	
 	oaQueries = Array();
 	oaQueries.push(aaQuery);
-	console.log(oaQueries);
 	performSearch();
+}
+
+
+/*
+
+BOILERPLATE HELPER FUNCTIONS
+
+*/
+function sLinkSafeJSString(sString)
+{
+	return sString.replace(/[/\\*]/g, "\\\\");
 }
