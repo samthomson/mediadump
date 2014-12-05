@@ -46,6 +46,16 @@ App::missing(function($exception)
 Route::get('/test', function()
 {
 
+	// make search link from all unique tags
+	$oaUniqueTags = TagModel::where("type", "=", "imagga")
+	->groupBy("value")
+	->orderBy("confidence", "desc")
+	->get();
+
+	foreach($oaUniqueTags as $oObj) {
+		echo link_to('/#?query='.$oObj["value"], $oObj["value"]." (".$oObj["confidence"].")", array("target" => "_blank"), null)."<br/>";
+	}
+	/*
 	// get all files
 	$oFiles = FileModel::all();
 
@@ -74,4 +84,5 @@ Route::get('/test', function()
 		}
 	}
 	echo "queued $iQueued files for imagga";
+	*/
 });
