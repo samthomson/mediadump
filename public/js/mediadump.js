@@ -18,6 +18,8 @@ $( document ).ready(function() {
     // get tree
     getTree();
     // get header vars
+
+    $('#search-input').tag();
 });
 
 /*
