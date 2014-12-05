@@ -169,6 +169,7 @@ function setSolitaryQuery(sDisplay, sValue){
 	oaQueries = Array();
 	oaQueries.push(aaQuery);
 	performSearch();
+	queryChange();
 }
 
 /*
@@ -258,6 +259,18 @@ function evaluateBrowseOrResults(){
 		$("#thumb_results").show();
 
 	}
+}
+function queryChange(){
+	// if there are queries show thumb results
+	if(oaQueries.length > 0){
+		$("#browse_tree").hide();
+		$("#thumb_results").show();
+	}else{
+		$("#thumb_results").hide();
+		$("#browse_tree").show();
+	}
+
+
 }
 
 
