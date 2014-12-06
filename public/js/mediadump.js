@@ -96,7 +96,6 @@ function performSearch()
 {
 	if(oaQueries.length > 0){
 		setLoading(true);
-		log(oaQueries);
 		$.get("/api/search", {query:oaQueries[0].value, page: iPage}, function(results){
 			oResults = results.results;
 			oResultsData = results.info;
@@ -320,6 +319,7 @@ MODEL EVENTS
 */
 
 function setLoading(bLoadingNew){	
+	$("#thumb_results").html('');;
 	if(bLoading != bLoadingNew){
 		bLoading = bLoadingNew;
 		updateLoading();
