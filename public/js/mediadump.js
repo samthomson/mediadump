@@ -18,7 +18,7 @@ var oTree = [];
 
 var oResults = [];
 var oResultsData = [];
-
+var iStaggerMapIconLimit = 40;
 
 
 var tagSuggestions = new Bloodhound({
@@ -193,8 +193,11 @@ function renderResults(){
 	var htmlThumbs = "";
 
 	if(oResults.length > 0){
-		// there are results, display them
+		
 		oResults.forEach(function(oFile, cIndex){
+			//
+			// thumbs
+			//
 			var sSingleFileItem = "";
 
 			sSingleFileItem +='<a class="thumb_result_link" mousedown="preload_thumb('+cIndex+')" href="javascript:thumb_click('+cIndex+');">';
@@ -206,6 +209,34 @@ function renderResults(){
 			sSingleFileItem +='</a>';
 
 			htmlThumbs += sSingleFileItem;
+			//
+			// thumbs
+			//
+			log(sSearchMode);
+			if(sSearchMode == "map"){
+				// stagger results
+				iMapIconModulus = 2; // 50%
+				iMapPinModulus = 4; // 25%
+
+				if(oResults.length < iStaggerMapIconLimit){
+					iMapIconModulus = 1;
+					iMapPinModulus = 1;
+				}
+
+				if(cIndex % iMapIconModulus == 0){
+					// dot
+					  var image = urlFromHash('icon', oFile.hash, '');
+					  var myLatLng = new google.maps.LatLng(oFile.latitude, oFile.longitude);
+					  var beachMarker = new google.maps.Marker({
+					      position: myLatLng,
+					      map: gmapMap,
+					      icon: image
+					  });
+				}
+				if(cIndex % iMapPinModulus == 0){ // 20%
+					// image
+				}
+			}
 		});
 	}else{
 		// no results
