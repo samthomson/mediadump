@@ -146,6 +146,6 @@ class SearchController extends BaseController {
 
 	public static function suggest()
 	{
-		return Response::json(CacheController::getSearchSuggestions(Input::get("match")));
+		return Response::json(CacheController::getSearchSuggestions(Input::get("term")));
 	}
 }

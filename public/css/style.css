@@ -419,15 +419,11 @@ ul.nav li a.active {
 .bootstrap-tagsinput {
   width: 100%; }
 
-.tt-dropdown-menu {
+.ui-autocomplete {
   background: yellow;
-  width: 100%;
-  min-width: 120px; }
+  width: 100%; }
 
-.tt-suggestions {
-  color: blue; }
-
-.tt-suggestion {
+.ui-autocomplete .ui-menu-item {
   padding: 4px; }
 
 .tt-suggestion.tt-cursor {

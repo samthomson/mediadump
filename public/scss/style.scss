@@ -448,21 +448,18 @@ ul.nav li a.active{border-bottom: 2px solid $media_dump_colour;}
 	width:100%;
 }
 
-.tt-dropdown-menu{
+.ui-autocomplete{
 	background:yellow;
 	width:100%;
-	min-width:120px;
 }
 
-.tt-suggestions{
-	color:blue;
-}
-.tt-suggestion{
+.ui-autocomplete .ui-menu-item{
 	padding:4px;
 }
-.tt-suggestion img{
+
+.ui-autocomplete .ui-menu-item img{
 }
-.tt-suggestion span{
+.ui-autocomplete .ui-menu-item span{
 }
 .tt-suggestion.tt-cursor{
 	background-color: $media_dump_colour;

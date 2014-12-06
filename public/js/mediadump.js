@@ -65,6 +65,18 @@ $( document ).ready(function() {
 	    	addQuery(tag, tag);
 		}
 	});
+
+	$( "#search-input input" ).autocomplete({
+      source: "/api/suggest/",
+      minLength: 1,
+      delay: 200,
+      select: function( event, ui ) {
+        log( ui.item ?
+          "Selected: " + ui.item.value + " aka " + ui.item.id :
+          "Nothing selected, input was " + this.value );
+      }
+    });
+
 });
 
 
@@ -389,4 +401,7 @@ BOILERPLATE HELPER FUNCTIONS
 function sLinkSafeJSString(sString)
 {
 	return sString.replace(/[/\\*]/g, "\\\\");
+}
+function log(s){
+	console.log(s);
 }
