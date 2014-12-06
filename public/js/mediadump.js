@@ -22,29 +22,49 @@ var tagSuggestions = new Bloodhound({
 });
 tagSuggestions.initialize();
 
+/*
 var oSearchInput = $('#search-input');
 
-	oSearchInput.tagsinput({
+
+oSearchInput.tagsinput({
+	tagClass: "search-tag",
+	itemText: function(item){
+		return "<b>" + item.value + "</b>";
+		
+	},
+	itemValue: function(item){
+		return item.hash;
+		
+	},
 	typeaheadjs: {
 		name: 'tagSuggestions',
-		displayKey: 'value',
-		valueKey: 'value',
-		source: tagSuggestions.ttAdapter()
-	},
-	tagClass: "search-tag",
+		source: tagSuggestions.ttAdapter(),
+		displayKey: function(item){
+			return '<img src="' + urlFromHash("icon", item.hash, "jpg") + '" /> <span>' + item.value + '</span>';
+		},
+
+		displayValue: function(item){
+			return '<img src="' + urlFromHash("icon", item.hash, "jpg") + '" /> <span>' + item.value + '</span>';
+		}
+	}
 });
 
 oSearchInput.on('itemAdded', function(event) {
   	addQuery(event.item, event.item);
 });
-
+*/
 
 $( document ).ready(function() {
     // get tree
     getTree();
     // get header vars
 
-
+	$('#search-input').tags({
+	    readOnly: false,
+	    beforeAddingTag: function(tag){ 
+	    	addQuery(tag, tag);
+		}
+	});
 });
 
 
@@ -126,23 +146,21 @@ function folderFromUniqueDir(sDir){
 			return "";
 }
 
-function urlFromHash(sMode, oObject, sExt){
-	if(typeof oObject === "undefined")
-			return "";
-		switch(sMode){
-			case 'lightbox':
-				return sCdnURL + '/thumbs/large/'+oObject.hash+'.jpg';
-				break;
-			case 'icon':
-				return sCdnURL + '/thumbs/icon/'+oObject.hash+'.jpg';
-				break;
-			case 'medium':
-				return sCdnURL + '/thumbs/medium/'+oObject.hash+'.jpg';
-				break;
-			case 'small':
-				return sCdnURL + '/thumbs/small/'+oObject.hash+'.jpg';
-				break;
-		}
+function urlFromHash(sMode, hash, sExt){	
+	switch(sMode){
+		case 'lightbox':
+			return sCdnURL + '/thumbs/large/'+hash+'.jpg';
+			break;
+		case 'icon':
+			return sCdnURL + '/thumbs/icon/'+hash+'.jpg';
+			break;
+		case 'medium':
+			return sCdnURL + '/thumbs/medium/'+hash+'.jpg';
+			break;
+		case 'small':
+			return sCdnURL + '/thumbs/small/'+hash+'.jpg';
+			break;
+	}
 }
 function sFilterQuery(sQuery){
 	return sQuery.toLowerCase();
@@ -167,7 +185,7 @@ function renderTree()
 		sSingleTreeItem +='<a class="tree_link col-xs-6 col-sm-4" href="javascript: setSolitaryQuery(\'' + sDisplay + '\', \'' + sValue + '\');" alt="' + sDisplay + '" title="' + sDisplay + '">';
 
 		sSingleTreeItem +='<div class="tree_image_container">';
-		sSingleTreeItem +='<img src="' + urlFromHash('medium', oLink, '') + '"/>';
+		sSingleTreeItem +='<img src="' + urlFromHash('medium', oLink.hash, '') + '"/>';
 		sSingleTreeItem +='</div>';
 		sSingleTreeItem +='<span class="tree_link_title">' + sDisplay + '</span>';
 
@@ -193,7 +211,7 @@ function renderResults(){
 			sSingleFileItem +='<a class="thumb_result_link" mousedown="preload_thumb('+cIndex+')" href="javascript:thumb_click('+cIndex+');">';
 
 			sSingleFileItem +='<div class="tree_image_container">';
-			sSingleFileItem +='<img src="' + urlFromHash('small', oFile, '') + '" id="' + oFile.id + '"/>';
+			sSingleFileItem +='<img src="' + urlFromHash('small', oFile.hash, '') + '" id="' + oFile.id + '"/>';
 
 
 			sSingleFileItem +='</a>';

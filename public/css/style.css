@@ -418,3 +418,19 @@ ul.nav li a.active {
 
 .bootstrap-tagsinput {
   width: 100%; }
+
+.tt-dropdown-menu {
+  background: yellow;
+  width: 100%;
+  min-width: 120px; }
+
+.tt-suggestions {
+  color: blue; }
+
+.tt-suggestion {
+  padding: 4px; }
+
+.tt-suggestion.tt-cursor {
+  background-color: #e74c3c;
+  color: white;
+  cursor: pointer; }

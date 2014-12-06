@@ -447,3 +447,25 @@ ul.nav li a.active{border-bottom: 2px solid $media_dump_colour;}
 .bootstrap-tagsinput{
 	width:100%;
 }
+
+.tt-dropdown-menu{
+	background:yellow;
+	width:100%;
+	min-width:120px;
+}
+
+.tt-suggestions{
+	color:blue;
+}
+.tt-suggestion{
+	padding:4px;
+}
+.tt-suggestion img{
+}
+.tt-suggestion span{
+}
+.tt-suggestion.tt-cursor{
+	background-color: $media_dump_colour;
+	color: $media_dump_inverse_colour;
+	cursor:pointer;
+}
