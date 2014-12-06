@@ -44,97 +44,28 @@ $( document ).ready(function() {
 	*/
 
 
-	/*
-	$("#search-select").select2({
-    	placeholder: "Search..",
-		width: "100%",
-		multiple: true,
-		ajax: {
-			// instead of writing the function to execute the request we use Select2's convenient helper
-	        url: "/api/suggest",
-	        dataType: 'json',
-	        quietMillis: 200,
-	        data: function (term, page) {
-	            return {
-	                match: term, // search term
-	            };
-	        },
-	        results: function (data, page) { // parse the results into the format expected by Select2.
-	            // since we are using custom formatting functions we do not need to alter the remote JSON data
-	            log(data);
-	            return { results: data };
-	        },
-	        formatResult: function(item){
-	        	return item.value;
-	        },
-	        cache: true
-	    }
+	var oSearchInput = $('#search-input');
+
+
+	oSearchInput.tagsinput({
+		tagClass: "search-tag",
+		itemValue: "value",
+		typeaheadjs: {
+			name: 'tagSuggestions',
+			source: tagSuggestions.ttAdapter(),
+		}
 	});
-*/
+
+	oSearchInput.on('itemAdded', function(event) {
+	  	addQuery(event.item.value, event.item.value);
+	});
 
 
-
-
-var oSearchInput = $('#search-input');
-
-
-oSearchInput.tagsinput({
-	tagClass: "search-tag",
-	itemValue: "value",
-	typeaheadjs: {
-		name: 'tagSuggestions',
-		source: tagSuggestions.ttAdapter(),
-	}
-});
-
-oSearchInput.on('itemAdded', function(event) {
-  	addQuery(event.item.value, event.item.value);
-});
-
-
-oSearchInput.on('itemRemoved', function(event) {
-  	removeQuery(event.item.value);
-});
-
-
-
-
-/*
-	$( "#search-input input" ).autocomplete({
-      source: "/api/suggest/",
-      minLength: 1,
-      delay: 200,
-      select: function( event, ui ) {
-        log( ui.item ?
-          "Selected: " + ui.item.value + " aka " + ui.item.id :
-          "Nothing selected, input was " + this.value );
-      },
-      select: function( event, ui ) {}
-    });
-*/
-
-
+	oSearchInput.on('itemRemoved', function(event) {
+	  	removeQuery(event.item.value);
+	});
 
 });
-
-
-
-
-
-
-
- 
-
- 
-
-
-
-
-
-
-
-
-
 
 
 
@@ -425,10 +356,14 @@ UI EVENTS
 
 */
 function setMode(sMode){
+	$("#header-navigation li a").removeClass("active");
+
 	if(sSearchMode != sMode)
 	{
 		sSearchMode = sMode;
 		evaluateBrowseOrResults();
+
+		$("#header-navigation li a." + sMode + "-link").addClass("active");
 	}
 }
 
