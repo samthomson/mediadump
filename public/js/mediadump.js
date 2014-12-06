@@ -3,6 +3,7 @@
 var bLoading = false;
 var sSearchMode = "browse";
 
+var gmapMap = null;
 
 
 /* logic vars */
@@ -374,6 +375,8 @@ function evaluateBrowseOrResults(){
 		$("#thumb_results").show();
 		$("#thumb_results").show();
 
+		google.maps.event.trigger(gmapMap, "resize");
+
 	}
 }
 function queryChange(){
@@ -421,9 +424,9 @@ function initializeGoogleMap() {
 		zoom: 1,
 		mapTypeId: google.maps.MapTypeId.ROADMAP
 	}
-	var map = new google.maps.Map(mapCanvas, mapOptions)
+	gmapMap = new google.maps.Map(mapCanvas, mapOptions)
 
-	google.maps.event.addListener(map, 'idle', function() {
+	google.maps.event.addListener(gmapMap, 'idle', function() {
 		// 3 seconds after the center of the map has changed, pan back to the
 		// marker.
 		// only fire if on map search mode
