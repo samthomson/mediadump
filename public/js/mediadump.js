@@ -19,6 +19,7 @@ var oTree = [];
 var oResults = [];
 var oResultsData = [];
 var iStaggerMapIconLimit = 40;
+var sMediaDumpColor = "#e74c3c";
 
 
 var tagSuggestions = new Bloodhound({
@@ -212,7 +213,6 @@ function renderResults(){
 			//
 			// thumbs
 			//
-			log(sSearchMode);
 			if(sSearchMode == "map"){
 				// stagger results
 				iMapIconModulus = 2; // 50%
@@ -224,17 +224,28 @@ function renderResults(){
 				}
 
 				if(cIndex % iMapIconModulus == 0){
-					// dot
-					  var image = urlFromHash('icon', oFile.hash, '');
-					  var myLatLng = new google.maps.LatLng(oFile.latitude, oFile.longitude);
-					  var beachMarker = new google.maps.Marker({
-					      position: myLatLng,
-					      map: gmapMap,
-					      icon: image
-					  });
-				}
-				if(cIndex % iMapPinModulus == 0){ // 20%
 					// image
+					var image = urlFromHash('icon', oFile.hash, '');
+					var myLatLng = new google.maps.LatLng(oFile.latitude, oFile.longitude);
+					var beachMarker = new google.maps.Marker({
+						position: myLatLng,
+						map: gmapMap,
+						icon: image
+					});
+				}else if(cIndex % iMapPinModulus == 0){ // 20%
+					// dot
+					var myLatLng = new google.maps.LatLng(oFile.latitude, oFile.longitude);
+					var beachMarker = new google.maps.Marker({
+						position: myLatLng,
+						map: gmapMap,
+						icon: {
+							path: google.maps.SymbolPath.CIRCLE,
+							scale: 3,
+							fillOpacity : 1,
+							strokeColor: sMediaDumpColor,
+							fillColor: sMediaDumpColor
+						}
+					});
 				}
 			}
 		});
