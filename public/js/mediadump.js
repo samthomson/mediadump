@@ -587,6 +587,18 @@ function closeLightbox(){
 	setLightShowing(false);
 	setFile(-1);
 }
+function lightChange(iOffset){
+	iNewIndex = iFile + iOffset;
+
+	if(iNewIndex < 0){
+		iNewIndex = oResults.length - 1;
+	}
+	if(iNewIndex > (oResults.length -1)){
+		iNewIndex = 0;
+	}
+
+	thumbClick(iNewIndex);
+}
 /*
 
 BOILERPLATE HELPER FUNCTIONS
