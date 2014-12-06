@@ -18,7 +18,7 @@ class CacheController extends BaseController {
 		->where("tags.value", "LIKE", "%$sTerm%")->distinct("value")
 		->orderBy("tags.confidence")
 		->groupBy("tags.value")
-        ->select("files.id", "files.hash", "tags.value")
+        ->select("files.id", "files.hash", "tags.value AS text")
 		->take(10)
 		->get();
 

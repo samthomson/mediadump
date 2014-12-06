@@ -18,54 +18,82 @@ var oResultsData = [];
 var tagSuggestions = new Bloodhound({
   datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
   queryTokenizer: Bloodhound.tokenizers.whitespace,
-	remote: '/api/suggest/?match=%QUERY'
+	remote: '/api/suggest/?term=%QUERY'
 });
 tagSuggestions.initialize();
 
-/*
-var oSearchInput = $('#search-input');
+/**/
 
 
-oSearchInput.tagsinput({
-	tagClass: "search-tag",
-	itemText: function(item){
-		return "<b>" + item.value + "</b>";
-		
-	},
-	itemValue: function(item){
-		return item.hash;
-		
-	},
-	typeaheadjs: {
-		name: 'tagSuggestions',
-		source: tagSuggestions.ttAdapter(),
-		displayKey: function(item){
-			return '<img src="' + urlFromHash("icon", item.hash, "jpg") + '" /> <span>' + item.value + '</span>';
-		},
-
-		displayValue: function(item){
-			return '<img src="' + urlFromHash("icon", item.hash, "jpg") + '" /> <span>' + item.value + '</span>';
-		}
-	}
-});
-
-oSearchInput.on('itemAdded', function(event) {
-  	addQuery(event.item, event.item);
-});
-*/
 
 $( document ).ready(function() {
     // get tree
     getTree();
     // get header vars
 
+    /*
 	$('#search-input').tags({
 	    readOnly: false,
+	    tagClass: "search-tag",
 	    beforeAddingTag: function(tag){ 
 	    	addQuery(tag, tag);
+	    	$('#search-input').renameTag("tag "+tag, tag+"fdsf")
+	    	log(tag);
 		}
 	});
+	*/
 
+	$("#search-select").select2({
+    	placeholder: "Search..",
+    	minimumInputLength: 1,
+		width: "100%",
+		ajax: {
+			// instead of writing the function to execute the request we use Select2's convenient helper
+	        url: "/api/suggest",
+	        dataType: 'json',
+	        quietMillis: 200,
+	        data: function (term, page) {
+	            return {
+	                match: term, // search term
+	            };
+	        },
+	        results: function (data, page) { // parse the results into the format expected by Select2.
+	            // since we are using custom formatting functions we do not need to alter the remote JSON data
+	            log(data);
+	            return { results: data };
+	        },
+	        formatResult: function(item){
+	        	return item.value;
+	        },
+	        cache: true
+	    }
+	});
+
+
+/*
+
+var oSearchInput = $('#search-input input');
+
+
+oSearchInput.tagsinput({
+	tagClass: "search-tag",
+	itemValue: "value",
+	itemValue: "value",
+	typeaheadjs: {
+		name: 'tagSuggestions',
+		source: tagSuggestions.ttAdapter(),
+	}
+});
+
+oSearchInput.on('itemAdded', function(event) {
+  	addQuery(event.item, event.item);
+});
+
+*/
+
+
+
+/*
 	$( "#search-input input" ).autocomplete({
       source: "/api/suggest/",
       minLength: 1,
@@ -74,8 +102,12 @@ $( document ).ready(function() {
         log( ui.item ?
           "Selected: " + ui.item.value + " aka " + ui.item.id :
           "Nothing selected, input was " + this.value );
-      }
+      },
+      select: function( event, ui ) {}
     });
+*/
+
+
 
 });
 

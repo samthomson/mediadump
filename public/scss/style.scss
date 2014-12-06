@@ -455,6 +455,7 @@ ul.nav li a.active{border-bottom: 2px solid $media_dump_colour;}
 
 .ui-autocomplete .ui-menu-item{
 	padding:4px;
+	
 }
 
 .ui-autocomplete .ui-menu-item img{
@@ -465,4 +466,8 @@ ul.nav li a.active{border-bottom: 2px solid $media_dump_colour;}
 	background-color: $media_dump_colour;
 	color: $media_dump_inverse_colour;
 	cursor:pointer;
+}
+
+#search-select{
+    width: 100%;
 }

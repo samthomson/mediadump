@@ -430,3 +430,6 @@ ul.nav li a.active {
   background-color: #e74c3c;
   color: white;
   cursor: pointer; }
+
+#search-select {
+  width: 100%; }
