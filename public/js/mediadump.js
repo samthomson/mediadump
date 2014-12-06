@@ -426,6 +426,8 @@ function initializeGoogleMap() {
 	google.maps.event.addListener(map, 'idle', function() {
 		// 3 seconds after the center of the map has changed, pan back to the
 		// marker.
-		log("map idle");
+		// only fire if on map search mode
+		if(sSearchMode == "map")
+			log("map idle");
 	});
 }	
