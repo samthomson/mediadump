@@ -23,7 +23,7 @@ $border_radius: 4px;
 
 $i_nav_width: 340px;
 $i_nav_width: 40%;
-$i_header_height: 50px;
+$i_header_height: 42px;
 $i_footer_height: 50px;
 
 $small_icon_size: 125px;
@@ -106,8 +106,7 @@ Layout
 	bottom:$i_footer_height;
 	left:0px;
 	right:0px;
-	padding:$padding;
-	padding-left:0px;
+	padding:$padding/2;
 	padding-top:0px;
 	overflow-y:auto;
 	z-index: -1;
@@ -429,7 +428,7 @@ nav.navbar button span.icon-bar{
 #toggle_advanced_search_form{
 	z-index:400;
 }
-ul.nav li{padding: $padding; margin-left: ($margin * 4);}
+ul.nav li{padding: $padding; padding-bottom: 0px; margin-left: ($margin * 4);}
 ul.nav li a{color: $media_dump_colour;padding:0px;}
 ul.nav li a.active{border-bottom: 2px solid $media_dump_colour;}
 
