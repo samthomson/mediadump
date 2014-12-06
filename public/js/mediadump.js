@@ -3,10 +3,15 @@
 var bLoading = false;
 var sSearchMode = "browse";
 
+
+
 /* logic vars */
+
+
 var sCdnURL = "";
 
 var oaQueries = [];
+var iPage = 1;
 
 var oTree = [];
 
@@ -219,7 +224,12 @@ function renderPagination(){
 		var sPagination = "";
 		if(sSearchMode == "browse"){
 
-			sPagination = "search pagination";
+			sPagination = '<a class="btn active pull-left"><i class="glyphicon glyphicon-chevron-left"></i> previous</a>';
+
+			sPagination = '<a class="pull-right btn active" ng-show="page < (result_info.available_pages)" ng-click="page = page + 1">next <i class="glyphicon glyphicon-chevron-right"></i></a>';
+
+			sPagination = '<span>showing {{results.length}}/{{result_info.count}}</span>';
+			sPagination = '<span><i class="glyphicon glyphicon-flash"></i> found in ~{{result_info.speed | number:0}} ms</span>';
 
 
 			$("#grid_pagination").html(sPagination);
@@ -295,20 +305,6 @@ function updateLoading(){
 	}
 }
 
-function setLoading(bLoadingNew){	
-	if(bLoading != bLoadingNew){
-		bLoading = bLoadingNew;
-		updateLoading();
-	}	
-}
-function updateLoading(){
-	if(bLoading){
-		$("#loading").show();
-	}else{
-		$("#loading").hide();
-	}
-}
-
 function setSearchMode(sNewSearchMode){	
 	if(sSearchMode != sNewSearchMode){
 		sSearchMode = sNewSearchMode;
@@ -340,6 +336,15 @@ function updateSearchMode(){
 			break;
 
 	}
+}
+function setPage(iPageNew){	
+	if(iPage != iPageNew){
+		iPage = iPageNew;
+		updatePage();
+	}	
+}
+function updatePage(){
+	performSearch();
 }
 function evaluateBrowseOrResults(){
 	// if we're on browse mode either we show nav tree or thumb results if there are any
