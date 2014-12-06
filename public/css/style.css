@@ -341,6 +341,10 @@ select.form-control {
 #thumb_results {
   overflow-y: auto; }
 
+#thumb_results a {
+  display: inline-block;
+  float: left; }
+
 #thumb_results img {
   margin-right: 4px;
   margin-bottom: 2px;

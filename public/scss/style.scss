@@ -375,6 +375,10 @@ select.form-control{
 	overflow-y:auto;
 }
 
+#thumb_results a{	
+	display: inline-block;
+	float: left;
+}
 #thumb_results img{	
 	margin-right:4px;
 	margin-bottom:$margin/2;
