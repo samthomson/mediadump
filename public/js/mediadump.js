@@ -96,6 +96,7 @@ function performSearch()
 			setLoading(false);
 
 			renderResults();
+			renderPagination();
 		});
 	}
 }
@@ -208,7 +209,29 @@ function renderResults(){
 }
 
 function renderPagination(){
+	// remove pagination
+	$("#map_pagination").html("");
+	$("#grid_pagination").html("");
 
+
+	if(oResults.length > 0){
+		// build pagination
+		var sPagination = "";
+		if(sSearchMode == "browse"){
+
+			sPagination = "search pagination";
+
+
+			$("#grid_pagination").html(sPagination);
+		}
+		if(sSearchMode == "map"){
+
+			sPagination = "showing " + oResultsData.lower + " - " + oResultsData.upper + " / " + oResultsData.count;
+
+
+			$("#map_pagination").html(sPagination);
+		}
+	}
 }
 
 /*
