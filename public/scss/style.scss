@@ -95,7 +95,6 @@ Layout
 	position:absolute;
 	top:$i_header_height + $padding;
 	bottom:$i_footer_height;
-	bottom:0px;
 	z-index: -1;
 }
 #nav .tab-content{
@@ -472,4 +471,19 @@ ul.nav li a.active{border-bottom: 2px solid $media_dump_colour;}
 
 #search-select{
     width: 100%;
+}
+#map-canvas {
+	position: absolute;
+	top:0px;
+	bottom:0px;
+	left:0px;
+	right:0px;
+}
+
+.left_position{
+	background-color: green;
+}
+
+.right_position{
+	background-color: red;
 }

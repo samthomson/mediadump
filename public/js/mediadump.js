@@ -70,6 +70,7 @@ $( document ).ready(function() {
 	  	removeQuery(event.item.value);
 	});
 
+	initializeGoogleMap();
 });
 
 
@@ -316,6 +317,7 @@ function setSearchMode(sNewSearchMode){
 	if(sSearchMode != sNewSearchMode){
 		sSearchMode = sNewSearchMode;
 		updateSearchMode();
+		evaluateBrowseOrResults();
 	}	
 }
 function updateSearchMode(){
@@ -331,10 +333,6 @@ function updateSearchMode(){
 		case "map":
 			$(".left_position").width("45%");
 			$("#thumb_results").show();
-			break;
-		default:
-			$(".left_position").width("0%");
-			$("#results").show();
 			break;
 		// browse
 		default:
@@ -357,6 +355,7 @@ function evaluateBrowseOrResults(){
 	// if we're on browse mode either we show nav tree or thumb results if there are any
 	if(sSearchMode == "browse"){
 		$(".left_position").width("0%");
+		$(".right_position").css("left", "0px");
 		$("#thumb_results").show();
 
 
@@ -371,6 +370,8 @@ function evaluateBrowseOrResults(){
 	}else{
 		// map
 		$(".left_position").width("45%");
+		$(".right_position").css("left", "50%");
+		$("#thumb_results").show();
 		$("#thumb_results").show();
 
 	}
@@ -397,13 +398,8 @@ UI EVENTS
 function setMode(sMode){
 	$("#header-navigation li a").removeClass("active");
 
-	if(sSearchMode != sMode)
-	{
-		sSearchMode = sMode;
-		evaluateBrowseOrResults();
-
-		$("#header-navigation li a." + sMode + "-link").addClass("active");
-	}
+	setSearchMode(sMode);
+	$("#header-navigation li a." + sMode + "-link").addClass("active");
 }
 
 /*
@@ -418,3 +414,12 @@ function sLinkSafeJSString(sString)
 function log(s){
 	console.log(s);
 }
+function initializeGoogleMap() {
+	var mapCanvas = document.getElementById('map-canvas');
+	var mapOptions = {
+		center: new google.maps.LatLng(44.5403, -78.5463),
+		zoom: 8,
+		mapTypeId: google.maps.MapTypeId.ROADMAP
+	}
+	var map = new google.maps.Map(mapCanvas, mapOptions)
+}	

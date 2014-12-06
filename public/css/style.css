@@ -70,7 +70,6 @@ Layout
   position: absolute;
   top: 58px;
   bottom: 50px;
-  bottom: 0px;
   z-index: -1; }
 
 #nav .tab-content {
@@ -434,3 +433,16 @@ ul.nav li a.active {
 
 #search-select {
   width: 100%; }
+
+#map-canvas {
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px; }
+
+.left_position {
+  background-color: green; }
+
+.right_position {
+  background-color: red; }
