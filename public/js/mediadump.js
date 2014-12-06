@@ -561,7 +561,8 @@ function initializeGoogleMap() {
 	var mapOptions = {
 		center: new google.maps.LatLng(0, 0),
 		zoom: 1,
-		mapTypeId: google.maps.MapTypeId.ROADMAP
+		mapTypeId: google.maps.MapTypeId.ROADMAP,
+    	backgroundColor: '#fff'
 	}
 	gmapMap = new google.maps.Map(mapCanvas, mapOptions)
 
