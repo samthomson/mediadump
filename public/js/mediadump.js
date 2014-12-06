@@ -1,6 +1,7 @@
 
 /* UI VARS */
 var bLoading = false;
+var bLightboxShowing = false;
 var sSearchMode = "browse";
 
 var gmapMap = null;
@@ -493,6 +494,15 @@ function setPage(iPageNew){
 function updatePage(){
 	performSearch();
 }
+function setLightShowing(bLightboxShowingNew){	
+	if(bLightShowing != bLightboxShowingNew){
+		bLightShowing = bLightboxShowingNew;
+		updateLightShowing();
+	}	
+}
+function updateLightShowing(){
+	performSearch();
+}
 function evaluateBrowseOrResults(){
 	// if we're on browse mode either we show nav tree or thumb results if there are any
 	if(sSearchMode == "browse"){
@@ -544,6 +554,11 @@ function setMode(sMode){
 	$("#header-navigation li a." + sMode + "-link").addClass("active");
 }
 
+function thumbClick(iIndex){
+	// load lightbox stuff
+
+	// show lightbox
+}
 /*
 
 BOILERPLATE HELPER FUNCTIONS
