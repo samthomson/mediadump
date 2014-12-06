@@ -93,10 +93,12 @@ class SearchController extends BaseController {
 		$iMin = (($iPage * $iPerPage) - $iPerPage);
 		$iMax = ($iMin + $iPerPage);
 
-		$saStats["lower"] = $iMin;
-		$saStats["upper"] = $iMax;
 
 		$oResults["results"] = array_slice($soFiles, $iMin, $iPerPage);
+
+		$saStats["lower"] = $iMin + 1;
+		$saStats["upper"] = count($oResults["results"]);
+
 		$oResults["info"] = $saStats;
 
 		return Response::json($oResults);

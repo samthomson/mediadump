@@ -95,7 +95,7 @@ function performSearch()
 	if(oaQueries.length > 0){
 		setLoading(true);
 		log(oaQueries);
-		$.get("/api/search", {query:oaQueries[0].value}, function(results){
+		$.get("/api/search", {query:oaQueries[0].value, page: iPage}, function(results){
 			oResults = results.results;
 			oResultsData = results.info;
 			setLoading(false);
@@ -222,21 +222,28 @@ function renderPagination(){
 	if(oResults.length > 0){
 		// build pagination
 		var sPagination = "";
+		var sShowing = "<span>showing " + oResultsData.lower + " - " + oResultsData.upper + " / " + oResultsData.count + '</span>';
+
 		if(sSearchMode == "browse"){
 
-			sPagination = '<a class="btn active pull-left"><i class="glyphicon glyphicon-chevron-left"></i> previous</a>';
+			if(iPage > 1){
+				sPagination += '<a class="btn active pull-left" href="javascript:setPage(' + iPage - 1 + ');"><i class="glyphicon glyphicon-chevron-left"></i> previous</a>';
+			}
 
-			sPagination = '<a class="pull-right btn active" ng-show="page < (result_info.available_pages)" ng-click="page = page + 1">next <i class="glyphicon glyphicon-chevron-right"></i></a>';
+			if(iPage < oResultsData.available_pages){
+				sPagination += '<a class="pull-right btn active" ng-show="page < (result_info.available_pages)" href="javascript:setPage(' + iPage - 1 + ');">next <i class="glyphicon glyphicon-chevron-right"></i></a>';
+			}
 
-			sPagination = '<span>showing {{results.length}}/{{result_info.count}}</span>';
-			sPagination = '<span><i class="glyphicon glyphicon-flash"></i> found in ~{{result_info.speed | number:0}} ms</span>';
+			sPagination += sShowing;
+
+			sPagination += '<span><i class="glyphicon glyphicon-flash"></i> found in ' + oResultsData.speed +' ms</span>';
 
 
 			$("#grid_pagination").html(sPagination);
 		}
 		if(sSearchMode == "map"){
 
-			sPagination = "showing " + oResultsData.lower + " - " + oResultsData.upper + " / " + oResultsData.count;
+			sPagination += sShowing;
 
 
 			$("#map_pagination").html(sPagination);
