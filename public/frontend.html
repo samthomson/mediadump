@@ -133,18 +133,20 @@
 					</div>
 
 				</div>
-				<div id="pagination" class="" ng-show="results.length > 0">
+				<div id="pagination">
 					<div class="container">
-						<div id="map_pagination" ng-show="search_mode==='map'">
-							showing {{i_markers_showing}}/{{results.length}}
-						</div>
-						<div id="grid_pagination" ng-show="search_mode==='search'">
-							<a class="pull-left" ng-show="page > 1" ng-click="page = page - 1"><i class="glyphicon glyphicon-chevron-left"></i> previous</a>
+						<div class="container">
+							<div id="map_pagination" ng-show="search_mode==='map'">
+								showing {{i_markers_showing}}/{{results.length}}
+							</div>
+							<div id="grid_pagination" ng-show="search_mode==='search'">
+								<a class="pull-left" ng-show="page > 1" ng-click="page = page - 1"><i class="glyphicon glyphicon-chevron-left"></i> previous</a>
 
-							<a class="pull-right" ng-show="page < (result_info.available_pages)" ng-click="page = page + 1">next <i class="glyphicon glyphicon-chevron-right"></i></a>
+								<a class="pull-right" ng-show="page < (result_info.available_pages)" ng-click="page = page + 1">next <i class="glyphicon glyphicon-chevron-right"></i></a>
 
-							<span>showing {{results.length}}/{{result_info.count}}</span>
-							<span><i class="glyphicon glyphicon-flash"></i> found in ~{{result_info.speed | number:0}} ms</span>
+								<span>showing {{results.length}}/{{result_info.count}}</span>
+								<span><i class="glyphicon glyphicon-flash"></i> found in ~{{result_info.speed | number:0}} ms</span>
+							</div>
 						</div>
 					</div>
 				</div>

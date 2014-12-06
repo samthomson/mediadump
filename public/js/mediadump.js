@@ -207,6 +207,10 @@ function renderResults(){
 	$("#thumb_results").html(htmlThumbs)
 }
 
+function renderPagination(){
+
+}
+
 /*
 
 LOGIC
