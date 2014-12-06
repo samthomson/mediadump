@@ -282,7 +282,7 @@ function renderResults(){
 			//
 			var sSingleFileItem = "";
 
-			sSingleFileItem +='<a class="thumb_result_link" mousedown="preload_thumb('+cIndex+')" href="javascript:thumb_click('+cIndex+');">';
+			sSingleFileItem +='<a class="thumb_result_link" mousedown="preload_thumb('+cIndex+')" href="javascript:thumbClick('+cIndex+');">';
 
 			sSingleFileItem +='<div class="tree_image_container">';
 			sSingleFileItem +='<img src="' + urlFromHash('small', oFile.hash, '') + '" id="' + oFile.id + '"/>';
@@ -495,13 +495,20 @@ function updatePage(){
 	performSearch();
 }
 function setLightShowing(bLightboxShowingNew){	
-	if(bLightShowing != bLightboxShowingNew){
-		bLightShowing = bLightboxShowingNew;
+	if(bLightboxShowing != bLightboxShowingNew){
+		bLightboxShowing = bLightboxShowingNew;
 		updateLightShowing();
 	}	
 }
 function updateLightShowing(){
-	performSearch();
+	if(bLightboxShowing){
+		// open lightbox
+		$("#lightbox").show();
+	}else{
+		// stop any playing videos
+		// close lightbox
+		$("#lightbox").hide();
+	}
 }
 function evaluateBrowseOrResults(){
 	// if we're on browse mode either we show nav tree or thumb results if there are any
@@ -556,8 +563,8 @@ function setMode(sMode){
 
 function thumbClick(iIndex){
 	// load lightbox stuff
-
 	// show lightbox
+	setLightShowing(true);
 }
 /*
 
