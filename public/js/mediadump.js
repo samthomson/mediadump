@@ -14,6 +14,7 @@ var sCdnURL = "";
 
 var oaQueries = [];
 var iPage = 1;
+var iFile = -1;
 
 var oTree = [];
 
@@ -510,6 +511,21 @@ function updateLightShowing(){
 		$("#lightbox").hide();
 	}
 }
+function setFile(iFileIndex){	
+	if(iFile != iFileIndex){
+		iFile = iFileIndex;
+		updateFile();
+	}	
+}
+function updateFile(){
+	if(iFile > -1){
+		// render lightbox content
+		$("#lightbox_contents img").attr("src", urlFromHash('lightbox', oResults[iFile].hash, ''));
+	}else{
+		// strip lightbox content
+		$("#lightbox_contents img").attr("src", "");
+	}
+}
 function evaluateBrowseOrResults(){
 	// if we're on browse mode either we show nav tree or thumb results if there are any
 	if(sSearchMode == "browse"){
@@ -563,8 +579,12 @@ function setMode(sMode){
 
 function thumbClick(iIndex){
 	// load lightbox stuff
+	setFile(iIndex);
 	// show lightbox
 	setLightShowing(true);
+}
+function closeLightbox(){
+	setLightShowing(false);
 }
 /*
 
