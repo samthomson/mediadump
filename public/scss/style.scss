@@ -477,13 +477,17 @@ ul.nav li a.active{border-bottom: 2px solid $media_dump_colour;}
 
 .tt-dropdown-menu {
     width: 422px;
-    margin-top: 12px;
+    margin-top: 4px;
     padding: 8px 0;
     background-color: #fff;
     border: 1px solid #ccc;
     border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 8px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
     box-shadow: 0 5px 10px rgba(0,0,0,.2);
+
+    margin-left: -8px;
 }
 
 .tt-suggestion {
