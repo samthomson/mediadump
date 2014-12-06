@@ -13,14 +13,7 @@ var oTree = [];
 var oResults = [];
 var oResultsData = [];
 
-var bestPictures = new Bloodhound({
-	name: "tags",
-	datumTokenizer: function(d) {
-		return Bloodhound.tokenizers.whitespace(d.value);
-	},
-	queryTokenizer: Bloodhound.tokenizers.whitespace,
-	remote: '/api/suggest/?match%QUERY'
-});
+
 
 var tagSuggestions = new Bloodhound({
   datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
@@ -29,61 +22,27 @@ var tagSuggestions = new Bloodhound({
 });
 tagSuggestions.initialize();
 
-$('#search-input').tagsinput({
-  typeaheadjs: {
-    name: 'tagSuggestions',
-    displayKey: 'value',
-    valueKey: 'value',
-    source: tagSuggestions.ttAdapter()
-  }
+var oSearchInput = $('#search-input');
+
+	oSearchInput.tagsinput({
+	typeaheadjs: {
+		name: 'tagSuggestions',
+		displayKey: 'value',
+		valueKey: 'value',
+		source: tagSuggestions.ttAdapter()
+	},
+	tagClass: "search-tag",
 });
 
+oSearchInput.on('itemAdded', function(event) {
+  	addQuery(event.item, event.item);
+});
 
 
 $( document ).ready(function() {
     // get tree
     getTree();
     // get header vars
-
-    /*
-    $('#search-input').tags({
-    	promptText: "search..",
-    	afterAddingTag: function(sTag){
-    		addQuery(sTag, sTag);
-    	},
-    	afterDeletingTag: function(sTag){
-    		removeQuery(sTag);
-    	},
-    	tagClass: "search-tag"
-    });
-	*/
-
-/*
-    $('#search-input.typeahead input').typeahead({
-  hint: true,
-  highlight: true,
-  minLength: 1
-},
-{
-  name: 'states',
-  displayKey: 'value',
-  source: substringMatcher(states)
-});
-
-*/
-/*
-    bestPictures.initialize();
-
-	$('#search-input.typeahead input').typeahead(null, {
-		name: 'ta',
-		displayKey: 'value',
-		source: bestPictures.ttAdapter()
-	});
-	$('#search-input').typeahead(null, {
-		name: 'ta',
-		displayKey: 'value',
-		source: bestPictures.ttAdapter()
-	});*/
 
 
 });
