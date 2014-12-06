@@ -422,4 +422,10 @@ function initializeGoogleMap() {
 		mapTypeId: google.maps.MapTypeId.ROADMAP
 	}
 	var map = new google.maps.Map(mapCanvas, mapOptions)
+
+	google.maps.event.addListener(map, 'idle', function() {
+		// 3 seconds after the center of the map has changed, pan back to the
+		// marker.
+		log("map idle");
+	});
 }	
