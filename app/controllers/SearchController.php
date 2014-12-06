@@ -151,6 +151,20 @@ class SearchController extends BaseController {
 
 	public static function suggest()
 	{
-		return Response::json(CacheController::getSearchSuggestions(Input::get("match")));
+		// get unique tags from cache
+		$oaTags = CacheController::getSearchSuggestions();
+		// search them
+		$sSearchTerm = strtolower(Input::get("match"));
+
+		$oaReturn = [];
+
+		foreach ($oaTags as $oTag) {
+			if (strpos($oTag->value, $sSearchTerm) !== false) {
+				array_push($oaReturn, $oTag);
+			}
+		}
+
+		// return limited matches
+		return Response::json($oaReturn);
 	}
 }

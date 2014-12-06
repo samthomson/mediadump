@@ -58,13 +58,13 @@ $( document ).ready(function() {
 		typeaheadjs: {
 			name: 'tagSuggestions',
 			source: tagSuggestions.ttAdapter(),
+
 		}
 	});
 
 	oSearchInput.on('itemAdded', function(event) {
 	  	addQuery(event.item.value, event.item.value);
 	});
-
 
 	oSearchInput.on('itemRemoved', function(event) {
 	  	removeQuery(event.item.value);

@@ -2,26 +2,35 @@
 
 class CacheController extends BaseController {
 
+	private static $iDefaultCachePeriod = 60;
+
 
 	public static function loadSearchTags()
 	{
 		// create an array of objects to be used in drop down search filter
 
 	}
-	public static function getSearchSuggestions($sTerm)
+	public static function getSearchSuggestions()
 	{
-		$soFiles = DB::table("files")
-		->join("tags", function($join)
-			{
-				$join->on("files.id", "=", "tags.file_id");
-			})	
-		->where("tags.value", "LIKE", "%$sTerm%")->distinct("value")
-		->orderBy("tags.confidence")
-		->groupBy("tags.value")
-        ->select("files.id", "files.hash", "tags.value")
-		->take(10)
-		->get();
+		$sKey = "tags";
+		if (Cache::has($sKey))
+		{
+			return Cache::get($sKey);
+		}else{
+			$oaObjectForCache = DB::table("files")
+			->join("tags", function($join)
+				{
+					$join->on("files.id", "=", "tags.file_id");
+				})	
+			->orderBy("tags.confidence")
+			->groupBy("tags.value")
+	        ->select("files.id", "files.hash", "tags.value")
+			->get();
 
-		return $soFiles;
+			if(isset($oaObjectForCache))
+				Cache::put($sKey, $oaObjectForCache, self::$iDefaultCachePeriod);
+
+			return $oaObjectForCache;
+		}
 	}
 }
