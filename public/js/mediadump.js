@@ -81,7 +81,6 @@ var oSearchInput = $('#search-input');
 oSearchInput.tagsinput({
 	tagClass: "search-tag",
 	itemValue: "value",
-	itemValue: "value",
 	typeaheadjs: {
 		name: 'tagSuggestions',
 		source: tagSuggestions.ttAdapter(),
@@ -89,7 +88,12 @@ oSearchInput.tagsinput({
 });
 
 oSearchInput.on('itemAdded', function(event) {
-  	addQuery(event.item, event.item);
+  	addQuery(event.item.value, event.item.value);
+});
+
+
+oSearchInput.on('itemRemoved', function(event) {
+  	removeQuery(event.item.value);
 });
 
 
@@ -154,6 +158,7 @@ function performSearch()
 {
 	if(oaQueries.length > 0){
 		setLoading(true);
+		log(oaQueries);
 		$.get("/api/search", {query:oaQueries[0].value}, function(results){
 			oResults = results.results;
 			oResultsData = results.info;
