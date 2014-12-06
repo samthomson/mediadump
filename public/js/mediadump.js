@@ -280,6 +280,25 @@ function addQuery(sDisplay, sValue){
 	performSearch();
 	queryChange();
 }
+function addQueryFromMap(){
+
+	var llBounds = gmapMap.getBounds();
+
+	var llNorthEast = llBounds.getNorthEast();
+	var llSouthWest = llBounds.getSouthWest();
+
+
+	var sQuery = "map=";
+	sQuery += llSouthWest.lat().toFixed(2);
+	sQuery += ",";			
+	sQuery += llNorthEast.lat().toFixed(2);
+	sQuery += ",";			
+	sQuery += llSouthWest.lng().toFixed(2);
+	sQuery += ",";			
+	sQuery += llNorthEast.lng().toFixed(2);
+
+	setSolitaryQuery("map search", sQuery);
+}
 function removeQuery(sDisplayTag){
 
 	// find the query with matching display and remove it
@@ -388,8 +407,6 @@ function queryChange(){
 		$("#thumb_results").hide();
 		$("#browse_tree").show();
 	}
-
-
 }
 
 
@@ -430,7 +447,8 @@ function initializeGoogleMap() {
 		// 3 seconds after the center of the map has changed, pan back to the
 		// marker.
 		// only fire if on map search mode
-		if(sSearchMode == "map")
-			log("map idle");
+		if(sSearchMode == "map"){
+			addQueryFromMap();
+		}
 	});
 }	
