@@ -18,7 +18,7 @@ var oResultsData = [];
 var tagSuggestions = new Bloodhound({
   datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
   queryTokenizer: Bloodhound.tokenizers.whitespace,
-	remote: '/api/suggest/?term=%QUERY'
+	remote: '/api/suggest/?match=%QUERY'
 });
 tagSuggestions.initialize();
 
@@ -43,10 +43,12 @@ $( document ).ready(function() {
 	});
 	*/
 
+
+	/*
 	$("#search-select").select2({
     	placeholder: "Search..",
-    	minimumInputLength: 1,
 		width: "100%",
+		multiple: true,
 		ajax: {
 			// instead of writing the function to execute the request we use Select2's convenient helper
 	        url: "/api/suggest",
@@ -68,11 +70,12 @@ $( document ).ready(function() {
 	        cache: true
 	    }
 	});
+*/
 
 
-/*
 
-var oSearchInput = $('#search-input input');
+
+var oSearchInput = $('#search-input');
 
 
 oSearchInput.tagsinput({
@@ -89,7 +92,6 @@ oSearchInput.on('itemAdded', function(event) {
   	addQuery(event.item, event.item);
 });
 
-*/
 
 
 
