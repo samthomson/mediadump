@@ -585,6 +585,7 @@ function thumbClick(iIndex){
 }
 function closeLightbox(){
 	setLightShowing(false);
+	setFile(-1);
 }
 /*
 
