@@ -510,7 +510,9 @@ ul.nav li a.active{border-bottom: 2px solid $media_dump_colour;}
 .tt-suggestion p {
     margin: 0;
 }
-
+.tt-highlight{
+	font-weight: bold;
+}
 .bootstrap-tagsinput{
 	margin-bottom: 0px !important;
 }

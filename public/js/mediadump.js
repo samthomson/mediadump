@@ -144,7 +144,7 @@ $( document ).ready(function() {
 		typeaheadjs: {
 			name: 'tagSuggestions',
 			source: tagSuggestions.ttAdapter(),
-
+			highlight: true,
 		}
 	});
 
@@ -417,7 +417,7 @@ function sizeDivide(){
 
 		$(".left_position").width(iLeftWidth);
 		$(".right_position").css("left", iLeftWidth);
-		
+
 		initializeGoogleMap();
 	}else{
 		// thumbs only?	

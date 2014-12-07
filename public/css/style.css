@@ -475,6 +475,9 @@ ul.nav li a.active {
 .tt-suggestion p {
   margin: 0; }
 
+.tt-highlight {
+  font-weight: bold; }
+
 .bootstrap-tagsinput {
   margin-bottom: 0px !important; }
 
