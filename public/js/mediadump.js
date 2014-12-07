@@ -127,8 +127,6 @@ $( document ).ready(function() {
 	    tagClass: "search-tag",
 	    beforeAddingTag: function(tag){ 
 	    	addQuery(tag, tag);
-	    	$('#search-input').renameTag("tag "+tag, tag+"fdsf")
-	    	log(tag);
 		}
 	});
 
