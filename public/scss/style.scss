@@ -459,8 +459,14 @@ ul.nav li a.active{border-bottom: 2px solid $media_dump_colour;}
     padding: 5px 6px !important;
 }
 
-
-
+.less-confident{
+	opacity: 0.75;
+	filter: alpha(opacity=75); /* For IE8 and earlier */
+}
+.least-confident{
+	opacity: 0.5;
+	filter: alpha(opacity=50); /* For IE8 and earlier */
+}
 
 .tt-input, /* UPDATE: newer versions use tt-input instead of tt-query */
 .tt-hint {
