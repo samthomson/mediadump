@@ -290,7 +290,7 @@ html {
   */ }
 
 #header {
-  background-color: white; }
+  background-color: #e74c3c; }
 
 .btn, .form-control {
   font-size: large;
@@ -327,11 +327,16 @@ textarea:focus, input[type]:focus, .uneditable-input:focus {
 .nav-pills li.active a {
   background-color: #fff !important;
   color: #e74c3c !important;
-  border-bottom: 2px solid #e74c3c; }
+  border-bottom: 2px solid white; }
 
 .nav-pills li:hover a {
-  background: #fff;
-  border-bottom: 2px solid #e74c3c; }
+  border-bottom: 2px solid white; }
+
+.navbar-default .navbar-nav > li > a {
+  color: white; }
+
+.navbar-default .navbar-nav > li > a:hover {
+  color: white; }
 
 select.form-control {
   width: auto;
@@ -410,7 +415,7 @@ ul.nav li a {
   padding: 0px; }
 
 ul.nav li a.active {
-  border-bottom: 2px solid #e74c3c; }
+  border-bottom: 2px solid white; }
 
 .navbar-brand {
   padding: 7px; }
