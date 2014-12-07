@@ -132,17 +132,19 @@ layout parts
   padding-top: 100px;
   margin-top: -4px; }
 
-#loading {
+.centred-message {
   font-size: xx-large;
   z-index: 50;
   color: #e74c3c;
-  display: none;
   width: 200px;
   height: 50px;
   position: absolute;
   left: 50%;
   top: 40%;
   margin: -25px 0 0 -100px; }
+
+#loading {
+  display: none; }
 
 #lightbox {
   z-index: 100;

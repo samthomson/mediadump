@@ -366,7 +366,7 @@ function renderResults(){
 		});
 	}else{
 		// no results
-		htmlThumbs = "no results :(";
+		htmlThumbs = '<div id="no-results" class="centred-message">no results..</div>';
 	}
 	$("#thumb_results").html(htmlThumbs)
 }
