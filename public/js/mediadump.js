@@ -113,7 +113,6 @@ var tagSuggestions = new Bloodhound({
 });
 tagSuggestions.initialize();
 
-/**/
 
 
 
@@ -122,7 +121,7 @@ $( document ).ready(function() {
     getTree();
     // get header vars
 
-    /*
+    
 	$('#search-input').tags({
 	    readOnly: false,
 	    tagClass: "search-tag",
@@ -132,9 +131,8 @@ $( document ).ready(function() {
 	    	log(tag);
 		}
 	});
-	*/
 
-
+/*
 	var oSearchInput = $('#search-input');
 
 
@@ -155,6 +153,8 @@ $( document ).ready(function() {
 	oSearchInput.on('itemRemoved', function(event) {
 	  	removeQuery(event.item.value);
 	});
+*/
+
 
 	// initial set up
 	initializeGoogleMap();
