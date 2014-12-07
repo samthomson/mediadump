@@ -311,7 +311,7 @@ function renderResults(){
 			//
 			if(sSearchMode == "map"){
 				// stagger results
-				iMapIconModulus = 4; // 25%
+				iMapIconModulus = 6; // 25%
 				iMapPinModulus = 2; // 50%
 
 				if(oResults.length < iStaggerMapIconLimit){
