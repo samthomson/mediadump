@@ -225,7 +225,7 @@ class Auto extends BaseController {
 
 		// how many files should we attempt to process now
 		if(isset($iAverageProcessTime))
-			return round(floor(($iMaxMilliseconds*.7)/$iAverageProcessTime));
+			return round(floor(($iMaxMilliseconds*.6)/$iAverageProcessTime));
 		else
 			return 1;
 	}
