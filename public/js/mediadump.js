@@ -376,6 +376,34 @@ function renderPagination(){
 	}
 }
 
+function sizeDivide(){
+	var iLeft = "45%";
+	var iRightWidth = "50%";
+
+	var iWidth = $("#main").width();
+	var iThumbWidth = 125;
+	var iThumbMargin = 4;
+
+	if(sSearchMode == "map"){
+		// map mode
+
+		var iRightWidth = iWidth / 2;
+
+		var iRightThumbs = Math.ceil(iRightWidth / (iThumbWidth + iThumbMargin));
+		iRightWidth = iRightThumbs * (iThumbWidth + iThumbMargin);
+
+		iLeftWidth = iWidth - iRightWidth - 8;
+
+
+		$(".left_position").width(iLeftWidth);
+		$(".right_position").css("left", iLeftWidth);
+	}else{
+		// thumbs only?		
+		$(".left_position").width("0%");
+		$(".right_position").css("left", "0px");
+	}
+}
+
 /*
 
 LOGIC
@@ -528,9 +556,8 @@ function updateFile(){
 }
 function evaluateBrowseOrResults(){
 	// if we're on browse mode either we show nav tree or thumb results if there are any
+	sizeDivide();
 	if(sSearchMode == "browse"){
-		$(".left_position").width("0%");
-		$(".right_position").css("left", "0px");
 		$("#thumb_results").show();
 
 
@@ -544,8 +571,6 @@ function evaluateBrowseOrResults(){
 
 	}else{
 		// map
-		$(".left_position").width("45%");
-		$(".right_position").css("left", "50%");
 		$("#thumb_results").show();
 		$("#thumb_results").show();
 
