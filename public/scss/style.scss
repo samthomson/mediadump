@@ -194,10 +194,10 @@ layout parts
 /* lightbox */
 #lightbox_contents{
 	position: absolute;
-	top:32px;
-	bottom:32px;
-	left:32px;
-	right:32px;
+	top:($padding *6);
+	bottom:($padding *6);
+	left:($padding *6);
+	right:($padding *6);
 }
 #lightbox img{
 	width:auto;
@@ -226,7 +226,7 @@ layout parts
 #right_lightbox{bottom:0px;right:0px;}
 .lightbox_button{
 	position: absolute;
-	padding:10px;
+	padding:$padding;
 	font-size: xx-large;
 }
 

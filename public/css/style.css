@@ -160,10 +160,10 @@ layout parts
 /* lightbox */
 #lightbox_contents {
   position: absolute;
-  top: 32px;
-  bottom: 32px;
-  left: 32px;
-  right: 32px; }
+  top: 48px;
+  bottom: 48px;
+  left: 48px;
+  right: 48px; }
 
 #lightbox img {
   width: auto;
@@ -200,7 +200,7 @@ layout parts
 
 .lightbox_button {
   position: absolute;
-  padding: 10px;
+  padding: 8px;
   font-size: xx-large; }
 
 /* maps */
