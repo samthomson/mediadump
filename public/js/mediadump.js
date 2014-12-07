@@ -449,7 +449,6 @@ function setSolitaryQuery(sDisplay, sValue){
 	queryChange();	
 }
 function addQuery(sDisplay, sValue){
-	log("QUERT " + arguments.callee.caller.toString());
 	// called as a result of tag add event
 	var aaQuery = {};
 	aaQuery["display"] = sDisplay;
@@ -760,7 +759,8 @@ BOILERPLATE HELPER FUNCTIONS
 */
 function sLinkSafeJSString(sString)
 {
-	return sString.replace(/[/\\*]/g, "\\\\");
+	sString = sString.replace(/\\/g, "\\\\");
+	return sString;
 }
 function log(s){
 	console.log(s);
