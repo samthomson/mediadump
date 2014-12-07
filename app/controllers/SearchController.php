@@ -56,7 +56,6 @@ class SearchController extends BaseController {
 						->orderBy(DB::Raw('RAND()'))
 						->groupBy("id")
 				        ->select("files.id", "files.hash", "tags.value", "geodata.latitude", "geodata.longitude", "files.medium_width AS width", "files.medium_height AS height")
-	        ->take(100)
 						->get();
 					}
 					break;
@@ -101,38 +100,12 @@ class SearchController extends BaseController {
 
 		$oResults["info"] = $saStats;
 
-		return Response::json($oResults);
-		/*
-		if($sQuery !== ""){
-			$soFiles = FileModel::whereHas("tags", function($q)
-				{
-					$q->where("value", "=", Input::get("query"));
-				})
-			->whereHas("geodata", function($g)
-			{
-				/*$g->where("id", "=", "geodate.file_id");
-			})
-			->where("live", "=", true)
-			->orderBy("datetime", "desc")
-			->get();
-
-			
-
-
-			if(!Input::get("render"))
-				
-			else
-				foreach ($soFiles as $value) {
-					echo '<img src="/thumbs/medium/'.$value->id.'.jpg"/>';
-				}
-		}*/
-		
+		return Response::json($oResults);		
 	}
 
 	public static function tree()
-	{		
+	{
 		// return list of unique folder with live files
-		
 		$soFiles = DB::table("files")
 		->join("tags", function($join)
 			{
