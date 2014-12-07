@@ -501,6 +501,9 @@ ul.nav li a.active {
   margin-bottom: 0px !important;
   padding: 2px; }
 
+.bootstrap-tags .tags-input {
+  width: 100% !important; }
+
 #map-canvas {
   position: absolute;
   top: 0px;
