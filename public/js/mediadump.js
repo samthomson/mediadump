@@ -579,7 +579,7 @@ function evaluateBrowseOrResults(){
 
 		$("#thumb_results").hide();
 		$("#browse_tree").hide();
-		
+
 		if(oaQueries.length > 0){
 			// queries, render results outcome
 			$("#thumb_results").show();
@@ -615,6 +615,10 @@ function queryChange(){
 UI EVENTS
 
 */
+function home(){
+	setMode("browse");
+	emptyQueries();
+}
 function setMode(sMode){
 	$("#header-navigation li a").removeClass("active");
 
