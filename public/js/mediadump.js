@@ -367,6 +367,8 @@ function renderPagination(){
 		var sPagination = "";
 		var sShowing = "<span>showing " + oResultsData.lower + " - " + oResultsData.upper + " / " + oResultsData.count + '</span>';
 
+		sShowing += '<span><i class="glyphicon glyphicon-flash"></i> found in ~' + parseInt(oResultsData.speed) +' ms</span>';
+
 		if(sSearchMode == "browse"){
 
 			if(iPage > 1){
@@ -379,7 +381,7 @@ function renderPagination(){
 
 			sPagination += sShowing;
 
-			sPagination += '<span><i class="glyphicon glyphicon-flash"></i> found in ' + oResultsData.speed +' ms</span>';
+			
 
 
 			$("#grid_pagination").html(sPagination);
