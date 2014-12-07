@@ -441,8 +441,17 @@ function sizeDivide(){
 }
 function preloadThumb(cIndex){
 	// if image or video?
-	var imgPreload =new Image();
-    imgPreload.src = urlFromHash('lightbox', oResults[cIndex].hash, '');
+	if(cIndex > -1 && cIndex < oResults.length){
+		var imgPreload = new Image();
+	    imgPreload.src = urlFromHash('lightbox', oResults[cIndex].hash, '');
+	}
+}
+function preloadNeighbours(iIndex){
+	var iaPreloadIndexes = [iFile - 1, iFile +1, iFile +2];
+
+	iaPreloadIndexes.forEach(function(iIndex){
+		preloadThumb(iIndex);
+	});
 }
 /*
 
@@ -589,6 +598,7 @@ function updateFile(){
 	if(iFile > -1){
 		// render lightbox content
 		$("#lightbox_contents img").attr("src", urlFromHash('lightbox', oResults[iFile].hash, ''));
+		preloadNeighbours();
 	}else{
 		// strip lightbox content
 		$("#lightbox_contents img").attr("src", "");
