@@ -317,7 +317,7 @@ html {
 	*/
 }
 #header{
-	background-color: $media_dump_colour;
+	background-color: $media_dump_inverse_colour;
 }
 .btn,.form-control{
 	font-size:large;
@@ -356,20 +356,13 @@ outline: 0 none;}
 .nav-pills li.active a{
 	background-color:#fff !important;
 	color: $media_dump_colour !important;
-	border-bottom: 2px solid $media_dump_inverse_colour;
+	border-bottom: 2px solid $media_dump_colour;
 }
 .nav-pills li:hover a{
-	border-bottom:2px solid $media_dump_inverse_colour;
+	background:#fff;
+	border-bottom:2px solid $media_dump_colour;
 }
 
-.navbar-default .navbar-nav>li>a
-{
-	color: $media_dump_inverse_colour;
-}
-.navbar-default .navbar-nav>li>a:hover
-{
-	color: $media_dump_inverse_colour;
-}
 select.form-control{
 	width: auto;
 	display: inline;
@@ -441,7 +434,7 @@ nav.navbar button span.icon-bar{
 }
 ul.nav li{padding: $padding; padding-bottom: 0px; margin-left: ($margin * 4);}
 ul.nav li a{color: $media_dump_colour;padding:0px;}
-ul.nav li a.active{border-bottom: 2px solid $media_dump_inverse_colour;}
+ul.nav li a.active{border-bottom: 2px solid $media_dump_colour;}
 
 .navbar-brand{
 	padding: 7px;
