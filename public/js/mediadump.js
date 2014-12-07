@@ -127,7 +127,7 @@ $( document ).ready(function() {
 	    readOnly: false,
 	    tagClass: "search-tag",
 	    promptText: "search..",
-	    beforeAddingTag: function(tag){ 
+	    afterAddingTag: function(tag){ 
 	    	if(bQueryInputEventsOn){
 	    		addQuery(tag, tag);
 	    	}	    		
@@ -633,8 +633,7 @@ function silentQueryRender(){
 	var saTags = oUITags.getTags();
 	for(i = 0; i < saTags.length; i++){
 		sTagDisplay = saTags[i];
-		oUITags.removeTag(sTagDisplay);
-
+		oUITags.removeTag(sTagDisplay);		
 	}
 	saTags.forEach(function(sTagDisplay){
 	});
@@ -659,7 +658,7 @@ function home(){
 function shuffle(){
 	setSolitaryQuery("shuffle", "shuffle=random");
 	setMode("browse");
-	setUIMode("shuffle")
+	setUIMode("shuffle");
 }
 function setMode(sMode){
 	setSearchMode(sMode);
