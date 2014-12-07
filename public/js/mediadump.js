@@ -400,7 +400,7 @@ function sizeDivide(){
 	var iLeft = "45%";
 	var iRightWidth = "50%";
 
-	var iWidth = $("#main").width();
+	var iWidth = $("#main").width() - 16;
 	var iThumbWidth = 125;
 	var iThumbMargin = 4;
 
