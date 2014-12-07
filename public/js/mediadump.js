@@ -156,7 +156,10 @@ $( document ).ready(function() {
 	  	removeQuery(event.item.value);
 	});
 
+	// initial set up
 	initializeGoogleMap();
+	sizeDivide();
+	setMode("browse");
 });
 
 
@@ -402,18 +405,26 @@ function sizeDivide(){
 		$(".left_position").width(iLeftWidth);
 		$(".right_position").css("left", iLeftWidth);
 	}else{
-		// thumbs only?		
+		// thumbs only?	
 
-		var iRightWidth = iWidth;
+		if(oaQueries.length == 0)	{
+			// browse, set to full width
+			$(".left_position").width("0%");
+			$(".right_position").css("left", "0px");
+		}else{
+			// searching, set to dynamic
+			var iRightWidth = iWidth;
 
-		var iRightThumbs = Math.floor(iRightWidth / (iThumbWidth + iThumbMargin));
-		iRightWidth = iRightThumbs * (iThumbWidth + iThumbMargin);
+			var iRightThumbs = Math.floor(iRightWidth / (iThumbWidth + iThumbMargin));
+			iRightWidth = iRightThumbs * (iThumbWidth + iThumbMargin);
 
-		iLeftWidth = iWidth - iRightWidth - 8;
+			iLeftWidth = iWidth - iRightWidth - 8;
 
 
-		$(".left_position").width("0%");
-		$(".right_position").css("left", (iLeftWidth/2));
+			$(".left_position").width("0%");
+			$(".right_position").css("left", (iLeftWidth/2));
+		}
+
 	}
 }
 
@@ -598,6 +609,7 @@ function queryChange(){
 		$("#thumb_results").show();
 	}else{
 		$("#thumb_results").hide();
+		sizeDivide();
 		$("#browse_tree").show();
 	}
 }
