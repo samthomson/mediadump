@@ -291,6 +291,7 @@ function renderResults(){
 			sSingleFileItem +='<img src="' + urlFromHash('small', oFile.hash, '') + '" id="' + oFile.id + '"/>';
 
 
+			sSingleFileItem +='</div>';
 			sSingleFileItem +='</a>';
 
 			htmlThumbs += sSingleFileItem;
@@ -395,16 +396,25 @@ function sizeDivide(){
 		iRightWidth = iRightThumbs * (iThumbWidth + iThumbMargin);
 
 		iLeftWidth = iWidth - iRightWidth - 8;
+		initializeGoogleMap();
 
 
 		$(".left_position").width(iLeftWidth);
 		$(".right_position").css("left", iLeftWidth);
 	}else{
 		// thumbs only?		
+
+		var iRightWidth = iWidth;
+
+		var iRightThumbs = Math.floor(iRightWidth / (iThumbWidth + iThumbMargin));
+		iRightWidth = iRightThumbs * (iThumbWidth + iThumbMargin);
+
+		iLeftWidth = iWidth - iRightWidth - 8;
+
+
 		$(".left_position").width("0%");
-		$(".right_position").css("left", "0px");
+		$(".right_position").css("left", (iLeftWidth/2));
 	}
-	initializeGoogleMap();
 }
 
 /*
