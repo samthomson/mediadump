@@ -288,7 +288,7 @@ function renderResults(){
 			//
 			var sSingleFileItem = "";
 
-			sSingleFileItem +='<a class="thumb_result_link" mousedown="preload_thumb('+cIndex+')" href="javascript:thumbClick('+cIndex+');">';
+			sSingleFileItem +='<a class="thumb_result_link" onmousedown="preloadThumb('+cIndex+')" href="javascript:thumbClick('+cIndex+');">';
 
 			sSingleFileItem +='<div class="tree_image_container">';
 			sSingleFileItem +='<img src="' + urlFromHash('small', oFile.hash, '') + '" id="' + oFile.id + '"/>';
@@ -427,7 +427,11 @@ function sizeDivide(){
 
 	}
 }
-
+function preloadThumb(cIndex){
+	// if image or video?
+	var imgPreload =new Image();
+    imgPreload.src = urlFromHash('lightbox', oResults[cIndex].hash, '');
+}
 /*
 
 LOGIC
