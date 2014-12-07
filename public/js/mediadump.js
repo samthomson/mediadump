@@ -5,7 +5,9 @@ var bLightboxShowing = false;
 var sSearchMode = "browse";
 
 var gmapMap = null;
-
+var rtime = new Date(1, 1, 2000, 12,00,00);
+var timeout = false;
+var delta = 200;
 
 /* logic vars */
 
@@ -402,6 +404,7 @@ function sizeDivide(){
 		$(".left_position").width("0%");
 		$(".right_position").css("left", "0px");
 	}
+	initializeGoogleMap();
 }
 
 /*
@@ -623,6 +626,22 @@ function lightChange(iOffset){
 	}
 
 	thumbClick(iNewIndex);
+}
+$(window).resize(function() {
+    rtime = new Date();
+    if (timeout === false) {
+        timeout = true;
+        setTimeout(resizeend, delta);
+    }
+});
+
+function resizeend() {
+    if (new Date() - rtime < delta) {
+        setTimeout(resizeend, delta);
+    } else {
+        timeout = false;
+        sizeDivide();
+    }               
 }
 /*
 
