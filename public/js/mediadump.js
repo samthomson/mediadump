@@ -311,7 +311,7 @@ function renderResults(){
 			//
 			if(sSearchMode == "map"){
 				// stagger results
-				iMapIconModulus = 6; // 25%
+				iMapIconModulus = 4; // 25%
 				iMapPinModulus = 2; // 50%
 
 				if(oResults.length < iStaggerMapIconLimit){
@@ -403,53 +403,6 @@ function renderPagination(){
 		}
 	}
 }
-
-function sizeDivide(){
-	var iLeft = "45%";
-	var iRightWidth = "50%";
-
-	var iWidth = $("#main").width() - 16;
-	var iThumbWidth = 125;
-	var iThumbMargin = 4;
-
-	if(sSearchMode == "map"){
-		// map mode
-
-		var iRightWidth = iWidth / 2;
-
-		var iRightThumbs = Math.ceil(iRightWidth / (iThumbWidth + iThumbMargin));
-		iRightWidth = iRightThumbs * (iThumbWidth + iThumbMargin);
-
-		iLeftWidth = iWidth - iRightWidth - 8;
-
-
-		$(".left_position").width(iLeftWidth);
-		$(".right_position").css("left", iLeftWidth);
-
-		initializeGoogleMap();
-	}else{
-		// thumbs only?	
-
-		if(oaQueries.length == 0)	{
-			// browse, set to full width
-			$(".left_position").width("0%");
-			$(".right_position").css("left", "0px");
-		}else{
-			// searching, set to dynamic
-			var iRightWidth = iWidth;
-
-			var iRightThumbs = Math.floor(iRightWidth / (iThumbWidth + iThumbMargin));
-			iRightWidth = iRightThumbs * (iThumbWidth + iThumbMargin);
-
-			iLeftWidth = iWidth - iRightWidth - 8;
-
-
-			$(".left_position").width("0%");
-			$(".right_position").css("left", (iLeftWidth/2));
-		}
-
-	}
-}
 function preloadThumb(cIndex){
 	// if image or video?
 	if(cIndex > -1 && cIndex < oResults.length){
@@ -521,6 +474,10 @@ function removeQuery(sDisplayTag){
 	});
 	
 	performSearch();
+	queryChange();
+}
+function emptyQueries(){
+	oaQueries = [];
 	queryChange();
 }
 
@@ -619,20 +576,21 @@ function evaluateBrowseOrResults(){
 	// if we're on browse mode either we show nav tree or thumb results if there are any
 	sizeDivide();
 	if(sSearchMode == "browse"){
-		$("#thumb_results").show();
 
-
+		$("#thumb_results").hide();
+		$("#browse_tree").hide();
+		
 		if(oaQueries.length > 0){
 			// queries, render results outcome
+			$("#thumb_results").show();
 		}else{
 			// no queries, show browse ui
 			//$("#thumb_results").hide();
-			//$("#browse_tree").show();
+			$("#browse_tree").show();
 		}
 
 	}else{
 		// map
-		$("#thumb_results").show();
 		$("#thumb_results").show();
 
 		google.maps.event.trigger(gmapMap, "resize");
@@ -701,6 +659,53 @@ function resizeend() {
         timeout = false;
         sizeDivide();
     }               
+}
+
+function sizeDivide(){
+	var iLeft = "45%";
+	var iRightWidth = "50%";
+
+	var iWidth = $("#main").width() - 16;
+	var iThumbWidth = 125;
+	var iThumbMargin = 4;
+
+	if(sSearchMode == "map"){
+		// map mode
+
+		var iRightWidth = iWidth / 2;
+
+		var iRightThumbs = Math.ceil(iRightWidth / (iThumbWidth + iThumbMargin));
+		iRightWidth = iRightThumbs * (iThumbWidth + iThumbMargin);
+
+		iLeftWidth = iWidth - iRightWidth - 8;
+
+
+		$(".left_position").width(iLeftWidth);
+		$(".right_position").css("left", iLeftWidth);
+
+		initializeGoogleMap();
+	}else{
+		// thumbs only?	
+
+		if(oaQueries.length == 0)	{
+			// browse, set to full width
+			$(".left_position").width("0%");
+			$(".right_position").css("left", "0px");
+		}else{
+			// searching, set to dynamic
+			var iRightWidth = iWidth;
+
+			var iRightThumbs = Math.floor(iRightWidth / (iThumbWidth + iThumbMargin));
+			iRightWidth = iRightThumbs * (iThumbWidth + iThumbMargin);
+
+			iLeftWidth = iWidth - iRightWidth - 8;
+
+
+			$(".left_position").width("0%");
+			$(".right_position").css("left", (iLeftWidth/2));
+		}
+
+	}
 }
 /*
 
