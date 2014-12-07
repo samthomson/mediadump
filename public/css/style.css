@@ -504,3 +504,6 @@ ul.nav li a.active {
   bottom: 0px;
   left: 0px;
   right: 12px; }
+
+#search-input input {
+  padding-left: 6px !important; }

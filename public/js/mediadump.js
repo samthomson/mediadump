@@ -126,7 +126,7 @@ $( document ).ready(function() {
 	oUITags = $('#search-input').tags({
 	    readOnly: false,
 	    tagClass: "search-tag",
-	    promptText: "  search..",
+	    promptText: "search..",
 	    afterAddingTag: function(tag){ 
 	    	if(bQueryInputEventsOn){
 	    		addQuery(tag, tag);
