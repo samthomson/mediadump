@@ -311,12 +311,12 @@ function renderResults(){
 			//
 			if(sSearchMode == "map"){
 				// stagger results
-				iMapIconModulus = 2; // 50%
-				iMapPinModulus = 4; // 25%
+				iMapIconModulus = 4; // 25%
+				iMapPinModulus = 2; // 50%
 
 				if(oResults.length < iStaggerMapIconLimit){
 					iMapIconModulus = 1;
-					iMapPinModulus = 1;
+					iMapPinModulus = 10000;
 				}
 
 				if(cIndex % iMapIconModulus == 0){
@@ -343,7 +343,7 @@ function renderResults(){
 						map: gmapMap,
 						icon: {
 							path: google.maps.SymbolPath.CIRCLE,
-							scale: 3,
+							scale: 2,
 							fillOpacity : 1,
 							strokeColor: sMediaDumpColor,
 							fillColor: sMediaDumpColor
