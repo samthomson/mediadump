@@ -293,6 +293,9 @@ layout parts
 	text-transform:capitalize;
 	font-weight:600;
 }
+a.tree_link:hover{
+	text-decoration: none;
+}
 .tree_link:hover{
 	cursor: pointer;
 }
@@ -433,7 +436,7 @@ nav.navbar button span.icon-bar{
 	z-index:400;
 }
 ul.nav li{padding: $padding; padding-bottom: 0px; margin-left: ($margin * 4);}
-ul.nav li a{color: $media_dump_colour;padding:0px;}
+ul.nav li a{color: $media_dump_colour !important;padding:0px;}
 ul.nav li a.active{border-bottom: 2px solid $media_dump_colour;}
 
 .navbar-brand{
@@ -547,4 +550,8 @@ ul.nav li a.active{border-bottom: 2px solid $media_dump_colour;}
 }
 #search-input input{
 	padding-left: 6px !important;
+}
+
+#search-input .label{
+	font-weight: normal !important;
 }
