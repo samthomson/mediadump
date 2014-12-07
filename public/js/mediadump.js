@@ -252,7 +252,8 @@ function renderTree()
 	var htmlTree = "";
 
 
-	oTree.forEach(function(oLink){
+	oTree.forEach(function(oLink, cIndex){
+
 
 		var sSingleTreeItem = "";
 
@@ -269,8 +270,15 @@ function renderTree()
 
 		sSingleTreeItem +='</a>';
 
+		// maybe start a row
+		if(cIndex % 3 == 0)
+			htmlTree += '<div class="row">';
 
 		htmlTree += sSingleTreeItem;
+
+		// maybe end a row
+		if((cIndex + 1) % 3 == 0)
+			htmlTree += '</div>';
 	});
 
 	$("#browse_tree").html(htmlTree);
