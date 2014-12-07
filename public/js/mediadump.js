@@ -8,9 +8,10 @@ var gmapMap = null;
 var rtime = new Date(1, 1, 2000, 12,00,00);
 var timeout = false;
 var delta = 200;
+var oUITags = null;
 
 /* logic vars */
-
+var bQueryInputEventsOn = true;
 
 var sCdnURL = "";
 
@@ -122,13 +123,18 @@ $( document ).ready(function() {
     // get header vars
 
     
-	$('#search-input').tags({
+	oUITags = $('#search-input').tags({
 	    readOnly: false,
 	    tagClass: "search-tag",
+	    promptText: "search..",
 	    beforeAddingTag: function(tag){ 
-	    	addQuery(tag, tag);
+	    	if(bQueryInputEventsOn){
+	    		addQuery(tag, tag);
+	    	}	    		
 		}
 	});
+
+
 
 /*
 	var oSearchInput = $('#search-input');
@@ -435,10 +441,10 @@ function setSolitaryQuery(sDisplay, sValue){
 	oaQueries = Array();
 	oaQueries.push(aaQuery);
 	performSearch();
-	queryChange();
+	queryChange();	
 }
 function addQuery(sDisplay, sValue){
-
+	log("QUERT " + arguments.callee.caller.toString());
 	// called as a result of tag add event
 	var aaQuery = {};
 	aaQuery["display"] = sDisplay;
@@ -446,6 +452,8 @@ function addQuery(sDisplay, sValue){
 	
 	oaQueries.push(aaQuery);
 	performSearch();
+
+
 	queryChange();
 }
 function addQueryFromMap(){
@@ -611,6 +619,46 @@ function queryChange(){
 		sizeDivide();
 		$("#browse_tree").show();
 	}
+
+	log("size: " + oaQueries.length);
+	// make sure input matches
+
+	
+	
+	
+
+	
+	/*
+	oaQueries.forEach(function(oQuery){
+		oUITags = oUITags.addTag(oQuery["display"]);
+	});*/
+	silentQueryRender()
+
+}
+function silentQueryRender(){
+	bQueryInputEventsOn = false;
+	var saTags = oUITags.getTags();
+	log("tags length: " + saTags.length);
+	for(i = 0; i < saTags.length; i++){
+		sTagDisplay = saTags[i];
+		log("remove: " + sTagDisplay);
+		oUITags.removeTag(sTagDisplay);
+
+	}
+	saTags.forEach(function(sTagDisplay){
+	});
+
+	log("query length: " + oaQueries.length);
+	for(i = 0; i < 1; i++){
+		oQuery = oaQueries[i];
+		//log("add: " + oQuery["display"]);
+		log("lendth in loop: " + oaQueries.length);
+		log("i: " + i);
+		//$('#search-input').tags().addTag(oQuery["display"]);
+		//
+		oUITags.addTag(String(oQuery["display"]));
+	}
+	bQueryInputEventsOn = true;
 }
 
 
