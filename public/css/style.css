@@ -203,6 +203,9 @@ layout parts
   padding: 8px;
   font-size: xx-large; }
 
+.lightbox_button:hover, .lightbox_button:active, .lightbox_button:visited {
+  color: #e74c3c; }
+
 /* maps */
 /*
 .angular-google-map-container {

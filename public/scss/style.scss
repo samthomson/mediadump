@@ -229,6 +229,9 @@ layout parts
 	padding:$padding;
 	font-size: xx-large;
 }
+.lightbox_button:hover, .lightbox_button:active, .lightbox_button:visited{
+	color: $media_dump_colour;
+}
 
 /* maps */
 /*
