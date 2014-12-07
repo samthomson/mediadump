@@ -413,11 +413,12 @@ function sizeDivide(){
 		iRightWidth = iRightThumbs * (iThumbWidth + iThumbMargin);
 
 		iLeftWidth = iWidth - iRightWidth - 8;
-		initializeGoogleMap();
 
 
 		$(".left_position").width(iLeftWidth);
 		$(".right_position").css("left", iLeftWidth);
+		
+		initializeGoogleMap();
 	}else{
 		// thumbs only?	
 
