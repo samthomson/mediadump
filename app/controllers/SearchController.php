@@ -59,9 +59,25 @@ class SearchController extends BaseController {
 						->get();
 					}
 					break;
+				case 'shuffle':
+					$soFiles = DB::table("files")
+					->join("tags", function($join)
+						{
+							$join->on("files.id", "=", "tags.file_id");
+						})
+					->join("geodata", function($joinGeoData)
+						{
+							$joinGeoData->on("files.id", "=", "geodata.file_id");
+						})	
+					->where("live", "=", true)->distinct("value")
+					->orderBy(DB::Raw('RAND()'))
+					->groupBy("id")
+			        ->select("files.id", "files.hash", "tags.value", "geodata.latitude", "geodata.longitude")
+					->get();
+
+					break;
 			}
 		}else{
-
 
 
 
@@ -82,6 +98,8 @@ class SearchController extends BaseController {
 	        ->select("files.id", "files.hash", "tags.value", "geodata.latitude", "geodata.longitude", "files.medium_width AS width", "files.medium_height AS height")
 			->get();
 		}
+
+
 		$saStats["speed"] = (microtime(true) - $mtStart)*1000;
 		$saStats["count"] = count($soFiles);
 		$saStats["available_pages"] = round((floor(count($soFiles)-1)/$iPerPage))+1;

@@ -619,13 +619,19 @@ function home(){
 	setMode("browse");
 	emptyQueries();
 }
+function shuffle(){
+	setSolitaryQuery("shuffle", "shuffle=random");
+	setMode("browse");
+	setUIMode("shuffle")
+}
 function setMode(sMode){
-	$("#header-navigation li a").removeClass("active");
-
 	setSearchMode(sMode);
+	setUIMode(sMode);
+}
+function setUIMode(sMode){
+	$("#header-navigation li a").removeClass("active");
 	$("#header-navigation li a." + sMode + "-link").addClass("active");
 }
-
 function thumbClick(iIndex){
 	// load lightbox stuff
 	setFile(iIndex);
