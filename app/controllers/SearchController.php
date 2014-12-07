@@ -100,7 +100,7 @@ class SearchController extends BaseController {
 
 		$saStats["speed"] = (microtime(true) - $mtStart)*1000;
 		$saStats["count"] = count($soFiles);
-		$saStats["available_pages"] = round((floor(count($soFiles)-1)/$iPerPage))+1;
+		$saStats["available_pages"] = round(floor((count($soFiles)-1)/$iPerPage))+1;
 
 
 		$iPage = (Input::get("page")) ? Input::get("page") : 1;
