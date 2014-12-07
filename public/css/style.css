@@ -433,6 +433,16 @@ ul.nav li a.active {
   height: 34px;
   padding: 5px 6px !important; }
 
+.less-confident {
+  opacity: 0.75 !important;
+  filter: alpha(opacity=75) !important;
+  /* For IE8 and earlier */ }
+
+.least-confident {
+  opacity: 0.5 !important;
+  filter: alpha(opacity=50) !important;
+  /* For IE8 and earlier */ }
+
 .tt-input,
 .tt-hint {
   width: 396px;

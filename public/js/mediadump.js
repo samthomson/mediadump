@@ -298,8 +298,15 @@ function renderResults(){
 
 			sSingleFileItem +='<a class="thumb_result_link" onmousedown="preloadThumb('+cIndex+')" href="javascript:thumbClick('+cIndex+');">';
 
+			sConfidenceClass = "";
+			if(oFile.confidence < 40){
+				sConfidenceClass = "less-confident";
+			}	
+			if(oFile.confidence < 20){
+				sConfidenceClass = "least-confident";
+			}	
 			sSingleFileItem +='<div class="tree_image_container">';
-			sSingleFileItem +='<img src="' + urlFromHash('small', oFile.hash, '') + '" id="' + oFile.id + '"/>';
+			sSingleFileItem +='<img src="' + urlFromHash('small', oFile.hash, '') + '" id="' + oFile.id + '" class="' + sConfidenceClass + '" />';
 
 
 			sSingleFileItem +='</div>';
