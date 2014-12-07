@@ -318,8 +318,15 @@ function renderResults(){
 					var beachMarker = new google.maps.Marker({
 						position: myLatLng,
 						map: gmapMap,
-						icon: image
+						icon: image,
+
 					});
+
+					google.maps.event.addListener(beachMarker, "click", function() {
+					    thumbClick(cIndex);
+					});
+
+
 				}else if(cIndex % iMapPinModulus == 0){ // 20%
 					// dot
 					var myLatLng = new google.maps.LatLng(oFile.latitude, oFile.longitude);
@@ -332,7 +339,12 @@ function renderResults(){
 							fillOpacity : 1,
 							strokeColor: sMediaDumpColor,
 							fillColor: sMediaDumpColor
-						}
+						},
+
+					});
+
+					google.maps.event.addListener(beachMarker, "click", function() {
+					    thumbClick(cIndex);
 					});
 				}
 			}
