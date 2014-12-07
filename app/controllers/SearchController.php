@@ -79,8 +79,6 @@ class SearchController extends BaseController {
 			}
 		}else{
 
-
-
 			$soFiles = DB::table("files")
 			->join("tags", function($join)
 				{

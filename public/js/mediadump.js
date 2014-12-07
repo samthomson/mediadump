@@ -378,13 +378,13 @@ function renderPagination(){
 		sShowing += '<span><i class="glyphicon glyphicon-flash"></i> found in ~' + parseInt(oResultsData.speed) +' ms</span>';
 
 		if(sSearchMode == "browse"){
-
+			log(iPage);
 			if(iPage > 1){
-				sPagination += '<a class="btn active pull-left" href="javascript:setPage(' + iPage - 1 + ');"><i class="glyphicon glyphicon-chevron-left"></i> previous</a>';
+				sPagination += '<a class="btn active pull-left btn-xs" href="javascript:setPage(' + (iPage - 1) + ');"><i class="glyphicon glyphicon-chevron-left"></i> previous</a>';
 			}
 
 			if(iPage < oResultsData.available_pages){
-				sPagination += '<a class="pull-right btn active" ng-show="page < (result_info.available_pages)" href="javascript:setPage(' + iPage - 1 + ');">next <i class="glyphicon glyphicon-chevron-right"></i></a>';
+				sPagination += '<a class="pull-right btn active btn-xs" ng-show="page < (result_info.available_pages)" href="javascript:setPage(' + (iPage + 1) + ');">next <i class="glyphicon glyphicon-chevron-right"></i></a>';
 			}
 
 			sPagination += sShowing;
