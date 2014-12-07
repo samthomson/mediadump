@@ -92,7 +92,9 @@ Layout
   height: 40px;
   right: 0px;
   left: 0px;
-  padding-right: 8px; }
+  padding-right: 8px;
+  font-size: 18px;
+  text-align: center; }
 
 /*
 layout parts
