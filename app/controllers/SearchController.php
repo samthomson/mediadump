@@ -55,7 +55,7 @@ class SearchController extends BaseController {
 						->where("live", "=", true)->distinct("value")
 						->orderBy(DB::Raw('RAND()'))
 						->groupBy("id")
-				        ->select("files.id", "files.hash", "tags.value", "geodata.latitude", "geodata.longitude", "files.medium_width AS width", "files.medium_height AS height")
+				        ->select("files.id", "files.hash", "tags.value", "geodata.latitude", "geodata.longitude", "files.medium_width AS width", "files.medium_height AS height", "tags.confidence as confidence")
 						->get();
 					}
 					break;
@@ -72,7 +72,7 @@ class SearchController extends BaseController {
 					->where("live", "=", true)->distinct("value")
 					->orderBy(DB::Raw('RAND()'))
 					->groupBy("id")
-			        ->select("files.id", "files.hash", "tags.value", "geodata.latitude", "geodata.longitude")
+			        ->select("files.id", "files.hash", "tags.value", "geodata.latitude", "geodata.longitude", "tags.confidence as confidence")
 					->get();
 
 					break;
@@ -93,7 +93,7 @@ class SearchController extends BaseController {
 			->where("confidence", ">", Helper::iConfidenceThreshold())
 			->orderBy("confidence", "desc")
 			->orderBy("datetime", "desc")
-	        ->select("files.id", "files.hash", "tags.value", "geodata.latitude", "geodata.longitude", "files.medium_width AS width", "files.medium_height AS height")
+	        ->select("files.id", "files.hash", "tags.value", "geodata.latitude", "geodata.longitude", "files.medium_width AS width", "files.medium_height AS height", "tags.confidence as confidence")
 			->get();
 		}
 
