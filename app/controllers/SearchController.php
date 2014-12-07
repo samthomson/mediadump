@@ -112,7 +112,7 @@ class SearchController extends BaseController {
 		$oResults["results"] = array_slice($soFiles, $iMin, $iPerPage);
 
 		$saStats["lower"] = $iMin + 1;
-		$saStats["upper"] = count($oResults["results"]);
+		$saStats["upper"] = (($iPage - 1 ) * $iPerPage) + count($oResults["results"]);
 
 		$oResults["info"] = $saStats;
 

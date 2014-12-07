@@ -378,7 +378,6 @@ function renderPagination(){
 		sShowing += '<span><i class="glyphicon glyphicon-flash"></i> found in ~' + parseInt(oResultsData.speed) +' ms</span>';
 
 		if(sSearchMode == "browse"){
-			log(iPage);
 			if(iPage > 1){
 				sPagination += '<a class="btn active pull-left btn-xs" href="javascript:setPage(' + (iPage - 1) + ');"><i class="glyphicon glyphicon-chevron-left"></i> previous</a>';
 			}
