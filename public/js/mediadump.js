@@ -131,6 +131,11 @@ $( document ).ready(function() {
 	    	if(bQueryInputEventsOn){
 	    		addQuery(tag, tag);
 	    	}	    		
+		},
+		beforeDeletingTag: function(tag){
+	    	if(bQueryInputEventsOn){
+	    		removeQuery(tag);
+	    	}
 		}
 	});
 
@@ -620,42 +625,22 @@ function queryChange(){
 		$("#browse_tree").show();
 	}
 
-	log("size: " + oaQueries.length);
-	// make sure input matches
-
-	
-	
-	
-
-	
-	/*
-	oaQueries.forEach(function(oQuery){
-		oUITags = oUITags.addTag(oQuery["display"]);
-	});*/
 	silentQueryRender()
 
 }
 function silentQueryRender(){
 	bQueryInputEventsOn = false;
 	var saTags = oUITags.getTags();
-	log("tags length: " + saTags.length);
 	for(i = 0; i < saTags.length; i++){
 		sTagDisplay = saTags[i];
-		log("remove: " + sTagDisplay);
 		oUITags.removeTag(sTagDisplay);
 
 	}
 	saTags.forEach(function(sTagDisplay){
 	});
 
-	log("query length: " + oaQueries.length);
-	for(i = 0; i < 1; i++){
+	for(i = 0; i < oaQueries.length; i++){
 		oQuery = oaQueries[i];
-		//log("add: " + oQuery["display"]);
-		log("lendth in loop: " + oaQueries.length);
-		log("i: " + i);
-		//$('#search-input').tags().addTag(oQuery["display"]);
-		//
 		oUITags.addTag(String(oQuery["display"]));
 	}
 	bQueryInputEventsOn = true;
