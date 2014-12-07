@@ -49,6 +49,7 @@ Log::useFiles(storage_path().'/logs/laravel.log');
 
 App::error(function(Exception $exception, $code)
 {
+	return Response::make("501", 501);
 	Log::error($exception);
 });
 

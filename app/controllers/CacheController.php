@@ -31,6 +31,6 @@ class CacheController extends BaseController {
 				Cache::put($sKey, $oaObjectForCache, self::$iDefaultCachePeriod);
 
 			return $oaObjectForCache;
-		}
+		}			
 	}
 }
