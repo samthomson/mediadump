@@ -426,10 +426,10 @@ ul.nav li a.active {
 .search-tag {
   background: #e74c3c;
   border-radius: 4px;
-  padding: 2px;
   padding-left: 4px;
   font-size: 16px;
-  margin-top: 5px; }
+  margin: 5px !important;
+  padding: 4px !important; }
 
 .bootstrap-tagsinput {
   width: 100%;
