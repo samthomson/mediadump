@@ -153,6 +153,8 @@ class SearchController extends BaseController {
 			}
 		}
 
+		$oaReturn = array_slice($oaReturn, 0, 16);
+
 		// return limited matches
 		return Response::json($oaReturn);
 	}
