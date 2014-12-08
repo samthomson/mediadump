@@ -542,7 +542,8 @@ ul.nav li a.active{border-bottom: 2px solid $media_dump_colour;}
 #autocomplete{
 	position: absolute;
 	display: block;
-	height: 256px;
+	height: auto;
+	max-height: 256px;
 	overflow-y: auto;
 	width: 500px;
 	background-color: $media_dump_inverse_colour;

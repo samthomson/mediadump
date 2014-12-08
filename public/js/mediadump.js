@@ -176,7 +176,7 @@ $( document ).ready(function() {
 	    }
 	});
 
-
+	$("#search-input input").focus();
 
 
 	// initial set up
