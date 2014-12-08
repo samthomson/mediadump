@@ -13,6 +13,10 @@ var lastValue = '';
 
 var htmlAutoComplete = '';
 
+var xhrSearch;
+var xhrSuggest;
+var xhrFileInfo;
+
 /* logic vars */
 var bQueryInputEventsOn = true;
 
@@ -143,7 +147,10 @@ $( document ).ready(function() {
 	        	// hide it
 	        	setAutoComplete('');
 	        }else{
-	        	$.get("/api/suggest",
+	        	if(xhrSuggest && xhrSuggest.readystate != 4){
+		            xhrSuggest.abort();
+		        }
+	        	xhrSuggest = $.get("/api/suggest",
 	        		{match: lastValue}, 
 	        		function(results){
 	        			var htmlAutoComplete = "";
