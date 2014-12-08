@@ -130,7 +130,7 @@ $( document ).ready(function() {
 	    afterAddingTag: function(tag){ 
 	    	if(bQueryInputEventsOn){
 	    		addQuery(tag, tag);
-	    	}	    		
+	    	}
 		},
 		beforeDeletingTag: function(tag){
 	    	if(bQueryInputEventsOn){
@@ -188,6 +188,7 @@ $( document ).ready(function() {
 function autoSuggestSelect(sDisplay, sValue){
 	// remove current text in input
 	$("#search-input input").val(''); // this should trigger events which close the drop down to
+	setAutoComplete('');
 	// add tag
 	addQuery(sDisplay, sValue);
 }

@@ -527,7 +527,7 @@ ul.nav li a.active {
   right: 12px; }
 
 #search-input input {
-  padding-left: 6px !important; }
+  /*padding-left: 6px !important;*/ }
 
 #search-input .label {
   font-weight: normal !important; }
