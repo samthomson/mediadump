@@ -11,6 +11,8 @@ var delta = 200;
 var oUITags = null;
 var lastValue = '';
 
+var htmlAutoComplete = '';
+
 /* logic vars */
 var bQueryInputEventsOn = true;
 
@@ -141,9 +143,19 @@ $( document ).ready(function() {
 	        	// hide it
 	        }else{
 	        	$.get("/api/suggest",
-	        		{match: lastValue}, function(results){
-					log(results);
-				});
+	        		{match: lastValue}, 
+	        		function(results){
+	        			var htmlAutoComplete = "";
+
+	        			results.forEach(function(oResult, cCount){
+	        				htmlAutoComplete += '<div class="auto-suggestion">';
+	        				htmlAutoComplete += oResult.value;
+	        				htmlAutoComplete += '</div>';
+	        			});
+
+	        			setAutoComplete(htmlAutoComplete);
+					}
+				);
 	        }
 	        
 	    }
@@ -489,6 +501,16 @@ function emptyQueries(){
 MODEL EVENTS
 
 */
+
+function setAutoComplete(htmlAutoCompleteNew){	
+	if(htmlAutoComplete != htmlAutoCompleteNew){
+		htmlAutoComplete = htmlAutoCompleteNew;
+		updateAutoComplete();
+	}	
+}
+function updateAutoComplete(){
+	$("#autocomplete").html(htmlAutoComplete);
+}
 
 function setLoading(bLoadingNew){	
 	$("#thumb_results").html('');;
