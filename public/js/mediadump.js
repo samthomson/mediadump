@@ -148,9 +148,13 @@ $( document ).ready(function() {
 	        			var htmlAutoComplete = "";
 
 	        			results.forEach(function(oResult, cCount){
-	        				htmlAutoComplete += '<div class="auto-suggestion">';
+
+							var sValue = sLinkSafeJSString(oResult.value);
+							var sDisplay = folderFromUniqueDir(sValue);
+
+	        				htmlAutoComplete += '<a href="javascript:autoSuggestSelect(\'' + sDisplay + '\', \'' + sValue + '\');" class="auto-suggestion">';
 	        				htmlAutoComplete += oResult.value;
-	        				htmlAutoComplete += '</div>';
+	        				htmlAutoComplete += '</a>';
 	        			});
 
 	        			setAutoComplete(htmlAutoComplete);
@@ -171,7 +175,12 @@ $( document ).ready(function() {
 });
 
 
-
+function autoSuggestSelect(sDisplay, sValue){
+	// remove current text in input
+	$("#search-input input").val(''); // this should trigger events which close the drop down to
+	// add tag
+	addQuery(sDisplay, sValue);
+}
 
 
 
