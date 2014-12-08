@@ -137,6 +137,15 @@ $( document ).ready(function() {
 		if ($(this).val() != lastValue) {
 	        lastValue = $(this).val();
 	        log(lastValue);
+	        if(lastValue == ""){
+	        	// hide it
+	        }else{
+	        	$.get("/api/suggest",
+	        		{match: lastValue}, function(results){
+					log(results);
+				});
+	        }
+	        
 	    }
 	});
 
