@@ -194,8 +194,6 @@ function autoSuggestSelect(sDisplay, sValue){
 }
 
 
-
-
 /*
 
 GET DATA

@@ -443,13 +443,13 @@ ul.nav li a.active {
   padding: 5px 6px !important; }
 
 .less-confident {
-  opacity: 0.75 !important;
-  filter: alpha(opacity=75) !important;
+  opacity: 0.85 !important;
+  filter: alpha(opacity=85) !important;
   /* For IE8 and earlier */ }
 
 .least-confident {
-  opacity: 0.5 !important;
-  filter: alpha(opacity=50) !important;
+  opacity: 0.75 !important;
+  filter: alpha(opacity=75) !important;
   /* For IE8 and earlier */ }
 
 .tt-input,
