@@ -518,7 +518,8 @@ ul.nav li a.active {
   display: relative;
   display: block;
   border-bottom: 1px solid #e74c3c;
-  padding: 8px; }
+  padding: 8px;
+  font-size: x-large; }
 
 .auto-suggestion:last {
   border-bottom-color: #fff; }
