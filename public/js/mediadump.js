@@ -9,6 +9,7 @@ var rtime = new Date(1, 1, 2000, 12,00,00);
 var timeout = false;
 var delta = 200;
 var oUITags = null;
+var lastValue = '';
 
 /* logic vars */
 var bQueryInputEventsOn = true;
@@ -107,13 +108,6 @@ var media_dump_map_options = {
 		backgroundColor: '#fff'};
 
 
-var tagSuggestions = new Bloodhound({
-  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
-  queryTokenizer: Bloodhound.tokenizers.whitespace,
-	remote: '/api/suggest/?match=%QUERY'
-});
-tagSuggestions.initialize();
-
 
 
 
@@ -139,30 +133,14 @@ $( document ).ready(function() {
 		}
 	});
 
-
-
-/*
-	var oSearchInput = $('#search-input');
-
-
-	oSearchInput.tagsinput({
-		tagClass: "search-tag",
-		itemValue: "value",
-		typeaheadjs: {
-			name: 'tagSuggestions',
-			source: tagSuggestions.ttAdapter(),
-			highlight: true,
-		}
+	$("#search-input input").on('change keyup paste', function(event){
+		if ($(this).val() != lastValue) {
+	        lastValue = $(this).val();
+	        log(lastValue);
+	    }
 	});
 
-	oSearchInput.on('itemAdded', function(event) {
-	  	addQuery(event.item.value, event.item.value);
-	});
 
-	oSearchInput.on('itemRemoved', function(event) {
-	  	removeQuery(event.item.value);
-	});
-*/
 
 
 	// initial set up
