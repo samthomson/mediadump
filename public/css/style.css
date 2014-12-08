@@ -504,9 +504,6 @@ ul.nav li a.active {
   margin-bottom: 0px !important;
   padding: 2px; }
 
-.bootstrap-tags .tags-input {
-  width: 100% !important; }
-
 .auto-suggestion {
   display: relative;
   display: block;
