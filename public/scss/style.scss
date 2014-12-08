@@ -542,6 +542,15 @@ ul.nav li a.active{border-bottom: 2px solid $media_dump_colour;}
 
 .auto-suggestion{
 	display:relative;
+	display: block;
+	border-bottom: 1px solid $media_dump_colour;
+	padding: $padding;
+}
+.auto-suggestion:last{
+	border-bottom-color:#fff;
+}
+.auto-suggestion img{
+	margin-right: $padding*2;
 }
 
 

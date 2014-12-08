@@ -507,6 +507,18 @@ ul.nav li a.active {
 .bootstrap-tags .tags-input {
   width: 100% !important; }
 
+.auto-suggestion {
+  display: relative;
+  display: block;
+  border-bottom: 1px solid #e74c3c;
+  padding: 8px; }
+
+.auto-suggestion:last {
+  border-bottom-color: #fff; }
+
+.auto-suggestion img {
+  margin-right: 16px; }
+
 #map-canvas {
   position: absolute;
   top: 0px;

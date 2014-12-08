@@ -141,6 +141,7 @@ $( document ).ready(function() {
 	        log(lastValue);
 	        if(lastValue == ""){
 	        	// hide it
+	        	setAutoComplete('');
 	        }else{
 	        	$.get("/api/suggest",
 	        		{match: lastValue}, 
@@ -153,6 +154,7 @@ $( document ).ready(function() {
 							var sDisplay = folderFromUniqueDir(sValue);
 
 	        				htmlAutoComplete += '<a href="javascript:autoSuggestSelect(\'' + sDisplay + '\', \'' + sValue + '\');" class="auto-suggestion">';
+	        				htmlAutoComplete += '<img src="' + urlFromHash("icon", oResult.hash, "") + '" />';
 	        				htmlAutoComplete += oResult.value;
 	        				htmlAutoComplete += '</a>';
 	        			});
