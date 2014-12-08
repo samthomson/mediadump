@@ -504,6 +504,15 @@ ul.nav li a.active {
   margin-bottom: 0px !important;
   padding: 2px; }
 
+#autocomplete {
+  position: absolute;
+  display: block;
+  height: 256px;
+  overflow-y: auto;
+  width: 500px;
+  background-color: white;
+  margin-top: 4px; }
+
 .auto-suggestion {
   display: relative;
   display: block;
