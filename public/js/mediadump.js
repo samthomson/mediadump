@@ -152,10 +152,12 @@ $( document ).ready(function() {
 
 							var sValue = sLinkSafeJSString(oResult.value);
 							var sDisplay = folderFromUniqueDir(sValue);
+		
+							var sMatchText = sValue.replace(lastValue,'<strong>'+lastValue+'</strong>')
 
 	        				htmlAutoComplete += '<a href="javascript:autoSuggestSelect(\'' + sDisplay + '\', \'' + sValue + '\');" class="auto-suggestion">';
 	        				htmlAutoComplete += '<img src="' + urlFromHash("icon", oResult.hash, "") + '" />';
-	        				htmlAutoComplete += oResult.value;
+	        				htmlAutoComplete += sMatchText;
 	        				htmlAutoComplete += '</a>';
 	        			});
 
@@ -175,7 +177,6 @@ $( document ).ready(function() {
 	sizeDivide();
 	setMode("browse");
 });
-
 
 function autoSuggestSelect(sDisplay, sValue){
 	// remove current text in input
