@@ -155,7 +155,7 @@ $( document ).ready(function() {
 	        		function(results){
 	        			var htmlAutoComplete = "";
 
-	        			results.forEach(function(oResult, cCount){
+	        			results["suggestions"].forEach(function(oResult, cCount){
 
 							var sValue = sLinkSafeJSString(oResult.value);
 							var sDisplay = folderFromUniqueDir(sValue);
