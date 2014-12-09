@@ -149,7 +149,7 @@ $( document ).ready(function() {
 	        	if(xhrSuggest && xhrSuggest.readystate != 4){
 		            xhrSuggest.abort();
 		        }
-	        	xhrSuggest = $.get("/api/suggest",
+	        	xhrSuggest = $.get("/api/dbsuggest",
 	        		{match: lastValue}, 
 	        		function(results){
 	        			var htmlAutoComplete = "";

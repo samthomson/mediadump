@@ -16,6 +16,10 @@ class Helper {
 	{
 		return Config::get('app.confidenceThreshold');
 	}
+	public static function _AppProperty($sKey)
+	{
+		return Config::get('app.'.$sKey);
+	}
 
 }
 

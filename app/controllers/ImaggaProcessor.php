@@ -26,7 +26,7 @@ class ImaggaProcessor extends BaseController {
 				
 				$context = stream_context_create(array(
 				    'http' => array(
-				        'header'  => "Authorization: Basic " . base64_encode("acc_19db373c6879755:d397f1a6ab0323a3a7a46ebf0a5af625")
+				        'header'  => "Authorization: Basic " . base64_encode(_AppProperty('imaggaKey').":"._AppProperty('imaggaSecret'))
 				    )
 				));
 
