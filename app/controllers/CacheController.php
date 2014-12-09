@@ -12,12 +12,26 @@ class CacheController extends BaseController {
 	}
 	public static function getSearchSuggestions()
 	{
-		$sKey = "tags";
+		$sKey = "searchsuggestions";
 		if (Cache::has($sKey))
 		{
 			return Cache::get($sKey);
 		}else{
-			$oaObjectForCache = DB::table("files")
+			$oaObjectForCache = self::generateSearchSuggestions();
+
+			if(isset($oaObjectForCache))
+				Cache::forever($sKey, $oaObjectForCache);
+
+			return $oaObjectForCache;
+		}			
+	}
+
+	public static function rebuild(){
+		Cache::forever("searchsuggestions", self::generateSearchSuggestions());
+	}
+
+	private static function generateSearchSuggestions(){
+		return DB::table("files")
 			->join("tags", function($join)
 				{
 					$join->on("files.id", "=", "tags.file_id");
@@ -26,11 +40,5 @@ class CacheController extends BaseController {
 			->groupBy("tags.value")
 	        ->select("files.id", "files.hash", "tags.value")
 			->get();
-
-			if(isset($oaObjectForCache))
-				Cache::put($sKey, $oaObjectForCache, self::$iDefaultCachePeriod);
-
-			return $oaObjectForCache;
-		}			
 	}
 }

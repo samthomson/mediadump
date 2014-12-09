@@ -24,6 +24,7 @@ Route::get('auto/processqueue', array('uses' => 'Auto@processQueue'));
 Route::get('/api/search', array('uses' => 'SearchController@search'));
 Route::get('/api/suggest', array('uses' => 'SearchController@suggest'));
 Route::get('/api/tree', array('uses' => 'SearchController@tree'));
+Route::get('/api/cache/rebuild', array('uses' => 'CacheController@rebuild'));
 
 Route::get('/api/stats/auto/overview', array('uses' => 'StatsController@autoOverview'));
 Route::get('/api/stats/auto/events', array('uses' => 'StatsController@autoEvents'));
