@@ -14,6 +14,79 @@ class SearchController extends BaseController {
 	|	Route::get('/', 'HomeController@showWelcome');
 	|
 	*/
+	private static function individualQuery($sQuery){
+		// construct db query based on broken down query (type)
+		$saQueryParts = explode("=", $sQuery);
+		$soFiles = [];
+		$saSelectProperties = array("files.id", "files.hash", "tags.value", "geodata.latitude", "geodata.longitude", "files.medium_width AS width", "files.medium_height AS height", "tags.confidence as confidence");
+		// return results
+		$sQueryType = "value"; //default
+		if(count($saQueryParts) > 1){
+			// if actually set, see what it is
+			$sQueryType = $saQueryParts[0];
+		}
+
+
+		switch($sQueryType)
+		{
+			case "map":
+				$soFiles = DB::table("files")
+					->join("tags", function($join)
+						{
+							$join->on("files.id", "=", "tags.file_id");
+						})	
+					->join("geodata", function($joinGeoData) use ($iaLatLonRange)
+					{
+						$joinGeoData->on("files.id", "=", "geodata.file_id")
+						->where("latitude", ">", $iaLatLonRange[0])
+						->where("latitude", "<", $iaLatLonRange[1])
+						->where("longitude", ">", $iaLatLonRange[2])
+						->where("longitude", "<", $iaLatLonRange[3]);
+					})	
+					->where("live", "=", true)->distinct("value")
+					->orderBy(DB::Raw('RAND()'))
+					->groupBy("id")
+			        ->select($saSelectProperties)
+					->get();
+				break;
+			case "shuffle":
+				$soFiles = DB::table("files")
+					->join("tags", function($join)
+						{
+							$join->on("files.id", "=", "tags.file_id");
+						})
+					->join("geodata", function($joinGeoData)
+						{
+							$joinGeoData->on("files.id", "=", "geodata.file_id");
+						})	
+					->where("live", "=", true)->distinct("value")
+					->orderBy(DB::Raw('RAND()'))
+					->groupBy("id")
+			        ->select($saSelectProperties)
+					->get();
+				break;
+			default:
+				$soFiles = DB::table("files")
+					->join("tags", function($join)
+						{
+							$join->on("files.id", "=", "tags.file_id")
+							->where("value", "=", Input::get("query"));
+						})	
+					->join("geodata", function($joinGeoData)
+					{
+						$joinGeoData->on("files.id", "=", "geodata.file_id");
+					})	
+					->where("live", "=", true)->distinct("value")
+					->where("confidence", ">", Helper::iConfidenceThreshold())
+					->orderBy("confidence", "desc")
+					->orderBy("datetime", "desc")
+			        ->select($saSelectProperties)
+					->get();
+				break;
+		}
+		
+		return $soFiles;
+	}
 
 	public static function search()
 	{		
@@ -25,12 +98,34 @@ class SearchController extends BaseController {
 		
 		$sQuery = Input::get("query");
 
-		$saQueries = explode("=", $sQuery);
+		$saQueries = explode(",", $sQuery);
 
 		$saStats = [];
 		$soFiles = [];
 
-		if(count($saQueries) > 1)
+		$saQueryResults = [];
+
+		// get results for all queries
+		foreach ($saQueries as $sQuery) {
+			$saQueryResults[$sQuery] = self::individualQuery($sQuery);
+		}
+		// aggregate queries
+		switch(count($saQueries))
+		{
+			case 0:
+				$soFiles = [];
+				break;
+			case 1:
+				$soFiles = $saQueryResults[$saQueries[0]];
+				break;
+			default:
+				// multiple
+				// make an array of files that were contained in all queries' results
+				break;
+		}
+		// return them, with some stats
+
+/*
 		{
 			// non standard query, check the type
 			switch ($saQueries[0]) {
@@ -96,7 +191,7 @@ class SearchController extends BaseController {
 	        ->select("files.id", "files.hash", "tags.value", "geodata.latitude", "geodata.longitude", "files.medium_width AS width", "files.medium_height AS height", "tags.confidence as confidence")
 			->get();
 		}
-
+*/
 
 		$saStats["speed"] = (microtime(true) - $mtStart)*1000;
 		$saStats["count"] = count($soFiles);
