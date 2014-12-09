@@ -20,7 +20,7 @@ var xhrFileInfo;
 /* logic vars */
 var bQueryInputEventsOn = true;
 
-var sCdnURL = "";
+var sCdnURL = "http://mediadump.samt.st";
 
 var oaQueries = [];
 var iPage = 1;
@@ -142,7 +142,6 @@ $( document ).ready(function() {
 	$("#search-input input").on('change keyup paste', function(event){
 		if ($(this).val() != lastValue) {
 	        lastValue = $(this).val();
-	        log(lastValue);
 	        if(lastValue == ""){
 	        	// hide it
 	        	setAutoComplete('');
@@ -154,6 +153,8 @@ $( document ).ready(function() {
 	        		{match: lastValue}, 
 	        		function(results){
 	        			var htmlAutoComplete = "";
+
+	        			log(results["data"]["speed"]);
 
 	        			results["suggestions"].forEach(function(oResult, cCount){
 

@@ -31,14 +31,25 @@ class CacheController extends BaseController {
 	}
 
 	private static function generateSearchSuggestions(){
-		return DB::table("files")
+
+		$oaFiles = DB::table("files")
 			->join("tags", function($join)
 				{
 					$join->on("files.id", "=", "tags.file_id");
 				})	
 			->orderBy("tags.confidence")
 			->groupBy("tags.value")
-	        ->select("files.id", "files.hash", "tags.value")
+	        ->select("files.id", "files.hash", "tags.value", "tags.type")
 			->get();
+
+
+		$aoaReturn = [];
+
+		foreach ($oaFiles as $oFile) {
+			# code...
+			$aoaReturn[$oFile->value.'.'.$oFile->type] = $oFile;
+		}
+
+		return $aoaReturn;
 	}
 }

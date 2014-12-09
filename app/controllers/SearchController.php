@@ -140,21 +140,70 @@ class SearchController extends BaseController {
 
 	public static function suggest()
 	{
+		$mtStart = microtime(true);
 		// get unique tags from cache
-		$oaTags = CacheController::getSearchSuggestions();
+		$aoaTags = CacheController::getSearchSuggestions();
 		// search them
 		$sSearchTerm = strtolower(Input::get("match"));
 
 		$oaReturn = [];
-
+		/*
 		foreach ($oaTags as $oTag) {
 			if (strpos($oTag->value, $sSearchTerm) !== false) {
 				array_push($oaReturn, $oTag);
 			}
 		}
+		*/
+		foreach($aoaTags as $key => $value) {
+	        if(preg_match('/^'.$sSearchTerm.'(\d+)$/',$key,$m)) {
+	        	array_push($oaReturn, $value);
+                //echo "Array element ",$str," matched and number = ",$m[1],"\n";
+	        }
+		}
+
 
 		$oaReturn["suggestions"] = array_slice($oaReturn, 0, 16);
-		$oaReturn["data"] = "speed?";
+		$oaReturn["data"] = array(
+			"speed" => (microtime(true) - $mtStart)*1000
+			);
+
+		// return limited matches
+		return Response::json($oaReturn);
+	}
+	public static function suggestStats()
+	{
+		$mtStart = microtime(true);
+		// get unique tags from cache
+		echo ((microtime(true) - $mtStart)*1000)."<br/>";
+		$aoaTags = CacheController::getSearchSuggestions();
+		// search them
+		
+		echo count($aoaTags). " size"."<br/>";
+
+
+		echo ((microtime(true) - $mtStart)*1000)."<br/>";
+	}
+	public static function dbSuggest()
+	{
+		$mtStart = microtime(true);
+		// search them
+		$sSearchTerm = strtolower(Input::get("match"));
+
+		$oaFiles = DB::table("files")
+		->join("tags", function($join)
+			{
+				$join->on("files.id", "=", "tags.file_id");
+			})		
+		->where("tags.value", "LIKE", $sSearchTerm."%")->distinct("value")
+		->orderBy("datetime", "desc")
+        ->groupBy('value')
+        ->select("files.id", "files.hash", "tags.value")
+		->get();
+
+		$oaReturn["suggestions"] = array_slice($oaFiles, 0, 16);
+		$oaReturn["data"] = array(
+			"speed" => (microtime(true) - $mtStart)*1000
+			);
 
 		// return limited matches
 		return Response::json($oaReturn);
