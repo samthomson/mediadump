@@ -67,10 +67,10 @@ class SearchController extends BaseController {
 				break;
 			default:
 				$soFiles = DB::table("files")
-					->join("tags", function($join)
+					->join("tags", function($join) use ($sQuery)
 						{
 							$join->on("files.id", "=", "tags.file_id")
-							->where("value", "=", Input::get("query"));
+							->where("value", "=", $sQuery);
 						})	
 					->join("geodata", function($joinGeoData)
 					{
@@ -84,7 +84,7 @@ class SearchController extends BaseController {
 					->get();
 				break;
 		}
-		
+
 		return $soFiles;
 	}
 
@@ -94,6 +94,7 @@ class SearchController extends BaseController {
 
 		$iPerPage = 100;
 
+
 		$oResults = array("info" => null, "results" => null);
 		
 		$sQuery = Input::get("query");
@@ -102,13 +103,19 @@ class SearchController extends BaseController {
 
 		$saStats = [];
 		$soFiles = [];
+		$aaSpeeds = [];
+		$aaQueryResultsCount = [];
 
 		$saQueryResults = [];
 
 		// get results for all queries
+		$i = 0;
 		foreach ($saQueries as $sQuery) {
-			$saQueryResults[$sQuery] = self::individualQuery($sQuery);
+			$saQueryResults[$i] = self::individualQuery($sQuery);
+			$aaQueryResultsCount[$sQuery] = count($saQueryResults[$i]);
+			$i++;
 		}
+		$aaSpeeds["searched"] = Helper::iMillisecondsSince($mtStart);
 		// aggregate queries
 		switch(count($saQueries))
 		{
@@ -116,87 +123,64 @@ class SearchController extends BaseController {
 				$soFiles = [];
 				break;
 			case 1:
-				$soFiles = $saQueryResults[$saQueries[0]];
+				$soFiles = $saQueryResults[0];
 				break;
 			default:
 				// multiple
 				// make an array of files that were contained in all queries' results
+
+				// start with the shortest
+            	usort($saQueryResults, create_function('$a, $b', 'return bccomp(count($a), count($b));'));
+
+            	//print_r(array_keys($saQueryResults));
+/*
+*/
+				// merge results on intersecting
+                if($saQueryResults[0] == null){$soFiles = array();}
+            
+                for($cArr = 1; $cArr < count($saQueryResults); $cArr++){
+                    if($saQueryResults[$cArr] == null){$soFiles = array();}
+                    
+                	// merge two results on intersecting
+                    $aIntersecting = array();
+                    $index = array();
+                    if(isset($saQueryResults[0])){
+                        foreach ($saQueryResults[0] as $item) {
+                            $index[$item->hash] = true;
+                        }
+                    }
+                    if(isset($saQueryResults[$cArr])){
+                        foreach ($saQueryResults[$cArr] as $item) {
+                            if (isset($index[$item->hash])) {
+                                array_push($aIntersecting, $item);
+                            }
+                        }
+                    }
+                    $saQueryResults[0] = $aIntersecting;
+                    
+                    //unset($aIntersecting);
+                    //unset($index);            
+                }
+                $soFiles = $saQueryResults[0];
+
 				break;
 		}
+		$aaSpeeds["aggregated"] = Helper::iMillisecondsSince($mtStart);
 		// return them, with some stats
 
-/*
-		{
-			// non standard query, check the type
-			switch ($saQueries[0]) {
-				case 'map':
-					$iaLatLonRange = $saQueries = explode(",", $saQueries[1]);
-					if(count($iaLatLonRange) === 4)
-					{
-						$soFiles = DB::table("files")
-						->join("tags", function($join)
-							{
-								//$join->on("files.id", "=", "tags.file_id")->where("value", "=", "*");
-								$join->on("files.id", "=", "tags.file_id");
-							})	
-						->join("geodata", function($joinGeoData) use ($iaLatLonRange)
-						{
-							$joinGeoData->on("files.id", "=", "geodata.file_id")
-							->where("latitude", ">", $iaLatLonRange[0])
-							->where("latitude", "<", $iaLatLonRange[1])
-							->where("longitude", ">", $iaLatLonRange[2])
-							->where("longitude", "<", $iaLatLonRange[3]);
-						})	
-						->where("live", "=", true)->distinct("value")
-						->orderBy(DB::Raw('RAND()'))
-						->groupBy("id")
-				        ->select("files.id", "files.hash", "tags.value", "geodata.latitude", "geodata.longitude", "files.medium_width AS width", "files.medium_height AS height", "tags.confidence as confidence")
-						->get();
-					}
-					break;
-				case 'shuffle':
-					$soFiles = DB::table("files")
-					->join("tags", function($join)
-						{
-							$join->on("files.id", "=", "tags.file_id");
-						})
-					->join("geodata", function($joinGeoData)
-						{
-							$joinGeoData->on("files.id", "=", "geodata.file_id");
-						})	
-					->where("live", "=", true)->distinct("value")
-					->orderBy(DB::Raw('RAND()'))
-					->groupBy("id")
-			        ->select("files.id", "files.hash", "tags.value", "geodata.latitude", "geodata.longitude", "tags.confidence as confidence")
-					->get();
 
-					break;
-			}
-		}else{
-
-			$soFiles = DB::table("files")
-			->join("tags", function($join)
-				{
-					$join->on("files.id", "=", "tags.file_id")
-					->where("value", "=", Input::get("query"));
-				})	
-			->join("geodata", function($joinGeoData)
-			{
-				$joinGeoData->on("files.id", "=", "geodata.file_id");
-			})	
-			->where("live", "=", true)->distinct("value")
-			->where("confidence", ">", Helper::iConfidenceThreshold())
-			->orderBy("confidence", "desc")
-			->orderBy("datetime", "desc")
-	        ->select("files.id", "files.hash", "tags.value", "geodata.latitude", "geodata.longitude", "files.medium_width AS width", "files.medium_height AS height", "tags.confidence as confidence")
-			->get();
-		}
-*/
-
-		$saStats["speed"] = (microtime(true) - $mtStart)*1000;
+		$saStats["speed"] = Helper::iMillisecondsSince($mtStart);
+		$saStats["speed_breakdown"] = $aaSpeeds;
+		
 		$saStats["count"] = count($soFiles);
 		$saStats["available_pages"] = round(floor((count($soFiles)-1)/$iPerPage))+1;
 
+		$saStats["queries"] = [];
+
+
+		foreach($aaQueryResultsCount as $key => $value){
+			$saStats["queries"][$key] = count($value);
+		}
 
 		$iPage = (Input::get("page")) ? Input::get("page") : 1;
 

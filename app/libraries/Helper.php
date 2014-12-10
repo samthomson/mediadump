@@ -20,6 +20,9 @@ class Helper {
 	{
 		return Config::get('app.'.$sKey);
 	}
+	public static function iMillisecondsSince($mtStart){
+		return (microtime(true) - $mtStart)*1000;
+	}
 
 }
 
