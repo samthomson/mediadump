@@ -30,6 +30,8 @@ class SearchController extends BaseController {
 		switch($sQueryType)
 		{
 			case "map":
+				$iaLatLonRange = explode(',', $saQueryParts[1]);
+				//$iaLatLonRange = explode('|', $iaLatLonRange);
 				$soFiles = DB::table("files")
 					->join("tags", function($join)
 						{
@@ -95,12 +97,11 @@ class SearchController extends BaseController {
 
 		$iPerPage = 100;
 
-
 		$oResults = array("info" => null, "results" => null);
 		
 		$sQuery = Input::get("query");
 
-		$saQueries = explode(",", $sQuery);
+		$saQueries = explode("|", $sQuery);
 
 		$saStats = [];
 		$soFiles = [];

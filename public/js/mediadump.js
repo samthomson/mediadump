@@ -221,7 +221,7 @@ function performSearch()
 
         	if(cIndex != (oaQueries.length - 1))
         	{
-        		sQueryValue += ",";
+        		sQueryValue += "|";
         	}
         });
 
