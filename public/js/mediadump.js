@@ -30,6 +30,7 @@ var oTree = [];
 
 var oResults = [];
 var oResultsData = [];
+var oaMarkers = [];
 var iStaggerMapIconLimit = 40;
 
 var sMediaDumpColor = "#e74c3c";
@@ -328,6 +329,12 @@ function renderTree()
 function renderResults(){
 
 	var htmlThumbs = "";
+	
+	while (oaMarkers.length > 0) {
+	    oaMarkers.pop().setMap(null);
+	}
+	oaMarkers.length = 0;
+
 
 	if(oResults.length > 0){
 		
@@ -381,6 +388,7 @@ function renderResults(){
 					google.maps.event.addListener(beachMarker, "click", function() {
 					    thumbClick(cIndex);
 					});
+					oaMarkers.push(beachMarker);
 
 
 				}else if(cIndex % iMapPinModulus == 0){ // 20%
@@ -398,6 +406,7 @@ function renderResults(){
 						},
 
 					});
+					oaMarkers.push(beachMarker);
 
 					google.maps.event.addListener(beachMarker, "click", function() {
 					    thumbClick(cIndex);
