@@ -154,7 +154,6 @@ $( document ).ready(function() {
 	        		function(results){
 	        			var htmlAutoComplete = "";
 
-	        			log(results["data"]["speed"]);
 
 	        			results["suggestions"].forEach(function(oResult, cCount){
 
@@ -214,7 +213,19 @@ function performSearch()
 		if(xhrSearch && xhrSearch.readystate != 4){
             xhrSearch.abort();
         }
-    	xhrSearch = $.get("/api/search", {query:decodeURIComponent(oaQueries[0].value), page: iPage}, function(results){
+
+        var sQueryValue = "";
+
+        oaQueries.forEach(function(oObj, cIndex){
+        	sQueryValue += oObj.value;
+
+        	if(cIndex != (oaQueries.length - 1))
+        	{
+        		sQueryValue += ",";
+        	}
+        });
+
+    	xhrSearch = $.get("/api/search", {query:decodeURIComponent(sQueryValue), page: iPage}, function(results){
 			oResults = results.results;
 			oResultsData = results.info;
 			setLoading(false);

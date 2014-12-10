@@ -179,7 +179,7 @@ class SearchController extends BaseController {
 
 
 		foreach($aaQueryResultsCount as $key => $value){
-			$saStats["queries"][$key] = count($value);
+			$saStats["queries"][$key] = $value;
 		}
 
 		$iPage = (Input::get("page")) ? Input::get("page") : 1;
