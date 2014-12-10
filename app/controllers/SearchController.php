@@ -80,6 +80,7 @@ class SearchController extends BaseController {
 					->where("confidence", ">", Helper::iConfidenceThreshold())
 					->orderBy("confidence", "desc")
 					->orderBy("datetime", "desc")
+					->groupBy("id")
 			        ->select($saSelectProperties)
 					->get();
 				break;
@@ -132,27 +133,28 @@ class SearchController extends BaseController {
 				// start with the shortest
             	usort($saQueryResults, create_function('$a, $b', 'return bccomp(count($a), count($b));'));
 
-            	//print_r(array_keys($saQueryResults));
-/*
-*/
+            	
 				// merge results on intersecting
+
+
                 if($saQueryResults[0] == null){$soFiles = array();}
             
                 for($cArr = 1; $cArr < count($saQueryResults); $cArr++){
                     if($saQueryResults[$cArr] == null){$soFiles = array();}
                     
                 	// merge two results on intersecting
-                    $aIntersecting = array();
-                    $index = array();
+                    $aIntersecting = [];
+                    $index = [];
+
                     if(isset($saQueryResults[0])){
                         foreach ($saQueryResults[0] as $item) {
                             $index[$item->hash] = true;
                         }
                     }
                     if(isset($saQueryResults[$cArr])){
-                        foreach ($saQueryResults[$cArr] as $item) {
+                    	foreach ($saQueryResults[$cArr] as $item) {
                             if (isset($index[$item->hash])) {
-                                array_push($aIntersecting, $item);
+                            	array_push($aIntersecting, $item);
                             }
                         }
                     }
