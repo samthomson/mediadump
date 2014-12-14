@@ -424,32 +424,15 @@ function addQuery(sDisplay, sValue, bUpdateSearchInput){
 		var saTags = oUITags.getTags();
 
 		oaQueries.forEach(function(oQuery){
-
+			// don't add if already there
 			if(!oUITags.hasTag(oQuery["display"])){
 				oUITags.addTag(String(oQuery["display"]));
 			}
 
-
-			/*
-			
-			for(i = 0; i < saTags.length; i++){
-				sTagDisplay = saTags[i];
-				oUITags.removeTag(sTagDisplay);		
-				log("silent remove " + sTagDisplay);
-			}
-			saTags.forEach(function(sTagDisplay){
-			});
-
-			for(i = 0; i < oaQueries.length; i++){
-				oQuery = oaQueries[i];
-			}
-			*/	
-
-
 		});
 		bQueryInputEventsOn = true;
 	}
-	//queryChange();
+	queryChange();
 }
 function addQueryFromMap(){
 
@@ -778,21 +761,23 @@ function setSolitaryQuery(sDisplay, sValue){
 	aaQuery["display"] = sDisplay;
 	aaQuery["value"] = sValue;
 	
-	oaQueries = Array();
+	//removeAllQueriesFromModelAndUI();
 
-	oaQueries.push(aaQuery);
+	//oaQueries.push(aaQuery);
 
-	//addQuery(sDisplay, sValue);
-	silentAddTag(sDisplay);
+	addQuery(sDisplay, sValue);
+	//silentAddTag(sDisplay);
 
 	performSearch();
 	queryChange();	
 }
 function removeAllQueriesFromModelAndUI(){
 	oaQueries = [];
-	oUITags.getTags().forEach(function(sTag){
-		oUITags.removeTag(sTag);
-	});
+	var saTags = oUITags.getTags();
+
+	for (i = saTags.length - 1; i > -1; i--){
+		oUITags.removeTag(saTags[i]);
+	}
 }
 function autoSuggestSelect(sDisplay, sValue){
 	// remove current text in input
