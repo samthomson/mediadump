@@ -14,27 +14,38 @@ class PlacesProcessor extends BaseController {
 
 
 			$sThumbPath = Helper::thumbPath("large").$oFile->hash.".jpg";
-			if(file_exists($sThumbPath))
+			$oGeoData = $oFile->geoData;
+
+			$bHasLatLon = false;
+
+			if(isset($oGeoData)){
+				if(isset($oGeoData->latitude) && isset($oGeoData->longitude)){
+					if($oGeoData->latitude !== 0 && $oGeoData->longitude !== 0){
+						$bHasLatLon = true;
+
+
+			if($bHasLatLon)
 			{
-				// what is the web url?
-
-				$sWebThumbPath = "http://mediadump.samt.st/thumbs/large/".$oFile->hash.".jpg";
-
 				// make request
-				$service_url = 'http://api.imagga.com/v1/tagging?url='.$sWebThumbPath;
-
-				
-				$context = stream_context_create(array(
-				    'http' => array(
-				        'header'  => "Authorization: Basic " . base64_encode(_AppProperty('imaggaKey').":"._AppProperty('imaggaSecret'))
-				    )
-				));
-
-				$jsonurl = $service_url;
-				$json = file_get_contents($jsonurl, false, $context);
+				$sPlacesURL  = 'http://maps.googleapis.com/maps/api/geocode/json?latlng='.urlencode($oGeoData->latitude).','.urlencode($oGeoData->longitude).'&sensor=false';
+                
 
 
-				list($version,$status_code,$msg) = explode(' ',$http_response_header[0], 3);
+
+
+
+
+
+
+
+
+
+
+
+				$json = file_get_contents($sPlacesURL, false, $context);
+
+
+				list($version, $status_code, $msg) = explode(' ',$http_response_header[0], 3);
 
 				// Check the HTTP Status code
 				switch($status_code)
@@ -42,76 +53,113 @@ class PlacesProcessor extends BaseController {
 				    case 200:
 						$oObj = json_decode($json);
 
-						if(isset($oObj->results))
-						{
-							foreach($oObj->results as $oImageResult)
+						if(isset($oObj->status)){
+
+							switch($oObj->status)
 							{
-								if(isset($oImageResult->tags))
-								{
-									foreach($oImageResult->tags as $oTag){
-										$oTag = (array)$oTag;
-										
-										$oNewTag = new TagModel();
-										$oNewTag->file_id = $iFileID;
-										$oNewTag->type = "imagga";
-										$oNewTag->setValue($oTag["tag"]);
-										$oNewTag->confidence = $oTag["confidence"];
-										$oNewTag->save();
-										$cTagsAdded++;
-									}
-								}
-							}				
-						
 
-							// for each tag back, add to db
-							//$cTagsAdded++;
+								case "OK":
+								case "ZERO_RESULTS":
+								case "INVALID_REQUEST":
+									if(isset($oObj->results))
+									{
+										$saPlaces = [];
+										$saComponents = [];
 
-							//
-							// log how many tags were added
-							//
-							$eFilesRemoved = new EventModel();
-							$eFilesRemoved->name = "auto imagga processor";
-							$eFilesRemoved->message = "prcoessed a file";
-							$eFilesRemoved->value = 1;
-							$eFilesRemoved->save();
+										foreach($oObj->results as $oImageResult)
+										{
+											// get all distinct formatted addresses
+											if(isset($oImageResult->formatted_address))
+											{
+												if(!in_array($oImageResult->formatted_address, $saPlaces))
+													array_push($saPlaces, $oImageResult->formatted_address);
+
+											}
+											// get all distinct address components
+											if(isset($oImageResult->address_components))
+											{
+												foreach($oImageResult->address_components as $jsonAddressComponent){
+
+													if(!in_array($jsonAddressComponent->long_name, $saComponents))
+														array_push($saComponents, $jsonAddressComponent->long_name);
 
 
+												}
+											}
+										}			
+										foreach ($saPlaces as $value) {
+													
+											$oNewTag = new TagModel();
+											$oNewTag->file_id = $iFileID;
+											$oNewTag->type = "places.formattedaddress";
+											$oNewTag->setValue(Helper::sStripPunctuation($value));
+											$oNewTag->confidence = 65;
+											$oNewTag->save();
+											$cTagsAdded++;
+										}
+		
+										foreach ($saComponents as $value) {
+													
+											$oNewTag = new TagModel();
+											$oNewTag->file_id = $iFileID;
+											$oNewTag->type = "places.addresscomponent";
+											$oNewTag->setValue(Helper::sStripPunctuation($value));
+											$oNewTag->confidence = 75;
+											$oNewTag->save();
+											$cTagsAdded++;
+										}
 
-							$oStat = new StatModel();
-							$oStat->name = "auto tags added";
-							$oStat->group = "auto";
-							$oStat->value = $cTagsAdded;
-							$oStat->save();
+									
+													
 
-							$oStat = new StatModel();
-							$oStat->name = "imagga proccess time";
-							$oStat->group = "auto";
-							$oStat->value = (microtime(true) - $mtStart)*1000;
-							$oStat->save();
-						}	
+										// for each tag back, add to db
+										//$cTagsAdded++;
+
+										//
+										// log how many tags were added
+										//
+										$eFilesRemoved = new EventModel();
+										$eFilesRemoved->name = "auto places processor";
+										$eFilesRemoved->message = "prcoessed a file";
+										$eFilesRemoved->value = 1;
+										$eFilesRemoved->save();
 
 
 
-						return "ok";
+										$oStat = new StatModel();
+										$oStat->name = "auto tags added";
+										$oStat->group = "auto";
+										$oStat->value = $cTagsAdded;
+										$oStat->save();
+
+										$oStat = new StatModel();
+										$oStat->name = "places proccess time";
+										$oStat->group = "auto";
+										$oStat->value = (microtime(true) - $mtStart)*1000;
+										$oStat->save();
+									}	
+									break;
+								case "REQUEST_DENIED":
+								case "OVER_QUERY_LIMIT":
+								case "UNKNOWN_ERROR":
+									return "throttle";
+									break;
+							}
+						}
 				        break;
 				    default:
-				         $error_status="Undocumented error: " . $status_code;
-				         return "throttle";
+				         return "fail";
 				         break;
+				}else{
+					return "fail";
 				}
-
-
-
-				
-				//print_r($oObj);
-
-
-				
+				// still here? everything was fine
+				return "ok";				
 				
 			}else{
 				$eProcessingFailed = new ErrorModel();
-				$eProcessingFailed->location = "imagga processor";
-				$eProcessingFailed->message = "no thumb to send to imagga at: $sThumbPath";
+				$eProcessingFailed->location = "places processor";
+				$eProcessingFailed->message = "no geo to send to places at: $sThumbPath (file: $iFileID)";
 				$eProcessingFailed->value = "0";
 				$eProcessingFailed->save();
 				return "fail";
@@ -121,7 +169,7 @@ class PlacesProcessor extends BaseController {
 		{
 			print_r($ex);
 			$eProcessingFailed = new ErrorModel();
-			$eProcessingFailed->location = "imagga processor";
+			$eProcessingFailed->location = "places processor";
 			$eProcessingFailed->message = (string)$ex;
 			$eProcessingFailed->value = "0";
 			$eProcessingFailed->save();

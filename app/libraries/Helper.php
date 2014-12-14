@@ -24,6 +24,13 @@ class Helper {
 		return (microtime(true) - $mtStart)*1000;
 	}
 
+	public static function sStripPunctuation($string) {
+	    $string = strtolower($string);
+	    $string = preg_replace("/[:punct:]+/", "", $string);
+	    $string = str_replace(" +", " ", $string);
+	    return $string;
+	}
+
 }
 
 ?>

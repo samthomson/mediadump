@@ -129,6 +129,32 @@ class Auto extends BaseController {
 										break;
 								}
 								break;
+							case "places":
+								$qi->snooze(3);
+								$qi->save();
+								switch(PlacesProcessor::process($qi->file_id))
+								{
+									case "ok":
+										$qi->done();
+										break;
+									case "fail":
+										$eFilesFound = new EventModel();
+										$eFilesFound->name = "auto processor";
+										$eFilesFound->message = "places processor failed";
+										$eFilesFound->save();
+
+										$oStat = new StatModel();
+										$oStat->name = "imagga processor fail";
+										$oStat->group = "auto";
+										$oStat->value = 1;
+										$oStat->save();
+										break;
+									case "throttle":
+										$qi->snooze(1440); // snooze one day
+										$qi->save();
+										break;
+								}
+								break;
 							case "delete":
 								////echo "delete processor<br/>";
 								$qi->snooze();
