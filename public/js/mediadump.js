@@ -537,7 +537,20 @@ function emptyQueries(){
 	oaQueries = [];
 	queryChange();
 }
+function pushVarsIntoURL(){
+	// queries, page, file
+	var sHash = "";
 
+	var aaVars = [];
+	/*
+	if(oaQueries.length > 0)
+	{
+		oaQueries.forEach(oQuery){
+			aaVars[]oQuery.display
+		}
+	}
+	*/
+}
 /*
 
 MODEL EVENTS
