@@ -470,7 +470,7 @@ function addQueryFromMap(){
 
 	setSolitaryQuery("map search", sQuery);
 }
-function removeQuery(sDisplayTag){
+function removeQueryFromModelAndUI(sDisplayTag){
 	log("remove tag: " + sDisplayTag);
 
 	// find the query with matching display and remove it
@@ -500,7 +500,7 @@ function removeQuery(sDisplayTag){
 	queryChange();
 }
 function emptyQueries(){
-	oaQueries = [];
+	removeAllQueriesFromModelAndUI();
 	queryChange();
 }
 function pushVarsIntoURL(){
@@ -658,26 +658,8 @@ function queryChange(){
 	//silentQueryRender()
 
 }
-/*
-function silentQueryRender(){
-	log("silent render");
-	bQueryInputEventsOn = false;
-	var saTags = oUITags.getTags();
-	for(i = 0; i < saTags.length; i++){
-		sTagDisplay = saTags[i];
-		oUITags.removeTag(sTagDisplay);		
-		log("silent remove " + sTagDisplay);
-	}
-	saTags.forEach(function(sTagDisplay){
-	});
 
-	for(i = 0; i < oaQueries.length; i++){
-		oQuery = oaQueries[i];
-		oUITags.addTag(String(oQuery["display"]));
-	}
-	bQueryInputEventsOn = true;
-}
-*/
+
 function silentAddTag(sTagDisplay){
 	// puts a display tag into search input without it triggering events
 	oUITags.addTag(sTagDisplay);
@@ -806,6 +788,12 @@ function setSolitaryQuery(sDisplay, sValue){
 	performSearch();
 	queryChange();	
 }
+function removeAllQueriesFromModelAndUI(){
+	oaQueries = [];
+	oUITags.getTags().forEach(function(sTag){
+		oUITags.removeTag(sTag);
+	});
+}
 function autoSuggestSelect(sDisplay, sValue){
 	// remove current text in input
 	$("#search-input input").val(''); // this should trigger events which close the drop down to
@@ -835,7 +823,7 @@ $( document ).ready(function() {
 		},
 		beforeDeletingTag: function(tag){
 	    	if(bQueryInputEventsOn){
-	    		removeQuery(tag);
+	    		removeQueryFromModelAndUI(tag);
 	    	}
 		}
 	});
@@ -873,7 +861,6 @@ $( document ).ready(function() {
 					}
 				);
 	        }
-	        
 	    }
 	});
 
