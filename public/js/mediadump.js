@@ -118,73 +118,7 @@ var media_dump_map_options = {
 
 
 
-$( document ).ready(function() {
-    // get tree
-    getTree();
-    // get header vars
 
-    
-	oUITags = $('#search-input').tags({
-	    readOnly: false,
-	    tagClass: "search-tag",
-	    promptText: "search..",
-	    afterAddingTag: function(tag){ 
-	    	if(bQueryInputEventsOn){
-	    		addQuery(tag, tag);
-	    	}
-		},
-		beforeDeletingTag: function(tag){
-	    	if(bQueryInputEventsOn){
-	    		removeQuery(tag);
-	    	}
-		}
-	});
-
-	$("#search-input input").on('change keyup paste', function(event){
-		if ($(this).val() != lastValue) {
-	        lastValue = $(this).val();
-	        if(lastValue == ""){
-	        	// hide it
-	        	setAutoComplete('');
-	        }else{
-	        	if(xhrSuggest && xhrSuggest.readystate != 4){
-		            xhrSuggest.abort();
-		        }
-	        	xhrSuggest = $.get("/api/dbsuggest",
-	        		{match: lastValue}, 
-	        		function(results){
-	        			var htmlAutoComplete = "";
-
-
-	        			results["suggestions"].forEach(function(oResult, cCount){
-
-							var sValue = sLinkSafeJSString(oResult.value);
-							var sDisplay = folderFromUniqueDir(sValue);
-		
-							var sMatchText = sValue.replace(lastValue,'<strong>'+lastValue+'</strong>')
-
-	        				htmlAutoComplete += '<a href="javascript:autoSuggestSelect(\'' + sDisplay + '\', \'' + sValue + '\');" class="auto-suggestion">';
-	        				htmlAutoComplete += '<img src="' + urlFromHash("icon", oResult.hash, "") + '" />';
-	        				htmlAutoComplete += sMatchText;
-	        				htmlAutoComplete += '</a>';
-	        			});
-
-	        			setAutoComplete(htmlAutoComplete);
-					}
-				);
-	        }
-	        
-	    }
-	});
-
-	$("#search-input input").focus();
-
-
-	// initial set up
-	initializeGoogleMap();
-	sizeDivide();
-	setMode("browse");
-});
 
 
 
@@ -473,7 +407,9 @@ LOGIC
 
 */
 
-function addQuery(sDisplay, sValue){
+function addQuery(sDisplay, sValue, bUpdateSearchInput){
+	// by default silently update the searchinput
+	bUpdateSearchInput = typeof bUpdateSearchInput !== 'undefined' ? bUpdateSearchInput : true;
 	// called as a result of tag add event
 	var aaQuery = {};
 	aaQuery["display"] = sDisplay;
@@ -482,7 +418,38 @@ function addQuery(sDisplay, sValue){
 	oaQueries.push(aaQuery);
 	performSearch();
 
-	queryChange();
+	if(bUpdateSearchInput){
+		bQueryInputEventsOn = false;
+		// tags already in ui
+		var saTags = oUITags.getTags();
+
+		oaQueries.forEach(function(oQuery){
+
+			if(!oUITags.hasTag(oQuery["display"])){
+				oUITags.addTag(String(oQuery["display"]));
+			}
+
+
+			/*
+			
+			for(i = 0; i < saTags.length; i++){
+				sTagDisplay = saTags[i];
+				oUITags.removeTag(sTagDisplay);		
+				log("silent remove " + sTagDisplay);
+			}
+			saTags.forEach(function(sTagDisplay){
+			});
+
+			for(i = 0; i < oaQueries.length; i++){
+				oQuery = oaQueries[i];
+			}
+			*/	
+
+
+		});
+		bQueryInputEventsOn = true;
+	}
+	//queryChange();
 }
 function addQueryFromMap(){
 
@@ -507,12 +474,27 @@ function removeQuery(sDisplayTag){
 	log("remove tag: " + sDisplayTag);
 
 	// find the query with matching display and remove it
+	/*
 	oaQueries.forEach(function(oQuery, cIndex){
+		log("remove? compare: " + oQuery.display + ", with: " + sDisplayTag);
 		if(oQuery.display == sDisplayTag)
 		{
 			oaQueries.splice(cIndex, 1);
+			log("match, so removing: " + cIndex);
 		}
 	});
+	*/
+
+	for(var rcQueryIndex = oaQueries.length -1; rcQueryIndex > -1; rcQueryIndex--){
+		if(oaQueries[rcQueryIndex].display == sDisplayTag)
+		{
+			oaQueries.splice(rcQueryIndex, 1);
+			log("match, so removing: " + rcQueryIndex);
+		}
+	}
+
+
+	log("queries still remaining: " + oaQueries.length);
 	
 	performSearch();
 	queryChange();
@@ -673,9 +655,10 @@ function queryChange(){
 	}
 
 	// removed silent queyr render to stop bug where too many tags where deleted from input when trying to remove one
-	silentQueryRender()
+	//silentQueryRender()
 
 }
+/*
 function silentQueryRender(){
 	log("silent render");
 	bQueryInputEventsOn = false;
@@ -694,8 +677,11 @@ function silentQueryRender(){
 	}
 	bQueryInputEventsOn = true;
 }
-
-
+*/
+function silentAddTag(sTagDisplay){
+	// puts a display tag into search input without it triggering events
+	oUITags.addTag(sTagDisplay);
+}
 /*
 
 UI EVENTS
@@ -804,14 +790,18 @@ function sizeDivide(){
 	}
 }
 function setSolitaryQuery(sDisplay, sValue){
-	/*
+	// add query, triggering a search, and new tag for search input
+	
 	var aaQuery = {};
 	aaQuery["display"] = sDisplay;
 	aaQuery["value"] = sValue;
-	*/
+	
 	oaQueries = Array();
 
-	addQuery(sDisplay, sValue);
+	oaQueries.push(aaQuery);
+
+	//addQuery(sDisplay, sValue);
+	silentAddTag(sDisplay);
 
 	performSearch();
 	queryChange();	
@@ -823,6 +813,78 @@ function autoSuggestSelect(sDisplay, sValue){
 	// add tag
 	addQuery(sDisplay, sValue);
 }
+function addedFromInput(sDisplay){
+	// add the query, triggering a search
+	addQuery(sDisplay, sDisplay, false);
+}
+
+$( document ).ready(function() {
+    // get tree
+    getTree();
+    // get header vars
+
+    
+	oUITags = $('#search-input').tags({
+	    readOnly: false,
+	    tagClass: "search-tag",
+	    promptText: "search..",
+	    afterAddingTag: function(tag){ 
+	    	if(bQueryInputEventsOn){
+	    		addedFromInput(tag);
+	    	}
+		},
+		beforeDeletingTag: function(tag){
+	    	if(bQueryInputEventsOn){
+	    		removeQuery(tag);
+	    	}
+		}
+	});
+
+	$("#search-input input").on('change keyup paste', function(event){
+		if ($(this).val() != lastValue) {
+	        lastValue = $(this).val();
+	        if(lastValue == ""){
+	        	// hide it
+	        	setAutoComplete('');
+	        }else{
+	        	if(xhrSuggest && xhrSuggest.readystate != 4){
+		            xhrSuggest.abort();
+		        }
+	        	xhrSuggest = $.get("/api/dbsuggest",
+	        		{match: lastValue}, 
+	        		function(results){
+	        			var htmlAutoComplete = "";
+
+
+	        			results["suggestions"].forEach(function(oResult, cCount){
+
+							var sValue = sLinkSafeJSString(oResult.value);
+							var sDisplay = folderFromUniqueDir(sValue);
+		
+							var sMatchText = sValue.replace(lastValue,'<strong>'+lastValue+'</strong>')
+
+	        				htmlAutoComplete += '<a href="javascript:autoSuggestSelect(\'' + sDisplay + '\', \'' + sValue + '\');" class="auto-suggestion">';
+	        				htmlAutoComplete += '<img src="' + urlFromHash("icon", oResult.hash, "") + '" />';
+	        				htmlAutoComplete += sMatchText;
+	        				htmlAutoComplete += '</a>';
+	        			});
+
+	        			setAutoComplete(htmlAutoComplete);
+					}
+				);
+	        }
+	        
+	    }
+	});
+
+	$("#search-input input").focus();
+
+
+	// initial set up
+	initializeGoogleMap();
+	sizeDivide();
+	setMode("browse");
+});
 /*
 
 BOILERPLATE HELPER FUNCTIONS
