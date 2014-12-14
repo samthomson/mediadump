@@ -186,13 +186,7 @@ $( document ).ready(function() {
 	setMode("browse");
 });
 
-function autoSuggestSelect(sDisplay, sValue){
-	// remove current text in input
-	$("#search-input input").val(''); // this should trigger events which close the drop down to
-	setAutoComplete('');
-	// add tag
-	addQuery(sDisplay, sValue);
-}
+
 
 
 /*
@@ -478,17 +472,7 @@ function preloadNeighbours(iIndex){
 LOGIC
 
 */
-function setSolitaryQuery(sDisplay, sValue){
 
-	var aaQuery = {};
-	aaQuery["display"] = sDisplay;
-	aaQuery["value"] = sValue;
-	
-	oaQueries = Array();
-	oaQueries.push(aaQuery);
-	performSearch();
-	queryChange();	
-}
 function addQuery(sDisplay, sValue){
 	// called as a result of tag add event
 	var aaQuery = {};
@@ -497,7 +481,6 @@ function addQuery(sDisplay, sValue){
 	
 	oaQueries.push(aaQuery);
 	performSearch();
-
 
 	queryChange();
 }
@@ -521,6 +504,7 @@ function addQueryFromMap(){
 	setSolitaryQuery("map search", sQuery);
 }
 function removeQuery(sDisplayTag){
+	log("remove tag: " + sDisplayTag);
 
 	// find the query with matching display and remove it
 	oaQueries.forEach(function(oQuery, cIndex){
@@ -688,15 +672,18 @@ function queryChange(){
 		$("#browse_tree").show();
 	}
 
+	// removed silent queyr render to stop bug where too many tags where deleted from input when trying to remove one
 	silentQueryRender()
 
 }
 function silentQueryRender(){
+	log("silent render");
 	bQueryInputEventsOn = false;
 	var saTags = oUITags.getTags();
 	for(i = 0; i < saTags.length; i++){
 		sTagDisplay = saTags[i];
 		oUITags.removeTag(sTagDisplay);		
+		log("silent remove " + sTagDisplay);
 	}
 	saTags.forEach(function(sTagDisplay){
 	});
@@ -815,6 +802,26 @@ function sizeDivide(){
 		}
 
 	}
+}
+function setSolitaryQuery(sDisplay, sValue){
+	/*
+	var aaQuery = {};
+	aaQuery["display"] = sDisplay;
+	aaQuery["value"] = sValue;
+	*/
+	oaQueries = Array();
+
+	addQuery(sDisplay, sValue);
+
+	performSearch();
+	queryChange();	
+}
+function autoSuggestSelect(sDisplay, sValue){
+	// remove current text in input
+	$("#search-input input").val(''); // this should trigger events which close the drop down to
+	setAutoComplete('');
+	// add tag
+	addQuery(sDisplay, sValue);
 }
 /*
 
