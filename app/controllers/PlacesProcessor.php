@@ -34,9 +34,9 @@ class PlacesProcessor extends BaseController {
 			{
 				// make request
 				$sPlacesURL  = 'http://maps.googleapis.com/maps/api/geocode/json?latlng='.urlencode($oGeoData->latitude).','.urlencode($oGeoData->longitude).'&sensor=false';
-                
 
-				echo $sPlacesURL;
+				echo $sPlacesURL."<br/><br/>";
+
 
 				$json = file_get_contents($sPlacesURL);
 
@@ -86,6 +86,7 @@ class PlacesProcessor extends BaseController {
 											}
 										}			
 										foreach ($saPlaces as $value) {
+											echo "$value<br/>";
 													
 											$oNewTag = new TagModel();
 											$oNewTag->file_id = $iFileID;
@@ -97,6 +98,7 @@ class PlacesProcessor extends BaseController {
 										}
 		
 										foreach ($saComponents as $value) {
+											echo "$value<br/>";
 													
 											$oNewTag = new TagModel();
 											$oNewTag->file_id = $iFileID;

@@ -75,13 +75,15 @@ class Auto extends BaseController {
 			{
 				////echo "process queue<br/>";
 				$iProcessLimit = self::iJpegsThisCycle();
+				$bQueueItemsRemaining = true;
 
-				while(self::bTimeForTwoJpegs($mtProcessQueueStart) || $cProcessedThisCycle === 0)
+				while((self::bTimeForTwoJpegs($mtProcessQueueStart) || $cProcessedThisCycle === 0) && $bQueueItemsRemaining)
 				//while($cProcessedThisCycle === 0) // just one (debug)
 				{
 					$qi = QueueModel::getSingleItem();
 
 					if($qi !== null)
+					{
 						switch($qi->processor)
 						{
 							case "jpeg":
@@ -179,7 +181,11 @@ class Auto extends BaseController {
 								$qi->save();
 								break;
 						}
-					$cProcessedThisCycle++;
+						$cProcessedThisCycle++;
+					}else{
+						// no more items in queue
+						$bQueueItemsRemaining = false;
+					}
 				}
 			}catch(Exception $eTimedOut)
 			{
@@ -233,7 +239,6 @@ class Auto extends BaseController {
 					$qiPlaces->date_from = date('Y-m-d H:i:s');
 					$qiPlaces->after = $qiJpegQueue->id;
 					$qiPlaces->save();
-
 					
 					break;
 			}	
