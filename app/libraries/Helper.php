@@ -26,7 +26,7 @@ class Helper {
 
 	public static function sStripPunctuation($string) {
 	    $string = strtolower($string);
-	    $string = preg_replace("/[[:punct:]]+/", "", $string);
+	    $string = preg_replace('/[\W]+/', ' ', $string);
 	    $string = str_replace(" +", " ", $string);
 	    return $string;
 	}

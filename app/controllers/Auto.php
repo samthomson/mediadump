@@ -225,6 +225,16 @@ class Auto extends BaseController {
 					$qiImagga->date_from = date('Y-m-d H:i:s');
 					$qiImagga->after = $qiJpegQueue->id;
 					$qiImagga->save();
+
+					// places processor afterwards
+					$qiPlaces = new QueueModel();
+					$qiPlaces->file_id = $file->id;
+					$qiPlaces->processor = "places";
+					$qiPlaces->date_from = date('Y-m-d H:i:s');
+					$qiPlaces->after = $qiJpegQueue->id;
+					$qiPlaces->save();
+
+					
 					break;
 			}	
 		}
