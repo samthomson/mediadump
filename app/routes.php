@@ -50,7 +50,7 @@ App::missing(function($exception)
 });
 Route::get('/test', function()
 {
-
+/*
 	// make search link from all unique tags
 	$oaUniqueTags = TagModel::where("type", "=", "imagga")
 	->groupBy("value")
@@ -60,9 +60,10 @@ Route::get('/test', function()
 	foreach($oaUniqueTags as $oObj) {
 		echo link_to('/#?query='.$oObj["value"], $oObj["value"]." (".$oObj["confidence"].")", array("target" => "_blank"), null)."<br/>";
 	}
-	/*
+	
 	// get all files
-	$oFiles = FileModel::all();
+	$oFiles = FileModel::where("id", "<", 11138)->get();
+	echo "found ".count($oFiles)." files<br/>";
 
 	$saFiles = [];
 
@@ -78,16 +79,18 @@ Route::get('/test', function()
 			case "jpg":
 			case "jpeg":
 				// imagga processor afterwards
+			try{
 				$qiImagga = new QueueModel();
 				$qiImagga->file_id = $keyId;
-				$qiImagga->processor = "imagga";
+				$qiImagga->processor = "places";
 				$qiImagga->date_from = date('Y-m-d H:i:s');
 				$qiImagga->save();
 
 				$iQueued++;
+			}catch(Exception $e){}// dup index, already inserted
 				break;
 		}
 	}
-	echo "queued $iQueued files for imagga";
+	echo "queued $iQueued files for places";
 	*/
 });
