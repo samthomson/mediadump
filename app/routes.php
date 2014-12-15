@@ -32,6 +32,9 @@ Route::get('/api/stats/auto/overview', array('uses' => 'StatsController@autoOver
 
 Route::get('/api/stats/auto/events', array('uses' => 'StatsController@autoEvents'));
 
+
+Route::get('/view/filedata', array('uses' => 'BaseController@fileData'));
+
 Route::get('/admin/events', function()
 {
 	return View::make('admin.events');

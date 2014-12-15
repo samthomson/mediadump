@@ -15,4 +15,7 @@ class BaseController extends Controller {
 		}
 	}
 
+	public function fileData($id){
+		// return a partial with tags for file
+	}
 }
