@@ -3,6 +3,7 @@
 var bLoading = false;
 var bLightboxShowing = false;
 var sSearchMode = "browse";
+var bInfoShowing = false;
 
 var gmapMap = null;
 var rtime = new Date(1, 1, 2000, 12,00,00);

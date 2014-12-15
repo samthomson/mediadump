@@ -198,6 +198,11 @@ layout parts
   bottom: 0px;
   right: 0px; }
 
+#info_lightbox {
+  bottom: 0px;
+  left: 50%;
+  margin-left: -16px; }
+
 .lightbox_button {
   position: absolute;
   padding: 8px;
