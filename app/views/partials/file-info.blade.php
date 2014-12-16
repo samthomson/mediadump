@@ -46,7 +46,7 @@
 					break;
 				case 'places.addresscomponent':
 				case 'places.formattedaddress':
-					$sClass = "places";
+					$sClass = "place";
 					break;
 				case 'uniquedirectorypath':
 					$sClass = "unique-directory-path";
