@@ -517,6 +517,10 @@ ul.nav li a.active {
   margin-bottom: 0px !important;
   padding: 2px; }
 
+.bootstrap-tags .tags-input {
+  width: 100% !important;
+  box-sizing: border-box; }
+
 #autocomplete {
   position: absolute;
   display: block;
