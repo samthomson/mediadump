@@ -679,15 +679,19 @@ function thumbClick(iIndex){
 function closeLightbox(){
 	setLightShowing(false);
 	setFile(-1);
+	$("#lightbox_info_view").html('');
 }
 function lightChange(iOffset){
 	iNewIndex = iFile + iOffset;
-
+	$("#lightbox_info_view").html('');
 	if(iNewIndex < 0){
 		iNewIndex = oResults.length - 1;
 	}
 	if(iNewIndex > (oResults.length -1)){
 		iNewIndex = 0;
+	}
+	if(bInfoShowing){
+		updateFileInfo();
 	}
 
 	thumbClick(iNewIndex);
