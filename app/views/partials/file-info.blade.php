@@ -1,4 +1,4 @@
-partial view
+
 <?php
 	$bGeoData = false;
 
@@ -14,7 +14,7 @@ partial view
 	@if($bGeoData)
 		{{-- show map and tags --}}
 		<div class="col-xs-6">
-			<img src="https://maps.googleapis.com/maps/api/staticmap?center={{$filedata[0]->longitude}},{{$filedata[0]->longitude}}&zoom=13&size=600x300&maptype=roadmap" />
+			<img src="https://maps.googleapis.com/maps/api/staticmap?center={{$filedata[0]->latitude}},{{$filedata[0]->longitude}}&zoom=13&size=600x300&maptype=roadmap" />
 		</div>
 		<div class="col-xs-6">
 	@else
@@ -22,7 +22,38 @@ partial view
 		<div class="col-xs-6">
 	@endif
 	@foreach($filedata as $data)
-		<span class="label label-default">{{$data->type}} : {{$data->value}}</span>	
+		<?php
+			$sClass = "tag";
+			switch ($data->type) {
+				case 'exif.cameramake':
+				case 'exif.datetime':
+					$sClass = "exif";
+					break;
+				case 'filename':
+					$sClass = "filename";
+					break;
+				case 'filetype':
+					$sClass = "filetype";
+					break;
+				case 'folder term':
+					$sClass = "folder";
+					break;
+				case 'imagga':
+					$sClass = "imagga";
+					break;
+				case 'mediatype':
+					$sClass = "mediatype";
+					break;
+				case 'places.addresscomponent':
+				case 'places.formattedaddress':
+					$sClass = "places";
+					break;
+				case 'uniquedirectorypath':
+					$sClass = "unique-directory-path";
+					break;
+			}
+		?>
+		<span class="label {{$sClass}}">{{$data->type}} : {{$data->value}}</span>	
 	@endforeach
 
 		</div>

@@ -217,6 +217,9 @@ layout parts
 	display:block;
 	max-height:100%;
 }
+#lightbox_info_view{
+	padding-top: ($padding*2);
+}
 .flowplayer{
 	position: static !important;
 }
@@ -589,4 +592,43 @@ ul.nav li a.active{border-bottom: 2px solid $media_dump_colour;}
 
 #search-input .label{
 	font-weight: normal !important;
+}
+
+
+
+/*
+tags - flat ui colours
+*/
+.filetype{
+	background: #1abc9c;
+}
+.mediatype{
+	background:#7f8c8d ;
+}
+.filename{
+	background: #e67e22;
+}
+.folder{
+	background: #f39c12;
+}
+.unique-directory-path{
+	background: #8e44ad;
+}
+.exif{
+	background: #2c3e50;
+}
+
+.imagga{
+	background: #16a085;
+}
+
+.elevation{
+	background: #2980b9;
+}
+.place{
+	background: #e67e22;
+}
+
+.tag{
+	background: #e74c3c;
 }
