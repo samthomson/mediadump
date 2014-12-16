@@ -692,6 +692,28 @@ function lightChange(iOffset){
 
 	thumbClick(iNewIndex);
 }
+function toggleInfo(){
+	bInfoShowing = !bInfoShowing;
+	if(!bInfoShowing){
+		// hide info container
+		$("#lightbox_info_view").html('');
+	}else{
+		// trigger info call with content update
+		updateFileInfo();
+	}
+}
+function updateFileInfo(){
+	// ajax call and dump data into relevant div
+	if(xhrSearch && xhrSearch.readystate != 4){
+        xhrSearch.abort();
+    }
+
+    if(iFile > -1){
+		xhrFileInfo = $.get("/view/filedata",{hash: oResults[iFile].hash}, function(results){
+			$("#lightbox_info_view").html(results);
+		});
+	}
+}
 $(window).resize(function() {
     rtime = new Date();
     if (timeout === false) {
