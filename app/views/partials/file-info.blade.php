@@ -1,5 +1,7 @@
 partial view
 
 <?php
-	print_r($filedata);
+	foreach($filedata as $data){
+		print_r($data);
+	}
 ?>

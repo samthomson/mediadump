@@ -21,11 +21,12 @@ class BaseController extends Controller {
 
 		if(isset($sHash)){
 			// get file data
-			$oFileData = DB::table("files")
+			$oaFileData = DB::table("files")
 			->join("geodata", "files.id", "=", "geodata.file_id")
-			->where("files.hash", "=", $sHash)->first();
+			->join("tags", "files.id", "=", "tags.file_id")
+			->where("files.hash", "=", $sHash)->get();
 
-			return View::make("partials/file-info")->with("filedata", $oFileData);
+			return View::make("partials/file-info")->with("filedata", $oaFileData);
 		}else{
 			return Response::make("", 422);
 		}
