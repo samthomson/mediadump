@@ -172,7 +172,7 @@ layout parts
   max-height: 100%;
   margin: auto;
   display: block;
-  position: absolute;
+  position: relative;
   left: 0;
   right: 0;
   opacity: 1.0;
