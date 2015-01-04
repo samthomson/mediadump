@@ -40,6 +40,7 @@ class SearchController extends BaseController {
 					->join("geodata", function($joinGeoData) use ($iaLatLonRange)
 					{
 						$joinGeoData->on("files.id", "=", "geodata.file_id")
+						
 						->where("latitude", ">", $iaLatLonRange[0])
 						->where("latitude", "<", $iaLatLonRange[1])
 						->where("longitude", ">", $iaLatLonRange[2])
@@ -49,6 +50,7 @@ class SearchController extends BaseController {
 					->orderBy(DB::Raw('RAND()'))
 					->groupBy("id")
 			        ->select($saSelectProperties)
+			        ->take(100)
 					->get();
 				break;
 			case "shuffle":
