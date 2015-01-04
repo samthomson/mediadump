@@ -47,11 +47,20 @@ class SearchController extends BaseController {
 						->where("longitude", "<", $iaLatLonRange[3]);
 					})	
 					->where("live", "=", true)->distinct("value")
-					->orderBy(DB::Raw('RAND()'))
+					->orderBy(DB::Raw('RAND()'))/*
+					->orderBy('hash')*/
 					->groupBy("id")
 			        ->select($saSelectProperties)
-			        ->take(100)
 					->get();
+/*
+					$oTemp = array();
+
+					$iOffset = (count($soFiles)/100);
+					for($i = 0, $j = 0; $i < 100; $i++, $j += $iOffset)
+					{
+						array_push($oTemp, $soFiles[$j]);
+					}
+					$soFiles = $oTemp;*/
 				break;
 			case "shuffle":
 				$soFiles = DB::table("files")
