@@ -788,8 +788,10 @@ function setSolitaryQuery(sDisplay, sValue){
 	aaQuery["display"] = sDisplay;
 	aaQuery["value"] = sValue;
 	
-	//removeAllQueriesFromModelAndUI();
-
+	bQueryInputEventsOn = false;
+	removeAllQueriesFromModelAndUI();
+	bQueryInputEventsOn = true;
+	
 	//oaQueries.push(aaQuery);
 
 	addQuery(sDisplay, sValue);
