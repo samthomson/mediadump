@@ -51,9 +51,14 @@ App::missing(function($exception)
 {
     return Response::make('404', 404);
 });
+
+
+Route::get('/test', array('uses' => 'SearchController@indexTest'));
+/*
 Route::get('/test', function()
 {
-/*
+
+	
 	// make search link from all unique tags
 	$oaUniqueTags = TagModel::where("type", "=", "imagga")
 	->groupBy("value")
@@ -95,5 +100,5 @@ Route::get('/test', function()
 		}
 	}
 	echo "queued $iQueued files for places";
-	*/
-});
+	
+});*/

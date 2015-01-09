@@ -301,4 +301,18 @@ class SearchController extends BaseController {
 		// return limited matches
 		return Response::json($oaReturn);
 	}
+
+	public static function indexTest()
+	{
+		$client = new Elasticsearch\Client();
+
+		$params = array();
+		$params['body']  = array('testField' => 'abc');
+		$params['index'] = 'my_index';
+		$params['type']  = 'my_type';
+		$params['id']    = 'my_id';
+		$ret = $client->index($params);
+
+		print_r($ret);
+	}
 }
