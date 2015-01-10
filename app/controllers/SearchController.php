@@ -31,7 +31,10 @@ class SearchController extends BaseController {
 		{
 			case "map":
 				$iaLatLonRange = explode(',', $saQueryParts[1]);
-				//$iaLatLonRange = explode('|', $iaLatLonRange);
+
+
+				// old way, super slow on large queries (whole world map)
+				/*
 				$soFiles = DB::table("files")
 					->join("tags", function($join)
 						{
@@ -47,20 +50,38 @@ class SearchController extends BaseController {
 						->where("longitude", "<", $iaLatLonRange[3]);
 					})	
 					->where("live", "=", true)->distinct("value")
-					->orderBy(DB::Raw('RAND()'))/*
-					->orderBy('hash')*/
+					->orderBy(DB::Raw('RAND()'))
 					->groupBy("id")
 			        ->select($saSelectProperties)
 					->get();
-/*
-					$oTemp = array();
 
-					$iOffset = (count($soFiles)/100);
-					for($i = 0, $j = 0; $i < 100; $i++, $j += $iOffset)
+				*/
+				$soFiles = DB::table("files")
+					->join("geodata", function($joinGeoData) use ($iaLatLonRange)
 					{
-						array_push($oTemp, $soFiles[$j]);
-					}
-					$soFiles = $oTemp;*/
+						$joinGeoData->on("files.id", "=", "geodata.file_id")
+						
+						->where("latitude", ">", $iaLatLonRange[0])
+						->where("latitude", "<", $iaLatLonRange[1])
+						->where("longitude", ">", $iaLatLonRange[2])
+						->where("longitude", "<", $iaLatLonRange[3]);
+					})	
+					->where("live", "=", true)->distinct("value")
+					->orderBy(DB::Raw('RAND()'))
+					->groupBy("id")
+			        ->select(array("files.id", "files.hash", "geodata.latitude", "geodata.longitude", "files.medium_width AS width", "files.medium_height AS height"))
+					->get();
+
+					$queries = DB::getQueryLog();
+		$last_query = end($queries);
+
+
+		//print_r($last_query);
+
+/*
+					$soFiles = DB::select();
+*/
+
 				break;
 			case "shuffle":
 				$soFiles = DB::table("files")
@@ -302,17 +323,105 @@ class SearchController extends BaseController {
 		return Response::json($oaReturn);
 	}
 
-	public static function indexTest()
+	// elastic search tests
+	public static function testIndex()
 	{
+		$mtStart = microtime(true);
+
 		$client = new Elasticsearch\Client();
 
-		$params = array();
-		$params['body']  = array('testField' => 'abc');
-		$params['index'] = 'my_index';
-		$params['type']  = 'my_type';
-		$params['id']    = 'my_id';
-		$ret = $client->index($params);
+		$iLimit = 10;
 
-		print_r($ret);
+
+		//$oaFiles = FileModel::all();
+		//$oaTags = TagModel::all();
+		//$oaGeoData = GeoDataModel::all();
+
+
+
+		//$oaFiles = FileModel::with("geoData")->get();
+
+		/*
+		$bResults = true;
+		$iStart = 0;
+		while($bResults){
+			$oaFiles = FileModel::with("geoData")->with("tags")->skip($iStart)->take($iLimit)->get();
+			$iFoundThisQuery = count($oaFiles);
+			$iStart += $iFoundThisQuery;
+			$bResults = ($iFoundThisQuery > 0 ? true : false);
+
+		}
+		*/
+		//$oaFiles = FileModel::with("geoData")->with("tags")->take($iLimit)->get();
+			
+		
+		//$oaFiles = FileModel::take($iLimit)->get();
+
+		//$oaFiles->load("tags");
+		//$oaFiles = DB::select("select files.id, files.path, files.hash, geodata.latitude, geodata.longitude, tags.type, tags.value FROM files join geodata on files.id = geodata.file_id join tags on files.id = tags.file_id group by files.id limit ?", array($iLimit));
+		////////$oaFiles = DB::select("select files.id, files.path, files.hash, geodata.latitude, geodata.longitude, tags.type, tags.value FROM tags join files on tags.file_id = files.id join geodata on tags.file_id = geodata.file_id order by files.id limit ?", array($iLimit));
+		
+		//$oaFiles = DB::select("select tags.type, tags.value FROM tags limit ?", array($iLimit));
+		
+		//$oaFiles = DB::select("select files.id, files.path, files.hash, tags.type, tags.value FROM tags left join files on tags.file_id = files.id group by files.id limit ?", array($iLimit));
+
+		$oaFiles = DB::table("files")
+		->join("tags", "files.id", "=", "tags.file_id")
+		->join("geodata", "files.id", "=", "geodata.file_id")
+		->select()
+		->take($iLimit)->get();/**/
+
+		//.id, files.path, files.hash, geodata.latitude, geodata.longitude, tags.type, tags.value FROM files join geodata on files.id = geodata.file_id join tags on files.id = tags.file_id group by files.id limit ?", array($iLimit));
+
+
+		//echo FileModel::with("tags")->take(1000)->get();
+		$queries = DB::getQueryLog();
+		$last_query = end($queries);
+
+
+		print_r($last_query);
+
+		/**/
+
+		echo "<br/><br/><hr/>";
+		foreach($oaFiles as $o){
+
+
+			$params = array();
+
+
+			$params['body']  = array(
+				'latitude' => $o->latitude,
+				'longitude' => $o->longitude,
+				'type' => 'image'
+				);
+
+			$params['index'] = 'files';
+			$params['type']  = 'file';
+			$params['id']    = $o->id;
+			$ret = $client->index($params);
+
+		}
+		
+		$iFiles = count($oaFiles);
+
+		echo "select all files ($iFiles/$iLimit) @ ".Helper::iMillisecondsSince($mtStart);
+
+
+
+		//print_r($ret);
+	}
+
+	public static function testSearch()
+	{
+
+		$client = new Elasticsearch\Client();
+
+		$searchParams['index'] = 'files';
+		$searchParams['type']  = 'file';
+		$searchParams['body']['query']['match']['type'] = 'image';
+		$retDoc = $client->search($searchParams);
+
+		print_r($retDoc);
 	}
 }
