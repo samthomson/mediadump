@@ -199,14 +199,32 @@ layout parts
 	left:($padding *6);
 	right:($padding *6);
 }
-#lightbox img{
+#lightbox_info_view{
+	position: absolute;
+	top:($padding *6);
+	bottom:($padding *6);
+	right:($padding *6);
+	display: none;
+	padding-left: $padding;
+}
+
+#lightbox.with-info #lightbox_contents{
+	right:300 +($padding *6);
+	
+}
+#lightbox.with-info #lightbox_info_view{
+	width: 300px;
+	display: block;
+}
+
+#lightbox_contents img{
 	width:auto;
 	max-width: 100%;
 	height:auto;
 	max-height: 100%;
 	margin:auto;
 	display:block;
-	position: relative;
+	position: absolute;
 	left: 0;
 	right: 0;
 
@@ -217,9 +235,12 @@ layout parts
 	display:block;
 	max-height:100%;
 }
-#lightbox_info_view{
-	padding-top: ($padding*2);
+
+#lightbox_info_view img{
+	max-width: 100%;
+	height: auto;
 }
+
 .flowplayer{
 	position: static !important;
 }

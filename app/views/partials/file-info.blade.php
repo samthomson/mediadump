@@ -10,17 +10,14 @@
 	}
 
 ?>
-	<div class="row">
 	@if($bGeoData)
 		{{-- show map and tags --}}
-		<div class="col-xs-6">
+		<div>
 			<img src="https://maps.googleapis.com/maps/api/staticmap?center={{$filedata[0]->latitude}},{{$filedata[0]->longitude}}&zoom=13&size=600x300&maptype=roadmap" />
 		</div>
-		<div class="col-xs-6">
-	@else
-		{{-- only tags --}}
-		<div class="col-xs-6">
 	@endif
+
+	<div>
 	@foreach($filedata as $data)
 		<?php
 			$sClass = "tag";
@@ -55,7 +52,5 @@
 		?>
 		<span class="label {{$sClass}}">{{$data->type}} : {{$data->value}}</span>	
 	@endforeach
-
-		</div>
 
 </div>

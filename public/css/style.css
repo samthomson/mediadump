@@ -47,7 +47,6 @@ Functional
 @-webkit-keyframes rotate {
   from {
     -webkit-transform: rotate(0deg); }
-
   to {
     -webkit-transform: rotate(359deg); } }
 .spin {
@@ -106,7 +105,7 @@ layout parts
   overflow: hidden;
   white-space: nowrap;
   background-color: #e74c3c;
-  color: white;
+  color: #fff;
   padding: 8px;
   padding-top: 0px;
   padding-bottom: 0px;
@@ -165,14 +164,29 @@ layout parts
   left: 48px;
   right: 48px; }
 
-#lightbox img {
+#lightbox_info_view {
+  position: absolute;
+  top: 48px;
+  bottom: 48px;
+  right: 48px;
+  display: none;
+  padding-left: 8px; }
+
+#lightbox.with-info #lightbox_contents {
+  right: 348px; }
+
+#lightbox.with-info #lightbox_info_view {
+  width: 300px;
+  display: block; }
+
+#lightbox_contents img {
   width: auto;
   max-width: 100%;
   height: auto;
   max-height: 100%;
   margin: auto;
   display: block;
-  position: relative;
+  position: absolute;
   left: 0;
   right: 0;
   opacity: 1.0;
@@ -183,8 +197,9 @@ layout parts
   display: block;
   max-height: 100%; }
 
-#lightbox_info_view {
-  padding-top: 16px; }
+#lightbox_info_view img {
+  max-width: 100%;
+  height: auto; }
 
 .flowplayer {
   position: static !important; }
@@ -273,7 +288,7 @@ layout parts
   display: block;
   font-size: 1em;
   margin: 1.5em 0 1.5em;
-  color: black;
+  color: #000;
   text-transform: capitalize;
   font-weight: 600; }
 
@@ -304,7 +319,7 @@ html {
   */ }
 
 #header {
-  background-color: white; }
+  background-color: #fff; }
 
 .bottom-shadow {
   box-shadow: 0 0px 8px -2px rgba(50, 50, 50, 0.75);
@@ -320,17 +335,17 @@ html {
 
 .btn.active {
   background: #e74c3c;
-  color: white;
+  color: #fff;
   border-color: #e74c3c !important;
   box-shadow: none !important;
   -webkit-box-shadow: none !important; }
 
 .btn.advanced_showing {
   background: #c0392b;
-  color: white; }
+  color: #fff; }
 
 .btn-media-dump:hover, .btn-media-dump:active, .btn-media-dump:visited {
-  color: white; }
+  color: #fff; }
 
 textarea:focus, input[type]:focus, .uneditable-input:focus {
   border-color: #e74c3c;
@@ -386,7 +401,7 @@ a.filter {
 a.filter:hover {
   text-decoration: none;
   background: #e74c3c;
-  color: white; }
+  color: #fff; }
 
 nav.navbar {
   z-index: 100;
@@ -409,7 +424,7 @@ nav.navbar button span.icon-bar {
   padding: 8px;
   height: auto;
   background-color: #e74c3c !important;
-  color: white !important;
+  color: #fff !important;
   border-radius: 4px;
   letter-spacing: 1.2px; }
 
@@ -479,7 +494,7 @@ ul.nav li a.active {
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075); }
 
 .tt-hint {
-  color: #999999; }
+  color: #999; }
 
 .tt-dropdown-menu {
   width: 422px;
@@ -501,7 +516,7 @@ ul.nav li a.active {
 
 .tt-suggestion.tt-cursor {
   background-color: #e74c3c;
-  color: white;
+  color: #fff;
   cursor: pointer; }
 
 .tt-suggestion p {
@@ -528,7 +543,7 @@ ul.nav li a.active {
   max-height: 256px;
   overflow-y: auto;
   width: 500px;
-  background-color: white;
+  background-color: #fff;
   margin-top: 4px; }
 
 .auto-suggestion {

@@ -701,9 +701,11 @@ function toggleInfo(){
 	if(!bInfoShowing){
 		// hide info container
 		$("#lightbox_info_view").html('');
+		$("#lightbox").removeClass("with-info");
 	}else{
 		// trigger info call with content update
 		updateFileInfo();
+		$("#lightbox").addClass("with-info");
 	}
 }
 function updateFileInfo(){
