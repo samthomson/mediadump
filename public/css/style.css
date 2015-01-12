@@ -159,8 +159,8 @@ layout parts
 /* lightbox */
 #lightbox_contents {
   position: absolute;
-  top: 48px;
-  bottom: 48px;
+  top: 8px;
+  bottom: 8px;
   left: 48px;
   right: 48px; }
 

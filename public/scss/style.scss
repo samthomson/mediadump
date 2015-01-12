@@ -194,8 +194,8 @@ layout parts
 /* lightbox */
 #lightbox_contents{
 	position: absolute;
-	top:($padding *6);
-	bottom:($padding *6);
+	top:($padding);
+	bottom:($padding);
 	left:($padding *6);
 	right:($padding *6);
 }
@@ -383,7 +383,8 @@ html {
 textarea:focus, input[type]:focus, .uneditable-input:focus {   
 	border-color: $media_dump_colour;
 	box-shadow:none !important;
-outline: 0 none;}
+	outline: 0 none;
+}
 
 .nav-pills li a{
 	padding-left:0px !important;
