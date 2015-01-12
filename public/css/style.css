@@ -177,7 +177,9 @@ layout parts
 
 #lightbox.with-info #lightbox_info_view {
   width: 300px;
-  display: block; }
+  display: block;
+  overflow-y: auto;
+  overflow-x: hidden; }
 
 #lightbox_contents img {
   width: auto;
@@ -217,9 +219,9 @@ layout parts
   right: 0px; }
 
 #info_lightbox {
-  bottom: 0px;
-  left: 50%;
-  margin-left: -16px; }
+  top: 50px;
+  right: 2px;
+  font-size: 22px; }
 
 .lightbox_button {
   position: absolute;
