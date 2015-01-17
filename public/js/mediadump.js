@@ -119,11 +119,6 @@ var media_dump_map_options = {
 
 
 
-
-
-
-
-
 /*
 
 GET DATA
@@ -356,10 +351,11 @@ function renderPagination(){
 	$("#map_pagination").html("");
 	$("#grid_pagination").html("");
 
+	var sPagination = "";
 
 	if(oResults.length > 0){
 		// build pagination
-		var sPagination = "";
+		
 		var sShowing = "<span>showing " + oResultsData.lower + " - " + oResultsData.upper + " / " + oResultsData.count + '</span>';
 
 		sShowing += '<span><i class="glyphicon glyphicon-flash"></i> found in ~' + parseInt(oResultsData.speed) +' ms</span>';
@@ -372,21 +368,17 @@ function renderPagination(){
 			if(iPage < oResultsData.available_pages){
 				sPagination += '<a class="pull-right btn active btn-xs" ng-show="page < (result_info.available_pages)" href="javascript:setPage(' + (iPage + 1) + ');">next <i class="glyphicon glyphicon-chevron-right"></i></a>';
 			}
-
-			sPagination += sShowing;
-
-			
-
-
-			$("#grid_pagination").html(sPagination);
 		}
-		if(sSearchMode == "map"){
+		sPagination += sShowing;
+	}
 
-			sPagination += sShowing;
+	log("make pagination according to mdoe: " + sSearchMode);
 
-
-			$("#map_pagination").html(sPagination);
-		}
+	if(sSearchMode == "map"){
+		$("#map_pagination").html(sPagination);			
+	}else{
+	log("pagination: " + sPagination);
+		$("#grid_pagination").html(sPagination);
 	}
 }
 function preloadThumb(cIndex){
@@ -633,21 +625,28 @@ function queryChange(){
 	if(oaQueries.length > 0){		
 		$("#browse_tree").hide();
 		$("#thumb_results").show();
-	}else{
-		$("#thumb_results").hide();
-		sizeDivide();
-		$("#browse_tree").show();
+	}else{		
+		resetDataAndUI();
 	}
-
-	// removed silent queyr render to stop bug where too many tags where deleted from input when trying to remove one
-	//silentQueryRender()
-
 }
 
 
 function silentAddTag(sTagDisplay){
 	// puts a display tag into search input without it triggering events
 	oUITags.addTag(sTagDisplay);
+}
+function resetDataAndUI(){
+	// reset data
+	iPage = 1;
+	oaQueries = [];
+	oResults = [];
+
+
+	// reset ui?
+	renderPagination();
+	$("#thumb_results").hide();
+	sizeDivide();
+	$("#browse_tree").show();
 }
 /*
 
