@@ -19,6 +19,7 @@ class SearchController extends BaseController {
 		$saQueryParts = explode("=", $sQuery);
 		$soFiles = [];
 		$saSelectProperties = array("files.id", "files.hash", "tags.value", "geodata.latitude", "geodata.longitude", "files.medium_width AS width", "files.medium_height AS height", "tags.confidence as confidence");
+		$saSelectPropertiesWithoutTags = array("files.id", "files.hash", "geodata.latitude", "geodata.longitude", "files.medium_width AS width", "files.medium_height AS height");
 		// return results
 		$sQueryType = "value"; //default
 		if(count($saQueryParts) > 1){
@@ -69,7 +70,7 @@ class SearchController extends BaseController {
 					->where("live", "=", true)->distinct("value")
 					->orderBy(DB::Raw('RAND()'))
 					->groupBy("id")
-			        ->select(array("files.id", "files.hash", "geodata.latitude", "geodata.longitude", "files.medium_width AS width", "files.medium_height AS height"))
+			        ->select($saSelectPropertiesWithoutTags)
 					->get();
 
 					$queries = DB::getQueryLog();
@@ -84,11 +85,11 @@ class SearchController extends BaseController {
 
 				break;
 			case "shuffle":
-				$soFiles = DB::table("files")
+				$soFiles = DB::table("files")/*
 					->join("tags", function($join)
 						{
 							$join->on("files.id", "=", "tags.file_id");
-						})
+						})*/
 					->join("geodata", function($joinGeoData)
 						{
 							$joinGeoData->on("files.id", "=", "geodata.file_id");
@@ -96,7 +97,7 @@ class SearchController extends BaseController {
 					->where("live", "=", true)->distinct("value")
 					->orderBy(DB::Raw('RAND()'))
 					->groupBy("id")
-			        ->select($saSelectProperties)
+			        ->select($saSelectPropertiesWithoutTags)
 					->get();
 				break;
 			default:
