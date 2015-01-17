@@ -887,7 +887,7 @@ function initializeGoogleMap() {
 	var mapCanvas = document.getElementById('map-canvas');
 	var mapOptions = {
 		center: new google.maps.LatLng(0, 0),
-		zoom: 1,
+		zoom: 2,
 		mapTypeId: google.maps.MapTypeId.ROADMAP,
     	backgroundColor: '#fff'
 	}
