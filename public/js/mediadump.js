@@ -690,11 +690,11 @@ function lightChange(iOffset){
 	if(iNewIndex > (oResults.length -1)){
 		iNewIndex = 0;
 	}
+
+	thumbClick(iNewIndex);
 	if(bInfoShowing){
 		updateFileInfo();
 	}
-
-	thumbClick(iNewIndex);
 }
 function toggleInfo(){
 	bInfoShowing = !bInfoShowing;
