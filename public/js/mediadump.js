@@ -372,12 +372,9 @@ function renderPagination(){
 		sPagination += sShowing;
 	}
 
-	log("make pagination according to mdoe: " + sSearchMode);
-
 	if(sSearchMode == "map"){
 		$("#map_pagination").html(sPagination);			
 	}else{
-	log("pagination: " + sPagination);
 		$("#grid_pagination").html(sPagination);
 	}
 }
@@ -450,28 +447,13 @@ function addQueryFromMap(){
 function removeQueryFromModelAndUI(sDisplayTag){
 	log("remove tag: " + sDisplayTag);
 
-	// find the query with matching display and remove it
-	/*
-	oaQueries.forEach(function(oQuery, cIndex){
-		log("remove? compare: " + oQuery.display + ", with: " + sDisplayTag);
-		if(oQuery.display == sDisplayTag)
-		{
-			oaQueries.splice(cIndex, 1);
-			log("match, so removing: " + cIndex);
-		}
-	});
-	*/
-
 	for(var rcQueryIndex = oaQueries.length -1; rcQueryIndex > -1; rcQueryIndex--){
 		if(oaQueries[rcQueryIndex].display == sDisplayTag)
 		{
 			oaQueries.splice(rcQueryIndex, 1);
-			log("match, so removing: " + rcQueryIndex);
 		}
 	}
 
-
-	log("queries still remaining: " + oaQueries.length);
 	
 	performSearch();
 	queryChange();
