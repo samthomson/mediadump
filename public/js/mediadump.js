@@ -138,6 +138,7 @@ function getTree(){
 }
 function performSearch()
 {
+	closeLightbox();
 	if(oaQueries.length > 0){
 		setLoading(true);
 		if(xhrSearch && xhrSearch.readystate != 4){

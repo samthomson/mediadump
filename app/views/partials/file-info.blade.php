@@ -50,7 +50,7 @@
 					break;
 			}
 		?>
-		<span class="label {{$sClass}}">{{$data->type}} : {{$data->value}}</span>	
+		<a href="javascript:setSolitaryQuery('{{$data->value}}', '{{$data->value}}');"><span class="label {{$sClass}}">{{$data->type}} : {{$data->value}}</span></a>
 	@endforeach
 
 </div>
