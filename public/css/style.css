@@ -161,7 +161,7 @@ layout parts
   position: absolute;
   top: 8px;
   bottom: 8px;
-  left: 48px;
+  left: 8px;
   right: 48px; }
 
 #lightbox_info_view {
@@ -212,14 +212,14 @@ layout parts
 
 #left_lightbox {
   bottom: 0px;
-  left: 0px; }
+  right: 0px; }
 
 #right_lightbox {
-  bottom: 0px;
+  bottom: 50px;
   right: 0px; }
 
 #info_lightbox {
-  top: 50px;
+  top: 46px;
   right: 2px;
   font-size: 22px; }
 
