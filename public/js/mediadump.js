@@ -576,6 +576,9 @@ function updateFile(){
 		// strip lightbox content
 		$("#lightbox_contents img").attr("src", "");
 	}
+	if(bInfoShowing){
+		updateFileInfo();
+	}
 }
 function evaluateBrowseOrResults(){
 	// if we're on browse mode either we show nav tree or thumb results if there are any
@@ -672,11 +675,7 @@ function lightChange(iOffset){
 	if(iNewIndex > (oResults.length -1)){
 		iNewIndex = 0;
 	}
-
-	thumbClick(iNewIndex);
-	if(bInfoShowing){
-		updateFileInfo();
-	}
+	setFile(iNewIndex);	
 }
 function toggleInfo(){
 	bInfoShowing = !bInfoShowing;
