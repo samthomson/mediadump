@@ -166,8 +166,8 @@ layout parts
 
 #lightbox_info_view {
   position: absolute;
-  top: 48px;
-  bottom: 48px;
+  top: 8px;
+  bottom: 8px;
   right: 48px;
   display: none;
   padding-left: 8px; }
