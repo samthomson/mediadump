@@ -211,11 +211,11 @@ layout parts
   right: 0px; }
 
 #left_lightbox {
-  bottom: 0px;
+  bottom: 50px;
   right: 0px; }
 
 #right_lightbox {
-  bottom: 50px;
+  bottom: 0px;
   right: 0px; }
 
 #info_lightbox {

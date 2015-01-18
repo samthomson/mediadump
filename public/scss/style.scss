@@ -248,8 +248,8 @@ layout parts
 }
 
 #close_lightbox{top:0px;right:0px;}
-#left_lightbox{bottom:0px;right:0px;}
-#right_lightbox{bottom:42 + ($margin * 2);right:0px;}
+#left_lightbox{bottom:42 + ($margin * 2);right:0px;}
+#right_lightbox{bottom:0px;right:0px;}
 #info_lightbox{top:42 + ($margin * 1);right:2px;font-size:22px;}
 .lightbox_button{
 	position: absolute;
