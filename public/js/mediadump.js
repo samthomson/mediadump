@@ -755,6 +755,7 @@ function resizeend() {
     } else {
         timeout = false;
         sizeDivide();
+        renderResults();
     }               
 }
 
