@@ -312,7 +312,6 @@ function renderResults(){
 			if(i_running_row_width > i_max_row_width || iFile == (oResults.length-1)){
 				var i_overlap_ratio = (i_max_row_width - i_row_margin_cumu) / (i_running_row_width - i_row_margin_cumu);
 				var i_height = i_overlap_ratio * i_base_height;
-				console.log("overlapping ratio: "+i_overlap_ratio);
 				if(sSearchMode === 'mapsearch-mode'){
 					i_height = 121;
 				}	
@@ -348,8 +347,7 @@ function renderResults(){
 					var beachMarker = new google.maps.Marker({
 						position: myLatLng,
 						map: gmapMap,
-						icon: image,
-
+						icon: image
 					});
 
 					google.maps.event.addListener(beachMarker, "click", function() {

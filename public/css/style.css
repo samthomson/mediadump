@@ -383,7 +383,8 @@ select.form-control {
   overflow-y: auto; }
 
 .justify-row {
-  margin-bottom: 4px; }
+  margin-bottom: 4px;
+  overflow: hidden; }
 
 #thumb_results a {
   display: inline-block;
