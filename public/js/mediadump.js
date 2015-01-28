@@ -254,6 +254,24 @@ function renderTree()
 function renderResults(){
 
 	var htmlThumbs = "";
+
+
+	var s_current_row = '';
+	var i_max_row_width = $("#thumb_results").innerWidth() - 17; // 17
+	console.log("max row width: " + i_max_row_width);
+	var i_running_row_width = 0;
+	var i_base_height = i_default_height;
+	var i_files_in_row = 0;
+	var i_row_margin_cumu = 0;
+	
+	
+	var i_file_limit = 100;
+	var i_loaded = 0;
+	var i_default_height = 300;
+	var i_margin = 4;
+	var sIMG = '';
+
+	i_base_height = i_default_height;
 	
 	while (oaMarkers.length > 0) {
 	    oaMarkers.pop().setMap(null);
@@ -278,14 +296,38 @@ function renderResults(){
 			if(oFile.confidence < 20){
 				sConfidenceClass = "least-confident";
 			}	
-			sSingleFileItem +='<div class="tree_image_container">';
-			sSingleFileItem +='<img src="' + urlFromHash('small', oFile.hash, '') + '" id="' + oFile.id + '" class="' + sConfidenceClass + '" />';
+			sSingleFileItem +='<div class="tree_image_container justify-thumbnail">';
+			sSingleFileItem +='<img src="' + urlFromHash('medium', oFile.hash, '') + '" id="' + oFile.id + '" class="result-thumb ' + sConfidenceClass + '" />';
 
 
 			sSingleFileItem +='</div>';
 			sSingleFileItem +='</a>';
 
-			htmlThumbs += sSingleFileItem;
+
+			s_current_row += sSingleFileItem;
+
+			i_running_row_width += (parseInt(oFile.width) + i_margin);
+			i_row_margin_cumu += i_margin;
+
+			if(i_running_row_width > i_max_row_width || iFile == (oResults.length-1)){
+				var i_overlap_ratio = (i_max_row_width - i_row_margin_cumu) / (i_running_row_width - i_row_margin_cumu);
+				var i_height = i_overlap_ratio * i_base_height;
+				console.log("overlapping ratio: "+i_overlap_ratio);
+				if(sSearchMode === 'mapsearch-mode'){
+					i_height = 121;
+				}	
+				// finish the row
+				console.log("finishing the row, running width: "+i_running_row_width+", height: "+i_height);
+				s_current_row = '<div class="justify-row" style="height:'+i_height+'px;">' + s_current_row + '</div>';
+				//$("#thumb_results").append(s_current_row);
+				htmlThumbs += s_current_row;
+				// start next
+				s_current_row = '';
+				i_base_height = i_default_height;
+				i_running_row_width = 0;
+				i_files_in_row = 0;
+				i_row_margin_cumu = 0;
+			}
 			//
 			// thumbs
 			//

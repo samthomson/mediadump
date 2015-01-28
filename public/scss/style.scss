@@ -417,15 +417,26 @@ select.form-control{
 	overflow-y:auto;
 }
 
+.justify-row{
+	margin-bottom: $margin;
+}
 #thumb_results a{	
 	display: inline-block;
+	height: 100%;
 	float: left;
+}
+.justify-thumbnail{
+	height: 100%;
+	width: auto;
 }
 #thumb_results img{	
 	margin-right:4px;
 	margin-bottom:$margin/2;
+	height:100%;
+	/*
 	width:$small_icon_size;
 	height:$small_icon_size;
+	*/
 }
 a.filter{
 	display:inline-block;

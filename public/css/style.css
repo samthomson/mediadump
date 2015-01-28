@@ -382,15 +382,26 @@ select.form-control {
 #thumb_results {
   overflow-y: auto; }
 
+.justify-row {
+  margin-bottom: 4px; }
+
 #thumb_results a {
   display: inline-block;
+  height: 100%;
   float: left; }
+
+.justify-thumbnail {
+  height: 100%;
+  width: auto; }
 
 #thumb_results img {
   margin-right: 4px;
   margin-bottom: 2px;
-  width: 125px;
-  height: 125px; }
+  height: 100%;
+  /*
+  width:$small_icon_size;
+  height:$small_icon_size;
+  */ }
 
 a.filter {
   display: inline-block;
