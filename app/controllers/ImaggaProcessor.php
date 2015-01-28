@@ -23,10 +23,12 @@ class ImaggaProcessor extends BaseController {
 				// make request
 				$service_url = 'http://api.imagga.com/v1/tagging?url='.$sWebThumbPath;
 
+				$sKey = Helper::_AppProperty('imaggaKey');
+				$sSecret = Helper::_AppProperty('imaggaSecret');
 				
 				$context = stream_context_create(array(
 				    'http' => array(
-				        'header'  => "Authorization: Basic " . base64_encode(Helper::_AppProperty('imaggaKey').":".Helper::_AppProperty('imaggaSecret'))
+				        'header'  => "Authorization: Basic " . base64_encode($sKey.":".$sSecret)
 				    )
 				));
 

@@ -55,6 +55,14 @@ App::missing(function($exception)
 
 Route::get('/test/index', array('uses' => 'SearchController@testIndex'));
 Route::get('/test/search', array('uses' => 'SearchController@testSearch'));
+
+Route::get('/test', function()
+{
+	$sKey = Helper::_AppProperty('imaggaKey');
+	$sSecret = Helper::_AppProperty('imaggaSecret');
+				
+	echo "key, secret: $sKey, $sSecret<br/>";	
+});
 /*
 Route::get('/test', function()
 {
