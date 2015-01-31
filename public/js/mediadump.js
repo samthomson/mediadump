@@ -311,12 +311,16 @@ function renderResults(){
 
 			if(i_running_row_width > i_max_row_width || cIndex == (oResults.length-1)){
 				var i_overlap_ratio = (i_max_row_width - i_row_margin_cumu) / (i_running_row_width - i_row_margin_cumu);
-				var i_height = i_overlap_ratio * i_base_height;
+				var i_height = i_base_height;
+				if(i_running_row_width > i_max_row_width){
+					// if we're ending the row due to an overflow, otherwise (ending due to reaching last file, use default height)
+					i_height = i_overlap_ratio * i_base_height;
+				}
 				if(sSearchMode === 'mapsearch-mode'){
 					i_height = 121;
 				}	
 				// finish the row
-				console.log("finishing the row, running width: "+i_running_row_width+", height: "+i_height);
+				//log("finishing the row, running width: "+i_running_row_width+", height: "+i_height);
 				s_current_row = '<div class="justify-row" style="height:'+i_height+'px;">' + s_current_row + '</div>';
 				//$("#thumb_results").append(s_current_row);
 				htmlThumbs += s_current_row;
