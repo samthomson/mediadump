@@ -257,7 +257,7 @@ function renderResults(){
 
 
 	var s_current_row = '';
-	var i_max_row_width = $("#thumb_results").innerWidth() - 17; // 17
+	var i_max_row_width = $("#thumb_results").innerWidth() - 20; // 17
 	console.log("max row width: " + i_max_row_width);
 	var i_running_row_width = 0;
 	var i_base_height = i_default_height;
@@ -309,7 +309,7 @@ function renderResults(){
 			i_running_row_width += (parseInt(oFile.width) + i_margin);
 			i_row_margin_cumu += i_margin;
 
-			if(i_running_row_width > i_max_row_width || iFile == (oResults.length-1)){
+			if(i_running_row_width > i_max_row_width || cIndex == (oResults.length-1)){
 				var i_overlap_ratio = (i_max_row_width - i_row_margin_cumu) / (i_running_row_width - i_row_margin_cumu);
 				var i_height = i_overlap_ratio * i_base_height;
 				if(sSearchMode === 'mapsearch-mode'){
