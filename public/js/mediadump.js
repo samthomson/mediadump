@@ -787,8 +787,11 @@ function sizeDivide(){
 
 		initializeGoogleMap();
 	}else{
-		// thumbs only?	
 
+		$(".left_position").width("0%");
+		$(".right_position").css("left", "0px");
+
+/*
 		if(oaQueries.length == 0)	{
 			// browse, set to full width
 			$(".left_position").width("0%");
@@ -806,7 +809,7 @@ function sizeDivide(){
 			$(".left_position").width("0%");
 			$(".right_position").css("left", (iLeftWidth/2));
 		}
-
+*/
 	}
 }
 function setSolitaryQuery(sDisplay, sValue){
