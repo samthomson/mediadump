@@ -100,26 +100,24 @@
 			</div>
 
 			<div id="lightbox" >
-				<a class="lightbox_button" id="close_lightbox" href="javascript:closeLightbox();">
+				<a class="lightbox_button" id="close_lightbox" href="javascript:closeLightbox();" title="press 'Esc' to close">
 					<i class="fa fa-times"></i>
 				</a>
-				<a class="lightbox_button" id="left_lightbox" href="javascript:lightChange(-1);">
+				<a class="lightbox_button" id="left_lightbox" href="javascript:lightChange(-1);" title="press '&#8592;' to view previous">
 					<i class="fa fa-arrow-left"></i>
 				</a>
-				<a class="lightbox_button" id="right_lightbox" href="javascript:lightChange(1);">
+				<a class="lightbox_button" id="right_lightbox" href="javascript:lightChange(1);" title="press '&#8594;' to view next">
 					<i class="fa fa-arrow-right"></i>
 				</a>
-				<a class="lightbox_button" id="info_lightbox" href="javascript:toggleInfo();">
+				<a class="lightbox_button" id="info_lightbox" href="javascript:toggleInfo();" title="press 'i' to toggle file info">
 					<i class="glyphicon glyphicon-tags"></i>
 				</a>
-				<div id="lightbox_contents">
+				<div id="lightbox_contents">				
 				
-				
-							<a href="javascript:lightChange(1);" >
-								<img />
-							</a>
-							<div id="player" ng-show="results[iLightIndex].type === 'video'"></div>
-					
+					<a href="javascript:lightChange(1);" >
+						<img />
+					</a>
+					<div id="player" ng-show="results[iLightIndex].type === 'video'"></div>					
 					
 				</div>
 				<div id="lightbox_info_view"></div>
