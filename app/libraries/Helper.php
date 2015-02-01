@@ -30,7 +30,6 @@ class Helper {
 	    $string = str_replace(" +", " ", $string);
 	    return $string;
 	}
-
 }
 
 ?>
