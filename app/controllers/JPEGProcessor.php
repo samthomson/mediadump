@@ -277,7 +277,7 @@ class JPEGProcessor extends BaseController {
 		{
 			//print_r($ex);
 			$eProcessingFailed = new ErrorModel();
-			$eProcessingFailed->name = "error - jpeg processor";
+			$eProcessingFailed->location = "jpeg processor";
 			$eProcessingFailed->message = (string)$ex;
 			$eProcessingFailed->value = "0";
 			$eProcessingFailed->save();

@@ -108,6 +108,7 @@ class Auto extends BaseController {
 							case "imagga":
 								$qi->snooze(3);
 								$qi->save();
+								$sResponse = ImaggaProcessor::process($qi->file_id);
 								switch(ImaggaProcessor::process($qi->file_id))
 								{
 									case "ok":
@@ -128,6 +129,12 @@ class Auto extends BaseController {
 									case "throttle":
 										$qi->snooze(1440); // snooze one day
 										$qi->save();
+										break;
+									default:
+										$eFilesFound = new EventModel();
+										$eFilesFound->name = "auto processor";
+										$eFilesFound->message = "imagga processor defaulted: $sResponse";
+										$eFilesFound->save();
 										break;
 								}
 								break;

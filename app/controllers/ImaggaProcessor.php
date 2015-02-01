@@ -38,6 +38,8 @@ class ImaggaProcessor extends BaseController {
 
 				list($version,$status_code,$msg) = explode(' ',$http_response_header[0], 3);
 
+				print_r($oObj);
+
 				// Check the HTTP Status code
 				switch($status_code)
 				{
@@ -130,4 +132,5 @@ class ImaggaProcessor extends BaseController {
 			return "fail";
 		}
 	}
+	return "endedwithoutstatus";
 }

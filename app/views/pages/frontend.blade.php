@@ -137,6 +137,9 @@
 
 		<script src="/vendor/bootstraptags/bootstrap-tags.min.js"></script>
 
+		<script src="/vendor/history/history.js"></script>
+		<script src="/vendor/history/history.adapter.jquery.js"></script>
+
 
 		<!-- app -->
 		<script src="/js/mediadump.js"></script>
