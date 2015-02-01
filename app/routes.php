@@ -13,7 +13,7 @@
 
 Route::get('/', function()
 {
-	return File::get(public_path() .DIRECTORY_SEPARATOR. 'frontend.html');
+	return View::make("pages/frontend");
 });
 
 
