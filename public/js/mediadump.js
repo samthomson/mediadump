@@ -934,6 +934,11 @@ $(document).keydown(function(e) {
         	closeLightbox();
         break;
 
+        case 73: // i - toggle info
+        if(bLightboxShowing)
+        	toggleInfo();
+        break;
+
         default: return; // exit this handler for other keys
     }
     e.preventDefault(); // prevent the default action (scroll / move caret)
