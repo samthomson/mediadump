@@ -14,6 +14,7 @@ class ImaggaProcessor extends BaseController {
 
 
 			$sThumbPath = Helper::thumbPath("large").$oFile->hash.".jpg";
+			echo "here<br/>";
 			if(file_exists($sThumbPath))
 			{
 				// what is the web url?
@@ -22,6 +23,8 @@ class ImaggaProcessor extends BaseController {
 
 				// make request
 				$service_url = 'http://api.imagga.com/v1/tagging?url='.$sWebThumbPath;
+
+				echo "imagga url: $service_url<br/>";
 
 				$sKey = Helper::_AppProperty('imaggaKey');
 				$sSecret = Helper::_AppProperty('imaggaSecret');
@@ -38,13 +41,14 @@ class ImaggaProcessor extends BaseController {
 
 				list($version,$status_code,$msg) = explode(' ',$http_response_header[0], 3);
 
+				print_r($json);
+				$oObj = json_decode($json);
 				print_r($oObj);
 
 				// Check the HTTP Status code
 				switch($status_code)
 				{
 				    case 200:
-						$oObj = json_decode($json);
 
 						if(isset($oObj->results))
 						{
@@ -64,8 +68,8 @@ class ImaggaProcessor extends BaseController {
 										$cTagsAdded++;
 									}
 								}
-							}				
-						
+							}
+
 
 							// for each tag back, add to db
 							//$cTagsAdded++;
@@ -80,7 +84,6 @@ class ImaggaProcessor extends BaseController {
 							$eFilesRemoved->save();
 
 
-
 							$oStat = new StatModel();
 							$oStat->name = "auto tags added";
 							$oStat->group = "auto";
@@ -92,9 +95,13 @@ class ImaggaProcessor extends BaseController {
 							$oStat->group = "auto";
 							$oStat->value = (microtime(true) - $mtStart)*1000;
 							$oStat->save();
-						}	
-
-
+						}else{
+							$oStat = new StatModel();
+							$oStat->name = "no imagga results";
+							$oStat->group = "auto";
+							$oStat->value = 1;
+							$oStat->save();
+						}
 
 						return "ok";
 				        break;
@@ -103,14 +110,6 @@ class ImaggaProcessor extends BaseController {
 				         return "throttle";
 				         break;
 				}
-
-
-
-				
-				//print_r($oObj);
-
-
-				
 				
 			}else{
 				$eProcessingFailed = new ErrorModel();
@@ -131,6 +130,6 @@ class ImaggaProcessor extends BaseController {
 			$eProcessingFailed->save();
 			return "fail";
 		}
+		return "endedwithoutstatus";
 	}
-	return "endedwithoutstatus";
 }

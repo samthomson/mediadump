@@ -57,7 +57,7 @@ class Auto extends BaseController {
 				$eFilesFound->save();
 
 				$oStat = new StatModel();
-				$oStat->name = "auth files found";
+				$oStat->name = "auto files found";
 				$oStat->group = "auto";
 				$oStat->value = count($saNewFilesForSystem);
 				$oStat->save();
@@ -81,6 +81,8 @@ class Auto extends BaseController {
 				//while($cProcessedThisCycle === 0) // just one (debug)
 				{
 					$qi = QueueModel::getSingleItem();
+
+					//echo 'id:'.$qi->id." ".$qi->processor.'<br/>';
 
 					if($qi !== null)
 					{
@@ -109,7 +111,8 @@ class Auto extends BaseController {
 								$qi->snooze(3);
 								$qi->save();
 								$sResponse = ImaggaProcessor::process($qi->file_id);
-								switch(ImaggaProcessor::process($qi->file_id))
+								echo "imagga response: $sResponse<br/>";
+								switch($sResponse)
 								{
 									case "ok":
 										$qi->done();
@@ -153,7 +156,7 @@ class Auto extends BaseController {
 										$eFilesFound->save();
 
 										$oStat = new StatModel();
-										$oStat->name = "imagga processor fail";
+										$oStat->name = "places processor fail";
 										$oStat->group = "auto";
 										$oStat->value = 1;
 										$oStat->save();
