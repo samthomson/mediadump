@@ -929,6 +929,11 @@ $(document).keydown(function(e) {
         	lightChange(1);
         break;
 
+        case 27: // close
+        if(bLightboxShowing)
+        	closeLightbox();
+        break;
+
         default: return; // exit this handler for other keys
     }
     e.preventDefault(); // prevent the default action (scroll / move caret)
