@@ -917,6 +917,22 @@ $( document ).ready(function() {
 	sizeDivide();
 	setMode("browse");
 });
+$(document).keydown(function(e) {
+    switch(e.which) {
+        case 37: // left
+        if(bLightboxShowing)
+        	lightChange(-1);
+        break;
+
+        case 39: // right
+        if(bLightboxShowing)
+        	lightChange(1);
+        break;
+
+        default: return; // exit this handler for other keys
+    }
+    e.preventDefault(); // prevent the default action (scroll / move caret)
+});
 /*
 
 BOILERPLATE HELPER FUNCTIONS
