@@ -297,7 +297,7 @@ function renderResults(){
 				sConfidenceClass = "least-confident";
 			}	
 			sSingleFileItem +='<div class="tree_image_container justify-thumbnail">';
-			sSingleFileItem +='<img src="' + urlFromHash('medium', oFile.hash, '') + '" id="' + oFile.id + '" class="result-thumb ' + sConfidenceClass + '" />';
+			sSingleFileItem +='<img data-original="' + urlFromHash('medium', oFile.hash, '') + '" id="' + oFile.id + '" class="result-thumb ' + sConfidenceClass + '" />';
 
 
 			sSingleFileItem +='</div>';
@@ -943,6 +943,13 @@ $(document).keydown(function(e) {
     }
     e.preventDefault(); // prevent the default action (scroll / move caret)
 });
+
+function applyLazyLoad()
+{
+	$(function() {
+	    $("img.lazy").lazyload();
+	});
+}
 /*
 
 BOILERPLATE HELPER FUNCTIONS
