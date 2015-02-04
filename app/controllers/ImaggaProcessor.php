@@ -14,7 +14,7 @@ class ImaggaProcessor extends BaseController {
 
 
 			$sThumbPath = Helper::thumbPath("large").$oFile->hash.".jpg";
-			echo "here<br/>";
+
 			if(file_exists($sThumbPath))
 			{
 				// what is the web url?
@@ -24,8 +24,7 @@ class ImaggaProcessor extends BaseController {
 				// make request
 				$service_url = 'http://api.imagga.com/v1/tagging?url='.$sWebThumbPath;
 
-				echo "imagga url: $service_url<br/>";
-
+				
 				$sKey = Helper::_AppProperty('imaggaKey');
 				$sSecret = Helper::_AppProperty('imaggaSecret');
 				
@@ -41,10 +40,8 @@ class ImaggaProcessor extends BaseController {
 
 				list($version,$status_code,$msg) = explode(' ',$http_response_header[0], 3);
 
-				print_r($json);
 				$oObj = json_decode($json);
-				print_r($oObj);
-
+				
 				// Check the HTTP Status code
 				switch($status_code)
 				{
@@ -52,49 +49,55 @@ class ImaggaProcessor extends BaseController {
 
 						if(isset($oObj->results))
 						{
-							foreach($oObj->results as $oImageResult)
+							if(count($oObj->results) > 0)
 							{
-								if(isset($oImageResult->tags))
+								foreach($oObj->results as $oImageResult)
 								{
-									foreach($oImageResult->tags as $oTag){
-										$oTag = (array)$oTag;
-										
-										$oNewTag = new TagModel();
-										$oNewTag->file_id = $iFileID;
-										$oNewTag->type = "imagga";
-										$oNewTag->setValue($oTag["tag"]);
-										$oNewTag->confidence = $oTag["confidence"];
-										$oNewTag->save();
-										$cTagsAdded++;
+									if(isset($oImageResult->tags))
+									{
+										foreach($oImageResult->tags as $oTag){
+											$oTag = (array)$oTag;
+											
+											$oNewTag = new TagModel();
+											$oNewTag->file_id = $iFileID;
+											$oNewTag->type = "imagga";
+											$oNewTag->setValue($oTag["tag"]);
+											$oNewTag->confidence = $oTag["confidence"];
+											$oNewTag->save();
+											$cTagsAdded++;
+										}
 									}
 								}
+
+
+								// for each tag back, add to db
+								//$cTagsAdded++;
+
+								//
+								// log how many tags were added
+								//
+								$eFilesRemoved = new EventModel();
+								$eFilesRemoved->name = "auto imagga processor";
+								$eFilesRemoved->message = "prcoessed a file";
+								$eFilesRemoved->value = 1;
+								$eFilesRemoved->save();
+
+
+								$oStat = new StatModel();
+								$oStat->name = "auto tags added";
+								$oStat->group = "auto";
+								$oStat->value = $cTagsAdded;
+								$oStat->save();
+
+								$oStat = new StatModel();
+								$oStat->name = "imagga proccess time";
+								$oStat->group = "auto";
+								$oStat->value = (microtime(true) - $mtStart)*1000;
+								$oStat->save();
+							}else{
+								// returned okay, but no results, strange..
+								return "empty";
 							}
-
-
-							// for each tag back, add to db
-							//$cTagsAdded++;
-
-							//
-							// log how many tags were added
-							//
-							$eFilesRemoved = new EventModel();
-							$eFilesRemoved->name = "auto imagga processor";
-							$eFilesRemoved->message = "prcoessed a file";
-							$eFilesRemoved->value = 1;
-							$eFilesRemoved->save();
-
-
-							$oStat = new StatModel();
-							$oStat->name = "auto tags added";
-							$oStat->group = "auto";
-							$oStat->value = $cTagsAdded;
-							$oStat->save();
-
-							$oStat = new StatModel();
-							$oStat->name = "imagga proccess time";
-							$oStat->group = "auto";
-							$oStat->value = (microtime(true) - $mtStart)*1000;
-							$oStat->save();
 						}else{
 							$oStat = new StatModel();
 							$oStat->name = "no imagga results";

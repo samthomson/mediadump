@@ -133,6 +133,14 @@ class Auto extends BaseController {
 										$qi->snooze(1440); // snooze one day
 										$qi->save();
 										break;
+									case "empty":
+										$qi->done();
+
+										$oEmptyImagga = new QueueModel;
+										$oEmptyImagga->file_id = $qi->file_id;
+										$oEmptyImagga->processor = "imagga_empty";
+										$oEmptyImagga->save();
+										break;
 									default:
 										$eFilesFound = new EventModel();
 										$eFilesFound->name = "auto processor";
