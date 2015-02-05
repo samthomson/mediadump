@@ -897,10 +897,12 @@ $( document ).ready(function() {
 
 	        			results["suggestions"].forEach(function(oResult, cCount){
 
-							var sValue = sLinkSafeJSString(oResult.value);
-							var sDisplay = folderFromUniqueDir(sValue);
+							var sValue = sReplaceQuote(sLinkSafeJSString(oResult.value));
+							var sDisplay = sReplaceQuote(folderFromUniqueDir(oResult.value));
+							var sUIDisplay = folderFromUniqueDir(sValue);
+
 		
-							var sMatchText = sValue.replace(lastValue,'<strong>'+lastValue+'</strong>')
+							var sMatchText = oResult.value.replace(lastValue,'<strong>'+lastValue+'</strong>')
 
 	        				htmlAutoComplete += '<a href="javascript:autoSuggestSelect(\'' + sDisplay + '\', \'' + sValue + '\');" class="auto-suggestion">';
 	        				htmlAutoComplete += '<img src="' + urlFromHash("icon", oResult.hash, "") + '" />';
