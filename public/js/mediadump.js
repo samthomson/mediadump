@@ -214,6 +214,10 @@ function sFilterQuery(sQuery){
 BUILD UI
 
 */
+function sReplaceQuote(sIn)
+{
+	return sIn.replace(/'/g, "\\'");
+}
 function renderTree()
 {
 	var htmlTree = "";
@@ -224,15 +228,17 @@ function renderTree()
 
 		var sSingleTreeItem = "";
 
-		var sValue = sLinkSafeJSString(oLink.value);
-		var sDisplay = folderFromUniqueDir(sValue);
+		var sValue = sReplaceQuote(sLinkSafeJSString(oLink.value));
+		var sDisplay = sReplaceQuote(folderFromUniqueDir(sValue));
+		var sDisplay = sReplaceQuote(folderFromUniqueDir(oLink.value));
+		var sUIDisplay = folderFromUniqueDir(oLink.value);
 
 		sSingleTreeItem +='<a class="tree_link col-xs-6 col-sm-4" href="javascript: setSolitaryQuery(\'' + sDisplay + '\', \'' + sValue + '\');" alt="' + sDisplay + '" title="' + sDisplay + '">';
 
 		sSingleTreeItem +='<div class="tree_image_container">';
 		sSingleTreeItem +='<img src="' + urlFromHash('medium', oLink.hash, '') + '"/>';
 		sSingleTreeItem +='</div>';
-		sSingleTreeItem +='<span class="tree_link_title">' + sDisplay + '</span>';
+		sSingleTreeItem +='<span class="tree_link_title">' + sUIDisplay + '</span>';
 
 
 		sSingleTreeItem +='</a>';
