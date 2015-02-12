@@ -74,14 +74,7 @@ class SearchController extends BaseController {
 					->get();
 
 					$queries = DB::getQueryLog();
-		$last_query = end($queries);
-
-
-		//print_r($last_query);
-
-/*
-					$soFiles = DB::select();
-*/
+					$last_query = end($queries);
 
 				break;
 			case "shuffle":
@@ -327,102 +320,184 @@ class SearchController extends BaseController {
 	// elastic search tests
 	public static function testIndex()
 	{
-		$mtStart = microtime(true);
+		try{
+			$mtStart = microtime(true);
 
-		$client = new Elasticsearch\Client();
+			// get clients
+			$client = new Elasticsearch\Client();
+/*
+			// set up index
+			$indexParams['index']  = 'test_index';
 
-		$iLimit = 10;
+			$myTypeMapping = array(
+			    '_source' => array(
+			        'enabled' => true
+			    ),
+			    'properties' => array(
+			        'type' => array(
+			            'type' => 'string',
+			            'analyzer' => 'standard'
+			        ),
+			        'value' => array(
+			            'type' => 'string',
+			            'analyzer' => 'standard'
+			        ),
+			        'confidence' => array(
+			            'type' => 'integer'
+			        )
+			    )
+			);
 
-
-		//$oaFiles = FileModel::all();
-		//$oaTags = TagModel::all();
-		//$oaGeoData = GeoDataModel::all();
-
-
-
-		//$oaFiles = FileModel::with("geoData")->get();
-
-		/*
-		$bResults = true;
-		$iStart = 0;
-		while($bResults){
-			$oaFiles = FileModel::with("geoData")->with("tags")->skip($iStart)->take($iLimit)->get();
-			$iFoundThisQuery = count($oaFiles);
-			$iStart += $iFoundThisQuery;
-			$bResults = ($iFoundThisQuery > 0 ? true : false);
-
-		}
-		*/
-		//$oaFiles = FileModel::with("geoData")->with("tags")->take($iLimit)->get();
+			$indexParams['body']['mappings']['my_type'] = $myTypeMapping;
 			
-		
-		//$oaFiles = FileModel::take($iLimit)->get();
+			// Create the index
+			$client->indices()->create($indexParams);
+*/
 
-		//$oaFiles->load("tags");
-		//$oaFiles = DB::select("select files.id, files.path, files.hash, geodata.latitude, geodata.longitude, tags.type, tags.value FROM files join geodata on files.id = geodata.file_id join tags on files.id = tags.file_id group by files.id limit ?", array($iLimit));
-		////////$oaFiles = DB::select("select files.id, files.path, files.hash, geodata.latitude, geodata.longitude, tags.type, tags.value FROM tags join files on tags.file_id = files.id join geodata on tags.file_id = geodata.file_id order by files.id limit ?", array($iLimit));
-		
-		//$oaFiles = DB::select("select tags.type, tags.value FROM tags limit ?", array($iLimit));
-		
-		//$oaFiles = DB::select("select files.id, files.path, files.hash, tags.type, tags.value FROM tags left join files on tags.file_id = files.id group by files.id limit ?", array($iLimit));
+			$iLimit = 10;
 
-		$oaFiles = DB::table("files")
-		->join("tags", "files.id", "=", "tags.file_id")
-		->join("geodata", "files.id", "=", "geodata.file_id")
-		->select()
-		->take($iLimit)->get();/**/
+			// select objects to index
+			/*$oaFiles = DB::table("files")
+			->join("tags", "files.id", "=", "tags.file_id")
+			->join("geodata", "files.id", "=", "geodata.file_id")
+			->take($iLimit)->get();*/
 
-		//.id, files.path, files.hash, geodata.latitude, geodata.longitude, tags.type, tags.value FROM files join geodata on files.id = geodata.file_id join tags on files.id = tags.file_id group by files.id limit ?", array($iLimit));
+			$oaFiles = FileModel::take($iLimit)->get();
 
 
-		//echo FileModel::with("tags")->take(1000)->get();
-		$queries = DB::getQueryLog();
-		$last_query = end($queries);
+			echo "<br/><br/><hr/>";
+			foreach($oaFiles as $oFile){
 
 
-		print_r($last_query);
+				$aaTags = [];
+				$saTags = [];
 
-		/**/
+				echo "file: ".$oFile->id;
+				echo "<br/>";
+				echo "tags";
+				echo "<br/>";
+				foreach($oFile->tags as $oTag){
+					array_push($aaTags, array(
+						"type" => $oTag->type,
+						"value" => $oTag->value,
+						"confidence" => $oTag->confidence));
 
-		echo "<br/><br/><hr/>";
-		foreach($oaFiles as $o){
+
+					array_push($saTags, $oTag->value);
+
+					//echo $oTag->type.":".$oTag->value;
+					echo $oTag->value;
+					echo "<br/>";
+				}
 
 
-			$params = array();
-
-
-			$params['body']  = array(
-				'latitude' => $o->latitude,
-				'longitude' => $o->longitude,
-				'type' => 'image'
+				$params = array();
+				$params["body"] = array(
+					"hash" => $oFile->hash,
+					"tags" => $aaTags/*,
+					"tags" => $saTags*/
 				);
+				$params["index"] = "test_index";
+				$params["type"] = "my_type";
+				$params["id"] = $oFile->id;
+				//$params["body"][] = $aaTags;
 
-			$params['index'] = 'files';
-			$params['type']  = 'file';
-			$params['id']    = $o->id;
-			$ret = $client->index($params);
+				$ret = $client->index($params);
+				
+				print_r($ret);
 
+				echo "<br/>";
+				echo "<hr/>";
+
+				/*
+				$params = array();
+
+
+				$params['body']  = array(
+					'latitude' => $oFile->latitude,
+					'longitude' => $oFile->longitude,
+					'type' => 'image'
+					);
+
+				$params['index'] = 'files';
+				$params['type']  = 'file';
+				$params['id']    = $oFile->id;
+				$ret = $client->index($params);
+	*/
+			}
+			
+
+
+
+
+			$iFiles = count($oaFiles);
+			echo "select all files ($iFiles/$iLimit) @ ".Helper::iMillisecondsSince($mtStart);
+
+
+
+			//print_r($ret);
+		}catch(Exception $e){
+			echo $e;
 		}
-		
-		$iFiles = count($oaFiles);
-
-		echo "select all files ($iFiles/$iLimit) @ ".Helper::iMillisecondsSince($mtStart);
-
-
-
-		//print_r($ret);
 	}
 
 	public static function testSearch()
 	{
+		try{
+			$client = new Elasticsearch\Client();
 
-		$client = new Elasticsearch\Client();
+			$saResults = [];
 
-		$searchParams['index'] = 'files';
-		$searchParams['type']  = 'file';
-		$searchParams['body']['query']['match']['type'] = 'image';
-		$retDoc = $client->search($searchParams);
 
-		print_r($retDoc);
+			$searchParams['index'] = 'test_index';
+			//if($sQuery !== "")
+				//$searchParams['body']['query']['match']['tags']['value'] = $sQuery;
+				//$searchParams['body']['query']['match']['tags']['value'] = "hand";
+				/*$searchParams['body'] = [
+					'query' => [
+						'match' => [
+							'hash' => "dea1bb578490302324ae25c51d865f23"
+							]
+						]
+					];*/
+					/*
+				$searchParams['body'] = [
+					'query' => [
+						'match' => [
+							'tags' => "hand"
+							]
+						]
+					];*/
+
+			if(Input::get("q") !== null)
+				$searchParams['body']['query']['match']['tags.value'] = Input::get("q");
+			//$searchParams['body']['query']['match']['tags'] = ['hand'];
+			//$searchParams['body']['query']['match']['hash'] = 'dea1bb578490302324ae25c51d865f23';
+			//}
+			$retDoc = $client->search($searchParams);
+			$iMs = $retDoc["took"];
+
+			//print_r($retDoc);exit();
+
+			foreach($retDoc["hits"]["hits"] as $oHit){
+				print_r($oHit);
+				
+				echo $oHit["_source"]["hash"]."<br/>";
+				/*echo "<br/><br/>";*/
+
+				array_push($saResults, $oHit["_source"]["hash"]);
+			}
+
+			//
+			// redner
+			//
+			echo "speed: $iMs ms<br/><br/>";
+			foreach($saResults as $sHash)
+			{
+				echo "<img src='http://mediadump.samt.st/thumbs/small/$sHash.jpg' />";
+			}
+		}catch(Exception $e){
+			echo $e;
+		}
 	}
 }

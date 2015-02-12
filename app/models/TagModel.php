@@ -32,5 +32,4 @@ class TagModel extends Eloquent {
    			// silent fail, duplicate index
    		}
 	}
-	
 }
