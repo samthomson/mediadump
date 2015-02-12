@@ -323,10 +323,20 @@ class SearchController extends BaseController {
 		try{
 			$mtStart = microtime(true);
 
+
+
 			// get clients
 			$client = new Elasticsearch\Client();
-/*
+
+			/*
+			delete pre-existing
+			$deleteParams['index'] = 'test_index';
+			$client->indices()->delete($deleteParams);
+			*/
+
+
 			// set up index
+			/*
 			$indexParams['index']  = 'test_index';
 
 			$myTypeMapping = array(
@@ -334,16 +344,9 @@ class SearchController extends BaseController {
 			        'enabled' => true
 			    ),
 			    'properties' => array(
-			        'type' => array(
-			            'type' => 'string',
-			            'analyzer' => 'standard'
-			        ),
-			        'value' => array(
-			            'type' => 'string',
-			            'analyzer' => 'standard'
-			        ),
-			        'confidence' => array(
-			            'type' => 'integer'
+			        'datetime' => {
+			        	"type" : "date",
+			        	"format" : "yyyy-MM-dd HH:mm:ss"}
 			        )
 			    )
 			);
@@ -362,7 +365,7 @@ class SearchController extends BaseController {
 			->join("geodata", "files.id", "=", "geodata.file_id")
 			->take($iLimit)->get();*/
 
-			$oaFiles = FileModel::take($iLimit)->get();
+			$oaFiles = FileModel::take($iLimit)->where("live", "=", 1)->get();
 
 
 			echo "<br/><br/><hr/>";
@@ -391,19 +394,31 @@ class SearchController extends BaseController {
 				}
 
 
+				
 				$params = array();
 				$params["body"] = array(
 					"hash" => $oFile->hash,
-					"tags" => $aaTags/*,
-					"tags" => $saTags*/
+					"tags" => $aaTags,
+					"latitude" => $oFile->latitude,
+					"longitude" => $oFile->longitude,
+					"datetime" => $oFile->datetime
 				);
 				$params["index"] = "test_index";
 				$params["type"] = "my_type";
 				$params["id"] = $oFile->id;
-				//$params["body"][] = $aaTags;
 
 				$ret = $client->index($params);
-				
+				/*
+				$params = array();
+				$params["body"] = array(
+					"datetime" => $oFile->datetime
+				);
+				$params["index"] = "test_index";
+				$params["type"] = "my_type";
+				$params["id"] = $oFile->id;
+
+				$ret = $client->index($params);
+				*/
 				print_r($ret);
 
 				echo "<br/>";
@@ -450,6 +465,7 @@ class SearchController extends BaseController {
 
 
 			$searchParams['index'] = 'test_index';
+			$searchParams['size'] = 150;
 			//if($sQuery !== "")
 				//$searchParams['body']['query']['match']['tags']['value'] = $sQuery;
 				//$searchParams['body']['query']['match']['tags']['value'] = "hand";
@@ -469,20 +485,24 @@ class SearchController extends BaseController {
 						]
 					];*/
 
-			if(Input::get("q") !== null)
+			if(Input::get("q") !== null){
+				//$searchParams['body']['query']['match']['tags.value'] = Input::get("q");
 				$searchParams['body']['query']['match']['tags.value'] = Input::get("q");
-			//$searchParams['body']['query']['match']['tags'] = ['hand'];
-			//$searchParams['body']['query']['match']['hash'] = 'dea1bb578490302324ae25c51d865f23';
-			//}
+			}
+				
+			
+			$searchParams['sort'] = array("datetime" => array("order" => "desc"));
+
 			$retDoc = $client->search($searchParams);
 			$iMs = $retDoc["took"];
+			$iCount = count($retDoc["hits"]["hits"]);
 
 			//print_r($retDoc);exit();
 
 			foreach($retDoc["hits"]["hits"] as $oHit){
-				print_r($oHit);
+				//print_r($oHit);
 				
-				echo $oHit["_source"]["hash"]."<br/>";
+				//echo $oHit["_source"]["hash"]."<br/>";
 				/*echo "<br/><br/>";*/
 
 				array_push($saResults, $oHit["_source"]["hash"]);
@@ -491,7 +511,7 @@ class SearchController extends BaseController {
 			//
 			// redner
 			//
-			echo "speed: $iMs ms<br/><br/>";
+			echo "speed: $iMs ms, count: $iCount<br/><br/>";
 			foreach($saResults as $sHash)
 			{
 				echo "<img src='http://mediadump.samt.st/thumbs/small/$sHash.jpg' />";
