@@ -355,9 +355,9 @@ class SearchController extends BaseController {
 			
 			// Create the index
 			$client->indices()->create($indexParams);
-*/
+			*/
 
-			$iLimit = 150;
+			$iLimit = 400;
 
 			// select objects to index
 			/*$oaFiles = DB::table("files")
@@ -367,30 +367,16 @@ class SearchController extends BaseController {
 
 			$oaFiles = FileModel::take($iLimit)->where("live", "=", 1)->get();
 
-
-			echo "<br/><br/><hr/>";
 			foreach($oaFiles as $oFile){
-
 
 				$aaTags = [];
 				$saTags = [];
 
-				echo "file: ".$oFile->id;
-				echo "<br/>";
-				echo "tags";
-				echo "<br/>";
 				foreach($oFile->tags as $oTag){
 					array_push($aaTags, array(
 						"type" => $oTag->type,
 						"value" => $oTag->value,
 						"confidence" => $oTag->confidence));
-
-
-					array_push($saTags, $oTag->value);
-
-					//echo $oTag->type.":".$oTag->value;
-					echo $oTag->value;
-					echo "<br/>";
 				}
 
 
@@ -400,8 +386,8 @@ class SearchController extends BaseController {
 					"hash" => $oFile->hash,
 					"id" => $oFile->id,
 					"tags" => $aaTags,
-					"latitude" => $oFile->latitude,
-					"longitude" => $oFile->longitude,
+					"latitude" => $oFile->geoData->latitude,
+					"longitude" => $oFile->geoData->longitude,
 					"datetime" => $oFile->datetime,
 					"longtime" => strtotime($oFile->datetime)
 				);
@@ -410,49 +396,14 @@ class SearchController extends BaseController {
 				$params["id"] = $oFile->id;
 
 				$ret = $client->index($params);
-				/*
-				$params = array();
-				$params["body"] = array(
-					"datetime" => $oFile->datetime
-				);
-				$params["index"] = "test_index";
-				$params["type"] = "my_type";
-				$params["id"] = $oFile->id;
 
-				$ret = $client->index($params);
-				*/
-				print_r($ret);
-
-				echo "<br/>";
-				echo "<hr/>";
-
-				/*
-				$params = array();
-
-
-				$params['body']  = array(
-					'latitude' => $oFile->latitude,
-					'longitude' => $oFile->longitude,
-					'type' => 'image'
-					);
-
-				$params['index'] = 'files';
-				$params['type']  = 'file';
-				$params['id']    = $oFile->id;
-				$ret = $client->index($params);
-	*/
-			}
-			
-
-
-
+			}			
 
 			$iFiles = count($oaFiles);
-			echo "select all files ($iFiles/$iLimit) @ ".Helper::iMillisecondsSince($mtStart);
+			$iTime = Helper::iMillisecondsSince($mtStart);
+			$fPerFile = $iTime / $iFiles;
+			echo "select all files ($iFiles/$iLimit) @ $iTime ms, av $fPerFile per file";
 
-
-
-			//print_r($ret);
 		}catch(Exception $e){
 			echo $e;
 		}
@@ -467,69 +418,62 @@ class SearchController extends BaseController {
 
 
 			$searchParams['index'] = 'test_index';
-			$searchParams['size'] = 150;
-			//if($sQuery !== "")
-				//$searchParams['body']['query']['match']['tags']['value'] = $sQuery;
-				//$searchParams['body']['query']['match']['tags']['value'] = "hand";
-				/*$searchParams['body'] = [
-					'query' => [
-						'match' => [
-							'hash' => "dea1bb578490302324ae25c51d865f23"
-							]
-						]
-					];*/
-					/*
-				$searchParams['body'] = [
-					'query' => [
-						'match' => [
-							'tags' => "hand"
-							]
-						]
-					];*/
+			$searchParams['size'] = 100;
 
-			/**/	
+
+			/*
 			if(Input::get("q") !== null){
 				//$searchParams['body']['query']['match']['tags.value'] = Input::get("q");
 				$searchParams['body']['query']['match']['tags.value'] = Input::get("q");
 			}
-						
-			
 			$searchParams['sort'] = array("longtime:desc");
-/*
-			$json = '{
-			    "query" : {
-			        "match" : {
-			            "tags.value" : "hand"
-			        }
-			    },
-			    "sort": [
-			    	{
-			    		"datetime": {
-			    			"order": "asc"
-			    		}
-			    	}
-			    ]
-			}';
-
-			$json = '{
-			    "sort": [
-			    	{
-			    		"longtime": {
-			    			"order": "desc"
-			    		}
-			    	}
-			    ],
-			    "size": 150
-			}';
-			$searchParams['body'] = $json;
 			*/
+			$oResults = array("info" => null, "results" => null);
+		
+			$sQuery = Input::get("query");
+
+			$saQueries = explode("|", $sQuery);
+
+			foreach ($saQueries as $sQuery) {
+				$saQueryParts = explode("=", $sQuery);
+
+				switch ($saQueryParts[0]) {
+					case 'map':
+						$iaLatLonParts = explode(",", $saQueryParts[1]);
+						//print_r($iaLatLonParts);
+						/*
+						$searchParams['body']['query']['range']['latitude'] = array('gt' => $iaLatLonParts[0],'lt' => $iaLatLonParts[1]);
+						$searchParams['body']['query']['range']['longitude'] = array('gt' => $iaLatLonParts[2],'lt' => $iaLatLonParts[3]);
+						*/
+						$searchParams['body']['query']['bool']['must'] = array(
+							array('range' => array('latitude' => array('gt' => $iaLatLonParts[0],'lt' => $iaLatLonParts[1]))),
+							array('range' => array('longitude' => array('gt' => $iaLatLonParts[2],'lt' => $iaLatLonParts[3]))),
+						);
+
+						break;
+					
+					default:
+						# code...
+						break;
+				}
+			}
+
+			$saStats = [];
+			$soFiles = [];
+			$aaSpeeds = [];
+			$aaQueryResultsCount = [];
+
+			$saQueryResults = [];
+
+
 
 			$retDoc = $client->search($searchParams);
 
 			$iMs = $retDoc["took"];
 			$iCount = count($retDoc["hits"]["hits"]);
 
-			//print_r($retDoc);exit();
+
+			$oaResults = [];
 
 			foreach($retDoc["hits"]["hits"] as $oHit){
 				//print_r($oHit);
@@ -541,18 +485,39 @@ class SearchController extends BaseController {
 				$saResults[$oHit["_source"]["id"]] = $oHit["_source"]["hash"];
 
 				//array_push($saResults, $oHit["_source"]["hash"]);
+				array_push($oaResults, [
+					"id" => $oHit["_source"]["id"],
+					"hash" => $oHit["_source"]["hash"],
+					"latitude" => $oHit["_source"]["latitude"],
+					"longitude" => $oHit["_source"]["longitude"],
+					"width" => 450,
+					"height" => 300
+					]);
 			}
 
 			//
 			// redner
 			//
-			echo "speed: $iMs ms, count: $iCount<br/><br/>";
-			foreach($saResults as $iId => $sHash)
-			{
-				echo "<img title='$iId' src='http://mediadump.samt.st/thumbs/small/$sHash.jpg' />";
-			}
+			//print_r($retDoc);
+
+			$oaInfo = [
+				"speed" => $iMs,
+				"count" => $retDoc["hits"]["total"],
+				"lower" => 1,
+				"upper" => 100
+			];
+
+
+			$oReturn = [
+			"info" => $oaInfo,
+			"results" => $oaResults
+			];
+
+			return Response::json($oReturn);
+
+
 		}catch(Exception $e){
 			echo $e;
 		}
-	}
+	}	
 }
