@@ -357,7 +357,7 @@ class SearchController extends BaseController {
 			$client->indices()->create($indexParams);
 */
 
-			$iLimit = 10;
+			$iLimit = 150;
 
 			// select objects to index
 			/*$oaFiles = DB::table("files")
@@ -398,10 +398,12 @@ class SearchController extends BaseController {
 				$params = array();
 				$params["body"] = array(
 					"hash" => $oFile->hash,
+					"id" => $oFile->id,
 					"tags" => $aaTags,
 					"latitude" => $oFile->latitude,
 					"longitude" => $oFile->longitude,
-					"datetime" => $oFile->datetime
+					"datetime" => $oFile->datetime,
+					"longtime" => strtotime($oFile->datetime)
 				);
 				$params["index"] = "test_index";
 				$params["type"] = "my_type";
@@ -485,15 +487,45 @@ class SearchController extends BaseController {
 						]
 					];*/
 
+			/**/	
 			if(Input::get("q") !== null){
 				//$searchParams['body']['query']['match']['tags.value'] = Input::get("q");
 				$searchParams['body']['query']['match']['tags.value'] = Input::get("q");
 			}
-				
+						
 			
-			$searchParams['sort'] = array("datetime" => array("order" => "desc"));
+			$searchParams['sort'] = array("longtime:desc");
+/*
+			$json = '{
+			    "query" : {
+			        "match" : {
+			            "tags.value" : "hand"
+			        }
+			    },
+			    "sort": [
+			    	{
+			    		"datetime": {
+			    			"order": "asc"
+			    		}
+			    	}
+			    ]
+			}';
+
+			$json = '{
+			    "sort": [
+			    	{
+			    		"longtime": {
+			    			"order": "desc"
+			    		}
+			    	}
+			    ],
+			    "size": 150
+			}';
+			$searchParams['body'] = $json;
+			*/
 
 			$retDoc = $client->search($searchParams);
+
 			$iMs = $retDoc["took"];
 			$iCount = count($retDoc["hits"]["hits"]);
 
@@ -502,19 +534,22 @@ class SearchController extends BaseController {
 			foreach($retDoc["hits"]["hits"] as $oHit){
 				//print_r($oHit);
 				
-				//echo $oHit["_source"]["hash"]."<br/>";
+				if(false)
+					echo $oHit["_source"]["id"].": ".$oHit["_source"]["datetime"]."<br/>";
 				/*echo "<br/><br/>";*/
 
-				array_push($saResults, $oHit["_source"]["hash"]);
+				$saResults[$oHit["_source"]["id"]] = $oHit["_source"]["hash"];
+
+				//array_push($saResults, $oHit["_source"]["hash"]);
 			}
 
 			//
 			// redner
 			//
 			echo "speed: $iMs ms, count: $iCount<br/><br/>";
-			foreach($saResults as $sHash)
+			foreach($saResults as $iId => $sHash)
 			{
-				echo "<img src='http://mediadump.samt.st/thumbs/small/$sHash.jpg' />";
+				echo "<img title='$iId' src='http://mediadump.samt.st/thumbs/small/$sHash.jpg' />";
 			}
 		}catch(Exception $e){
 			echo $e;
