@@ -373,6 +373,9 @@ class SearchController extends BaseController {
 				$saTags = [];
 
 				foreach($oFile->tags as $oTag){
+
+					if($oTag->type === "uniquedirectorypath")
+						echo "value: ".$oTag->value."<br/>";
 					array_push($aaTags, array(
 						"type" => $oTag->type,
 						"value" => $oTag->value,
@@ -434,29 +437,41 @@ class SearchController extends BaseController {
 
 			$saQueries = explode("|", $sQuery);
 
+			$oaQueries = [];
+
 			foreach ($saQueries as $sQuery) {
 				$saQueryParts = explode("=", $sQuery);
+				$bDefaultQuery = false;
 
-				switch ($saQueryParts[0]) {
-					case 'map':
-						$iaLatLonParts = explode(",", $saQueryParts[1]);
-						//print_r($iaLatLonParts);
-						/*
-						$searchParams['body']['query']['range']['latitude'] = array('gt' => $iaLatLonParts[0],'lt' => $iaLatLonParts[1]);
-						$searchParams['body']['query']['range']['longitude'] = array('gt' => $iaLatLonParts[2],'lt' => $iaLatLonParts[3]);
-						*/
-						$searchParams['body']['query']['bool']['must'] = array(
-							array('range' => array('latitude' => array('gt' => $iaLatLonParts[0],'lt' => $iaLatLonParts[1]))),
-							array('range' => array('longitude' => array('gt' => $iaLatLonParts[2],'lt' => $iaLatLonParts[3]))),
-						);
+				if(count($saQueryParts) > 1)
+				{
+					switch ($saQueryParts[0]) {
+						case 'map':
+							$iaLatLonParts = explode(",", $saQueryParts[1]);
+							//print_r($iaLatLonParts);
+							/*
+							$searchParams['body']['query']['range']['latitude'] = array('gt' => $iaLatLonParts[0],'lt' => $iaLatLonParts[1]);
+							$searchParams['body']['query']['range']['longitude'] = array('gt' => $iaLatLonParts[2],'lt' => $iaLatLonParts[3]);
+							*/
+							array_push($oaQueries, array('range' => array('latitude' => array('gt' => $iaLatLonParts[0],'lt' => $iaLatLonParts[1]))));
+							array_push($oaQueries, array('range' => array('longitude' => array('gt' => $iaLatLonParts[2],'lt' => $iaLatLonParts[3]))));
+							break;
+						
+						default:
+							$bDefaultQuery = true;
+							break;
+					}
+				}else{
+					$bDefaultQuery = true;
+				}
 
-						break;
-					
-					default:
-						# code...
-						break;
+				if($bDefaultQuery){
+					array_push($oaQueries, array('query_string' => array("default_field" => 'tags.value', "query" => '"'.$sQuery.'"')));
 				}
 			}
+			$searchParams['body']['query']['bool']['must'] = $oaQueries;
+
+			//print_r($oaQueries);
 
 			$saStats = [];
 			$soFiles = [];
@@ -489,7 +504,8 @@ class SearchController extends BaseController {
 					"id" => $oHit["_source"]["id"],
 					"hash" => $oHit["_source"]["hash"],
 					"latitude" => $oHit["_source"]["latitude"],
-					"longitude" => $oHit["_source"]["longitude"],
+					"longitude" => $oHit["_source"]["longitude"],/**/
+					"tags" => $oHit["_source"]["tags"],
 					"width" => 450,
 					"height" => 300
 					]);
