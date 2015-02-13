@@ -374,8 +374,6 @@ class SearchController extends BaseController {
 
 				foreach($oFile->tags as $oTag){
 
-					if($oTag->type === "uniquedirectorypath")
-						echo "value: ".$oTag->value."<br/>";
 					array_push($aaTags, array(
 						"type" => $oTag->type,
 						"value" => $oTag->value,
@@ -504,8 +502,8 @@ class SearchController extends BaseController {
 					"id" => $oHit["_source"]["id"],
 					"hash" => $oHit["_source"]["hash"],
 					"latitude" => $oHit["_source"]["latitude"],
-					"longitude" => $oHit["_source"]["longitude"],/**/
-					"tags" => $oHit["_source"]["tags"],
+					"longitude" => $oHit["_source"]["longitude"],/*
+					"tags" => $oHit["_source"]["tags"],*/
 					"width" => 450,
 					"height" => 300
 					]);
