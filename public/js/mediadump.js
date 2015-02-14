@@ -990,7 +990,7 @@ function initializeGoogleMap() {
 		}
 	});
 
-	gmapMap.setOptions({styles: media_dump_map_options.styles});
+	//gmapMap.setOptions({styles: media_dump_map_options.styles});
 
 	//media_dump_map_options
 }	
