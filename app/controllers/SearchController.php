@@ -338,7 +338,7 @@ class SearchController extends BaseController {
 			$bShuffle = false;
 
 
-			$searchParams['index'] = 'test_index';
+			$searchParams['index'] = 'mediadump_index';
 			$searchParams['size'] = 100;
 
 			

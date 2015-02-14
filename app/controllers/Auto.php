@@ -178,7 +178,7 @@ class Auto extends BaseController {
 							case "elasticindex":
 								$qi->snooze(3);
 								$qi->save();
-								
+
 								if(ElasticSearchController::indexFile($qi->file_id))
 								{
 									$qi->done();
@@ -195,6 +195,17 @@ class Auto extends BaseController {
 
 									$qi->done();
 
+
+									$eFilesFound = new EventModel();
+									$eFilesFound->name = "auto processor";
+									$eFilesFound->message = "elasticindex processor failed";
+									$eFilesFound->save();
+
+									$oStat = new StatModel();
+									$oStat->name = "elasticindex processor fail";
+									$oStat->group = "auto";
+									$oStat->value = 1;
+									$oStat->save();
 								}
 								break;
 							case "delete":
@@ -264,6 +275,14 @@ class Auto extends BaseController {
 					$qiJpegQueue->date_from = date('Y-m-d H:i:s');
 					$qiJpegQueue->save();
 
+
+					$qiElasticIndex = new QueueModel();
+					$qiElasticIndex->file_id = $file->id;
+					$qiElasticIndex->processor = "elasticindex";
+					$qiElasticIndex->date_from = date('Y-m-d H:i:s');
+					$qiElasticIndex->after = $qiJpegQueue->id;
+					$qiElasticIndex->save();
+
 					// imagga processor afterwards
 					$qiImagga = new QueueModel();
 					$qiImagga->file_id = $file->id;
@@ -272,13 +291,28 @@ class Auto extends BaseController {
 					$qiImagga->after = $qiJpegQueue->id;
 					$qiImagga->save();
 
+					$qiElasticIndex = new QueueModel();
+					$qiElasticIndex->file_id = $file->id;
+					$qiElasticIndex->processor = "elasticindex";
+					$qiElasticIndex->date_from = date('Y-m-d H:i:s');
+					$qiElasticIndex->after = $qiImagga->id;
+					$qiElasticIndex->save();
+
+
 					// places processor afterwards
 					$qiPlaces = new QueueModel();
 					$qiPlaces->file_id = $file->id;
 					$qiPlaces->processor = "places";
 					$qiPlaces->date_from = date('Y-m-d H:i:s');
-					$qiPlaces->after = $qiJpegQueue->id;
+					$qiPlaces->after = $qiImagga->id;
 					$qiPlaces->save();
+
+					$qiElasticIndex = new QueueModel();
+					$qiElasticIndex->file_id = $file->id;
+					$qiElasticIndex->processor = "elasticindex";
+					$qiElasticIndex->date_from = date('Y-m-d H:i:s');
+					$qiElasticIndex->after = $qiPlaces->id;
+					$qiElasticIndex->save();
 					
 					break;
 			}	

@@ -9,76 +9,92 @@ class ElasticSearchController extends BaseController {
 	|
 	|
 	*/
-	
+	public static function createIndex()
+	{
+		$client = new Elasticsearch\Client();
+		$indexParams['index']  = 'mediadump_index';    //index
 
+		$client->indices()->create($indexParams);
+	}
+	public static function deleteIndex()
+	{
+		$client = new Elasticsearch\Client();
+		$deleteParams['index'] = 'mediadump_index';
+		$client->indices()->delete($deleteParams);		
+	}
 
 	public static function indexFile($iFileId)
 	{
 		// make sure elastic search index is representitive of this file
 		// if the file is live, index it, if not make sure it doesn't exist
-		$oFile = FileModel::find($iFileId);
-		$bRemove = false;
-		$client = new Elasticsearch\Client();
+		try
+		{
+			$oFile = FileModel::find($iFileId);
+			$bRemove = false;
+			$client = new Elasticsearch\Client();
 
-		if(isset($oFile)){
-			if($oFile->live == 1){
-				//
-				// re-index
-				//
+			if(isset($oFile)){
+				if($oFile->live == 1){
+					//
+					// re-index
+					//
 
-				$aaTags = [];
+					$aaTags = [];
 
-				foreach($oFile->tags as $oTag){
+					foreach($oFile->tags as $oTag){
 
-					$oTagIndexes = [];
+						$oTagIndexes = [];
 
-					$oTagIndexes = array(
-						"type" => $oTag->type,
-						"value" => $oTag->value,
-						"confidence" => $oTag->confidence);
+						$oTagIndexes = array(
+							"type" => $oTag->type,
+							"value" => $oTag->value,
+							"confidence" => $oTag->confidence);
 
 
-					// if tag type contains dot, tag it's group
-					// i.e. 'places' from 'places.addresscomponent'
-					$saGroupParts = explode(".", $oTag->type);
-					if(count($saGroupParts) > 1){
-						$oTagIndexes["group"] = $saGroupParts[0];
+						// if tag type contains dot, tag it's group
+						// i.e. 'places' from 'places.addresscomponent'
+						$saGroupParts = explode(".", $oTag->type);
+						if(count($saGroupParts) > 1){
+							$oTagIndexes["group"] = $saGroupParts[0];
+						}
+
+						array_push($aaTags, $oTagIndexes);
 					}
+					
+					$params = array();
+					$params["body"] = array(
+						"id" => $oFile->id,
+						"hash" => $oFile->hash,
+						"medium_width" => $oFile->geoData->medium_width,
+						"medium_height" => $oFile->geoData->medium_height,
+						"datetime" => $oFile->datetime,
+						"longtime" => strtotime($oFile->datetime),
+						"latitude" => $oFile->geoData->latitude,
+						"longitude" => $oFile->geoData->longitude,
+						"elevation" => $oFile->geoData->elevation,
+						"tags" => $aaTags
+					);
+					$params["index"] = "mediadump_index";
+					$params["type"] = "file";
+					$params["id"] = $oFile->id;
 
-					array_push($aaTags, $oTagIndexes);
+					$ret = $client->index($params);
+				}else{
+					$bRemove = true;
 				}
-				
-				$params = array();
-				$params["body"] = array(
-					"id" => $oFile->id,
-					"hash" => $oFile->hash,
-					"medium_width" => $oFile->geoData->medium_width,
-					"medium_height" => $oFile->geoData->medium_height,
-					"datetime" => $oFile->datetime,
-					"longtime" => strtotime($oFile->datetime),
-					"latitude" => $oFile->geoData->latitude,
-					"longitude" => $oFile->geoData->longitude,
-					"elevation" => $oFile->geoData->elevation,
-					"tags" => $aaTags
-				);
-				$params["index"] = "test_index";
-				$params["type"] = "my_type";
-				$params["id"] = $oFile->id;
-
-				$ret = $client->index($params);
 			}else{
 				$bRemove = true;
 			}
-		}else{
-			$bRemove = true;
+			if($bRemove){
+				// remove from index
+				$deleteParams['index'] = 'mediadump_index';
+				$deleteParams['id'] = $oFile->id;
+				$client->indices()->delete($deleteParams);
+			}
+			return true;
+		}catch(Exception $e){
+			return false;
 		}
-		if($bRemove){
-			// remove from index
-			$deleteParams['index'] = 'my_index';
-			$deleteParams['id'] = $oFile->id;
-			$client->indices()->delete($deleteParams);
-		}
-		return true;
 	}
 
 	public static function delete()
@@ -91,7 +107,7 @@ class ElasticSearchController extends BaseController {
 
 	}
 		
-
+/*
 	public static function search()
 	{
 		try{
@@ -100,7 +116,7 @@ class ElasticSearchController extends BaseController {
 			$saResults = [];
 
 
-			$searchParams['index'] = 'test_index';
+			$searchParams['index'] = 'mediadump_index';
 			$searchParams['size'] = 100;
 
 
@@ -152,31 +168,39 @@ class ElasticSearchController extends BaseController {
 
 			$retDoc = $client->search($searchParams);
 
-			$iMs = $retDoc["took"];
-			$iCount = count($retDoc["hits"]["hits"]);
+			$iMs = -1;
+			$iCount = 0;
 
+			if(isset($retDoc["took"]))
+				$iMs = $retDoc["took"];
 
 			$oaResults = [];
 
-			foreach($retDoc["hits"]["hits"] as $oHit){
-				//print_r($oHit);
-				
-				if(false)
-					echo $oHit["_source"]["id"].": ".$oHit["_source"]["datetime"]."<br/>";
-				/*echo "<br/><br/>";*/
+			if(isset($retDoc["hits"]["hits"]))
+			{
+				$iCount = count($retDoc["hits"]["hits"]);
 
-				$saResults[$oHit["_source"]["id"]] = $oHit["_source"]["hash"];
 
-				//array_push($saResults, $oHit["_source"]["hash"]);
-				array_push($oaResults, [
-					"id" => $oHit["_source"]["id"],
-					"hash" => $oHit["_source"]["hash"],
-					"latitude" => $oHit["_source"]["latitude"],
-					"longitude" => $oHit["_source"]["longitude"],/*
-					"tags" => $oHit["_source"]["tags"],*/
-					"width" => 450,
-					"height" => 300
-					]);
+
+				foreach($retDoc["hits"]["hits"] as $oHit){
+					//print_r($oHit);
+					
+					if(false)
+						echo $oHit["_source"]["id"].": ".$oHit["_source"]["datetime"]."<br/>";
+
+
+					$saResults[$oHit["_source"]["id"]] = $oHit["_source"]["hash"];
+
+					//array_push($saResults, $oHit["_source"]["hash"]);
+					array_push($oaResults, [
+						"id" => $oHit["_source"]["id"],
+						"hash" => $oHit["_source"]["hash"],
+						"latitude" => $oHit["_source"]["latitude"],
+						"longitude" => $oHit["_source"]["longitude"],
+						"width" => 450,
+						"height" => 300
+						]);
+				}
 			}
 
 			//
@@ -186,7 +210,7 @@ class ElasticSearchController extends BaseController {
 
 			$oaInfo = [
 				"speed" => $iMs,
-				"count" => $retDoc["hits"]["total"],
+				"count" => $iCount,
 				"lower" => 1,
 				"upper" => 100
 			];
@@ -204,4 +228,5 @@ class ElasticSearchController extends BaseController {
 			echo $e;
 		}
 	}	
+	*/
 }

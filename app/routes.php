@@ -52,10 +52,12 @@ App::missing(function($exception)
     return Response::make('404', 404);
 });
 
+/**/
+//Route::get('/test/index', array('uses' => 'SearchController@queueIndex'));
+//Route::get('/test/search', array('uses' => 'SearchController@testSearch'));
+Route::get('/test/create', array('uses' => 'ElasticSearchController@createIndex'));
+Route::get('/test/delete', array('uses' => 'ElasticSearchController@deleteIndex'));
 
-Route::get('/test/index', array('uses' => 'SearchController@queueIndex'));
-Route::get('/test/search', array('uses' => 'SearchController@testSearch'));
-Route::get('/test/delete', array('uses' => 'ElasticSearchController@delete'));
 
 Route::get('/test', function()
 {
