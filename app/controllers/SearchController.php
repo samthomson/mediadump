@@ -329,7 +329,7 @@ class SearchController extends BaseController {
 		}
 	}
 
-	public static function testSearch()
+	public static function elasticSearch()
 	{
 		try{
 			$client = new Elasticsearch\Client();
@@ -382,10 +382,6 @@ class SearchController extends BaseController {
 			}
 
 			// shuffle
-			////$searchParams['body']['query']['bool']['must'] = $oaQueries;
-
-			//$retDoc = $client->search($searchParams);
-
 			if(!$bShuffle)
 				$searchParams['sort'] = array("longtime:desc");
 
@@ -400,10 +396,6 @@ class SearchController extends BaseController {
 			    )
 			);
 			$retDoc = $client->search($searchParams);
-
-
-
-
 
 
 			$saStats = [];
@@ -442,7 +434,6 @@ class SearchController extends BaseController {
 			//
 			// redner
 			//
-			//print_r($retDoc);
 
 			$oaInfo = [
 				"speed" => $iMs,

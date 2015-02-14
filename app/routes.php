@@ -21,7 +21,7 @@ Route::get('auto/checkfiles', array('uses' => 'Auto@checkFiles'));
 Route::get('auto/processqueue', array('uses' => 'Auto@processQueue'));
 
 
-Route::get('/api/search', array('uses' => 'SearchController@search'));
+Route::get('/api/search', array('uses' => 'SearchController@elasticSearch'));
 Route::get('/api/suggest', array('uses' => 'SearchController@suggest'));
 Route::get('/api/dbsuggest', array('uses' => 'SearchController@dbSuggest'));
 Route::get('/api/suggest/stats', array('uses' => 'SearchController@suggestStats'));

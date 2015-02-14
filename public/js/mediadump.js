@@ -151,7 +151,7 @@ function performSearch()
         	}
         });
 
-    	xhrSearch = $.get("/test/search", {query:decodeURIComponent(sQueryValue), page: iPage}, function(results){
+    	xhrSearch = $.get("/api/search", {query:decodeURIComponent(sQueryValue), page: iPage}, function(results){
 			oResults = results.results;
 			oResultsData = results.info;
 			setLoading(false);
