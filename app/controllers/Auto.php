@@ -175,6 +175,28 @@ class Auto extends BaseController {
 										break;
 								}
 								break;
+							case "elasticindex":
+								$qi->snooze(3);
+								$qi->save();
+								
+								if(ElasticSearchController::indexFile($qi->file_id))
+								{
+									$qi->done();
+								}else{
+									// failed to index, move to failedindex queue
+
+									$oQueueItem = new QueueModel;
+
+									$oQueueItem->file_id = $qi->file_id;
+									$oQueueItem->processor = 'elasticindex_fail';
+									$oQueueItem->date_from = date('Y-m-d H:i:s');
+									$oQueueItem->save();
+
+
+									$qi->done();
+
+								}
+								break;
 							case "delete":
 								////echo "delete processor<br/>";
 								$qi->snooze();

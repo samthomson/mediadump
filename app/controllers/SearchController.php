@@ -34,29 +34,6 @@ class SearchController extends BaseController {
 				$iaLatLonRange = explode(',', $saQueryParts[1]);
 
 
-				// old way, super slow on large queries (whole world map)
-				/*
-				$soFiles = DB::table("files")
-					->join("tags", function($join)
-						{
-							$join->on("files.id", "=", "tags.file_id");
-						})	
-					->join("geodata", function($joinGeoData) use ($iaLatLonRange)
-					{
-						$joinGeoData->on("files.id", "=", "geodata.file_id")
-						
-						->where("latitude", ">", $iaLatLonRange[0])
-						->where("latitude", "<", $iaLatLonRange[1])
-						->where("longitude", ">", $iaLatLonRange[2])
-						->where("longitude", "<", $iaLatLonRange[3]);
-					})	
-					->where("live", "=", true)->distinct("value")
-					->orderBy(DB::Raw('RAND()'))
-					->groupBy("id")
-			        ->select($saSelectProperties)
-					->get();
-
-				*/
 				$soFiles = DB::table("files")
 					->join("geodata", function($joinGeoData) use ($iaLatLonRange)
 					{
@@ -318,20 +295,28 @@ class SearchController extends BaseController {
 	}
 
 	// elastic search tests
-	public static function testIndex()
+	public static function queueIndex()
 	{
 		try{
 			$mtStart = microtime(true);
 
 
 
-			$iLimit = 10;
+			$iLimit = 100000;
 
 			$oaFiles = FileModel::take($iLimit)->where("live", "=", 1)->get();
 
+			
 			foreach($oaFiles as $oFile){
 
-				$b = ElasticSearchController::indexFile($oFile->id);
+				//$b = ElasticSearchController::indexFile($oFile->id);
+				$oQueueItem = new QueueModel;
+
+				$oQueueItem->file_id = $oFile->id;
+				$oQueueItem->processor = 'elasticindex';
+				try{
+					$oQueueItem->save();
+				}catch(Exception $e){}
 			}			
 
 			$iFiles = count($oaFiles);
@@ -360,9 +345,11 @@ class SearchController extends BaseController {
 			if(Input::get("q") !== null){
 				//$searchParams['body']['query']['match']['tags.value'] = Input::get("q");
 				$searchParams['body']['query']['match']['tags.value'] = Input::get("q");
-			}
+			}*/
+			/*
 			$searchParams['sort'] = array("longtime:desc");
-			*/
+			$searchParams['sort'] = array("hash:desc");*/
+			
 			$oResults = array("info" => null, "results" => null);
 		
 			$sQuery = Input::get("query");
@@ -380,11 +367,7 @@ class SearchController extends BaseController {
 					switch ($saQueryParts[0]) {
 						case 'map':
 							$iaLatLonParts = explode(",", $saQueryParts[1]);
-							//print_r($iaLatLonParts);
-							/*
-							$searchParams['body']['query']['range']['latitude'] = array('gt' => $iaLatLonParts[0],'lt' => $iaLatLonParts[1]);
-							$searchParams['body']['query']['range']['longitude'] = array('gt' => $iaLatLonParts[2],'lt' => $iaLatLonParts[3]);
-							*/
+
 							array_push($oaQueries, array('range' => array('latitude' => array('gt' => $iaLatLonParts[0],'lt' => $iaLatLonParts[1]))));
 							array_push($oaQueries, array('range' => array('longitude' => array('gt' => $iaLatLonParts[2],'lt' => $iaLatLonParts[3]))));
 							break;
@@ -401,9 +384,28 @@ class SearchController extends BaseController {
 					array_push($oaQueries, array('query_string' => array("default_field" => 'tags.value', "query" => '"'.$sQuery.'"')));
 				}
 			}
-			$searchParams['body']['query']['bool']['must'] = $oaQueries;
 
-			//print_r($oaQueries);
+			// shuffle
+			////$searchParams['body']['query']['bool']['must'] = $oaQueries;
+
+			//$retDoc = $client->search($searchParams);
+
+			$searchParams['body'] = array(
+			    'query' => array(
+			        'function_score' => array(
+			            'functions' => array(
+			                array("random_score" => new \stdClass())
+			            ),
+			            'query' => array('bool' => array("must" => $oaQueries))
+			        )
+			    )
+			);
+			$retDoc = $client->search($searchParams);
+
+
+
+
+
 
 			$saStats = [];
 			$soFiles = [];
@@ -411,11 +413,6 @@ class SearchController extends BaseController {
 			$aaQueryResultsCount = [];
 
 			$saQueryResults = [];
-
-
-
-			$retDoc = $client->search($searchParams);
-
 			$iMs = $retDoc["took"];
 			$iCount = count($retDoc["hits"]["hits"]);
 

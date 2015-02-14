@@ -53,7 +53,7 @@ App::missing(function($exception)
 });
 
 
-Route::get('/test/index', array('uses' => 'SearchController@testIndex'));
+Route::get('/test/index', array('uses' => 'SearchController@queueIndex'));
 Route::get('/test/search', array('uses' => 'SearchController@testSearch'));
 Route::get('/test/delete', array('uses' => 'ElasticSearchController@delete'));
 
