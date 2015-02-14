@@ -335,20 +335,12 @@ class SearchController extends BaseController {
 			$client = new Elasticsearch\Client();
 
 			$saResults = [];
+			$bShuffle = false;
 
 
 			$searchParams['index'] = 'test_index';
 			$searchParams['size'] = 100;
 
-
-			/*
-			if(Input::get("q") !== null){
-				//$searchParams['body']['query']['match']['tags.value'] = Input::get("q");
-				$searchParams['body']['query']['match']['tags.value'] = Input::get("q");
-			}*/
-			/*
-			$searchParams['sort'] = array("longtime:desc");
-			$searchParams['sort'] = array("hash:desc");*/
 			
 			$oResults = array("info" => null, "results" => null);
 		
@@ -366,10 +358,14 @@ class SearchController extends BaseController {
 				{
 					switch ($saQueryParts[0]) {
 						case 'map':
+							$bShuffle = true;
 							$iaLatLonParts = explode(",", $saQueryParts[1]);
 
 							array_push($oaQueries, array('range' => array('latitude' => array('gt' => $iaLatLonParts[0],'lt' => $iaLatLonParts[1]))));
 							array_push($oaQueries, array('range' => array('longitude' => array('gt' => $iaLatLonParts[2],'lt' => $iaLatLonParts[3]))));
+							break;
+						case 'shuffle':
+							$bShuffle = true;
 							break;
 						
 						default:
@@ -389,6 +385,9 @@ class SearchController extends BaseController {
 			////$searchParams['body']['query']['bool']['must'] = $oaQueries;
 
 			//$retDoc = $client->search($searchParams);
+
+			if(!$bShuffle)
+				$searchParams['sort'] = array("longtime:desc");
 
 			$searchParams['body'] = array(
 			    'query' => array(
