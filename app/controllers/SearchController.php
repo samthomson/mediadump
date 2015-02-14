@@ -325,85 +325,19 @@ class SearchController extends BaseController {
 
 
 
-			// get clients
-			$client = new Elasticsearch\Client();
-
-			/*
-			delete pre-existing
-			$deleteParams['index'] = 'test_index';
-			$client->indices()->delete($deleteParams);
-			*/
-
-
-			// set up index
-			/*
-			$indexParams['index']  = 'test_index';
-
-			$myTypeMapping = array(
-			    '_source' => array(
-			        'enabled' => true
-			    ),
-			    'properties' => array(
-			        'datetime' => {
-			        	"type" : "date",
-			        	"format" : "yyyy-MM-dd HH:mm:ss"}
-			        )
-			    )
-			);
-
-			$indexParams['body']['mappings']['my_type'] = $myTypeMapping;
-			
-			// Create the index
-			$client->indices()->create($indexParams);
-			*/
-
-			$iLimit = 400;
-
-			// select objects to index
-			/*$oaFiles = DB::table("files")
-			->join("tags", "files.id", "=", "tags.file_id")
-			->join("geodata", "files.id", "=", "geodata.file_id")
-			->take($iLimit)->get();*/
+			$iLimit = 10;
 
 			$oaFiles = FileModel::take($iLimit)->where("live", "=", 1)->get();
 
 			foreach($oaFiles as $oFile){
 
-				$aaTags = [];
-				$saTags = [];
-
-				foreach($oFile->tags as $oTag){
-
-					array_push($aaTags, array(
-						"type" => $oTag->type,
-						"value" => $oTag->value,
-						"confidence" => $oTag->confidence));
-				}
-
-
-				
-				$params = array();
-				$params["body"] = array(
-					"hash" => $oFile->hash,
-					"id" => $oFile->id,
-					"tags" => $aaTags,
-					"latitude" => $oFile->geoData->latitude,
-					"longitude" => $oFile->geoData->longitude,
-					"datetime" => $oFile->datetime,
-					"longtime" => strtotime($oFile->datetime)
-				);
-				$params["index"] = "test_index";
-				$params["type"] = "my_type";
-				$params["id"] = $oFile->id;
-
-				$ret = $client->index($params);
-
+				$b = ElasticSearchController::indexFile($oFile->id);
 			}			
 
 			$iFiles = count($oaFiles);
 			$iTime = Helper::iMillisecondsSince($mtStart);
 			$fPerFile = $iTime / $iFiles;
-			echo "select all files ($iFiles/$iLimit) @ $iTime ms, av $fPerFile per file";
+			echo "indexed files ($iFiles/$iLimit) @ $iTime ms, av $fPerFile per file";
 
 		}catch(Exception $e){
 			echo $e;
