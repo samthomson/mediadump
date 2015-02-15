@@ -100,8 +100,8 @@ class ElasticSearchController extends BaseController {
 					$params["body"] = array(
 						"id" => $oFile->id,
 						"hash" => $oFile->hash,
-						"medium_width" => $oFile->geoData->medium_width,
-						"medium_height" => $oFile->geoData->medium_height,
+						"medium_width" => $oFile->medium_width,
+						"medium_height" => $oFile->medium_height,
 						"datetime" => $oFile->datetime,
 						"longtime" => strtotime($oFile->datetime),
 						"latitude" => $oFile->geoData->latitude,

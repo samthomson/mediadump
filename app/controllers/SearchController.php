@@ -398,8 +398,8 @@ class SearchController extends BaseController {
 					"latitude" => $oHit["_source"]["latitude"],
 					"longitude" => $oHit["_source"]["longitude"],/*
 					"tags" => $oHit["_source"]["tags"],*/
-					"width" => 450,
-					"height" => 300
+					"width" => $oHit["_source"]["medium_width"],
+					"height" => $oHit["_source"]["medium_height"]
 					]);
 			}
 
