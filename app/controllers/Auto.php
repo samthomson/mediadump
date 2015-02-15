@@ -68,12 +68,14 @@ class Auto extends BaseController {
 	{
 		$mtProcessQueueStart = microtime(true);
 
+		echo "process fdsfds<br/>";
+		
 		if(self::bAutoOn())
 		{
 			$cProcessedThisCycle = 0;
 			try
 			{
-				////echo "process queue<br/>";
+				echo "process queue<br/>";
 				$iProcessLimit = self::iJpegsThisCycle();
 				$bQueueItemsRemaining = true;
 
@@ -82,7 +84,7 @@ class Auto extends BaseController {
 				{
 					$qi = QueueModel::getSingleItem();
 
-					//echo 'id:'.$qi->id." ".$qi->processor.'<br/>';
+					echo 'id:'.$qi->id." ".$qi->processor.'<br/>';
 
 					if($qi !== null)
 					{

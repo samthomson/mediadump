@@ -11,16 +11,53 @@ class ElasticSearchController extends BaseController {
 	*/
 	public static function createIndex()
 	{
-		$client = new Elasticsearch\Client();
-		$indexParams['index']  = 'mediadump_index';    //index
+		try{
+			$client = new Elasticsearch\Client();
+			$indexParams['index']  = 'mediadump_index';    //index
 
-		$client->indices()->create($indexParams);
+			$client->indices()->create($indexParams);
+		}catch(Exception $e){echo "createing index failed: $e";}
 	}
 	public static function deleteIndex()
 	{
 		$client = new Elasticsearch\Client();
 		$deleteParams['index'] = 'mediadump_index';
 		$client->indices()->delete($deleteParams);		
+	}
+
+	public static function scheduleFullReindex()
+	{
+		try{
+			$mtStart = microtime(true);
+
+
+
+			$iLimit = 100000;
+
+			$oaFiles = FileModel::take($iLimit)->where("live", "=", 1)->get();
+
+			
+			foreach($oaFiles as $oFile){
+
+				//$b = ElasticSearchController::indexFile($oFile->id);
+				$oQueueItem = new QueueModel;
+
+				$oQueueItem->file_id = $oFile->id;
+				$oQueueItem->processor = 'elasticindex';
+				$oQueueItem->date_from = date('Y-m-d H:i:s');
+				try{
+					$oQueueItem->save();
+				}catch(Exception $e){}
+			}			
+
+			$iFiles = count($oaFiles);
+			$iTime = Helper::iMillisecondsSince($mtStart);
+			$fPerFile = $iTime / $iFiles;
+			echo "indexed files ($iFiles/$iLimit) @ $iTime ms, av $fPerFile per file";
+
+		}catch(Exception $e){
+			echo $e;
+		}
 	}
 
 	public static function indexFile($iFileId)

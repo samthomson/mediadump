@@ -294,41 +294,6 @@ class SearchController extends BaseController {
 		return Response::json($oaReturn);
 	}
 
-	// elastic search tests
-	public static function queueIndex()
-	{
-		try{
-			$mtStart = microtime(true);
-
-
-
-			$iLimit = 100000;
-
-			$oaFiles = FileModel::take($iLimit)->where("live", "=", 1)->get();
-
-			
-			foreach($oaFiles as $oFile){
-
-				//$b = ElasticSearchController::indexFile($oFile->id);
-				$oQueueItem = new QueueModel;
-
-				$oQueueItem->file_id = $oFile->id;
-				$oQueueItem->processor = 'elasticindex';
-				try{
-					$oQueueItem->save();
-				}catch(Exception $e){}
-			}			
-
-			$iFiles = count($oaFiles);
-			$iTime = Helper::iMillisecondsSince($mtStart);
-			$fPerFile = $iTime / $iFiles;
-			echo "indexed files ($iFiles/$iLimit) @ $iTime ms, av $fPerFile per file";
-
-		}catch(Exception $e){
-			echo $e;
-		}
-	}
-
 	public static function elasticSearch()
 	{
 		try{

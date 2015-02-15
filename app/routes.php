@@ -55,7 +55,9 @@ App::missing(function($exception)
 /**/
 //Route::get('/test/index', array('uses' => 'SearchController@queueIndex'));
 //Route::get('/test/search', array('uses' => 'SearchController@testSearch'));
-Route::get('/test/create', array('uses' => 'ElasticSearchController@createIndex'));
+//Route::get('/test/index', array('uses' => 'SearchController@queueIndex'));
+Route::get('/test/create-index', array('uses' => 'ElasticSearchController@createIndex'));
+Route::get('/test/re-index', array('uses' => 'ElasticSearchController@scheduleFullReindex'));
 Route::get('/test/delete', array('uses' => 'ElasticSearchController@deleteIndex'));
 
 
