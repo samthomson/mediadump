@@ -30,8 +30,6 @@ class ElasticSearchController extends BaseController {
 		try{
 			$mtStart = microtime(true);
 
-
-
 			$iLimit = 100000;
 
 			$oaFiles = FileModel::take($iLimit)->where("live", "=", 1)->get();
@@ -130,6 +128,7 @@ class ElasticSearchController extends BaseController {
 			}
 			return true;
 		}catch(Exception $e){
+			echo $e;
 			return false;
 		}
 	}
@@ -143,127 +142,4 @@ class ElasticSearchController extends BaseController {
 		$client->indices()->delete($deleteParams);
 
 	}
-		
-/*
-	public static function search()
-	{
-		try{
-			$client = new Elasticsearch\Client();
-
-			$saResults = [];
-
-
-			$searchParams['index'] = 'mediadump_index';
-			$searchParams['size'] = 100;
-
-
-			$oResults = array("info" => null, "results" => null);
-		
-			$sQuery = Input::get("query");
-
-			$saQueries = explode("|", $sQuery);
-
-			$oaQueries = [];
-
-			foreach ($saQueries as $sQuery) {
-				$saQueryParts = explode("=", $sQuery);
-				$bDefaultQuery = false;
-
-				if(count($saQueryParts) > 1)
-				{
-					switch ($saQueryParts[0]) {
-						case 'map':
-							$iaLatLonParts = explode(",", $saQueryParts[1]);
-							array_push($oaQueries, array('range' => array('latitude' => array('gt' => $iaLatLonParts[0],'lt' => $iaLatLonParts[1]))));
-							array_push($oaQueries, array('range' => array('longitude' => array('gt' => $iaLatLonParts[2],'lt' => $iaLatLonParts[3]))));
-							break;
-						
-						default:
-							$bDefaultQuery = true;
-							break;
-					}
-				}else{
-					$bDefaultQuery = true;
-				}
-
-				if($bDefaultQuery){
-					array_push($oaQueries, array('query_string' => array("default_field" => 'tags.value', "query" => '"'.$sQuery.'"')));
-				}
-			}
-			$searchParams['body']['query']['bool']['must'] = $oaQueries;
-
-			//print_r($oaQueries);
-
-			$saStats = [];
-			$soFiles = [];
-			$aaSpeeds = [];
-			$aaQueryResultsCount = [];
-
-			$saQueryResults = [];
-
-
-
-			$retDoc = $client->search($searchParams);
-
-			$iMs = -1;
-			$iCount = 0;
-
-			if(isset($retDoc["took"]))
-				$iMs = $retDoc["took"];
-
-			$oaResults = [];
-
-			if(isset($retDoc["hits"]["hits"]))
-			{
-				$iCount = count($retDoc["hits"]["hits"]);
-
-
-
-				foreach($retDoc["hits"]["hits"] as $oHit){
-					//print_r($oHit);
-					
-					if(false)
-						echo $oHit["_source"]["id"].": ".$oHit["_source"]["datetime"]."<br/>";
-
-
-					$saResults[$oHit["_source"]["id"]] = $oHit["_source"]["hash"];
-
-					//array_push($saResults, $oHit["_source"]["hash"]);
-					array_push($oaResults, [
-						"id" => $oHit["_source"]["id"],
-						"hash" => $oHit["_source"]["hash"],
-						"latitude" => $oHit["_source"]["latitude"],
-						"longitude" => $oHit["_source"]["longitude"],
-						"width" => 450,
-						"height" => 300
-						]);
-				}
-			}
-
-			//
-			// redner
-			//
-			//print_r($retDoc);
-
-			$oaInfo = [
-				"speed" => $iMs,
-				"count" => $iCount,
-				"lower" => 1,
-				"upper" => 100
-			];
-
-
-			$oReturn = [
-			"info" => $oaInfo,
-			"results" => $oaResults
-			];
-
-			return Response::json($oReturn);
-
-
-		}catch(Exception $e){
-			echo $e;
-		}
-	}	
-	*/
 }

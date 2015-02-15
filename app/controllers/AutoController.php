@@ -1,21 +1,9 @@
 <?php
 
-class Auto extends BaseController {
+class AutoController extends BaseController {
 
-	/*
-	|--------------------------------------------------------------------------
-	| Default Home Controller
-	|--------------------------------------------------------------------------
-	|
-	| You may wish to use controllers instead of, or in addition to, Closure
-	| based routes. That's great! Here is an example controller method to
-	| get you started. To route to this controller, just add the route:
-	|
-	|	Route::get('/', 'HomeController@showWelcome');
-	|
-	*/
 
-	public function checkFiles()
+	public static function checkFiles()
 	{
 		if(self::bAutoOn())
 		{
@@ -64,11 +52,16 @@ class Auto extends BaseController {
 			}
 		}
 	}
-	public function processQueue()
+	public static function test()
 	{
+		echo "gfdgfd";
+		//exit();
+	}
+	public static function processQueue()
+	{
+		//echo "process fdsfds<br/>";exit();
 		$mtProcessQueueStart = microtime(true);
 
-		echo "process fdsfds<br/>";
 		
 		if(self::bAutoOn())
 		{
@@ -80,7 +73,6 @@ class Auto extends BaseController {
 				$bQueueItemsRemaining = true;
 
 				while((self::bTimeForTwoJpegs($mtProcessQueueStart) || $cProcessedThisCycle === 0) && $bQueueItemsRemaining)
-				//while($cProcessedThisCycle === 0) // just one (debug)
 				{
 					$qi = QueueModel::getSingleItem();
 
@@ -255,11 +247,11 @@ class Auto extends BaseController {
 		}
 	}
 
-	private function addFilesToSystem($saFiles)
+	private static function addFilesToSystem($saFiles)
 	{
 		// takes array of files to add to system and queue
 		foreach ($saFiles as $sFilePath) {
-			$file = new FileModel();
+			$file = new FileModel;
 			$file->path = $sFilePath;
 			$file->hash = md5($sFilePath);
 			$file->save();
@@ -271,14 +263,14 @@ class Auto extends BaseController {
 				case "jpg":
 				case "jpeg":
 					// jpeg processor
-					$qiJpegQueue = new QueueModel();
+					$qiJpegQueue = new QueueModel;
 					$qiJpegQueue->file_id = $file->id;
 					$qiJpegQueue->processor = "jpeg";
 					$qiJpegQueue->date_from = date('Y-m-d H:i:s');
 					$qiJpegQueue->save();
 
 
-					$qiElasticIndex = new QueueModel();
+					$qiElasticIndex = new QueueModel;
 					$qiElasticIndex->file_id = $file->id;
 					$qiElasticIndex->processor = "elasticindex";
 					$qiElasticIndex->date_from = date('Y-m-d H:i:s');
@@ -286,14 +278,13 @@ class Auto extends BaseController {
 					$qiElasticIndex->save();
 
 					// imagga processor afterwards
-					$qiImagga = new QueueModel();
+					$qiImagga = new QueueModel;
 					$qiImagga->file_id = $file->id;
 					$qiImagga->processor = "imagga";
 					$qiImagga->date_from = date('Y-m-d H:i:s');
 					$qiImagga->after = $qiJpegQueue->id;
 					$qiImagga->save();
 
-					$qiElasticIndex = new QueueModel();
 					$qiElasticIndex->file_id = $file->id;
 					$qiElasticIndex->processor = "elasticindex";
 					$qiElasticIndex->date_from = date('Y-m-d H:i:s');
@@ -302,14 +293,13 @@ class Auto extends BaseController {
 
 
 					// places processor afterwards
-					$qiPlaces = new QueueModel();
+					$qiPlaces = new QueueModel;
 					$qiPlaces->file_id = $file->id;
 					$qiPlaces->processor = "places";
 					$qiPlaces->date_from = date('Y-m-d H:i:s');
 					$qiPlaces->after = $qiImagga->id;
 					$qiPlaces->save();
 
-					$qiElasticIndex = new QueueModel();
 					$qiElasticIndex->file_id = $file->id;
 					$qiElasticIndex->processor = "elasticindex";
 					$qiElasticIndex->date_from = date('Y-m-d H:i:s');
@@ -321,7 +311,7 @@ class Auto extends BaseController {
 		}
 	}
 
-	private function removeFilesFromSystem($saFiles)
+	private static function removeFilesFromSystem($saFiles)
 	{
 		// takes array of files to delete from files table and throughout site
 		foreach($saFiles as $sFilePath)
@@ -346,7 +336,7 @@ class Auto extends BaseController {
 		else
 			return 1;
 	}
-	private function bTimeForTwoJpegs($mtStarted)
+	private static function bTimeForTwoJpegs($mtStarted)
 	{
 		// estiamtes current jpeg process time, gets time remaining, returns true if less than
 		$iMaxMilliseconds = ini_get('max_execution_time') * 1000;
