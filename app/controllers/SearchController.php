@@ -301,10 +301,16 @@ class SearchController extends BaseController {
 
 			$saResults = [];
 			$bShuffle = false;
+			$iPerPage = 100;
+			$iFrom = 0;
 
+			$iPage = (Input::get("page")) ? Input::get("page") : 1;
+			
+			$iFrom = ($iPage-1)*$iPerPage;
 
 			$searchParams['index'] = 'mediadump_index';
-			$searchParams['size'] = 100;
+			$searchParams['size'] = $iPerPage;
+			$searchParams['from'] = $iFrom;
 
 			
 			$oResults = array("info" => null, "results" => null);
@@ -368,7 +374,6 @@ class SearchController extends BaseController {
 			$aaSpeeds = [];
 			$aaQueryResultsCount = [];
 
-			$iPerPage = 100;
 			$saQueryResults = [];
 			$iMs = $retDoc["took"];
 			$iCount = $retDoc["hits"]["total"];
