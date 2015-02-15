@@ -407,14 +407,18 @@ class SearchController extends BaseController {
 			// redner
 			//
 
-
 			$oaInfo = [
 				"speed" => $iMs,
 				"count" => $retDoc["hits"]["total"],
-				"lower" => 1,
-				"upper" => 100,
 				"available_pages" => $iAvailablePages
 			];
+
+			$iMin = (($iPage * $iPerPage) - $iPerPage);
+			$iMax = ($iMin + $iPerPage);
+
+
+			$oaInfo["lower"] = $iMin + 1;
+			$oaInfo["upper"] = (($iPage - 1 ) * $iPerPage) + count($retDoc["hits"]["hits"]);
 
 
 			$oReturn = [
