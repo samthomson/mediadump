@@ -94,7 +94,7 @@ class SearchController extends BaseController {
 		return $soFiles;
 	}
 
-	public static function search()
+	public static function sqlSearch()
 	{		
 		$mtStart = microtime(true);
 
@@ -368,9 +368,11 @@ class SearchController extends BaseController {
 			$aaSpeeds = [];
 			$aaQueryResultsCount = [];
 
+			$iPerPage = 100;
 			$saQueryResults = [];
 			$iMs = $retDoc["took"];
-			$iCount = count($retDoc["hits"]["hits"]);
+			$iCount = $retDoc["hits"]["total"];
+			$iAvailablePages = round(floor(($iCount-1)/$iPerPage))+1;;
 
 
 			$oaResults = [];
@@ -400,11 +402,13 @@ class SearchController extends BaseController {
 			// redner
 			//
 
+
 			$oaInfo = [
 				"speed" => $iMs,
 				"count" => $retDoc["hits"]["total"],
 				"lower" => 1,
-				"upper" => 100
+				"upper" => 100,
+				"available_pages" => $iAvailablePages
 			];
 
 
