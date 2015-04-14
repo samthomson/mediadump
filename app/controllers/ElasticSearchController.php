@@ -50,9 +50,14 @@ class ElasticSearchController extends BaseController {
 
 			$iFiles = count($oaFiles);
 			$iTime = Helper::iMillisecondsSince($mtStart);
-			$fPerFile = $iTime / $iFiles;
-			echo "indexed files ($iFiles/$iLimit) @ $iTime ms, av $fPerFile per file";
 
+			$fPerFile = 0;
+
+			if($iFiles > 0){
+				$fPerFile = $iTime / $iFiles;
+			}
+
+			echo "indexed files ($iFiles/$iLimit) @ $iTime ms, av $fPerFile per file";
 		}catch(Exception $e){
 			echo $e;
 		}

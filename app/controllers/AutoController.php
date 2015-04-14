@@ -33,7 +33,7 @@ class AutoController extends BaseController {
 				$saLostFilesFromSystem = [];
 			}
 
-			$this->addFilesToSystem($saNewFilesForSystem);
+			self::addFilesToSystem($saNewFilesForSystem);
 			//$this->removeFilesFromSystem($saLostFilesFromSystem);
 			// check for differences
 			
@@ -72,14 +72,14 @@ class AutoController extends BaseController {
 				$iProcessLimit = self::iJpegsThisCycle();
 				$bQueueItemsRemaining = true;
 
+
 				while((self::bTimeForTwoJpegs($mtProcessQueueStart) || $cProcessedThisCycle === 0) && $bQueueItemsRemaining)
 				{
-					$qi = QueueModel::getSingleItem();
-
-					echo 'id:'.$qi->id." ".$qi->processor.'<br/>';
+					$qi = QueueModel::getSingleItem();				
 
 					if($qi !== null)
 					{
+						echo 'id:'.$qi->id." ".$qi->processor.'<br/>';
 						switch($qi->processor)
 						{
 							case "jpeg":
@@ -239,7 +239,7 @@ class AutoController extends BaseController {
 			if($cProcessedThisCycle > 0)
 			{
 				$oStat = new StatModel();
-				$oStat->name = "jpeg processor run count";
+				$oStat->name = "auto processor run count";
 				$oStat->group = "auto";
 				$oStat->value = $cProcessedThisCycle;
 				$oStat->save();

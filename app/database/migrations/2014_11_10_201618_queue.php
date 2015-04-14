@@ -18,7 +18,7 @@ class Queue extends Migration {
 			$table->string('file_id');
 			$table->string('processor');
 			$table->datetime('date_from');
-			$table->integer('after');
+			$table->integer('after')->default(-1);
 
 			$table->date('created_at');
 			$table->date('updated_at');

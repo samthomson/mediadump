@@ -22,6 +22,7 @@ var xhrFileInfo;
 var bQueryInputEventsOn = true;
 
 var sCdnURL = "http://mediadump.samt.st";
+var sCdnURL = "http://mediadump.dev";
 
 var oaQueries = [];
 var iPage = 1;

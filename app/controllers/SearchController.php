@@ -331,7 +331,7 @@ class SearchController extends BaseController {
 						case 'map':
 							$bShuffle = true;
 							$iaLatLonParts = explode(",", $saQueryParts[1]);
-
+							
 							array_push($oaQueries, array('range' => array('latitude' => array('gt' => $iaLatLonParts[0],'lt' => $iaLatLonParts[1]))));
 							array_push($oaQueries, array('range' => array('longitude' => array('gt' => $iaLatLonParts[2],'lt' => $iaLatLonParts[3]))));
 							break;

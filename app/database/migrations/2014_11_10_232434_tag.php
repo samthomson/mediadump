@@ -22,6 +22,8 @@ class Tag extends Migration {
 			$table->index('file_id', "tags_fileid");
 			$table->index('type', "tags_type");
 			$table->index('value', "tags_value");
+			
+			$table->tinyInteger('confidence')->default(50); 
 
 			$table->unique(array('file_id', 'type', 'value'));
 		});

@@ -113,7 +113,7 @@ class JPEGProcessor extends BaseController {
 				//
 				$data = Image::make($oFile->path)->exif();
 
-				//print_r($data);
+				////print_r($data);
 
 				if(isset($data["Make"]))
 				{
