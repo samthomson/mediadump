@@ -47,7 +47,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     public function testOneGoodOneBadHostNoException()
     {
         $params = array('hosts' => array (
-            '127.0.0.1:80',
+            '127.0.0.1:1',
             $_SERVER['ES_TEST_HOST'],
         ));
         $client = new Elasticsearch\Client($params);
@@ -123,7 +123,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
     public function testConstructorEmptyPort()
     {
-        $mockPimple = m::mock('Pimple')->shouldReceive('offsetGet')->getMock()->shouldReceive('offsetSet')->getMock();
+        $mockPimple = m::mock('\Pimple\Container')->shouldReceive('offsetGet')->getMock()->shouldReceive('offsetSet')->getMock();
         $mockDIC = m::mock('DICBuilder')->shouldReceive('getDIC')->once()->andReturn($mockPimple)->getMock();
 
         $that = $this;  //hurp durp
@@ -143,7 +143,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
     public function testConstructorNoPort()
     {
-        $mockPimple = m::mock('Pimple')->shouldReceive('offsetGet')->getMock()->shouldReceive('offsetSet')->getMock();
+        $mockPimple = m::mock('\Pimple\Container')->shouldReceive('offsetGet')->getMock()->shouldReceive('offsetSet')->getMock();
         $mockDIC = m::mock('DICBuilder')->shouldReceive('getDIC')->once()->andReturn($mockPimple)->getMock();
 
         $that = $this;  //hurp durp
@@ -163,7 +163,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
     public function testConstructorWithPort()
     {
-        $mockPimple = m::mock('Pimple')->shouldReceive('offsetGet')->getMock()->shouldReceive('offsetSet')->getMock();
+        $mockPimple = m::mock('\Pimple\Container')->shouldReceive('offsetGet')->getMock()->shouldReceive('offsetSet')->getMock();
         $mockDIC = m::mock('DICBuilder')->shouldReceive('getDIC')->once()->andReturn($mockPimple)->getMock();
 
         $that = $this;  //hurp durp
@@ -183,7 +183,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
     public function testConstructorWithSchemeAndPort()
     {
-        $mockPimple = m::mock('Pimple')->shouldReceive('offsetGet')->getMock()->shouldReceive('offsetSet')->getMock();
+        $mockPimple = m::mock('\Pimple\Container')->shouldReceive('offsetGet')->getMock()->shouldReceive('offsetSet')->getMock();
         $mockDIC = m::mock('DICBuilder')->shouldReceive('getDIC')->once()->andReturn($mockPimple)->getMock();
 
         $that = $this;  //hurp durp

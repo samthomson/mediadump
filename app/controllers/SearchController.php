@@ -354,7 +354,7 @@ class SearchController extends BaseController {
 
 			// shuffle
 			if(!$bShuffle)
-				$searchParams['sort'] = array("longtime:desc");
+				$searchParams['sort'] = array("longtime:desc", "ignore_unmapped:true");
 
 			$searchParams['body'] = array(
 			    'query' => array(
