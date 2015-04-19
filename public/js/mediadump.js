@@ -22,7 +22,7 @@ var xhrFileInfo;
 var bQueryInputEventsOn = true;
 
 var sCdnURL = "http://mediadump.samt.st";
-var sCdnURL = "http://mediadump.dev";
+//var sCdnURL = "http://mediadump.dev";
 
 var oaQueries = [];
 var iPage = 1;
@@ -483,15 +483,22 @@ function addQueryFromMap(){
 	var llNorthEast = llBounds.getNorthEast();
 	var llSouthWest = llBounds.getSouthWest();
 
+	var iLatSW = llSouthWest.lat().toFixed(2);
+	var iLatNE = llNorthEast.lat().toFixed(2);
+	var iLonSW = llSouthWest.lng().toFixed(2);
+	var iLonNE = llNorthEast.lng().toFixed(2);
+
 
 	var sQuery = "map=";
-	sQuery += llSouthWest.lat().toFixed(2);
+	sQuery += iLatSW;
 	sQuery += ",";			
-	sQuery += llNorthEast.lat().toFixed(2);
+	sQuery += iLatNE;
 	sQuery += ",";			
-	sQuery += llSouthWest.lng().toFixed(2);
+	sQuery += iLonSW;
 	sQuery += ",";			
-	sQuery += llNorthEast.lng().toFixed(2);
+	sQuery += iLonNE;
+
+	log("map query made:" + sQuery);
 
 	setSolitaryQuery("map search", sQuery);
 }

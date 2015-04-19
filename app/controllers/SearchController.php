@@ -353,8 +353,9 @@ class SearchController extends BaseController {
 			}
 
 			// shuffle
-			if(!$bShuffle)
+			if(!$bShuffle){
 				$searchParams['sort'] = array("longtime:desc", "ignore_unmapped:true");
+			}
 
 			$searchParams['body'] = array(
 			    'query' => array(
@@ -367,6 +368,8 @@ class SearchController extends BaseController {
 			    )
 			);
 			$retDoc = $client->search($searchParams);
+
+			//print_r($searchParams);exit();
 
 
 			$saStats = [];
