@@ -378,10 +378,10 @@ class SearchController extends BaseController {
 			    )
 			);
 			*/
+			print_r(json_encode($searchParams['body']['query']['function_score']['query']));
+			exit();
+			
 			$retDoc = $client->search($searchParams);
-
-			//print_r($searchParams);exit();
-
 
 			$saStats = [];
 			$soFiles = [];
