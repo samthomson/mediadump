@@ -483,10 +483,12 @@ function addQueryFromMap(){
 	var llNorthEast = llBounds.getNorthEast();
 	var llSouthWest = llBounds.getSouthWest();
 
-	var iLatSW = llSouthWest.lat().toFixed(2);
-	var iLatNE = llNorthEast.lat().toFixed(2);
-	var iLonSW = llSouthWest.lng().toFixed(2);
-	var iLonNE = llNorthEast.lng().toFixed(2);
+	var iRounding = 2;
+
+	var iLatSW = llSouthWest.lat().toFixed(iRounding);
+	var iLatNE = llNorthEast.lat().toFixed(iRounding);
+	var iLonSW = llSouthWest.lng().toFixed(iRounding);
+	var iLonNE = llNorthEast.lng().toFixed(iRounding);
 
 
 	var sQuery = "map=";

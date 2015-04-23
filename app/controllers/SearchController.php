@@ -331,9 +331,9 @@ class SearchController extends BaseController {
 						case 'map':
 							$bShuffle = true;
 							$iaLatLonParts = explode(",", $saQueryParts[1]);
-							
-							array_push($oaQueries, array('range' => array('latitude' => array('gt' => $iaLatLonParts[0],'lt' => $iaLatLonParts[1]))));
-							array_push($oaQueries, array('range' => array('longitude' => array('gt' => $iaLatLonParts[2],'lt' => $iaLatLonParts[3]))));
+
+							array_push($oaQueries, array('range' => array('latitude' => array('gt' => (float)$iaLatLonParts[0],'lt' => (float)$iaLatLonParts[1]))));
+							array_push($oaQueries, array('range' => array('longitude' => array('gt' => (float)$iaLatLonParts[2],'lt' => (float)$iaLatLonParts[3]))));
 							break;
 						case 'shuffle':
 							$bShuffle = true;
@@ -356,8 +356,9 @@ class SearchController extends BaseController {
 			if(!$bShuffle){
 				$searchParams['sort'] = array("longtime:desc", "ignore_unmapped:true");
 			}
-
+/**/
 			$searchParams['body'] = array(
+				
 			    'query' => array(
 			        'function_score' => array(
 			            'functions' => array(
@@ -367,6 +368,16 @@ class SearchController extends BaseController {
 			        )
 			    )
 			);
+/*
+			$searchParams['body'] = array(
+				
+			    'query' => array(
+			    	'filtered' => array(
+				        'query' => array('bool' => array("must" => $oaQueries))
+				    )
+			    )
+			);
+			*/
 			$retDoc = $client->search($searchParams);
 
 			//print_r($searchParams);exit();
