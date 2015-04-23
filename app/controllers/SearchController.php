@@ -297,7 +297,15 @@ class SearchController extends BaseController {
 	public static function elasticSearch()
 	{
 		try{
-			$client = new Elasticsearch\Client();
+			$params = array();
+			$params['hosts'] = array (
+				'http://178.62.251.180:9200'
+				);
+			$params['logging'] = true;
+			/*$params['hosts'] = array (
+				'http://mediadump.samt.st:9200'
+				);*/
+			$client = new Elasticsearch\Client($params);
 
 			$saResults = [];
 			$bShuffle = false;
@@ -333,7 +341,8 @@ class SearchController extends BaseController {
 							$iaLatLonParts = explode(",", $saQueryParts[1]);
 
 							array_push($oaQueries, array('range' => array('latitude' => array('gt' => (float)$iaLatLonParts[0],'lt' => (float)$iaLatLonParts[1]))));
-							array_push($oaQueries, array('range' => array('longitude' => array('gt' => (float)$iaLatLonParts[2],'lt' => (float)$iaLatLonParts[3]))));
+							array_push($oaQueries, array('range' => array('longitude' => array('gt' => $iaLatLonParts[2],'lt' => $iaLatLonParts[3]))));
+							//array_push($oaQueries, array('range' => array('field' => 'longitude', 'ranges' => array('from' => (float)$iaLatLonParts[2],'to' => (float)$iaLatLonParts[3]))));
 							break;
 						case 'shuffle':
 							$bShuffle = true;
@@ -348,6 +357,7 @@ class SearchController extends BaseController {
 				}
 
 				if($bDefaultQuery){
+					//array_push($oaQueries, array('query_string' => array("default_field" => 'tags.value', "query" => '"'.$sQuery.'"')));
 					array_push($oaQueries, array('query_string' => array("default_field" => 'tags.value', "query" => '"'.$sQuery.'"')));
 				}
 			}
@@ -378,10 +388,12 @@ class SearchController extends BaseController {
 			    )
 			);
 			*/
-			print_r(json_encode($searchParams['body']['query']['function_score']['query']));
-			exit();
+			//print_r(json_encode($searchParams));
+			//exit();
 			
 			$retDoc = $client->search($searchParams);
+
+			//print_r($retDoc);
 
 			$saStats = [];
 			$soFiles = [];
