@@ -369,9 +369,6 @@ class SearchController extends BaseController {
 			);
 			$retDoc = $client->search($searchParams);
 
-			//print_r($searchParams);exit();
-
-
 			$saStats = [];
 			$soFiles = [];
 			$aaSpeeds = [];
