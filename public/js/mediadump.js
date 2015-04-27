@@ -22,7 +22,7 @@ var xhrFileInfo;
 var bQueryInputEventsOn = true;
 
 var sCdnURL = "http://mediadump.samt.st";
-//var sCdnURL = "http://mediadump.dev";
+var sCdnURL = "http://mediadump.dev";
 
 var oaQueries = [];
 var iPage = 1;
@@ -294,7 +294,9 @@ function renderResults(){
 			//
 			var sSingleFileItem = "";
 
-			sSingleFileItem +='<a class="thumb_result_link" onmousedown="preloadThumb('+cIndex+')" href="javascript:thumbClick('+cIndex+');">';
+			sSingleFileItem +='<a class="thumb_result_link" onmousedown="preloadThumb('+cIndex+')" onclick="thumbClick('+cIndex+')" href="' + urlFromHash('lightbox', oFile.hash, '') + '">';
+
+			//sSingleFileItem +='<a class="thumb_result_link" onmousedown="preloadThumb('+cIndex+')" onclick="thumbClick('+cIndex+')" href="' + oFile.hash + '">';
 
 			sConfidenceClass = "";
 			if(oFile.confidence < 40){
@@ -716,6 +718,7 @@ function setUIMode(sMode){
 	$("#header-navigation li a." + sMode + "-link").addClass("active");
 }
 function thumbClick(iIndex){
+	window.event.cancelBubble = true;
 	// load lightbox stuff
 	setFile(iIndex);
 	// show lightbox
@@ -775,7 +778,10 @@ function resizeend() {
     } else {
         timeout = false;
         sizeDivide();
-        renderResults();
+        if(sSearchMode !== 'browse')
+        {
+        	renderResults();
+        }        
     }               
 }
 

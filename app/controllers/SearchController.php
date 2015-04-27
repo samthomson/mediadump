@@ -305,7 +305,8 @@ class SearchController extends BaseController {
 			/*$params['hosts'] = array (
 				'http://mediadump.samt.st:9200'
 				);*/
-			$client = new Elasticsearch\Client($params);
+			//$client = new Elasticsearch\Client($params);
+			$client = new Elasticsearch\Client();
 
 			$saResults = [];
 			$bShuffle = false;

@@ -64,3 +64,12 @@ Route::get('/test/create-index', array('uses' => 'ElasticSearchController@create
 Route::get('/test/delete', array('uses' => 'ElasticSearchController@deleteIndex'));
 
 Route::get('/elastic/re-index', array('uses' => 'ElasticSearchController@scheduleFullReindex'));
+
+
+Route::get('/test', function()
+{
+	echo '<head><meta charset="utf-8"></head>';
+	$saFiles = AutoController::files(Config::get('app.mediaFolderPath'));
+
+	print_r($saFiles);
+});

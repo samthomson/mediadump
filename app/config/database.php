@@ -60,7 +60,6 @@ return array(
 			'password'  => 'K8a7M5YJwZAwm4DT',
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
-			'prefix'    => '',
 		),
 
 		'mysql_remote' => array(

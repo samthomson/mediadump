@@ -42,13 +42,14 @@ class JPEGProcessor extends BaseController {
 
 				$sFilePath = $oFile->rawPath();
 
-				$sFilePath = strtolower($sFilePath);
+				$sFilePath = mb_strtolower($sFilePath);
 
 				$saDirs = explode(DIRECTORY_SEPARATOR, $sFilePath);
 
 				$sFileName = array_pop($saDirs);
 
 				$saDirTags = [];
+				$saPunctuationToSkip = ['', ',', '-', ':'];
 				//
 				// all directorys as tags
 				//
@@ -57,7 +58,7 @@ class JPEGProcessor extends BaseController {
 				{
 					foreach (explode(" ", $sDir) as $sDirPart) {
 						//array_push($saDirTags, $sDirPart);
-						if($sDirPart !== ""){
+						if(!in_array($sDirPart, $saPunctuationToSkip)){
 							$oTag = new TagModel();
 							$oTag->type = "folder term";
 							$oTag->file_id = $iFileID;

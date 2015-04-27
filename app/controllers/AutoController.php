@@ -15,8 +15,16 @@ class AutoController extends BaseController {
 			//
 			$saFiles = [];
 
-			foreach(File::allFiles(Config::get('app.mediaFolderPath')) as $sFile)
+			echo '<head><meta charset="utf-8"></head>';
+
+			$saAllFiles = File::allFiles(Config::get('app.mediaFolderPath'));
+			//$saAllFiles = self::files(Config::get('app.mediaFolderPath'));
+
+			//print_r($saAllFiles);
+
+			foreach($saAllFiles as $sFile)
 			{
+					echo "found ", $sFile, "<br/>";
 				if(file_exists((string)$sFile)){
 					array_push($saFiles, (string)$sFile);
 				}
@@ -51,6 +59,33 @@ class AutoController extends BaseController {
 				$oStat->save();
 			}
 		}
+	}
+	public static function files($path)
+	{
+		//$path   = '.';
+		$result = array('files' => array(), 'directories' => array());
+
+		$DirectoryIterator = new RecursiveDirectoryIterator($path);
+		$IteratorIterator  = new RecursiveIteratorIterator($DirectoryIterator, RecursiveIteratorIterator::SELF_FIRST);
+		foreach ($IteratorIterator as $file) {
+
+		    $path = $file->getRealPath();
+
+		    if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+			    $path = utf8_decode($path);
+			} else {
+			    //echo 'This is a server not using Windows!';
+			    $path = (string)$path;
+			}
+
+
+		    if ($file->isDir()) {
+		        $result['directories'][] = $path;
+		    } elseif ($file->isFile()) {
+		        $result['files'][] = $path;
+		    }
+		}
+		return $result['files'];
 	}
 	public static function test()
 	{
@@ -256,7 +291,7 @@ class AutoController extends BaseController {
 			$file->hash = md5($sFilePath);
 			$file->save();
 
-			$sExt = substr(strtolower($sFilePath), strrpos(strtolower($sFilePath), '.')+1);
+			$sExt = mb_substr(mb_strtolower($sFilePath), strrpos(mb_strtolower($sFilePath), '.')+1);
 			
 			switch($sExt)
 			{
