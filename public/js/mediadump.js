@@ -294,7 +294,7 @@ function renderResults(){
 			//
 			var sSingleFileItem = "";
 
-			sSingleFileItem +='<a class="thumb_result_link" onmousedown="preloadThumb('+cIndex+')" onclick="thumbClick('+cIndex+')" href="' + urlFromHash('lightbox', oFile.hash, '') + '">';
+			sSingleFileItem +='<a class="thumb_result_link" onmousedown="preloadThumb('+cIndex+')" onclick="thumbClick('+cIndex+');return false;" href="' + urlFromHash('lightbox', oFile.hash, '') + '">';
 
 			//sSingleFileItem +='<a class="thumb_result_link" onmousedown="preloadThumb('+cIndex+')" onclick="thumbClick('+cIndex+')" href="' + oFile.hash + '">';
 
@@ -718,11 +718,10 @@ function setUIMode(sMode){
 	$("#header-navigation li a." + sMode + "-link").addClass("active");
 }
 function thumbClick(iIndex){
-	window.event.cancelBubble = true;
 	// load lightbox stuff
 	setFile(iIndex);
 	// show lightbox
-	setLightShowing(true);
+	setLightShowing(true);	
 }
 function closeLightbox(){
 	setLightShowing(false);
