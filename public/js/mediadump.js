@@ -234,7 +234,7 @@ function renderTree()
 		var sDisplay = sReplaceQuote(folderFromUniqueDir(oLink.value));
 		var sUIDisplay = folderFromUniqueDir(oLink.value);
 
-		sSingleTreeItem +='<a class="tree_link col-xs-6 col-sm-4" href="javascript: setSolitaryQuery(\'' + sDisplay + '\', \'' + sValue + '\');" alt="' + sDisplay + '" title="' + sDisplay + '">';
+		sSingleTreeItem +='<a class="tree_link col-xs-6 col-sm-4 col-md-3 col-lg-2" href="javascript: setSolitaryQuery(\'' + sDisplay + '\', \'' + sValue + '\');" alt="' + sDisplay + '" title="' + sDisplay + '">';
 
 		sSingleTreeItem +='<div class="tree_image_container">';
 		sSingleTreeItem +='<img src="' + urlFromHash('medium', oLink.hash, '') + '"/>';
@@ -246,7 +246,7 @@ function renderTree()
 
 		// maybe start a row
 		if(cIndex % 3 == 0)
-			htmlTree += '<div class="row">';
+			htmlTree += '<div class="">';
 
 		htmlTree += sSingleTreeItem;
 

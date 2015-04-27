@@ -85,7 +85,8 @@
 					</div>
 
 					<!-- browse -->
-					<div id="browse_tree" class="container">
+					<!--<div id="browse_tree" class="container">-->
+					<div id="browse_tree" class="">
 					</div>
 
 				</div>
