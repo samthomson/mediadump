@@ -210,6 +210,34 @@ function urlFromHash(sMode, hash, sExt){
 function sFilterQuery(sQuery){
 	return sQuery.toLowerCase();
 }
+function _buildUrlFromParams(){
+	var saURLParams = {};
+
+	// queries	
+	
+	if(oaQueries.length > 0)
+	{
+		// build querues
+		//log(oaQueries);
+		saURLParams["queries"] = encodeURIComponent(JSON.stringify(oaQueries));	
+	}
+
+	// mode
+	if(sSearchMode != 'browse')
+		saURLParams["mode"] = encodeURIComponent(sSearchMode);
+
+	// page
+	if(iPage > -1)
+		saURLParams["page"] = encodeURIComponent(iPage);
+
+	// lightbox file
+	if(iFile > -1)
+		saURLParams["file"] = encodeURIComponent(iFile);
+
+	//log(saURLParams);
+
+	window.location.hash = $.param(saURLParams);
+}
 /*
 
 BUILD UI
@@ -294,7 +322,7 @@ function renderResults(){
 			//
 			var sSingleFileItem = "";
 
-			sSingleFileItem +='<a class="thumb_result_link" onmousedown="preloadThumb('+cIndex+')" onclick="thumbClick('+cIndex+');return false;" href="' + urlFromHash('lightbox', oFile.hash, '') + '">';
+			sSingleFileItem +='<a class="thumb_result_link" onmousedown="preloadThumb('+cIndex+')" onclick="thumbClick('+cIndex+'); return false;" href="' + urlFromHash('lightbox', oFile.hash, '') + '">';
 
 			//sSingleFileItem +='<a class="thumb_result_link" onmousedown="preloadThumb('+cIndex+')" onclick="thumbClick('+cIndex+')" href="' + oFile.hash + '">';
 
@@ -627,6 +655,7 @@ function setFile(iFileIndex){
 	if(iFile != iFileIndex){
 		iFile = iFileIndex;
 		updateFile();
+		_buildUrlFromParams();
 	}	
 }
 function updateFile(){
@@ -712,6 +741,7 @@ function shuffle(){
 function setMode(sMode){
 	setSearchMode(sMode);
 	setUIMode(sMode);
+	_buildUrlFromParams();
 }
 function setUIMode(sMode){
 	$("#header-navigation li a").removeClass("active");
@@ -721,7 +751,7 @@ function thumbClick(iIndex){
 	// load lightbox stuff
 	setFile(iIndex);
 	// show lightbox
-	setLightShowing(true);	
+	setLightShowing(true);
 }
 function closeLightbox(){
 	setLightShowing(false);
