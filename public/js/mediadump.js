@@ -22,7 +22,7 @@ var xhrFileInfo;
 var bQueryInputEventsOn = true;
 
 var sCdnURL = "http://mediadump.samt.st";
-//var sCdnURL = "http://mediadump.dev";
+var sCdnURL = "http://mediadump.dev";
 
 var oaQueries = [];
 var iPage = 1;
@@ -126,7 +126,7 @@ GET DATA
 
 */
 function getTree(){
-	$.get("http://mediadump.samt.st/api/tree", function(results){
+	$.get("/api/tree", function(results){
 		//oTree = $.parseJSON(results);
 		oTree = results;
 		renderTree();
@@ -273,14 +273,16 @@ function renderTree()
 		sSingleTreeItem +='</a>';
 
 		// maybe start a row
+		/*
 		if(cIndex % 3 == 0)
 			htmlTree += '<div class="">';
-
+		*/
 		htmlTree += sSingleTreeItem;
-
+		/*
 		// maybe end a row
 		if((cIndex + 1) % 3 == 0)
 			htmlTree += '</div>';
+		*/
 	});
 
 	$("#browse_tree").html(htmlTree);
@@ -314,8 +316,8 @@ function renderResults(){
 	oaMarkers.length = 0;
 
 
-	if(oResults.length > 0){
-		
+	if(typeof oResults !== 'undefined' && oResults.length > 0)
+	{
 		oResults.forEach(function(oFile, cIndex){
 			//
 			// thumbs
@@ -436,7 +438,7 @@ function renderPagination(){
 
 	var sPagination = "";
 
-	if(oResults.length > 0){
+	if(typeof oResults !== 'undefined' && oResults.length > 0){
 		// build pagination
 		
 		var sShowing = "<span>showing " + oResultsData.lower + " - " + oResultsData.upper + " / " + oResultsData.count + '</span>';
