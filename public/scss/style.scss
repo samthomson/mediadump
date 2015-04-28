@@ -298,7 +298,9 @@ layout parts
 }
 .tree_link{
 	font-size: large;
-	display: inline-block;
+	display: inline-table;
+	float: none !important;
+	vertical-align: top;
 }
 .tree_link .tree_image_container{
 	margin-top: $margin*2;

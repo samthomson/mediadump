@@ -21,7 +21,7 @@
 		<link rel="stylesheet" href="/css/style.css" type="text/css">
 
 	</head>
-	<body ng-app="mediadumpApp">
+	<body>
 
 		<noscript>Sorry, this page uses Javascript, which isn't enabled in your browser. You need to turn it on.</noscript>
 
