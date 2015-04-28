@@ -22,7 +22,7 @@ var xhrFileInfo;
 var bQueryInputEventsOn = true;
 
 var sCdnURL = "http://mediadump.samt.st";
-var sCdnURL = "http://mediadump.dev";
+//var sCdnURL = "http://mediadump.dev";
 
 var oaQueries = [];
 var iPage = 1;
@@ -126,7 +126,7 @@ GET DATA
 
 */
 function getTree(){
-	$.get("/api/tree", function(results){
+	$.get("http://mediadump.samt.st/api/tree", function(results){
 		//oTree = $.parseJSON(results);
 		oTree = results;
 		renderTree();
@@ -227,7 +227,7 @@ function _buildUrlFromParams(){
 		saURLParams["mode"] = encodeURIComponent(sSearchMode);
 
 	// page
-	if(iPage > -1)
+	if(iPage > 1)
 		saURLParams["page"] = encodeURIComponent(iPage);
 
 	// lightbox file
@@ -322,7 +322,9 @@ function renderResults(){
 			//
 			var sSingleFileItem = "";
 
-			sSingleFileItem +='<a class="thumb_result_link" onmousedown="preloadThumb('+cIndex+')" onclick="thumbClick('+cIndex+'); return false;" href="' + urlFromHash('lightbox', oFile.hash, '') + '">';
+			var sHref = window.location.hash + '&file=' + cIndex;
+
+			sSingleFileItem +='<a class="thumb_result_link" onmousedown="preloadThumb('+cIndex+')" onclick="thumbClick('+cIndex+'); return false;" href="' + sHref + '">';
 
 			//sSingleFileItem +='<a class="thumb_result_link" onmousedown="preloadThumb('+cIndex+')" onclick="thumbClick('+cIndex+')" href="' + oFile.hash + '">';
 
@@ -630,6 +632,7 @@ function setPage(iPageNew){
 	if(iPage != iPageNew){
 		iPage = iPageNew;
 		updatePage();
+		_buildUrlFromParams();
 	}	
 }
 function updatePage(){
@@ -704,6 +707,7 @@ function queryChange(){
 	}else{		
 		resetDataAndUI();
 	}
+	_buildUrlFromParams();
 }
 
 
