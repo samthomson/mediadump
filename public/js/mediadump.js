@@ -295,7 +295,6 @@ function renderResults(){
 
 	var s_current_row = '';
 	var i_max_row_width = $("#thumb_results").innerWidth() - 20; // 17
-	console.log("max row width: " + i_max_row_width);
 	var i_running_row_width = 0;
 	var i_base_height = i_default_height;
 	var i_files_in_row = 0;
@@ -441,7 +440,7 @@ function renderPagination(){
 	if(typeof oResults !== 'undefined' && oResults.length > 0){
 		// build pagination
 		
-		var sShowing = "<span>showing " + oResultsData.lower + " - " + oResultsData.upper + " / " + oResultsData.count + '</span>';
+		var sShowing = "<span>showing " + oResultsData.lower + " - " + oResultsData.upper + " / " + commafy(oResultsData.count) + '</span>';
 
 		sShowing += '<span><i class="glyphicon glyphicon-flash"></i> found in ~' + parseInt(oResultsData.speed) +' ms</span>';
 
@@ -533,8 +532,6 @@ function addQueryFromMap(){
 	sQuery += iLonSW;
 	sQuery += ",";			
 	sQuery += iLonNE;
-
-	log("map query made:" + sQuery);
 
 	setSolitaryQuery("map search", sQuery);
 }
@@ -813,10 +810,6 @@ function resizeend() {
     } else {
         timeout = false;
         sizeDivide();
-        if(sSearchMode !== 'browse')
-        {
-        	renderResults();
-        }        
     }               
 }
 
@@ -1045,3 +1038,9 @@ function initializeGoogleMap() {
 
 	//media_dump_map_options
 }	
+function commafy( num){
+  var parts = (''+(num<0?-num:num)).split("."), s=parts[0], i=L= s.length, o='',c;
+  while(i--){ o = (i==0?'':((L-i)%3?'':',')) 
+                  +s.charAt(i) +o }
+  return (num<0?'-':'') + o + (parts[1] ? '.' + parts[1] : ''); 
+}
