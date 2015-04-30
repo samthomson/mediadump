@@ -20,137 +20,47 @@ class VideoProcessor extends BaseController {
 				//
 				// default tag
 				//
-				$oTag = new TagModel();
-				$oTag->file_id = $iFileID;
-				$oTag->type = "tag";
-				$oTag->value = "*";
-				$oTag->save();
+				TaggingHelper::_makeDefaultTag($oFile->id);
 				$cTagsAdded++;
 
-				$sFilePath = $oFile->rawPath();
+				$sFilePath = $oFile->rawPath(true);
 
-				$sFilePath = mb_strtolower($sFilePath);
-
-				$saDirs = explode(DIRECTORY_SEPARATOR, $sFilePath);
+				$saDirs = $oFile->saDirectories();
 
 				$sFileName = array_pop($saDirs);
 
-				$saDirTags = [];
-				$saPunctuationToSkip = ['', ',', '-', ':'];
-				//
-				// all directorys as tags
-				//
-				// split dirs with spaces
-				foreach ($saDirs as $sDir)
-				{
-					foreach (explode(" ", $sDir) as $sDirPart) {
-						//array_push($saDirTags, $sDirPart);
-						if(!in_array($sDirPart, $saPunctuationToSkip)){
-							$oTag = new TagModel();
-							$oTag->type = "folder term";
-							$oTag->file_id = $iFileID;
-							$oTag->value = $sDirPart;
-							$oTag->save();
-							$cTagsAdded++;
-						}
-					}
-				}
+				$cTagsAdded += TaggingHelper::iMakeFilePathTags($saDirs, $oFile->id)
 
-				//
 				// unique directory path
-				//
 				$sUniqueDirPath = implode(DIRECTORY_SEPARATOR, $saDirs);
-				$oTag = new TagModel();
-				$oTag->file_id = $iFileID;
-				$oTag->type = "uniquedirectorypath";
-				$oTag->value = $sUniqueDirPath;
-				$oTag->save();
+
+				TaggingHelper::_QuickTag($oFile->id, "uniquedirectorypath", $sUniqueDirPath);
 				$cTagsAdded++;
 
 				//
 				// file name
 				//
 				$sFileName = explode(".", $sFileName)[0];
-				$oTag = new TagModel();
-				$oTag->file_id = $iFileID;
-				$oTag->type = "filename";
-				$oTag->value = $sFileName;
-				$oTag->save();
+
+				TaggingHelper::_QuickTag($oFile->id, "filename", $sFileName);
 				$cTagsAdded++;
 
 				//
 				// type
 				//
-				$oTag = new TagModel();
-				$oTag->file_id = $iFileID;
-				$oTag->type = "mediatype";
-				$oTag->value = "image";
-				$oTag->save();
+				TaggingHelper::_QuickTag($oFile->id, "mediatype", "video");
 				$cTagsAdded++;
 
-				$oTag = new TagModel();
-				$oTag->file_id = $iFileID;
-				$oTag->type = "filetype";
-				$oTag->value = "jpeg";
-				$oTag->save();
-				$cTagsAdded++;
 
+				TaggingHelper::_QuickTag($oFile->id, "filetype", "jpeg");
+				$cTagsAdded++;
 
 				//
 				// exif
 				//
 				$data = Image::make($oFile->path)->exif();
 
-				////print_r($data);
-
-				if(isset($data["Make"]))
-				{
-					$oTag = new TagModel();
-					$oTag->file_id = $iFileID;
-					$oTag->type = "exif.cameramake";
-					$oTag->setValue($data["Make"]);
-					$oTag->save();
-					$cTagsAdded++;
-				}
-
-				if(isset($data["DateTime"]))
-				{
-					$oFile->datetime = $data["DateTime"];
-					$oFile->save();
-
-					$oTag = new TagModel();
-					$oTag->file_id = $iFileID;
-					$oTag->type = "exif.datetime";
-					$oTag->setValue($data["DateTime"]);
-					$oTag->save();
-					$cTagsAdded++;
-				}
-
-				$oGeoData = new GeoDataModel();
-				$oGeoData->file_id = $iFileID;
-
-				if(isset($data["GPSLongitude"]) && isset($data["GPSLongitude"]))
-				{
-					$lon = self::getGps($data["GPSLongitude"], $data['GPSLongitudeRef']);
-					$oGeoData->longitude = $lon;
-					$oGeoData->save();
-
-					$cGeoDataAdded++;
-				}
-
-				if(isset($data["GPSLatitude"]) && isset($data["GPSLatitudeRef"]))
-				{
-					$lat = self::getGps($data["GPSLatitude"], $data['GPSLatitudeRef']);
-					$oGeoData->latitude = $lat;
-					$oGeoData->save();
-
-					$cGeoDataAdded++;
-				}
-
-
-				//
-				// geo
-				//
+				
 
 				//
 				// thumbs
@@ -223,7 +133,7 @@ class VideoProcessor extends BaseController {
 				// log how many tags were added
 				//
 				$eFilesRemoved = new EventModel();
-				$eFilesRemoved->name = "auto jpeg processor";
+				$eFilesRemoved->name = "auto video processor";
 				$eFilesRemoved->message = "prcoessed a file";
 				$eFilesRemoved->value = 1;
 				$eFilesRemoved->save();
@@ -239,17 +149,10 @@ class VideoProcessor extends BaseController {
 				$oStat->save();
 
 				$oStat = new StatModel();
-				$oStat->name = "geodata added";
-				$oStat->group = "auto";
-				$oStat->value = $cGeoDataAdded;
-				$oStat->save();
-
-				$oStat = new StatModel();
-				$oStat->name = "jpeg proccess time";
+				$oStat->name = "video proccess time";
 				$oStat->group = "auto";
 				$oStat->value = (microtime(true) - $mtStart)*1000;
 				$oStat->save();
-
 
 				// return true, so the processor can delete the work queue item
 				return true;
@@ -265,7 +168,7 @@ class VideoProcessor extends BaseController {
 		{
 			//print_r($ex);
 			$eProcessingFailed = new ErrorModel();
-			$eProcessingFailed->location = "jpeg processor";
+			$eProcessingFailed->location = "video processor";
 			$eProcessingFailed->message = (string)$ex;
 			$eProcessingFailed->value = "0";
 			$eProcessingFailed->save();
