@@ -17,8 +17,14 @@ class VideoProcessor extends BaseController {
 		$video = $ffmpeg->open($oTestVideo->path);
 		$video
 		->frame(FFMpeg\Coordinate\TimeCode::fromSeconds(10))
-		->save('frame.jpg');
+		->save(Helper::thumbPath("test")."frame.jpg");
 
+
+		//$video->save(new FFMpeg\Format\Video\X264(), Helper::thumbPath("test").'export-x264.mp4');
+
+    	//$video->save(new FFMpeg\Format\Video\WMV(), Helper::thumbPath("test").'export-wmv.wmv');
+
+		$video->save(new FFMpeg\Format\Video\WebM(), Helper::thumbPath("test").'export-webm.webm');
 
 		// create mp4
 		// create ogv

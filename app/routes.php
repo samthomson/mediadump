@@ -68,5 +68,5 @@ Route::get('/elastic/re-index', array('uses' => 'ElasticSearchController@schedul
 
 Route::get('/test', function()
 {
-	VideoProcessor::testProcess(1);
+	VideoProcessor::testProcess(7);
 });
