@@ -2,6 +2,31 @@
 
 class VideoProcessor extends BaseController {
 
+	public static function testProcess($iFileId){
+		$oTestVideo = FileModel::find(1);
+		echo "found: ", $oTestVideo->path;
+
+		// make array of files created (to delete after if one part of process fails)
+		$saPaths = [];
+		$bAllOkay = true;
+
+		$ffmpeg = FFMpeg\FFMpeg::create(array(
+    'ffmpeg.binaries'  => 'C:/ffmpeg/ffmpeg.exe',
+    'ffprobe.binaries' => 'C:/ffmpeg/ffprobe.exe'));
+
+		$video = $ffmpeg->open($oTestVideo->path);
+		$video
+		->frame(FFMpeg\Coordinate\TimeCode::fromSeconds(10))
+		->save('frame.jpg');
+
+
+		// create mp4
+		// create ogv
+		// create webm
+
+		// create stills
+	}
+
 	public static function process($iFileID)
 	{		
 		try
@@ -29,7 +54,7 @@ class VideoProcessor extends BaseController {
 
 				$sFileName = array_pop($saDirs);
 
-				$cTagsAdded += TaggingHelper::iMakeFilePathTags($saDirs, $oFile->id)
+				$cTagsAdded += TaggingHelper::iMakeFilePathTags($saDirs, $oFile->id);
 
 				// unique directory path
 				$sUniqueDirPath = implode(DIRECTORY_SEPARATOR, $saDirs);

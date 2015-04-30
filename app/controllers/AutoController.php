@@ -24,7 +24,7 @@ class AutoController extends BaseController {
 
 			foreach($saAllFiles as $sFile)
 			{
-					echo "found ", $sFile, "<br/>";
+				//echo "found ", $sFile, "<br/>";
 				if(file_exists((string)$sFile)){
 					array_push($saFiles, (string)$sFile);
 				}
@@ -339,6 +339,23 @@ class AutoController extends BaseController {
 					$qiElasticIndex->processor = "elasticindex";
 					$qiElasticIndex->date_from = date('Y-m-d H:i:s');
 					$qiElasticIndex->after = $qiPlaces->id;
+					$qiElasticIndex->save();
+					
+					break;
+				case "mp4":
+					// video processor
+					$qiVideoQueue = new QueueModel;
+					$qiVideoQueue->file_id = $file->id;
+					$qiVideoQueue->processor = "video";
+					$qiVideoQueue->date_from = date('Y-m-d H:i:s');
+					$qiVideoQueue->save();
+
+
+					$qiElasticIndex = new QueueModel;
+					$qiElasticIndex->file_id = $file->id;
+					$qiElasticIndex->processor = "elasticindex";
+					$qiElasticIndex->date_from = date('Y-m-d H:i:s');
+					$qiElasticIndex->after = $qiVideoQueue->id;
 					$qiElasticIndex->save();
 					
 					break;

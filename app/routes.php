@@ -68,8 +68,5 @@ Route::get('/elastic/re-index', array('uses' => 'ElasticSearchController@schedul
 
 Route::get('/test', function()
 {
-	echo '<head><meta charset="utf-8"></head>';
-	$saFiles = AutoController::files(Config::get('app.mediaFolderPath'));
-
-	print_r($saFiles);
+	VideoProcessor::testProcess(1);
 });
