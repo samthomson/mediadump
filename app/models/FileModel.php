@@ -11,6 +11,7 @@ class FileModel extends Eloquent {
 	 */
 	protected $table = 'files';
 
+
 	/*
 	relations
 	*/
@@ -24,9 +25,14 @@ class FileModel extends Eloquent {
 	}
 
 
-	public function rawPath()
+	public function rawPath($bLowerCase = false)
 	{
-		return str_replace(Config::get('app.mediaFolderPath'), "", $this->path);
+		$sPath = str_replace(Config::get('app.mediaFolderPath'), "", $this->path);
+		return ($bLowerCase) ? mb_strtolower($sPath) :  $sPath;
+	}
+	public function saDirectories()
+	{
+		return explode(DIRECTORY_SEPARATOR, self::rawPath(true));
 	}
 
 	public function finishTagging()

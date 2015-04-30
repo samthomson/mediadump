@@ -33,81 +33,40 @@ class JPEGProcessor extends BaseController {
 				//
 				// default tag
 				//
-				$oTag = new TagModel();
-				$oTag->file_id = $iFileID;
-				$oTag->type = "tag";
-				$oTag->value = "*";
-				$oTag->save();
+				TaggingHelper::_makeDefaultTag($oFile->id);
 				$cTagsAdded++;
 
-				$sFilePath = $oFile->rawPath();
+				$sFilePath = $oFile->rawPath(true);
 
-				$sFilePath = mb_strtolower($sFilePath);
-
-				$saDirs = explode(DIRECTORY_SEPARATOR, $sFilePath);
+				$saDirs = $oFile->saDirectories();
 
 				$sFileName = array_pop($saDirs);
 
-				$saDirTags = [];
-				$saPunctuationToSkip = ['', ',', '-', ':'];
-				//
-				// all directorys as tags
-				//
-				// split dirs with spaces
-				foreach ($saDirs as $sDir)
-				{
-					foreach (explode(" ", $sDir) as $sDirPart) {
-						//array_push($saDirTags, $sDirPart);
-						if(!in_array($sDirPart, $saPunctuationToSkip)){
-							$oTag = new TagModel();
-							$oTag->type = "folder term";
-							$oTag->file_id = $iFileID;
-							$oTag->value = $sDirPart;
-							$oTag->save();
-							$cTagsAdded++;
-						}
-					}
-				}
+				$cTagsAdded += TaggingHelper::iMakeFilePathTags($saDirs, $oFile->id)
 
-				//
 				// unique directory path
-				//
 				$sUniqueDirPath = implode(DIRECTORY_SEPARATOR, $saDirs);
-				$oTag = new TagModel();
-				$oTag->file_id = $iFileID;
-				$oTag->type = "uniquedirectorypath";
-				$oTag->value = $sUniqueDirPath;
-				$oTag->save();
+
+				TaggingHelper::_QuickTag($oFile->id, "uniquedirectorypath", $sUniqueDirPath);
 				$cTagsAdded++;
 
 				//
 				// file name
 				//
 				$sFileName = explode(".", $sFileName)[0];
-				$oTag = new TagModel();
-				$oTag->file_id = $iFileID;
-				$oTag->type = "filename";
-				$oTag->value = $sFileName;
-				$oTag->save();
+
+				TaggingHelper::_QuickTag($oFile->id, "filename", $sFileName);
 				$cTagsAdded++;
 
 				//
 				// type
 				//
-				$oTag = new TagModel();
-				$oTag->file_id = $iFileID;
-				$oTag->type = "mediatype";
-				$oTag->value = "image";
-				$oTag->save();
+				TaggingHelper::_QuickTag($oFile->id, "mediatype", "image");
 				$cTagsAdded++;
 
-				$oTag = new TagModel();
-				$oTag->file_id = $iFileID;
-				$oTag->type = "filetype";
-				$oTag->value = "jpeg";
-				$oTag->save();
-				$cTagsAdded++;
 
+				TaggingHelper::_QuickTag($oFile->id, "filetype", "jpeg");
+				$cTagsAdded++;
 
 				//
 				// exif
@@ -118,11 +77,7 @@ class JPEGProcessor extends BaseController {
 
 				if(isset($data["Make"]))
 				{
-					$oTag = new TagModel();
-					$oTag->file_id = $iFileID;
-					$oTag->type = "exif.cameramake";
-					$oTag->setValue($data["Make"]);
-					$oTag->save();
+					TaggingHelper::_QuickTag($oFile->id, "exif.cameramake", $data["Make"]);
 					$cTagsAdded++;
 				}
 
@@ -131,11 +86,7 @@ class JPEGProcessor extends BaseController {
 					$oFile->datetime = $data["DateTime"];
 					$oFile->save();
 
-					$oTag = new TagModel();
-					$oTag->file_id = $iFileID;
-					$oTag->type = "exif.datetime";
-					$oTag->setValue($data["DateTime"]);
-					$oTag->save();
+					TaggingHelper::_QuickTag($oFile->id, "exif.datetime", $data["DateTime"]);
 					$cTagsAdded++;
 				}
 
