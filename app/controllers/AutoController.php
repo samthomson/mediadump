@@ -124,13 +124,35 @@ class AutoController extends BaseController {
 								{
 									$qi->done();
 								}else{
-									$eFilesFound = new EventModel();
-									$eFilesFound->name = "auto processor";
-									$eFilesFound->message = "jpeg processor failed";
-									$eFilesFound->save();
+									$oFailEvent = new EventModel();
+									$oFailEvent->name = "auto processor";
+									$oFailEvent->message = "jpeg processor failed";
+									$oFailEvent->save();
 
 									$oStat = new StatModel();
 									$oStat->name = "jpeg processor fail";
+									$oStat->group = "auto";
+									$oStat->value = 1;
+									$oStat->save();
+								}
+								break;
+							case "video-general":
+							case "video-mp4":
+							case "video-webm":
+							case "video-ogv":
+								$qi->snooze();
+								$qi->save();
+								if(VideoProcessor::process($qi->file_id, str_replace("video-", '', $qi->processor)))
+								{
+									$qi->done();
+								}else{
+									$oFailEvent = new EventModel();
+									$oFailEvent->name = "auto processor";
+									$oFailEvent->message = "jpeg processor failed";
+									$oFailEvent->save();
+
+									$oStat = new StatModel();
+									$oStat->name = "video processing failed: ".$qi->processor;
 									$oStat->group = "auto";
 									$oStat->value = 1;
 									$oStat->save();
@@ -346,16 +368,37 @@ class AutoController extends BaseController {
 					// video processor
 					$qiVideoQueue = new QueueModel;
 					$qiVideoQueue->file_id = $file->id;
-					$qiVideoQueue->processor = "video";
+					$qiVideoQueue->processor = "video-general";
 					$qiVideoQueue->date_from = date('Y-m-d H:i:s');
 					$qiVideoQueue->save();
+
+					$qiVideoMP4 = new QueueModel;
+					$qiVideoMP4->file_id = $file->id;
+					$qiVideoMP4->processor = "video-mp4";
+					$qiVideoMP4->date_from = date('Y-m-d H:i:s');
+					$qiVideoMP4->after = $qiVideoQueue->id;
+					$qiVideoMP4->save();
+
+					$qiVideoWEBM = new QueueModel;
+					$qiVideoWEBM->file_id = $file->id;
+					$qiVideoWEBM->processor = "video-webm";
+					$qiVideoWEBM->date_from = date('Y-m-d H:i:s');
+					$qiVideoWEBM->after = $qiVideoMP4->id;
+					$qiVideoWEBM->save();
+
+					$qiVideoOGV = new QueueModel;
+					$qiVideoOGV->file_id = $file->id;
+					$qiVideoOGV->processor = "video-ogv";
+					$qiVideoOGV->date_from = date('Y-m-d H:i:s');
+					$qiVideoOGV->after = $qiVideoWEBM->id;
+					$qiVideoOGV->save();
 
 
 					$qiElasticIndex = new QueueModel;
 					$qiElasticIndex->file_id = $file->id;
 					$qiElasticIndex->processor = "elasticindex";
 					$qiElasticIndex->date_from = date('Y-m-d H:i:s');
-					$qiElasticIndex->after = $qiVideoQueue->id;
+					$qiElasticIndex->after = $qiVideoOGV->id;
 					$qiElasticIndex->save();
 					
 					break;
