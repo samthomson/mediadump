@@ -56,22 +56,109 @@ class VideoProcessor extends BaseController {
 
 			if(file_exists($oFile->path))
 			{
-
 				$ffmpeg = FFMpeg\FFMpeg::create(array(
 					'ffmpeg.binaries'  => 'C:/ffmpeg/bin/ffmpeg.exe',
 					'ffprobe.binaries' => 'C:/ffmpeg/bin/ffprobe.exe'
 					)
 				);
 
-				$video = $ffmpeg->open($oFile->path);
+				$video = null;
+				if($sProcessingAction !== "pre-check"){
+					$video = $ffmpeg->open($oFile->path);
+				}
 				
 
 				switch($sProcessingAction){
+					case "pre-check":
+						// make sure file is under max length and queue it's further processing if ok
+						$oFFProbe = FFMpeg\FFProbe::create();
+
+						$mVideoProbe = $oFFProbe
+						  ->streams($oFile->path)
+						  ->videos()
+						  ->first();
+
+						$mDuration = $mVideoProbe->get('duration');
+						$mTags = $mVideoProbe->get('tags');
+
+						$fDuration = (float)$mDuration;
+
+						if($fDuration > Helper::_AppProperty("iMaxVideoLengthSeconds"))
+						{
+							// video is longer than we want to process right now, so queue it, maybe later we do
+							$qiVideoQueue = new QueueModel;
+							$qiVideoQueue->file_id = $oFile->id;
+							$qiVideoQueue->processor = "video-too-long";
+							$qiVideoQueue->date_from = date('Y-m-d H:i:s');
+							$qiVideoQueue->save();
+
+						}else{
+							// some tags from probing
+							TaggingHelper::_QuickTag($oFile->id, "duration", (string)$fDuration);
+							$cTagsAdded++;
+
+
+							foreach($mTags as $sKey => $mVideoTag)
+							{
+								switch($sKey)
+								{
+									case "creation_time":
+										// parse to date and set on file, and as tag?
+										$oFile->datetime = $mVideoTag;
+										$oFile->save();
+
+										TaggingHelper::_QuickTag($oFile->id, "ffprobe.creation_time", (string)$mVideoTag);
+										$cTagsAdded++;
+										break;
+									case "handler_name":
+										TaggingHelper::_QuickTag($oFile->id, "ffprobe.handler_name", (string)$mVideoTag);
+										$cTagsAdded++;
+										break;
+								}
+							}
+
+							// queue all other video processors, and store the first couple of tags we have from probing
+							$qiVideoQueue = new QueueModel;
+							$qiVideoQueue->file_id = $oFile->id;
+							$qiVideoQueue->processor = "video-general";
+							$qiVideoQueue->date_from = date('Y-m-d H:i:s');
+							$qiVideoQueue->save();
+
+							$qiVideoMP4 = new QueueModel;
+							$qiVideoMP4->file_id = $oFile->id;
+							$qiVideoMP4->processor = "video-mp4";
+							$qiVideoMP4->date_from = date('Y-m-d H:i:s');
+							$qiVideoMP4->after = $qiVideoQueue->id;
+							$qiVideoMP4->save();
+
+							$qiVideoWEBM = new QueueModel;
+							$qiVideoWEBM->file_id = $oFile->id;
+							$qiVideoWEBM->processor = "video-webm";
+							$qiVideoWEBM->date_from = date('Y-m-d H:i:s');
+							$qiVideoWEBM->after = $qiVideoMP4->id;
+							$qiVideoWEBM->save();
+
+							$qiVideoOGV = new QueueModel;
+							$qiVideoOGV->file_id = $oFile->id;
+							$qiVideoOGV->processor = "video-ogv";
+							$qiVideoOGV->date_from = date('Y-m-d H:i:s');
+							$qiVideoOGV->after = $qiVideoWEBM->id;
+							$qiVideoOGV->save();
+
+
+							$qiElasticIndex = new QueueModel;
+							$qiElasticIndex->file_id = $oFile->id;
+							$qiElasticIndex->processor = "elasticindex";
+							$qiElasticIndex->date_from = date('Y-m-d H:i:s');
+							$qiElasticIndex->after = $qiVideoOGV->id;
+							$qiElasticIndex->save();
+						}
+						
+						break;
+
 					case "general":
-					case "all":
+						// get a still frame
 						$video->frame(FFMpeg\Coordinate\TimeCode::fromSeconds(5))->save(Helper::thumbPath("test").$oFile->id.".jpg");
-
-
 
 						//
 						// default tag
@@ -180,17 +267,18 @@ class VideoProcessor extends BaseController {
 							}
 						}
 						*/
+						break;
 					case "mp4":
-					case "all":
 						$oFormat = new FFMpeg\Format\Video\X264();
 						$oFormat->setAudioCodec("libvo_aacenc");
 						$video->save($oFormat, Helper::thumbPath("test").$oFile->id.'.mp4');
+						break;
 					case "webm":
-					case "all":
 						$video->save(new FFMpeg\Format\Video\WebM(), Helper::thumbPath("test").$oFile->id.'.webm');
+						break;
 					case "ogv":
-					case "all":
 						$video->save(new FFMpeg\Format\Video\Ogg(), Helper::thumbPath("test").$oFile->id.'.ogv');
+						break;
 				}
 
 
@@ -204,7 +292,7 @@ class VideoProcessor extends BaseController {
 				$eFilesRemoved->save();
 
 				// done?
-				$oFile->finishTagging();
+				//$oFile->finishTagging();
 
 
 				$oStat = new StatModel();

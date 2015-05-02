@@ -43,6 +43,22 @@ abstract class AbstractData implements \Countable
      */
     public function get($property, $default = null)
     {
+        //print_r($this->properties);
+
+        /*
+        foreach($this->properties as $sKeyName => $mKeyValue){
+            echo $sKeyName, ": ";
+            if(is_array($mKeyValue)){
+                print_r($mKeyValue);
+            }else{
+                echo $mKeyValue;
+            }
+
+            echo "<br/>";
+        }
+        echo "<br/>";
+        */
+
         if (!isset($this->properties[$property])) {
             return $default;
         }

@@ -68,5 +68,30 @@ Route::get('/elastic/re-index', array('uses' => 'ElasticSearchController@schedul
 
 Route::get('/test', function()
 {
-	VideoProcessor::testProcess(1);
+	$iaFiles = [1,3];
+
+	foreach($iaFiles as $iFileId)
+	{
+		$oFile = FileModel::find($iFileId);
+
+		$oFFProbe = FFMpeg\FFProbe::create();
+
+		$mVideoProbe = $oFFProbe
+		  ->streams($oFile->path)
+		  ->videos()
+		  ->first();
+
+		$mDuration = $mVideoProbe->get('duration');
+		$mTags = $mVideoProbe->get('tags');
+
+		print_r($mTags);		
+		echo "<br/>";
+	}
+
+	
+	//var_dump($mDuration);
+	//var_dump($mTags);
+	
+
+	//VideoProcessor::process(4, "pre-check");
 });

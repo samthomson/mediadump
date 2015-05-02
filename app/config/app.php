@@ -203,6 +203,8 @@ return array(
 	'autoOn' => true,
 	'confidenceThreshold' => 0,
 
+	'iMaxVideoLengthSeconds' => 180,
+
 	'imaggaKey' => "acc_19db373c6879755",
 	'imaggaSecret' => "d397f1a6ab0323a3a7a46ebf0a5af625",
 

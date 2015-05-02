@@ -136,6 +136,7 @@ class AutoController extends BaseController {
 									$oStat->save();
 								}
 								break;
+							case "video-pre-check":
 							case "video-general":
 							case "video-mp4":
 							case "video-webm":
@@ -366,40 +367,11 @@ class AutoController extends BaseController {
 					break;
 				case "mp4":
 					// video processor
-					$qiVideoQueue = new QueueModel;
-					$qiVideoQueue->file_id = $file->id;
-					$qiVideoQueue->processor = "video-general";
-					$qiVideoQueue->date_from = date('Y-m-d H:i:s');
-					$qiVideoQueue->save();
-
-					$qiVideoMP4 = new QueueModel;
-					$qiVideoMP4->file_id = $file->id;
-					$qiVideoMP4->processor = "video-mp4";
-					$qiVideoMP4->date_from = date('Y-m-d H:i:s');
-					$qiVideoMP4->after = $qiVideoQueue->id;
-					$qiVideoMP4->save();
-
-					$qiVideoWEBM = new QueueModel;
-					$qiVideoWEBM->file_id = $file->id;
-					$qiVideoWEBM->processor = "video-webm";
-					$qiVideoWEBM->date_from = date('Y-m-d H:i:s');
-					$qiVideoWEBM->after = $qiVideoMP4->id;
-					$qiVideoWEBM->save();
-
-					$qiVideoOGV = new QueueModel;
-					$qiVideoOGV->file_id = $file->id;
-					$qiVideoOGV->processor = "video-ogv";
-					$qiVideoOGV->date_from = date('Y-m-d H:i:s');
-					$qiVideoOGV->after = $qiVideoWEBM->id;
-					$qiVideoOGV->save();
-
-
-					$qiElasticIndex = new QueueModel;
-					$qiElasticIndex->file_id = $file->id;
-					$qiElasticIndex->processor = "elasticindex";
-					$qiElasticIndex->date_from = date('Y-m-d H:i:s');
-					$qiElasticIndex->after = $qiVideoOGV->id;
-					$qiElasticIndex->save();
+					$qiVideoCheckQueue = new QueueModel;
+					$qiVideoCheckQueue->file_id = $file->id;
+					$qiVideoCheckQueue->processor = "video-pre-check";
+					$qiVideoCheckQueue->date_from = date('Y-m-d H:i:s');
+					$qiVideoCheckQueue->save();
 					
 					break;
 			}	
