@@ -68,6 +68,7 @@ Route::get('/elastic/re-index', array('uses' => 'ElasticSearchController@schedul
 
 Route::get('/test', function()
 {
+	/*
 	$iaFiles = [1,3];
 
 	foreach($iaFiles as $iFileId)
@@ -87,11 +88,58 @@ Route::get('/test', function()
 		print_r($mTags);		
 		echo "<br/>";
 	}
+	*/
 
 	
 	//var_dump($mDuration);
 	//var_dump($mTags);
 	
 
-	//VideoProcessor::process(4, "pre-check");
+	VideoProcessor::process(2, "webm");
+
+	/*
+	$oFile = FileModel::find(1);
+
+	$ffmpeg = FFMpeg\FFMpeg::create(array(
+		'ffmpeg.binaries'  => 'C:/ffmpeg/bin/ffmpeg.exe',
+		'ffprobe.binaries' => 'C:/ffmpeg/bin/ffprobe.exe'
+		)
+	);
+
+	$video = $ffmpeg->open($oFile->path);
+	if(!file_exists($oFile->path))
+	{
+		echo "couldnt find";exit();
+	}
+
+	$sIn = $oFile->path;
+	$sOut = Helper::thumbPath("test").$oFile->id.'.jpg';
+
+	$sCommand = "ffmpeg -i $sIn -vframes 1 -filter:v scale=\"-1:300\" $sOut";
+	exec($sCommand);
+	*/
+
+
+
+
+	/*
+	$ffmpeg = FFMpeg\FFMpeg::create(array(
+		'ffmpeg.binaries'  => 'C:/ffmpeg/bin/ffmpeg.exe',
+		'ffprobe.binaries' => 'C:/ffmpeg/bin/ffprobe.exe'
+		)
+	);
+	$oFile = FileModel::find(1);
+	$video = $ffmpeg->open($oFile->path);
+
+	$format = new FFMpeg\Format\Video\WebM();
+
+	$format->on('progress', function ($video, $format, $percentage) {
+		if($percentage > 99){
+	    	exit();
+		}
+	    echo "$percentage % transcoded<br/>";
+	});
+
+	$video->save($format, Helper::thumbPath("test").$oFile->id.'.webm');
+	*/
 });

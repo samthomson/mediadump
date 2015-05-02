@@ -102,18 +102,41 @@ class ElasticSearchController extends BaseController {
 					}
 					
 					$params = array();
-					$params["body"] = array(
-						"id" => $oFile->id,
-						"hash" => $oFile->hash,
-						"medium_width" => $oFile->medium_width,
-						"medium_height" => $oFile->medium_height,
-						"datetime" => $oFile->datetime,
-						"longtime" => strtotime($oFile->datetime),
-						"latitude" => $oFile->geoData->latitude,
-						"longitude" => $oFile->geoData->longitude,
-						"elevation" => $oFile->geoData->elevation,
-						"tags" => $aaTags
-					);
+
+					switch($oFile->media_type)
+					{
+						case "image":
+							$params["body"] = array(
+								"id" => $oFile->id,
+								"hash" => $oFile->hash,
+								"media_type" => $oFile->media_type,
+								"file_type" => $oFile->file_type,
+								"medium_width" => $oFile->medium_width,
+								"medium_height" => $oFile->medium_height,
+								"datetime" => $oFile->datetime,
+								"longtime" => strtotime($oFile->datetime),
+								"latitude" => (isset($oFile->geoData->latitude) ? $oFile->geoData->latitude : null),
+								"longitude" => (isset($oFile->geoData->longitude) ? $oFile->geoData->longitude : null),
+								"elevation" => (isset($oFile->geoData->elevation) ? $oFile->geoData->elevation : null),
+								"literal_location" => (isset($oFile->geoData->elevations) ? $oFile->geoData->literal_locations : null),
+								"tags" => $aaTags
+							);
+							break;
+						case "video":
+							$params["body"] = array(
+								"id" => $oFile->id,
+								"hash" => $oFile->hash,
+								"media_type" => $oFile->media_type,
+								"file_type" => $oFile->file_type,
+								"medium_width" => $oFile->medium_width,
+								"medium_height" => $oFile->medium_height,
+								"datetime" => $oFile->datetime,
+								"tags" => $aaTags
+							);
+							break;
+					}
+
+					
 					$params["index"] = "mediadump_index";
 					$params["type"] = "file";
 					$params["id"] = $oFile->id;
@@ -126,6 +149,7 @@ class ElasticSearchController extends BaseController {
 				$bRemove = true;
 			}
 			if($bRemove){
+				echo "remove";exit();
 				// remove from index
 				$deleteParams['index'] = 'mediadump_index';
 				$deleteParams['id'] = $oFile->id;

@@ -58,7 +58,8 @@ class VideoProcessor extends BaseController {
 			{
 				$ffmpeg = FFMpeg\FFMpeg::create(array(
 					'ffmpeg.binaries'  => 'C:/ffmpeg/bin/ffmpeg.exe',
-					'ffprobe.binaries' => 'C:/ffmpeg/bin/ffprobe.exe'
+					'ffprobe.binaries' => 'C:/ffmpeg/bin/ffprobe.exe',
+					'timeout' => 0
 					)
 				);
 
@@ -146,20 +147,26 @@ class VideoProcessor extends BaseController {
 							$qiVideoOGV->save();
 
 
+							$qiCleanUp = new QueueModel;
+							$qiCleanUp->file_id = $oFile->id;
+							$qiCleanUp->processor = "video-finish";
+							$qiCleanUp->date_from = date('Y-m-d H:i:s');
+							$qiCleanUp->after = $qiVideoOGV->id;
+							$qiCleanUp->save();
+
+
 							$qiElasticIndex = new QueueModel;
 							$qiElasticIndex->file_id = $oFile->id;
 							$qiElasticIndex->processor = "elasticindex";
 							$qiElasticIndex->date_from = date('Y-m-d H:i:s');
-							$qiElasticIndex->after = $qiVideoOGV->id;
+							$qiElasticIndex->after = $qiCleanUp->id;
 							$qiElasticIndex->save();
 						}
 						
 						break;
 
 					case "general":
-						// get a still frame
-						$video->frame(FFMpeg\Coordinate\TimeCode::fromSeconds(5))->save(Helper::thumbPath("test").$oFile->id.".jpg");
-
+						
 						//
 						// default tag
 						//
@@ -183,6 +190,7 @@ class VideoProcessor extends BaseController {
 						//
 						// file name
 						//
+						$sFileExtension = explode(".", $sFileName)[1];
 						$sFileName = explode(".", $sFileName)[0];
 
 						TaggingHelper::_QuickTag($oFile->id, "filename", $sFileName);
@@ -194,16 +202,17 @@ class VideoProcessor extends BaseController {
 						TaggingHelper::_QuickTag($oFile->id, "mediatype", "video");
 						$cTagsAdded++;
 
-
-						TaggingHelper::_QuickTag($oFile->id, "filetype", "jpeg");
-						$cTagsAdded++;
+						if(strtolower($sFileExtension) === "mp4"){
+							TaggingHelper::_QuickTag($oFile->id, "filetype", "mp4");
+							$cTagsAdded++;
+						}
 
 						
 
 						//
 						// thumbs
 						//
-						/*
+
 						$aaThumbPaths = [];
 
 						array_push($aaThumbPaths, array(
@@ -235,38 +244,26 @@ class VideoProcessor extends BaseController {
 							"aspectRatio" => false
 						));
 
+						$sIn = $oFile->path;
 
-						foreach ($aaThumbPaths as $key => $saMakeThumb) {
+						foreach ($aaThumbPaths as $skey => $maMakeThumb) {
 							// delete previous thumb of same name
-							if(File::exists($saMakeThumb["path"]))
-								File::delete($saMakeThumb["path"]);
+							if(File::exists($maMakeThumb["path"]))
+								File::delete($maMakeThumb["path"]);
 
-							$img = Image::make($oFile->path)->orientate();
+							$sOut = $maMakeThumb["path"];
 
-							if($saMakeThumb["aspectRatio"])
+							$iH = $maMakeThumb["height"];
+							$iW = -1;
+							if(!$maMakeThumb["aspectRatio"])
 							{
-								$img->resize($saMakeThumb["width"], $saMakeThumb["height"], function ($constraint) {
-									$constraint->aspectRatio();
-								});
-							}else{
-								$img->fit($saMakeThumb["width"], $saMakeThumb["height"]);
+								$iW = $maMakeThumb["width"];
 							}
 
-							$img->save($saMakeThumb["path"]);
-
-							if($saMakeThumb["size"] === "medium")
-							{
-								$oFile->medium_width = $img->width();
-								$oFile->medium_height = $img->height();
-							}
-
-							$img->destroy();
-
-							if(!File::exists($saMakeThumb["path"])){
-								return false;
-							}
+							$sCommand = "ffmpeg -i $sIn -vframes 1 -filter:v scale=\"$iW:$iH\" $sOut";
+							exec($sCommand);
 						}
-						*/
+						
 						break;
 					case "mp4":
 						$oFormat = new FFMpeg\Format\Video\X264();
@@ -274,10 +271,23 @@ class VideoProcessor extends BaseController {
 						$video->save($oFormat, Helper::thumbPath("test").$oFile->id.'.mp4');
 						break;
 					case "webm":
-						$video->save(new FFMpeg\Format\Video\WebM(), Helper::thumbPath("test").$oFile->id.'.webm');
+						/*
+						//$video->save(new FFMpeg\Format\Video\WebM(), Helper::thumbPath("test").$oFile->id.'.webm');
+
+						$sIn = $oFile->path;
+						$sOut = Helper::thumbPath("test").$oFile->id.".webm";
+
+						$sCmd = "ffmpeg -i $sIn -b 345k -vcodec libvpx -acodec libvorbis -ab 160000 -f webm -r 15 -g 40 $sOut";
+						exec($sCmd);
+						die("done");
+						*/
 						break;
 					case "ogv":
 						$video->save(new FFMpeg\Format\Video\Ogg(), Helper::thumbPath("test").$oFile->id.'.ogv');
+						break;
+					case "finish":
+						// remove original file
+						$oFile->finishTagging();
 						break;
 				}
 
@@ -287,12 +297,10 @@ class VideoProcessor extends BaseController {
 				//
 				$eFilesRemoved = new EventModel();
 				$eFilesRemoved->name = "auto video processor";
-				$eFilesRemoved->message = "prcoessed a file";
+				$eFilesRemoved->message = "prcoessed a file: ".$sProcessingAction;
 				$eFilesRemoved->value = 1;
 				$eFilesRemoved->save();
 
-				// done?
-				//$oFile->finishTagging();
 
 
 				$oStat = new StatModel();
@@ -302,7 +310,7 @@ class VideoProcessor extends BaseController {
 				$oStat->save();
 
 				$oStat = new StatModel();
-				$oStat->name = "video proccess time";
+				$oStat->name = "video ($sProcessingAction) proccess time";
 				$oStat->group = "auto";
 				$oStat->value = (microtime(true) - $mtStart)*1000;
 				$oStat->save();

@@ -25,6 +25,9 @@ class Files extends Migration {
 
 			$table->datetime('datetime');
 
+			$table->string('media_type', 32)->nullable();
+			$table->string('file_type', 32)->nullable();
+
 			$table->date('created_at');
 			$table->date('updated_at');
 

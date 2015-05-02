@@ -141,6 +141,12 @@ class AutoController extends BaseController {
 							case "video-mp4":
 							case "video-webm":
 							case "video-ogv":
+							case "video-finish":
+								/*
+								// exit from the loop
+								video processing is intensive, so we only want to do one operation per auto cycle
+								*/
+								$bQueueItemsRemaining = false;
 								$qi->snooze();
 								$qi->save();
 								if(VideoProcessor::process($qi->file_id, str_replace("video-", '', $qi->processor)))
@@ -149,7 +155,7 @@ class AutoController extends BaseController {
 								}else{
 									$oFailEvent = new EventModel();
 									$oFailEvent->name = "auto processor";
-									$oFailEvent->message = "jpeg processor failed";
+									$oFailEvent->message = "video processor failed: ".$qi->processor;
 									$oFailEvent->save();
 
 									$oStat = new StatModel();
@@ -245,9 +251,7 @@ class AutoController extends BaseController {
 									$oQueueItem->save();
 
 
-									$qi->done();
-
-
+									
 									$eFilesFound = new EventModel();
 									$eFilesFound->name = "auto processor";
 									$eFilesFound->message = "elasticindex processor failed";
@@ -320,6 +324,8 @@ class AutoController extends BaseController {
 			{
 				case "jpg":
 				case "jpeg":
+					$file->media_type = "image";
+					$file->file_type = "jpeg";
 					// jpeg processor
 					$qiJpegQueue = new QueueModel;
 					$qiJpegQueue->file_id = $file->id;
@@ -366,6 +372,8 @@ class AutoController extends BaseController {
 					
 					break;
 				case "mp4":
+					$file->media_type = "video";
+					$file->file_type = "mp4";
 					// video processor
 					$qiVideoCheckQueue = new QueueModel;
 					$qiVideoCheckQueue->file_id = $file->id;
@@ -375,6 +383,7 @@ class AutoController extends BaseController {
 					
 					break;
 			}	
+			$file->save();
 		}
 	}
 

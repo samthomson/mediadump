@@ -422,8 +422,9 @@ class SearchController extends BaseController {
 				array_push($oaResults, [
 					"id" => $oHit["_source"]["id"],
 					"hash" => $oHit["_source"]["hash"],
-					"latitude" => $oHit["_source"]["latitude"],
-					"longitude" => $oHit["_source"]["longitude"],/*
+					"type" => $oHit["_source"]["media_type"],
+					"latitude" => (isset($oHit["_source"]["latitude"]) ? $oHit["_source"]["latitude"] : null),
+					"longitude" => (isset($oHit["_source"]["longitude"]) ? $oHit["_source"]["latitude"] : null),/*
 					"tags" => $oHit["_source"]["tags"],*/
 					"width" => $oHit["_source"]["medium_width"],
 					"height" => $oHit["_source"]["medium_height"]
