@@ -51,13 +51,6 @@ App::missing(function($exception)
 });
 
 
-/**/
-Route::get('/test/index', array('uses' => 'SearchController@queueIndex'));
-Route::get('/test/search', array('uses' => 'SearchController@testSearch'));
-Route::get('/test/index', array('uses' => 'SearchController@queueIndex'));
-
-Route::get('/test/create-index', array('uses' => 'ElasticSearchController@createIndex'));
-
 /*
 */
 
@@ -68,78 +61,70 @@ Route::get('/elastic/re-index', array('uses' => 'ElasticSearchController@schedul
 
 Route::get('/test', function()
 {
-	/*
-	$iaFiles = [1,3];
+	$client = new Elasticsearch\Client();
 
-	foreach($iaFiles as $iFileId)
-	{
-		$oFile = FileModel::find($iFileId);
+	$searchParams['index'] = 'mediadump_index';
+/*
+	$filter = array
+			(
+                "bool" => array
+                (
+                    "must" => array
+                    (
+                        "term" => array
+                        (
+                            "file_type" => 'mp4'
+                        ),
+                        "term" => array
+                        (
+                            "tags.value" => 'gopr0368'
+                        )
 
-		$oFFProbe = FFMpeg\FFProbe::create();
+                        
+                    ),
+                ),
+            );*/
+/*
+	$filter = [
+                "bool" => [
+                    "must" => [
+                        "term" => 
+                        [
+                            "hash" => "f6a3b3c868820ee5a1e071d9e70acff8"
+                        ],
+                        "term" => 
+                        [
+                            "file_type" => "mp4"
+                        ]
+                    ],
+                ],
+            ];
+            */
+	$filter = [
+        "and" => [
+            "filters" => [
+                [
+                	"term" => 
+                    [
+                        "tags.value" => '*'
+                    ]
+                ]
+            ],
+        ],
+    ];
 
-		$mVideoProbe = $oFFProbe
-		  ->streams($oFile->path)
-		  ->videos()
-		  ->first();
 
-		$mDuration = $mVideoProbe->get('duration');
-		$mTags = $mVideoProbe->get('tags');
-
-		print_r($mTags);		
-		echo "<br/>";
-	}
-	*/
-
-	
-	//var_dump($mDuration);
-	//var_dump($mTags);
-	
-
-	VideoProcessor::process(2, "webm");
-
-	/*
-	$oFile = FileModel::find(1);
-
-	$ffmpeg = FFMpeg\FFMpeg::create(array(
-		'ffmpeg.binaries'  => 'C:/ffmpeg/bin/ffmpeg.exe',
-		'ffprobe.binaries' => 'C:/ffmpeg/bin/ffprobe.exe'
-		)
+	$searchParams['body']['query']['filtered'] = array(
+	    "filter" => $filter
 	);
-
-	$video = $ffmpeg->open($oFile->path);
-	if(!file_exists($oFile->path))
-	{
-		echo "couldnt find";exit();
-	}
-
-	$sIn = $oFile->path;
-	$sOut = Helper::thumbPath("test").$oFile->id.'.jpg';
-
-	$sCommand = "ffmpeg -i $sIn -vframes 1 -filter:v scale=\"-1:300\" $sOut";
-	exec($sCommand);
-	*/
+	
 
 
 
+	//print_r(json_encode($searchParams));exit();
+	
+	$retDoc = $client->search($searchParams);
 
-	/*
-	$ffmpeg = FFMpeg\FFMpeg::create(array(
-		'ffmpeg.binaries'  => 'C:/ffmpeg/bin/ffmpeg.exe',
-		'ffprobe.binaries' => 'C:/ffmpeg/bin/ffprobe.exe'
-		)
-	);
-	$oFile = FileModel::find(1);
-	$video = $ffmpeg->open($oFile->path);
-
-	$format = new FFMpeg\Format\Video\WebM();
-
-	$format->on('progress', function ($video, $format, $percentage) {
-		if($percentage > 99){
-	    	exit();
-		}
-	    echo "$percentage % transcoded<br/>";
-	});
-
-	$video->save($format, Helper::thumbPath("test").$oFile->id.'.webm');
-	*/
+	//print_r($retDoc);
+	return Response::json($retDoc);
 });

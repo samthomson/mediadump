@@ -42,7 +42,7 @@ class JPEGProcessor extends BaseController {
 
 				$sFileName = array_pop($saDirs);
 
-				$cTagsAdded += TaggingHelper::iMakeFilePathTags($saDirs, $oFile->id)
+				$cTagsAdded += TaggingHelper::iMakeFilePathTags($saDirs, $oFile->id);
 
 				// unique directory path
 				$sUniqueDirPath = implode(DIRECTORY_SEPARATOR, $saDirs);

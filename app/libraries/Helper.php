@@ -1,10 +1,14 @@
 <?php
 
 class Helper {
-	public static function thumbPath($sSubFolder)
+	public static function thumbPath($sSubFolder, $bRelative = false)
 	{
+		$sPath = '';
 
-		$sPath = public_path().DIRECTORY_SEPARATOR."thumbs".DIRECTORY_SEPARATOR;
+		if(!$bRelative){
+			$sPath .= public_path();
+		}
+		$sPath .= DIRECTORY_SEPARATOR."thumbs".DIRECTORY_SEPARATOR;
 
 		if(isset($sSubFolder))
 			if($sSubFolder !== "")

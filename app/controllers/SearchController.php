@@ -213,7 +213,7 @@ class SearchController extends BaseController {
 				$join->on("files.id", "=", "tags.file_id")
 				->where("type", "=", "uniquedirectorypath");
 			})		
-		->where("live", "=", true)->distinct("value")/**/
+		->where("indexed", "=", true)->distinct("value")/**/
 		->orderBy("datetime", "desc")/**/
         ->groupBy('tags.value')/**/
         ->select("files.id", "files.hash", "tags.value")
@@ -297,15 +297,23 @@ class SearchController extends BaseController {
 	public static function elasticSearch()
 	{
 		try{
+			/*
 			$params = array();
 			$params['hosts'] = array (
 				'http://178.62.251.180:9200'
 				);
-			$params['logging'] = true;
-			/*$params['hosts'] = array (
+				*/
+			/*$params['logging'] = true;
+			$params['hosts'] = array (
 				'http://mediadump.samt.st:9200'
 				);*/
 			//$client = new Elasticsearch\Client($params);
+			
+			$params = array();
+			$params['hosts'] = array (
+				'http://localhost:9200'
+				);
+			$client = new Elasticsearch\Client($params);
 			$client = new Elasticsearch\Client();
 
 			$saResults = [];
@@ -328,7 +336,7 @@ class SearchController extends BaseController {
 
 			$saQueries = explode("|", $sQuery);
 
-			$oaQueries = [];
+			$aMustFilter = [];
 
 			foreach ($saQueries as $sQuery) {
 				$saQueryParts = explode("=", $sQuery);
@@ -354,43 +362,57 @@ class SearchController extends BaseController {
 							break;
 					}
 				}else{
-					$bDefaultQuery = true;
+					if($sQuery !== '*')
+						$bDefaultQuery = true;
 				}
 
 				if($bDefaultQuery){
-					//array_push($oaQueries, array('query_string' => array("default_field" => 'tags.value', "query" => '"'.$sQuery.'"')));
-					array_push($oaQueries, array('query_string' => array("default_field" => 'tags.value', "query" => '"'.$sQuery.'"')));
+					//echo "fdsfds";exit();
+					array_push($aMustFilter, array("term" => array("tags.value" => $sQuery)));
 				}
 			}
 
 			// shuffle
 			if(!$bShuffle){
-				$searchParams['sort'] = array("longtime:desc", "ignore_unmapped:true");
+				//$searchParams['sort'] = array("longtime:desc", "ignore_unmapped:true");
 			}
-/**/
+			/*
 			$searchParams['body'] = array(
-				
-			    'query' => array(
+				'query' => array(
 			        'function_score' => array(
 			            'functions' => array(
 			                array("random_score" => new \stdClass())
 			            ),
 			            'query' => array('bool' => array("must" => $oaQueries))
 			        )
-			    )
-			);
-/*
-			$searchParams['body'] = array(
-				
-			    'query' => array(
-			    	'filtered' => array(
-				        'query' => array('bool' => array("must" => $oaQueries))
-				    )
-			    )
+			    )			    
 			);
 			*/
-			//print_r(json_encode($searchParams));
-			//exit();
+			/**/
+			$filter = array();
+
+			
+
+			//array_push($aMustFilter, array("term" => array("tags.value" => 'gopr0368')));
+			//array_push($aMustFilter, array("term" => array("tags.value" => 'mp4')));
+
+
+			//$aMustFilter["term"] = array("tags.value" => 'gopr0368',"hash" => 'f6a3b3c868820ee5a1e071d9e70acff8');
+			//$aMustFilter["term"] = array("tags.value" => '*');
+
+			$filter = [
+                "and" => [
+                    "filters" => $aMustFilter,
+                ],
+            ];
+
+			$searchParams['body']['query']['filtered'] = array(
+			    "filter" => $filter
+			);
+			
+
+			//print_r(json_encode($searchParams));exit();
+			
 			
 			$retDoc = $client->search($searchParams);
 
@@ -450,8 +472,8 @@ class SearchController extends BaseController {
 
 
 			$oReturn = [
-			"info" => $oaInfo,
-			"results" => $oaResults
+				"info" => $oaInfo,
+				"results" => $oaResults
 			];
 
 			return Response::json($oReturn);

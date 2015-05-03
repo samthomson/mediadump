@@ -74,7 +74,7 @@ class ElasticSearchController extends BaseController {
 			$client = new Elasticsearch\Client();
 
 			if(isset($oFile)){
-				if($oFile->live == 1){
+				if($oFile->live == true){
 					//
 					// re-index
 					//
@@ -114,11 +114,11 @@ class ElasticSearchController extends BaseController {
 								"medium_width" => $oFile->medium_width,
 								"medium_height" => $oFile->medium_height,
 								"datetime" => $oFile->datetime,
-								"longtime" => strtotime($oFile->datetime),
+								"longtime" => strtotime($oFile->datetime),/*
 								"latitude" => (isset($oFile->geoData->latitude) ? $oFile->geoData->latitude : null),
 								"longitude" => (isset($oFile->geoData->longitude) ? $oFile->geoData->longitude : null),
 								"elevation" => (isset($oFile->geoData->elevation) ? $oFile->geoData->elevation : null),
-								"literal_location" => (isset($oFile->geoData->elevations) ? $oFile->geoData->literal_locations : null),
+								"literal_location" => (isset($oFile->geoData->elevations) ? $oFile->geoData->literal_locations : null),*//**/
 								"tags" => $aaTags
 							);
 							break;
@@ -131,6 +131,7 @@ class ElasticSearchController extends BaseController {
 								"medium_width" => $oFile->medium_width,
 								"medium_height" => $oFile->medium_height,
 								"datetime" => $oFile->datetime,
+								"longtime" => strtotime($oFile->datetime),
 								"tags" => $aaTags
 							);
 							break;
@@ -142,6 +143,9 @@ class ElasticSearchController extends BaseController {
 					$params["id"] = $oFile->id;
 
 					$ret = $client->index($params);
+
+					$oFile->indexed = true;
+					$oFile->save();
 				}else{
 					$bRemove = true;
 				}
@@ -149,11 +153,8 @@ class ElasticSearchController extends BaseController {
 				$bRemove = true;
 			}
 			if($bRemove){
-				echo "remove";exit();
 				// remove from index
-				$deleteParams['index'] = 'mediadump_index';
-				$deleteParams['id'] = $oFile->id;
-				$client->indices()->delete($deleteParams);
+				self::delete($oFile->id);
 			}
 			return true;
 		}catch(Exception $e){
@@ -162,13 +163,14 @@ class ElasticSearchController extends BaseController {
 		}
 	}
 
-	public static function delete()
+	public static function delete($iFileId)
 	{
 		$client = new Elasticsearch\Client();
 
-		$deleteParams['index'] = 'my_index';
-		$deleteParams['id'] = 2509;
-		$client->indices()->delete($deleteParams);
-
+		$deleteParams = array();
+		$deleteParams['index'] = 'mediadump_index';
+		$deleteParams['type'] = 'file';
+		$deleteParams['id'] = $iFileId;
+		$retDelete = $client->delete($deleteParams);
 	}
 }

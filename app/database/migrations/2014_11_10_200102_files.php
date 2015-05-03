@@ -18,6 +18,7 @@ class Files extends Migration {
 			$table->string('path');
 			$table->string('hash')->unique();
 			$table->boolean('live')->default(false);
+			$table->boolean('indexed')->default(false);
 			$table->boolean('have_original')->default(true);
 
 			$table->integer('medium_width')->default(0);

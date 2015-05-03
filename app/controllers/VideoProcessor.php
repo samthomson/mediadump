@@ -115,6 +115,34 @@ class VideoProcessor extends BaseController {
 										TaggingHelper::_QuickTag($oFile->id, "ffprobe.handler_name", (string)$mVideoTag);
 										$cTagsAdded++;
 										break;
+									case "width":
+										TaggingHelper::_QuickTag($oFile->id, "ffprobe.width", (string)$mVideoTag);
+										$cTagsAdded++;
+										break;
+									case "height":
+										TaggingHelper::_QuickTag($oFile->id, "ffprobe.height", (string)$mVideoTag);
+										$cTagsAdded++;
+										break;
+									case "display_aspect_ratio":
+										TaggingHelper::_QuickTag($oFile->id, "ffprobe.aspect_ratio", (string)$mVideoTag);
+										$cTagsAdded++;
+										break;
+									case "r_frame_rate":
+										TaggingHelper::_QuickTag($oFile->id, "ffprobe.frame_rate", (string)$mVideoTag);
+										$cTagsAdded++;
+										break;
+									case "codec_name":
+										TaggingHelper::_QuickTag($oFile->id, "ffprobe.codec_name", (string)$mVideoTag);
+										$cTagsAdded++;
+										break;
+									case "nb_frames":
+										TaggingHelper::_QuickTag($oFile->id, "ffprobe.frames", (string)$mVideoTag);
+										$cTagsAdded++;
+										break;
+									case "channels":
+										TaggingHelper::_QuickTag($oFile->id, "ffprobe.channels", (string)$mVideoTag);
+										$cTagsAdded++;
+										break;
 								}
 							}
 
@@ -215,44 +243,35 @@ class VideoProcessor extends BaseController {
 
 						$aaThumbPaths = [];
 
-						array_push($aaThumbPaths, array(
-							"size" => "large",
-							"path" => Helper::thumbPath("large").$oFile->hash.".jpg",
+						$aaThumbPaths["large"] = array(
 							"width" => null,
 							"height" => 1200,
 							"aspectRatio" => true
-						));
-						array_push($aaThumbPaths, array(
-							"size" => "medium",
-							"path" => Helper::thumbPath("medium").$oFile->hash.".jpg",
+						);
+						$aaThumbPaths["medium"] = array(
 							"width" => null,
 							"height" => 300,
 							"aspectRatio" => true
-						));
-						array_push($aaThumbPaths, array(
-							"size" => "small",
-							"path" => Helper::thumbPath("small").$oFile->hash.".jpg",
+						);
+						$aaThumbPaths["small"] = array(
 							"width" => 125,
 							"height" => 125,
 							"aspectRatio" => false
-						));
-						array_push($aaThumbPaths, array(
-							"size" => "icon",
-							"path" => Helper::thumbPath("icon").$oFile->hash.".jpg",
+						);
+						$aaThumbPaths["icon"] = array(
 							"width" => 32,
 							"height" => 32,
 							"aspectRatio" => false
-						));
+						);
 
 						$sIn = $oFile->path;
 
 						foreach ($aaThumbPaths as $skey => $maMakeThumb) {
+							$sOut = Helper::thumbPath($skey).$oFile->hash.".jpg";
 							// delete previous thumb of same name
-							if(File::exists($maMakeThumb["path"]))
-								File::delete($maMakeThumb["path"]);
-
-							$sOut = $maMakeThumb["path"];
-
+							if(File::exists($sOut))
+								File::delete($sOut);
+							
 							$iH = $maMakeThumb["height"];
 							$iW = -1;
 							if(!$maMakeThumb["aspectRatio"])
@@ -260,9 +279,18 @@ class VideoProcessor extends BaseController {
 								$iW = $maMakeThumb["width"];
 							}
 
-							$sCommand = "ffmpeg -i $sIn -vframes 1 -filter:v scale=\"$iW:$iH\" $sOut";
+							$sCommand = "ffmpeg -i \"$sIn\" -vframes 1 -filter:v scale=\"$iW:$iH\" \"$sOut\"";
 							exec($sCommand);
 						}
+						// no we've made some thumbnails of the video, store the medium size in the db
+						$sReadPath = Helper::thumbPath("medium", false).$oFile->hash.".jpg";
+						
+						$oImage = Image::make($sReadPath);
+
+						$oFile->medium_width = $oImage->width();
+						$oFile->medium_height = $oImage->height();
+
+						$oFile->save();
 						
 						break;
 					case "mp4":

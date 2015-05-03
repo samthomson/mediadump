@@ -169,13 +169,20 @@ class AutoController extends BaseController {
 								$qi->snooze(3);
 								$qi->save();
 								$sResponse = ImaggaProcessor::process($qi->file_id);
-								echo "imagga response: $sResponse<br/>";
+								//echo "imagga response: $sResponse<br/>";
 								switch($sResponse)
 								{
 									case "ok":
 										$qi->done();
 										break;
 									case "fail":
+										$qi->done();
+
+										$oImaggaFail = new QueueModel;
+										$oImaggaFail->file_id = $qi->file_id;
+										$oImaggaFail->processor = "imagga_fail";
+										$oImaggaFail->save();
+
 										$eFilesFound = new EventModel();
 										$eFilesFound->name = "auto processor";
 										$eFilesFound->message = "imagga processor failed";
@@ -361,7 +368,7 @@ class AutoController extends BaseController {
 					$qiPlaces->file_id = $file->id;
 					$qiPlaces->processor = "places";
 					$qiPlaces->date_from = date('Y-m-d H:i:s');
-					$qiPlaces->after = $qiImagga->id;
+					$qiPlaces->after = $qiJpegQueue->id;
 					$qiPlaces->save();
 
 					$qiElasticIndex->file_id = $file->id;
