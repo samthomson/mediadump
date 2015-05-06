@@ -56,70 +56,44 @@ App::missing(function($exception)
 
 Route::get('/test/delete', array('uses' => 'ElasticSearchController@deleteIndex'));
 
+Route::get('/elastic/create', array('uses' => 'ElasticSearchController@createIndex'));
+
 Route::get('/elastic/re-index', array('uses' => 'ElasticSearchController@scheduleFullReindex'));
 
 
 Route::get('/test', function()
 {
+	
 	$client = new Elasticsearch\Client();
 
 	$searchParams['index'] = 'mediadump_index';
-/*
-	$filter = array
-			(
-                "bool" => array
-                (
-                    "must" => array
-                    (
-                        "term" => array
-                        (
-                            "file_type" => 'mp4'
-                        ),
-                        "term" => array
-                        (
-                            "tags.value" => 'gopr0368'
-                        )
 
-                        
-                    ),
-                ),
-            );*/
 /*
 	$filter = [
-                "bool" => [
-                    "must" => [
-                        "term" => 
-                        [
-                            "hash" => "f6a3b3c868820ee5a1e071d9e70acff8"
-                        ],
-                        "term" => 
-                        [
-                            "file_type" => "mp4"
-                        ]
-                    ],
-                ],
-            ];
-            */
+		"bool" => [
+			"must" => [
+				"range" => [
+					"longitude" => ["lt" => 0, "gt" => -30],
+					"latitude" => ["gt" => 50]
+				]
+	        ]
+	    ]
+    ];
+    */
+    $ands = [];
+    /**/
+    array_push($ands, array("term" => array("tags.value" => "test")));
+
 	$filter = [
-        "and" => [
-            "filters" => [
-                [
-                	"term" => 
-                    [
-                        "tags.value" => '*'
-                    ]
-                ]
-            ],
-        ],
+		"and" => $ands
     ];
 
 
+    //$searchParams['body']['query']['filtered']['query']['match_all'] = new \stdClass();
 	$searchParams['body']['query']['filtered'] = array(
 	    "filter" => $filter
 	);
 	
-
-
 
 	//print_r(json_encode($searchParams));exit();
 	
@@ -127,4 +101,28 @@ Route::get('/test', function()
 
 	//print_r($retDoc);
 	return Response::json($retDoc);
+/**/
+		
+});
+
+Route::get('/test/index', function()
+{
+	$client = new Elasticsearch\Client();
+	$indexParams['index']  = 'mediadump_index';
+
+	// Example Index Mapping
+	$myTypeMapping = array(
+	    '_source' => array(
+	        'enabled' => true
+	    ),
+	    'properties' => array(
+	        'fieldName' => array("type" => "geo_point"),
+	        'tags.value' => array("type" => "string", "index" => "not_analyzed")
+	    )
+	);
+	$indexParams['body']['mappings']['file'] = $myTypeMapping;
+
+	// Create the index
+	$client->indices()->create($indexParams);
+		
 });

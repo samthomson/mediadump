@@ -297,25 +297,15 @@ class SearchController extends BaseController {
 	public static function elasticSearch()
 	{
 		try{
-			/*
-			$params = array();
-			$params['hosts'] = array (
-				'http://178.62.251.180:9200'
-				);
-				*/
-			/*$params['logging'] = true;
-			$params['hosts'] = array (
-				'http://mediadump.samt.st:9200'
-				);*/
-			//$client = new Elasticsearch\Client($params);
-			
 			$params = array();
 			$params['hosts'] = array (
 				'http://localhost:9200'
-				);
-			$client = new Elasticsearch\Client($params);
-			$client = new Elasticsearch\Client();
+			);
 
+			//$params['hosts'] = array ('http://178.62.251.180:9200');
+			
+			$client = new Elasticsearch\Client($params);
+			
 			$saResults = [];
 			$bShuffle = false;
 			$iPerPage = 100;
@@ -337,6 +327,9 @@ class SearchController extends BaseController {
 			$saQueries = explode("|", $sQuery);
 
 			$aMustFilter = [];
+			$oGeoQuery = null;
+
+    		$ands = [];
 
 			foreach ($saQueries as $sQuery) {
 				$saQueryParts = explode("=", $sQuery);
@@ -348,10 +341,31 @@ class SearchController extends BaseController {
 						case 'map':
 							$bShuffle = true;
 							$iaLatLonParts = explode(",", $saQueryParts[1]);
+							
+							array_push($ands, ["range" => [
+								"latitude" => ["gt" => $iaLatLonParts[0], "lt" => $iaLatLonParts[1]]
+							]]);
+							array_push($ands, ["range" => [
+								"longitude" => ["gt" => $iaLatLonParts[2], "lt" => $iaLatLonParts[3]]
+							]]);
 
-							array_push($oaQueries, array('range' => array('latitude' => array('gt' => (float)$iaLatLonParts[0],'lt' => (float)$iaLatLonParts[1]))));
-							array_push($oaQueries, array('range' => array('longitude' => array('gt' => $iaLatLonParts[2],'lt' => $iaLatLonParts[3]))));
-							//array_push($oaQueries, array('range' => array('field' => 'longitude', 'ranges' => array('from' => (float)$iaLatLonParts[2],'to' => (float)$iaLatLonParts[3]))));
+							$oGeoQuery = 
+								[
+									"geo_bounding_box" => 
+										[
+											"pin.location" => 
+												[
+													"top_left" => [
+														"lat" => (float)$iaLatLonParts[1],
+														"lon" => (float)$iaLatLonParts[2]
+													],
+													"bottom_right" => [
+														"lat" => (float)$iaLatLonParts[0],
+														"lon" => (float)$iaLatLonParts[3]
+													]
+												]
+										]
+								];
 							break;
 						case 'shuffle':
 							$bShuffle = true;
@@ -362,61 +376,51 @@ class SearchController extends BaseController {
 							break;
 					}
 				}else{
-					if($sQuery !== '*')
-						$bDefaultQuery = true;
+					$bDefaultQuery = true;
 				}
 
 				if($bDefaultQuery){
-					//echo "fdsfds";exit();
-					array_push($aMustFilter, array("term" => array("tags.value" => $sQuery)));
+					if($sQuery == '*')
+					{
+						array_push($ands, array("match_all" => new \stdClass()));
+					}else{
+						array_push($ands, array("term" => array("tags.value" => $sQuery)));
+					}
 				}
 			}
 
 			// shuffle
 			if(!$bShuffle){
-				//$searchParams['sort'] = array("longtime:desc", "ignore_unmapped:true");
+				$searchParams['sort'] = array("longtime:desc", "ignore_unmapped:true");
+			}else{
+				array_push($ands, array("match_all" => new \stdClass()));
 			}
-			/*
+			$filter = array();
+
+
+            $filter = [
+				"and" => $ands
+		    ];
+            
+			$searchParams['body']['query']['filtered'] = array(
+			    "filter" => $filter
+			);
+
+			
 			$searchParams['body'] = array(
 				'query' => array(
 			        'function_score' => array(
 			            'functions' => array(
 			                array("random_score" => new \stdClass())
 			            ),
-			            'query' => array('bool' => array("must" => $oaQueries))
+			            'filter' => $filter
 			        )
 			    )			    
 			);
-			*/
-			/**/
-			$filter = array();
-
 			
-
-			//array_push($aMustFilter, array("term" => array("tags.value" => 'gopr0368')));
-			//array_push($aMustFilter, array("term" => array("tags.value" => 'mp4')));
-
-
-			//$aMustFilter["term"] = array("tags.value" => 'gopr0368',"hash" => 'f6a3b3c868820ee5a1e071d9e70acff8');
-			//$aMustFilter["term"] = array("tags.value" => '*');
-
-			$filter = [
-                "and" => [
-                    "filters" => $aMustFilter,
-                ],
-            ];
-
-			$searchParams['body']['query']['filtered'] = array(
-			    "filter" => $filter
-			);
-			
-
-			//print_r(json_encode($searchParams));exit();
 			
 			
 			$retDoc = $client->search($searchParams);
-
-			//print_r($retDoc);
 
 			$saStats = [];
 			$soFiles = [];
@@ -442,14 +446,14 @@ class SearchController extends BaseController {
 
 				//array_push($saResults, $oHit["_source"]["hash"]);
 				array_push($oaResults, [
-					"id" => $oHit["_source"]["id"],
+					"id" => (int)$oHit["_source"]["id"],
 					"hash" => $oHit["_source"]["hash"],
-					"type" => $oHit["_source"]["media_type"],
-					"latitude" => (isset($oHit["_source"]["latitude"]) ? $oHit["_source"]["latitude"] : null),
-					"longitude" => (isset($oHit["_source"]["longitude"]) ? $oHit["_source"]["latitude"] : null),/*
+					"type" => (isset($oHit["_source"]["media_type"]) ? $oHit["_source"]["media_type"] : null),
+					"latitude" => (isset($oHit["_source"]["latitude"]) ? (float)$oHit["_source"]["latitude"] : null),
+					"longitude" => (isset($oHit["_source"]["longitude"]) ? (float)$oHit["_source"]["longitude"] : null),/*
 					"tags" => $oHit["_source"]["tags"],*/
-					"width" => $oHit["_source"]["medium_width"],
-					"height" => $oHit["_source"]["medium_height"]
+					"width" => (int)$oHit["_source"]["medium_width"],
+					"height" => (int)$oHit["_source"]["medium_height"]
 					]);
 			}
 

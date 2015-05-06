@@ -15,6 +15,20 @@ class ElasticSearchController extends BaseController {
 			$client = new Elasticsearch\Client();
 			$indexParams['index']  = 'mediadump_index';    //index
 
+			$myTypeMapping = array(
+			    '_source' => array(
+			        'enabled' => true
+			    ),
+        		'pin' => array(
+			        'properties' => array(
+			            'location' => array(
+			            	'type' => 'geo_point'
+			            )
+			        )
+			    )
+			);
+			$indexParams['body']['mappings']['my_type'] = $myTypeMapping;
+
 			$client->indices()->create($indexParams);
 		}catch(Exception $e){echo "createing index failed: $e";}
 	}
@@ -114,11 +128,16 @@ class ElasticSearchController extends BaseController {
 								"medium_width" => $oFile->medium_width,
 								"medium_height" => $oFile->medium_height,
 								"datetime" => $oFile->datetime,
-								"longtime" => strtotime($oFile->datetime),/*
-								"latitude" => (isset($oFile->geoData->latitude) ? $oFile->geoData->latitude : null),
-								"longitude" => (isset($oFile->geoData->longitude) ? $oFile->geoData->longitude : null),
+								"longtime" => strtotime($oFile->datetime),
+								/*
+								"pin" => ((isset($oFile->geoData->latitude) && isset($oFile->geoData->longitude)) ? ["location" => ["lat" => $oFile->geoData->latitude, "lon" => $oFile->geoData->longitude]] : null),
+								*/
+								"pin" => ((isset($oFile->geoData->latitude) && isset($oFile->geoData->longitude)) ? ["location" => ["lat" => $oFile->geoData->latitude, "lon" => $oFile->geoData->longitude]] : null),
+
+								"latitude" => (isset($oFile->geoData->latitude) ? (float)$oFile->geoData->latitude : null),
+								"longitude" => (isset($oFile->geoData->longitude) ? (float)$oFile->geoData->longitude : null),
 								"elevation" => (isset($oFile->geoData->elevation) ? $oFile->geoData->elevation : null),
-								"literal_location" => (isset($oFile->geoData->elevations) ? $oFile->geoData->literal_locations : null),*//**/
+								"literal_location" => (isset($oFile->geoData->elevations) ? $oFile->geoData->literal_locations : null),/**//**/
 								"tags" => $aaTags
 							);
 							break;
@@ -132,7 +151,9 @@ class ElasticSearchController extends BaseController {
 								"medium_height" => $oFile->medium_height,
 								"datetime" => $oFile->datetime,
 								"longtime" => strtotime($oFile->datetime),
-								"tags" => $aaTags
+								"tags" => $aaTags,
+								"pin" => ((isset($oFile->geoData->latitude) && isset($oFile->geoData->longitude)) ? ["location" => [$oFile->geoData->latitude, $oFile->geoData->longitude]] : null)/*
+								"pin" => ["location" => "41.12,-71.34"]*/
 							);
 							break;
 					}
@@ -169,7 +190,6 @@ class ElasticSearchController extends BaseController {
 
 		$deleteParams = array();
 		$deleteParams['index'] = 'mediadump_index';
-		$deleteParams['type'] = 'file';
 		$deleteParams['id'] = $iFileId;
 		$retDelete = $client->delete($deleteParams);
 	}
