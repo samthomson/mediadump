@@ -63,46 +63,7 @@ Route::get('/elastic/re-index', array('uses' => 'ElasticSearchController@schedul
 
 Route::get('/test', function()
 {
-	
-	$client = new Elasticsearch\Client();
-
-	$searchParams['index'] = 'mediadump_index';
-
-/*
-	$filter = [
-		"bool" => [
-			"must" => [
-				"range" => [
-					"longitude" => ["lt" => 0, "gt" => -30],
-					"latitude" => ["gt" => 50]
-				]
-	        ]
-	    ]
-    ];
-    */
-    $ands = [];
-    /**/
-    array_push($ands, array("term" => array("tags.value" => "test")));
-
-	$filter = [
-		"and" => $ands
-    ];
-
-
-    //$searchParams['body']['query']['filtered']['query']['match_all'] = new \stdClass();
-	$searchParams['body']['query']['filtered'] = array(
-	    "filter" => $filter
-	);
-	
-
-	//print_r(json_encode($searchParams));exit();
-	
-	$retDoc = $client->search($searchParams);
-
-	//print_r($retDoc);
-	return Response::json($retDoc);
-/**/
-		
+	VideoProcessor::process(12, "webm");	
 });
 
 Route::get('/test/index', function()

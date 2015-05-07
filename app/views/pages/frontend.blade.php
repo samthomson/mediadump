@@ -13,7 +13,7 @@
 		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 
 		<!-- flow player -->
-		<link rel="stylesheet" href="//releases.flowplayer.org/5.5.0/skin/minimalist.css">
+		<link rel="stylesheet" href="//releases.flowplayer.org/5.5.2/skin/minimalist.css">
 
 		<link rel="stylesheet" href="/vendor/bootstraptags/bootstrap-tags.css">
 		
@@ -118,7 +118,14 @@
 					<a href="javascript:lightChange(1);" >
 						<img />
 					</a>
-					<div id="player" ng-show="results[iLightIndex].type === 'video'"></div>					
+					<div id="player" ng-show="results[iLightIndex].type === 'video'">
+						<div class="flowplayer">
+						   <video>
+						      <source type="video/webm" src="http://mediadump.dev/.webm">
+						      <source type="video/mp4"  src="http://mydomain.com/path/to/intro.mp4">
+						   </video>
+						</div>
+					</div>					
 					
 				</div>
 				<div id="lightbox_info_view"></div>
@@ -133,7 +140,7 @@
 		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
 		<!-- flow player -->
-		<script src="//releases.flowplayer.org/5.5.0/flowplayer.min.js"></script>
+		<script src="//releases.flowplayer.org/5.5.2/flowplayer.min.js"></script>
 
 
 		<script src="/vendor/bootstraptags/bootstrap-tags.min.js"></script>

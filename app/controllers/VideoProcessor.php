@@ -27,20 +27,6 @@ class OpenMp4 extends FFMpeg\Format\Video\DefaultVideo
 
 class VideoProcessor extends BaseController {
 
-	public static function testProcess($iFileId)
-	{
-
-		$oTestVideo = FileModel::find($iFileId);
-
-		// make array of files created (to delete after if one part of process fails)
-		
-		
-		// create mp4
-		// create ogv
-		// create webm
-
-		// create stills
-	}
 
 	public static function process($iFileId, $sProcessingAction)
 	{		
@@ -296,22 +282,25 @@ class VideoProcessor extends BaseController {
 					case "mp4":
 						$oFormat = new FFMpeg\Format\Video\X264();
 						$oFormat->setAudioCodec("libvo_aacenc");
-						$video->save($oFormat, Helper::thumbPath("test").$oFile->id.'.mp4');
+						$video->save($oFormat, Helper::thumbPath("mp4").$oFile->hash.'.mp4');
 						break;
 					case "webm":
-						/*
-						//$video->save(new FFMpeg\Format\Video\WebM(), Helper::thumbPath("test").$oFile->id.'.webm');
-
+						echo "here";
+						
+						/*$video->save(new FFMpeg\Format\Video\WebM(), Helper::thumbPath("webm").$oFile->hash.'.webm');
+*/
+						
 						$sIn = $oFile->path;
-						$sOut = Helper::thumbPath("test").$oFile->id.".webm";
+						$sOut = Helper::thumbPath("webm").$oFile->id.".webm";
 
-						$sCmd = "ffmpeg -i $sIn -b 345k -vcodec libvpx -acodec libvorbis -ab 160000 -f webm -r 15 -g 40 $sOut";
+						$sCmd = "ffmpeg -i \"$sIn\" -b 345k -vcodec libvpx -acodec libvorbis -ab 160000 -f webm -r 15 -g 40 $sOut";
+						echo $sCmd;
 						exec($sCmd);
-						die("done");
-						*/
+						
+						/**/
 						break;
 					case "ogv":
-						$video->save(new FFMpeg\Format\Video\Ogg(), Helper::thumbPath("test").$oFile->id.'.ogv');
+						$video->save(new FFMpeg\Format\Video\Ogg(), Helper::thumbPath("ogv").$oFile->hash.'.ogv');
 						break;
 					case "finish":
 						// remove original file

@@ -324,6 +324,7 @@ function renderResults(){
 			var sSingleFileItem = "";
 
 			var sHref = window.location.hash + '&file=' + cIndex;
+			var sThumbSize = (sSearchMode === 'map' ? 'small' : 'medium');
 
 			sSingleFileItem +='<a class="thumb_result_link" onmousedown="preloadThumb('+cIndex+')" onclick="thumbClick('+cIndex+'); return false;" href="' + sHref + '">';
 
@@ -337,7 +338,7 @@ function renderResults(){
 				sConfidenceClass = "least-confident";
 			}	
 			sSingleFileItem +='<div class="tree_image_container justify-thumbnail">';
-			sSingleFileItem +='<img src="' + urlFromHash('medium', oFile.hash, '') + '" id="' + oFile.id + '" class="result-thumb ' + sConfidenceClass + '" />';
+			sSingleFileItem +='<img src="' + urlFromHash(sThumbSize, oFile.hash, '') + '" id="' + oFile.id + '" class="result-thumb ' + sConfidenceClass + '" />';
 
 
 			sSingleFileItem +='</div>';
