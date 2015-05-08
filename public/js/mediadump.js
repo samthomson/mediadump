@@ -1026,6 +1026,7 @@ $( document ).ready(function() {
 	}
 	if(saUrlVars["queries"] != undefined){
 		oaQueries = JSON.parse(decodeURIComponent(saUrlVars["queries"]));
+		queryChange();
 		performSearch(iLightboxfile);
 	}
 
