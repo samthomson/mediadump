@@ -1000,10 +1000,11 @@ $( document ).ready(function() {
 	if(saUrlVars["mode"] != undefined){
 		sSearchMode = saUrlVars["mode"];
 	}
+	if(saUrlVars["page"] != undefined){
+		iPage = saUrlVars["page"];
+	}
 	if(saUrlVars["queries"] != undefined){
-		log(decodeURIComponent(saUrlVars["queries"]));
 		oaQueries = JSON.parse(decodeURIComponent(saUrlVars["queries"]));
-		log(oaQueries);
 		performSearch();
 	}
 
