@@ -132,9 +132,12 @@ function getTree(){
 		renderTree();
 	});
 }
-function performSearch()
+function performSearch(iFileToRenderAfterSearch)
 {
-	closeLightbox();
+	if(typeof iFileToRenderAfterSearch === 'undefined')
+	{
+		closeLightbox();
+	}
 	if(oaQueries.length > 0){
 		setLoading(true);
 		if(xhrSearch && xhrSearch.readystate != 4){
@@ -159,6 +162,15 @@ function performSearch()
 
 			renderResults();
 			renderPagination();
+
+			if(typeof iFileToRenderAfterSearch !== 'undefined')
+			{
+				iFileToRenderAfterSearch = parseInt(iFileToRenderAfterSearch);
+				if(iFileToRenderAfterSearch > -1)
+				{
+					thumbClick(iFileToRenderAfterSearch);
+				}
+			}
 		});
 	}
 }
@@ -674,11 +686,13 @@ function updateLightShowing(){
 	}
 }
 function setFile(iFileIndex){	
-	if(iFile != iFileIndex){
+	//if(iFile != iFileIndex){
 		iFile = iFileIndex;
 		updateFile();
 		_buildUrlFromParams();
-	}	
+	//}else{
+	//	log ("file and file index are the same.. ?");
+	//}
 }
 function updateFile(){
 	if(iFile > -1){
@@ -1003,9 +1017,16 @@ $( document ).ready(function() {
 	if(saUrlVars["page"] != undefined){
 		iPage = saUrlVars["page"];
 	}
+	var iLightboxfile = undefined;
+	if(saUrlVars["file"] != undefined){
+		if(parseInt(saUrlVars["file"]) > -1){
+			iLightboxfile = saUrlVars["file"];
+			iFile = saUrlVars["file"];
+		}
+	}
 	if(saUrlVars["queries"] != undefined){
 		oaQueries = JSON.parse(decodeURIComponent(saUrlVars["queries"]));
-		performSearch();
+		performSearch(iLightboxfile);
 	}
 
 
