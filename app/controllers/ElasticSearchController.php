@@ -13,23 +13,22 @@ class ElasticSearchController extends BaseController {
 	{
 		try{
 			$client = new Elasticsearch\Client();
-			$indexParams['index']  = 'mediadump_index';    //index
+			$indexParams['index']  = 'mediadump_index';
 
+			// Example Index Mapping
 			$myTypeMapping = array(
 			    '_source' => array(
 			        'enabled' => true
 			    ),
-        		'pin' => array(
-			        'properties' => array(
-			            'location' => array(
-			            	'type' => 'geo_point'
-			            )
-			        )
+			    'properties' => array(
+			        'fieldName' => array("type" => "geo_point"),
+			        'tags.value' => array("type" => "string", "index" => "not_analyzed")
 			    )
 			);
-			$indexParams['body']['mappings']['my_type'] = $myTypeMapping;
+			$indexParams['body']['mappings']['file'] = $myTypeMapping;
 
-			$client->indices()->create($indexParams);
+			// Create the index
+			$client->indices()->create($indexParams);	
 		}catch(Exception $e){echo "createing index failed: $e";}
 	}
 	public static function deleteIndex()

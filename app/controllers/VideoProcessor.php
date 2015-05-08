@@ -285,7 +285,6 @@ class VideoProcessor extends BaseController {
 						$video->save($oFormat, Helper::thumbPath("mp4").$oFile->hash.'.mp4');
 						break;
 					case "webm":
-						echo "here";
 						
 						/*$video->save(new FFMpeg\Format\Video\WebM(), Helper::thumbPath("webm").$oFile->hash.'.webm');
 */
@@ -293,7 +292,12 @@ class VideoProcessor extends BaseController {
 						$sIn = $oFile->path;
 						$sOut = Helper::thumbPath("webm").$oFile->id.".webm";
 
-						$sCmd = "ffmpeg -i \"$sIn\" -b 345k -vcodec libvpx -acodec libvorbis -ab 160000 -f webm -r 15 -g 40 $sOut";
+						$sCmd = "ffmpeg -i \"$sIn\" -b 15k -vcodec libvpx -acodec libvorbis -ab 160000 -f webm -r 15 -g 300 \"$sOut\"";
+
+						$sOut = Helper::thumbPath("webm").$oFile->id."w.webm";
+
+						$sCmd = "ffmpeg -i \"$sIn\" -fs 5M \"$sOut\"";
+
 						echo $sCmd;
 						exec($sCmd);
 						

@@ -378,6 +378,7 @@ class AutoController extends BaseController {
 					$qiElasticIndex->save();
 					
 					break;
+					/*
 				case "mp4":
 					$file->media_type = "video";
 					$file->file_type = "mp4";
@@ -389,6 +390,7 @@ class AutoController extends BaseController {
 					$qiVideoCheckQueue->save();
 					
 					break;
+					*/
 			}	
 			$file->save();
 		}

@@ -115,10 +115,11 @@
 				</a>
 				<div id="lightbox_contents">				
 				
-					<a href="javascript:lightChange(1);" >
+					<a href="javascript:lightChange(1);" class="lightbox-image">
 						<img />
 					</a>
-					<div id="player" ng-show="results[iLightIndex].type === 'video'">
+					<!--
+					<div id="player" class="lightbox-video">
 						<div class="flowplayer">
 						   <video>
 						      <source type="video/webm" src="http://mediadump.dev/.webm">
@@ -126,7 +127,7 @@
 						   </video>
 						</div>
 					</div>					
-					
+					-->
 				</div>
 				<div id="lightbox_info_view"></div>
 			</div>

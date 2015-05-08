@@ -63,27 +63,10 @@ Route::get('/elastic/re-index', array('uses' => 'ElasticSearchController@schedul
 
 Route::get('/test', function()
 {
-	VideoProcessor::process(12, "webm");	
-});
-
-Route::get('/test/index', function()
-{
-	$client = new Elasticsearch\Client();
-	$indexParams['index']  = 'mediadump_index';
-
-	// Example Index Mapping
-	$myTypeMapping = array(
-	    '_source' => array(
-	        'enabled' => true
-	    ),
-	    'properties' => array(
-	        'fieldName' => array("type" => "geo_point"),
-	        'tags.value' => array("type" => "string", "index" => "not_analyzed")
-	    )
-	);
-	$indexParams['body']['mappings']['file'] = $myTypeMapping;
-
-	// Create the index
-	$client->indices()->create($indexParams);
-		
+	// go pro camping in forest
+	//VideoProcessor::process(12, "webm");	
+	// goats
+	#VideoProcessor::process(13, "webm");	
+	// cycling
+	#VideoProcessor::process(14, "webm");	
 });

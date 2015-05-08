@@ -22,7 +22,7 @@ var xhrFileInfo;
 var bQueryInputEventsOn = true;
 
 var sCdnURL = "http://mediadump.samt.st";
-var sCdnURL = "http://mediadump.dev";
+//var sCdnURL = "http://mediadump.dev";
 
 var oaQueries = [];
 var iPage = 1;
@@ -322,9 +322,11 @@ function renderResults(){
 			// thumbs
 			//
 			var sSingleFileItem = "";
+			var iMapSquareSize = 121;
 
 			var sHref = window.location.hash + '&file=' + cIndex;
 			var sThumbSize = (sSearchMode === 'map' ? 'small' : 'medium');
+			var sThumbnailClass = (sSearchMode === 'map' ? 'thumbnail' : 'justify-thumbnail');
 
 			sSingleFileItem +='<a class="thumb_result_link" onmousedown="preloadThumb('+cIndex+')" onclick="thumbClick('+cIndex+'); return false;" href="' + sHref + '">';
 
@@ -345,32 +347,41 @@ function renderResults(){
 			sSingleFileItem +='</a>';
 
 
-			s_current_row += sSingleFileItem;
+			
 
-			i_running_row_width += (parseInt(oFile.width) + i_margin);
-			i_row_margin_cumu += i_margin;
+			if(sSearchMode !== "map")
+			{
+				// do the justified layout		
+				s_current_row += sSingleFileItem;
 
-			if(i_running_row_width > i_max_row_width || cIndex == (oResults.length-1)){
-				var i_overlap_ratio = (i_max_row_width - i_row_margin_cumu) / (i_running_row_width - i_row_margin_cumu);
-				var i_height = i_base_height;
-				if(i_running_row_width > i_max_row_width){
-					// if we're ending the row due to an overflow, otherwise (ending due to reaching last file, use default height)
-					i_height = i_overlap_ratio * i_base_height;
+				i_running_row_width += (parseInt(oFile.width) + i_margin);
+				i_row_margin_cumu += i_margin;
+
+				if(i_running_row_width > i_max_row_width || cIndex == (oResults.length-1)){
+					var i_overlap_ratio = (i_max_row_width - i_row_margin_cumu) / (i_running_row_width - i_row_margin_cumu);
+					var i_height = i_base_height;
+					if(i_running_row_width > i_max_row_width){
+						// if we're ending the row due to an overflow, otherwise (ending due to reaching last file, use default height)
+						i_height = i_overlap_ratio * i_base_height;
+					}
+					if(sSearchMode === 'map'){
+						i_height = iMapSquareSize;
+					}	
+					// finish the row
+					//log("finishing the row, running width: "+i_running_row_width+", height: "+i_height);
+					s_current_row = '<div class="justify-row" style="height:'+i_height+'px;">' + s_current_row + '</div>';
+					//$("#thumb_results").append(s_current_row);
+					htmlThumbs += s_current_row;
+					// start next
+					s_current_row = '';
+					i_base_height = i_default_height;
+					i_running_row_width = 0;
+					i_files_in_row = 0;
+					i_row_margin_cumu = 0;
 				}
-				if(sSearchMode === 'mapsearch-mode'){
-					i_height = 121;
-				}	
-				// finish the row
-				//log("finishing the row, running width: "+i_running_row_width+", height: "+i_height);
-				s_current_row = '<div class="justify-row" style="height:'+i_height+'px;">' + s_current_row + '</div>';
-				//$("#thumb_results").append(s_current_row);
-				htmlThumbs += s_current_row;
-				// start next
-				s_current_row = '';
-				i_base_height = i_default_height;
-				i_running_row_width = 0;
-				i_files_in_row = 0;
-				i_row_margin_cumu = 0;
+			}else{
+				// just dump image into html
+				htmlThumbs += sSingleFileItem;
 			}
 			//
 			// thumbs
@@ -466,8 +477,16 @@ function renderPagination(){
 function preloadThumb(cIndex){
 	// if image or video?
 	if(cIndex > -1 && cIndex < oResults.length){
-		var imgPreload = new Image();
-	    imgPreload.src = urlFromHash('lightbox', oResults[cIndex].hash, '');
+		switch(oResults[cIndex].type)
+		{
+			case "image":
+				var imgPreload = new Image();
+			    imgPreload.src = urlFromHash('lightbox', oResults[cIndex].hash, '');
+				break;
+			case "video":
+				// TODO - video preload? thumb?
+				break;
+		}
 	}
 }
 function preloadNeighbours(iIndex){
@@ -663,12 +682,23 @@ function setFile(iFileIndex){
 }
 function updateFile(){
 	if(iFile > -1){
-		// render lightbox content
-		$("#lightbox_contents img").attr("src", urlFromHash('lightbox', oResults[iFile].hash, ''));
+		switch(oResults[iFile].type)
+		{
+			case "image":
+				// render lightbox content
+				$("#lightbox_contents img").attr("src", urlFromHash('lightbox', oResults[iFile].hash, ''));
+				break;
+			case "video":
+				// TODO put video in place
+				break;
+		}
 		preloadNeighbours();
 	}else{
 		// strip lightbox content
+		// image
 		$("#lightbox_contents img").attr("src", "");
+		// video
+		// TODO (disable flowplayer somehow)
 	}
 	if(bInfoShowing){
 		updateFileInfo();
@@ -964,11 +994,25 @@ $( document ).ready(function() {
 
 	$("#search-input input").focus();
 
+	// get url vars
+	var saUrlVars = getJSONDecodedHashUrlVars();
+
+	if(saUrlVars["mode"] != undefined){
+		sSearchMode = saUrlVars["mode"];
+	}
+	if(saUrlVars["queries"] != undefined){
+		log(decodeURIComponent(saUrlVars["queries"]));
+		oaQueries = JSON.parse(decodeURIComponent(saUrlVars["queries"]));
+		log(oaQueries);
+		performSearch();
+	}
+
+
 
 	// initial set up
 	initializeGoogleMap();
 	sizeDivide();
-	setMode("browse");
+	setMode(sSearchMode);
 });
 $(document).keydown(function(e) {
     switch(e.which) {
@@ -1044,4 +1088,15 @@ function commafy( num){
   while(i--){ o = (i==0?'':((L-i)%3?'':',')) 
                   +s.charAt(i) +o }
   return (num<0?'-':'') + o + (parts[1] ? '.' + parts[1] : ''); 
+}
+function getJSONDecodedHashUrlVars(){
+    var vars = [], hash;
+    var hashes = window.location.href.slice(window.location.href.indexOf('#') + 1).split('&');
+    for(var i = 0; i < hashes.length; i++)
+    {
+        hash = hashes[i].split('=');
+        vars.push(hash[0]);
+        vars[hash[0]] = decodeURIComponent(hash[1]);
+    }
+    return vars;
 }
