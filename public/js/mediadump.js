@@ -526,20 +526,24 @@ function addQuery(sDisplay, sValue, bUpdateSearchInput){
 	performSearch();
 
 	if(bUpdateSearchInput){
-		bQueryInputEventsOn = false;
-		// tags already in ui
-		var saTags = oUITags.getTags();
-
-		oaQueries.forEach(function(oQuery){
-			// don't add if already there
-			if(!oUITags.hasTag(oQuery["display"])){
-				oUITags.addTag(String(oQuery["display"]));
-			}
-
-		});
-		bQueryInputEventsOn = true;
+		silentRefreshSearchInputTagUIFromQueries();
 	}
 	queryChange();
+}
+function silentRefreshSearchInputTagUIFromQueries()
+{
+	bQueryInputEventsOn = false;
+	// tags already in ui
+	var saTags = oUITags.getTags();
+
+	oaQueries.forEach(function(oQuery){
+		// don't add if already there
+		if(!oUITags.hasTag(oQuery["display"])){
+			oUITags.addTag(String(oQuery["display"]));
+		}
+
+	});
+	bQueryInputEventsOn = true;
 }
 function addQueryFromMap(){
 
@@ -1026,6 +1030,7 @@ $( document ).ready(function() {
 	}
 	if(saUrlVars["queries"] != undefined){
 		oaQueries = JSON.parse(decodeURIComponent(saUrlVars["queries"]));
+		silentRefreshSearchInputTagUIFromQueries();
 		queryChange();
 		performSearch(iLightboxfile);
 	}
