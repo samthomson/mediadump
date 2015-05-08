@@ -132,6 +132,11 @@ function getTree(){
 		renderTree();
 	});
 }
+function cancelSearch()
+{
+	xhrSearch.abort();
+	setLoading(false);
+}
 function performSearch(iFileToRenderAfterSearch)
 {
 	if(typeof iFileToRenderAfterSearch === 'undefined')
@@ -141,7 +146,7 @@ function performSearch(iFileToRenderAfterSearch)
 	if(oaQueries.length > 0){
 		setLoading(true);
 		if(xhrSearch && xhrSearch.readystate != 4){
-            xhrSearch.abort();
+            cancelSearch();
         }
 
         var sQueryValue = "";
@@ -964,6 +969,8 @@ $( document ).ready(function() {
 	    	if(bQueryInputEventsOn){
 	    		addedFromInput(tag);
 	    	}
+	    	// if any searches are 'open' kill them
+	    	cancelSearch();
 		},
 		beforeDeletingTag: function(tag){
 	    	if(bQueryInputEventsOn){
