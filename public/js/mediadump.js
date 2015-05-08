@@ -133,8 +133,10 @@ function getTree(){
 	});
 }
 function cancelSearch()
-{
-	xhrSearch.abort();
+{	
+	if(xhrSearch && xhrSearch.readystate != 4){
+		xhrSearch.abort();
+    }
 	setLoading(false);
 }
 function performSearch(iFileToRenderAfterSearch)
@@ -914,6 +916,7 @@ function sizeDivide(){
 			$(".right_position").css("left", (iLeftWidth/2));
 		}
 */
+		renderResults();
 	}
 }
 function setSolitaryQuery(sDisplay, sValue){
