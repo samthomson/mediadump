@@ -18,8 +18,8 @@ class GeoData extends Migration {
 			$table->integer('file_id');
 
 			$table->float('latitude');
-			$table->float('longitude');
-			$table->float('elevation');
+			$table->float('longitude', 8, 8);
+			$table->float('elevation', 8, 8);
 			$table->string('literal_locations');
 
 			$table->index('file_id', "geodata_fileid");
