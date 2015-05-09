@@ -579,8 +579,6 @@ function addQueryFromMap(){
 	setSolitaryQuery("map search", sQuery);
 }
 function removeQueryFromModelAndUI(sDisplayTag){
-	log("remove tag: " + sDisplayTag);
-
 	for(var rcQueryIndex = oaQueries.length -1; rcQueryIndex > -1; rcQueryIndex--){
 		if(oaQueries[rcQueryIndex].display == sDisplayTag)
 		{
