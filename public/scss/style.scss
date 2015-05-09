@@ -432,15 +432,22 @@ select.form-control{
 	height: 100%;
 	width: auto;
 }
+
 #thumb_results img{	
-	margin-right:4px;
+	margin-right:$margin;
 	margin-bottom:$margin/2;
 	height:100%;
+}
+#thumb_results .map-thumbnail img{	
+	display: block;
 	/*
+	width:$small_icon_size + $margin;
+	height:$small_icon_size + ($margin / 2);
+	*/
 	width:$small_icon_size;
 	height:$small_icon_size;
-	*/
 }
+
 a.filter{
 	display:inline-block;
 	padding:$padding/2;

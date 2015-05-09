@@ -345,7 +345,7 @@ function renderResults(){
 
 			var sHref = window.location.hash + '&file=' + cIndex;
 			var sThumbSize = (sSearchMode === 'map' ? 'small' : 'medium');
-			var sThumbnailClass = (sSearchMode === 'map' ? 'thumbnail' : 'justify-thumbnail');
+			var sThumbnailClass = (sSearchMode === 'map' ? 'map-thumbnail' : 'justify-thumbnail');
 
 			sSingleFileItem +='<a class="thumb_result_link" onmousedown="preloadThumb('+cIndex+')" onclick="thumbClick('+cIndex+'); return false;" href="' + sHref + '">';
 
@@ -358,7 +358,7 @@ function renderResults(){
 			if(oFile.confidence < 20){
 				sConfidenceClass = "least-confident";
 			}	
-			sSingleFileItem +='<div class="tree_image_container justify-thumbnail">';
+			sSingleFileItem +='<div class="tree_image_container ' + sThumbnailClass + '">';
 			sSingleFileItem +='<img src="' + urlFromHash(sThumbSize, oFile.hash, '') + '" id="' + oFile.id + '" class="result-thumb ' + sConfidenceClass + '" />';
 
 
@@ -424,6 +424,8 @@ function renderResults(){
 						map: gmapMap,
 						icon: image
 					});
+
+					log(myLatLng);
 
 					google.maps.event.addListener(beachMarker, "click", function() {
 					    thumbClick(cIndex);
