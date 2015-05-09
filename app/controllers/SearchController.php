@@ -450,7 +450,8 @@ class SearchController extends BaseController {
 					"hash" => $oHit["_source"]["hash"],
 					"type" => (isset($oHit["_source"]["media_type"]) ? $oHit["_source"]["media_type"] : null),
 					"latitude" => (isset($oHit["_source"]["latitude"]) ? (float)$oHit["_source"]["latitude"] : null),
-					"longitude" => (isset($oHit["_source"]["longitude"]) ? (float)$oHit["_source"]["longitude"] : null),/*
+					"longitude" => (isset($oHit["_source"]["longitude"]) ? (float)$oHit["_source"]["longitude"] : null),
+					"address" => (isset($oHit["_source"]["literal_location"]) ? (float)$oHit["_source"]["literal_location"] : null),/*
 					"tags" => $oHit["_source"]["tags"],*/
 					"width" => (int)$oHit["_source"]["medium_width"],
 					"height" => (int)$oHit["_source"]["medium_height"]
