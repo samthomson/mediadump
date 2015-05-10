@@ -14,6 +14,7 @@ class SearchController extends BaseController {
 	|	Route::get('/', 'HomeController@showWelcome');
 	|
 	*/
+	/*
 	private static function individualQuery($sQuery){
 		// construct db query based on broken down query (type)
 		$saQueryParts = explode("=", $sQuery);
@@ -55,11 +56,7 @@ class SearchController extends BaseController {
 
 				break;
 			case "shuffle":
-				$soFiles = DB::table("files")/*
-					->join("tags", function($join)
-						{
-							$join->on("files.id", "=", "tags.file_id");
-						})*/
+				$soFiles = DB::table("files")/
 					->join("geodata", function($joinGeoData)
 						{
 							$joinGeoData->on("files.id", "=", "geodata.file_id");
@@ -93,7 +90,8 @@ class SearchController extends BaseController {
 
 		return $soFiles;
 	}
-
+	*/
+	/*
 	public static function sqlSearch()
 	{		
 		$mtStart = microtime(true);
@@ -203,6 +201,7 @@ class SearchController extends BaseController {
 
 		return Response::json($oResults);		
 	}
+	*/
 
 	public static function tree()
 	{
@@ -460,7 +459,7 @@ class SearchController extends BaseController {
 			}
 
 			//
-			// redner
+			// render
 			//
 
 			$oaInfo = [

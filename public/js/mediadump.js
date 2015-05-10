@@ -5,6 +5,9 @@ var bLightboxShowing = false;
 var sSearchMode = "browse";
 var bInfoShowing = false;
 
+var bMapEventsOn = false;
+var bFirstGeoQueryRendered = false;
+
 var gmapMap = null;
 var rtime = new Date(1, 1, 2000, 12,00,00);
 var timeout = false;
@@ -34,6 +37,8 @@ var oResults = [];
 var oResultsData = [];
 var oaMarkers = [];
 var iStaggerMapIconLimit = 40;
+
+var bounds = new google.maps.LatLngBounds();
 
 var sMediaDumpColor = "#e74c3c";
 var s_land = "#c0c0c0";
@@ -430,6 +435,7 @@ function renderResults(){
 					    thumbClick(cIndex);
 					});
 					oaMarkers.push(mkrIcon);
+					bounds.extend(myLatLng);
 
 
 				}else if(cIndex % iMapPinModulus == 0){ // 20%
@@ -448,12 +454,15 @@ function renderResults(){
 
 					});
 					oaMarkers.push(mkrThumbIcon);
+					bounds.extend(myLatLng);
 
 					google.maps.event.addListener(mkrThumbIcon, "click", function() {
 					    thumbClick(cIndex);
 					});
 				}
-
+				if(!bMapEventsOn){
+					gmapMap.fitBounds(bounds);
+				}
 			}
 		});
 	}else{
@@ -1112,9 +1121,13 @@ function initializeGoogleMap() {
 		// 3 seconds after the center of the map has changed, pan back to the
 		// marker.
 		// only fire if on map search mode
-		if(sSearchMode == "map"){
+		if(sSearchMode == "map" && bMapEventsOn){
 			addQueryFromMap();
 		}
+		if(!bMapEventsOn)
+		{
+			bMapEventsOn = true;
+		}		
 	});
 
 	//gmapMap.setOptions({styles: media_dump_map_options.styles});
