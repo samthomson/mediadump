@@ -334,7 +334,7 @@ function renderResults(){
 	oaMarkers.length = 0;
 
 
-	if(typeof oResults !== 'undefined' && oResults.length > 0)
+	if(oResults.length > 0)
 	{
 		oResults.forEach(function(oFile, cIndex){
 			//
@@ -424,8 +424,6 @@ function renderResults(){
 						map: gmapMap,
 						icon: image
 					});
-
-					log(myLatLng);
 
 					google.maps.event.addListener(beachMarker, "click", function() {
 					    thumbClick(cIndex);
@@ -853,7 +851,6 @@ function updateFileInfo(){
 	}
 }
 $(window).resize(function() {
-    rtime = new Date();
     if (timeout === false) {
         timeout = true;
         setTimeout(resizeend, delta);
@@ -916,7 +913,8 @@ function sizeDivide(){
 			$(".right_position").css("left", (iLeftWidth/2));
 		}
 */
-		renderResults();
+		if(oResults.length > 0)
+			renderResults();
 	}
 }
 function setSolitaryQuery(sDisplay, sValue){
