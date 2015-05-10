@@ -981,13 +981,13 @@ $( document ).ready(function() {
 	    	if(bQueryInputEventsOn){
 	    		addedFromInput(tag);
 	    	}
-	    	// if any searches are 'open' kill them
-	    	cancelSearch();
 		},
 		beforeDeletingTag: function(tag){
 	    	if(bQueryInputEventsOn){
 	    		removeQueryFromModelAndUI(tag);
 	    	}
+	    	// if any searches are 'open' kill them
+	    	cancelSearch();
 		}
 	});
 

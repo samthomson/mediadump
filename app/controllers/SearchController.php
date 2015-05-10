@@ -329,6 +329,7 @@ class SearchController extends BaseController {
 			$oGeoQuery = null;
 
     		$ands = [];
+			$nots = [];
 
 			foreach ($saQueries as $sQuery) {
 				$saQueryParts = explode("=", $sQuery);
@@ -383,7 +384,10 @@ class SearchController extends BaseController {
 					{
 						array_push($ands, array("match_all" => new \stdClass()));
 					}else{
-						array_push($ands, array("term" => array("tags.value" => $sQuery)));
+						if($sQuery[0] === '!')
+							array_push($nots, array("term" => array("tags.value" => substr($sQuery,1))));
+						else
+							array_push($ands, array("term" => array("tags.value" => $sQuery)));
 					}
 				}
 			}
@@ -397,9 +401,19 @@ class SearchController extends BaseController {
 			$filter = array();
 
 
+/*
             $filter = [
 				"and" => $ands
 		    ];
+            
+			$searchParams['body']['query']['filtered'] = array(
+			    "filter" => $filter
+			);*/
+
+            $filter = ["bool" =>[
+				"must" => $ands,
+				"must_not" => $nots
+		    ]];
             
 			$searchParams['body']['query']['filtered'] = array(
 			    "filter" => $filter
