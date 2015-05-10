@@ -679,3 +679,12 @@ tags - flat ui colours
 .tag{
 	background: #e74c3c;
 }
+
+#map-canvas img
+{
+}
+/*
+img*[src^="/icon/"]{
+    border-radius:16px;
+    border:1px solid #000 !important;
+  }*/
