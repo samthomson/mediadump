@@ -132,7 +132,6 @@ GET DATA
 */
 function getTree(){
 	$.get("/api/tree", function(results){
-		//oTree = $.parseJSON(results);
 		oTree = results;
 		renderTree();
 	});
@@ -1044,9 +1043,11 @@ $( document ).ready(function() {
 							var sUIDisplay = folderFromUniqueDir(sValue);
 
 		
-							var sMatchText = oResult.value.replace(lastValue,'<strong>'+lastValue+'</strong>')
+							var sMatchText = oResult.value.replace(lastValue,'<strong>'+lastValue+'</strong>');
 
-	        				htmlAutoComplete += '<a href="javascript:autoSuggestSelect(\'' + sDisplay + '\', \'' + sValue + '\');" class="auto-suggestion">';
+							var sHref = sGenerateLinkHref(sDisplay, sValue);
+
+	        				htmlAutoComplete += '<a onclick="autoSuggestSelect(\'' + sDisplay + '\', \'' + sValue + '\');" class="auto-suggestion" href="' + sHref + '">';
 	        				htmlAutoComplete += '<img src="' + urlFromHash("icon", oResult.hash, "") + '" />';
 	        				htmlAutoComplete += sMatchText;
 	        				htmlAutoComplete += '</a>';
