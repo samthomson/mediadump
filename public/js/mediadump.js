@@ -287,20 +287,10 @@ function renderTree()
 		var sUIDisplay = folderFromUniqueDir(oLink.value);
 
 
-		var oaQuery = [];
-		var oQuery = {};
-		oQuery["display"] = sUIDisplay;
-		oQuery["value"] = sValue;
-		oaQuery.push(oQuery);
+		var sHref = sGenerateLinkHref(oLink.display, oLink.value);
 
 
-		sValue = sReplaceQuote(sLinkSafeJSString(oLink.value));
-
-		var saURLParams = {};
-		saURLParams["queries"] = encodeURIComponent(JSON.stringify(oaQuery));
-
-
-		var sHref = window.location.hash + '#' + $.param(saURLParams);;
+		sValue= sReplaceQuote(oLink.value);
 
 		sSingleTreeItem +='<a class="tree_link col-xs-6 col-sm-4 col-md-3 col-lg-2" onclick="setSolitaryQuery(\'' + sDisplay + '\', \'' + sValue + '\'); return false;" alt="' + sDisplay + '" title="' + sDisplay + '" href="' + sHref + '">';
 
@@ -326,6 +316,30 @@ function renderTree()
 	});
 
 	$("#browse_tree").html(htmlTree);
+}
+function sGenerateLinkHref(sDisplay, sValue)
+{
+	var sValue = sLinkSafeJSString(sValue);
+
+	var sDisplay = sReplaceQuote(folderFromUniqueDir(sValue));
+	var sUIDisplay = folderFromUniqueDir(sValue);
+
+
+	var oaQuery = [];
+	var oQuery = {};
+	oQuery["display"] = sUIDisplay;
+	oQuery["value"] = sValue;
+
+	oaQuery.push(oQuery);
+
+
+	sValue = sReplaceQuote(sLinkSafeJSString(sValue));
+
+	var saURLParams = {};
+	saURLParams["queries"] = encodeURIComponent(JSON.stringify(oaQuery));
+
+
+	return window.location.hash + '#' + $.param(saURLParams);
 }
 
 function renderResults(){
