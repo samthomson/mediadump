@@ -281,12 +281,28 @@ function renderTree()
 
 		var sSingleTreeItem = "";
 
-		var sValue = sReplaceQuote(sLinkSafeJSString(oLink.value));
-		var sDisplay = sReplaceQuote(folderFromUniqueDir(sValue));
+		var sValue = sLinkSafeJSString(oLink.value);
+
 		var sDisplay = sReplaceQuote(folderFromUniqueDir(oLink.value));
 		var sUIDisplay = folderFromUniqueDir(oLink.value);
 
-		sSingleTreeItem +='<a class="tree_link col-xs-6 col-sm-4 col-md-3 col-lg-2" href="javascript: setSolitaryQuery(\'' + sDisplay + '\', \'' + sValue + '\');" alt="' + sDisplay + '" title="' + sDisplay + '">';
+
+		var oaQuery = [];
+		var oQuery = {};
+		oQuery["display"] = sUIDisplay;
+		oQuery["value"] = sValue;
+		oaQuery.push(oQuery);
+
+
+		sValue = sReplaceQuote(sLinkSafeJSString(oLink.value));
+
+		var saURLParams = {};
+		saURLParams["queries"] = encodeURIComponent(JSON.stringify(oaQuery));
+
+
+		var sHref = window.location.hash + '#' + $.param(saURLParams);;
+
+		sSingleTreeItem +='<a class="tree_link col-xs-6 col-sm-4 col-md-3 col-lg-2" onclick="setSolitaryQuery(\'' + sDisplay + '\', \'' + sValue + '\'); return false;" alt="' + sDisplay + '" title="' + sDisplay + '" href="' + sHref + '">';
 
 		sSingleTreeItem +='<div class="tree_image_container">';
 		sSingleTreeItem +='<img src="' + urlFromHash('medium', oLink.hash, '') + '"/>';
