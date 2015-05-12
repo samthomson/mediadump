@@ -54,7 +54,10 @@
 			$oTag["display"] = $data->value;
 			$oTag["value"] = $data->value;
 
-			$sHref = '#queries='. urlencode(json_encode($oTag));
+			$oaTags = [];
+			array_push($oaTags, $oTag);
+
+			$sHref = '#queries='. urlencode(json_encode($oaTags));
 
 		?>
 		<a onclick="setSolitaryQuery('{{$data->value}}', '{{$data->value}}'); return false;" href="<?php echo $sHref; ?>" title="{{$data->confidence}}%"><span class="label {{$sClass}}">{{$data->type}} : {{$data->value}}</span></a>
