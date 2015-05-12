@@ -13,7 +13,7 @@ return array(
 	|
 	*/
 
-	'debug' => true,
+	'debug' => false,
 
 	/*
 	|--------------------------------------------------------------------------
@@ -123,6 +123,7 @@ return array(
 		'Illuminate\Workbench\WorkbenchServiceProvider',
 		'Intervention\Image\ImageServiceProvider',
 		'Barryvdh\Debugbar\ServiceProvider',
+		//'Clockwork\Support\Laravel\ClockworkServiceProvider'
 
 	),
 
@@ -192,6 +193,7 @@ return array(
 		'View'              => 'Illuminate\Support\Facades\View',
 		'Image' => 'Intervention\Image\Facades\Image',
 		'Debugbar' => 'Barryvdh\Debugbar\Facade',
+		//'Clockwork' => 'Clockwork\Support\Laravel\Facade'
 
 	),
 
