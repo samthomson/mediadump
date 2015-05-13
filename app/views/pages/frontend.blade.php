@@ -41,7 +41,7 @@
 									<span class="icon-bar"></span>
 									<span class="icon-bar"></span>
 								</button>
-								<a class="navbar-brand" href="javascript:home();"><i class="glyphicon glyphicon-home visible-xs pull-left"></i>&nbsp;mediadump</a>
+								<a class="navbar-brand" onclick="javascript:home(); return false;" href="/"><i class="glyphicon glyphicon-home visible-xs pull-left"></i>&nbsp;mediadump</a>
 							</div>
 
 							<!-- Collect the nav links, forms, and other content for toggling -->
