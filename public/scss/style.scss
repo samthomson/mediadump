@@ -28,6 +28,8 @@ $i_footer_height: 50px;
 
 $small_icon_size: 125px;
 
+$icon_size: 32px;
+
 /* general */
 body{
 	font-family: Muli;
@@ -611,6 +613,11 @@ ul.nav li a.active{border-bottom: 2px solid $media_dump_colour;}
 	border-bottom: 1px solid $media_dump_colour;
 	padding: $padding;
 	font-size: x-large;
+}
+.auto-suggestion img{
+	display: inline-block;
+	width: $icon_size;
+	height: $icon_size;
 }
 .auto-suggestion:last{
 	border-bottom-color:#fff;

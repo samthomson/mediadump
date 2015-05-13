@@ -368,7 +368,7 @@ function renderResults(){
 	oaMarkers.length = 0;
 
 
-	if(oResults.length > 0)
+	if(typeof oResults !== "undefined")
 	{
 		oResults.forEach(function(oFile, cIndex){
 			//
@@ -831,12 +831,13 @@ function home(){
 	emptyQueries();
 }
 function shuffle(){
-	setSolitaryQuery("shuffle", "shuffle=random");
 	setMode("browse");
+	setSolitaryQuery("shuffle", "shuffle=random");
 	setUIMode("shuffle");
 }
 function setMode(sMode){
 	setSearchMode(sMode);
+	emptyQueries();
 	setUIMode(sMode);
 	_buildUrlFromParams();
 }
