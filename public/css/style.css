@@ -269,7 +269,7 @@ layout parts
 
 .tree_link {
   font-size: large;
-  display: inline-table;
+  display: inline-block;
   float: none !important;
   vertical-align: top; }
 
