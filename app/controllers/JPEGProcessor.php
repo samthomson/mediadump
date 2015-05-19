@@ -73,8 +73,7 @@ class JPEGProcessor extends BaseController {
 				//
 				$data = Image::make($oFile->path)->exif();
 
-				////print_r($data);
-
+				
 				if(isset($data["Make"]))
 				{
 					TaggingHelper::_QuickTag($oFile->id, "exif.cameramake", $data["Make"]);
@@ -93,11 +92,14 @@ class JPEGProcessor extends BaseController {
 				$oGeoData = new GeoDataModel();
 				$oGeoData->file_id = $iFileID;
 
-				if(isset($data["GPSLongitude"]) && isset($data["GPSLongitude"]))
+				if(isset($data["GPSLongitude"]) && isset($data["GPSLongitudeRef"]))
 				{
 					$lon = Helper::getGps($data["GPSLongitude"], $data['GPSLongitudeRef']);
+					echo "lon: ", $lon, "<br/>";
 					$oGeoData->longitude = $lon;
+					echo"lon: ",  $oGeoData->longitude, "<br/>";
 					$oGeoData->save();
+					echo"lon: ",  $oGeoData->longitude, "<br/>";
 
 					$cGeoDataAdded++;
 				}
@@ -105,11 +107,14 @@ class JPEGProcessor extends BaseController {
 				if(isset($data["GPSLatitude"]) && isset($data["GPSLatitudeRef"]))
 				{
 					$lat = Helper::getGps($data["GPSLatitude"], $data['GPSLatitudeRef']);
+					echo $lat, "<br/>";
 					$oGeoData->latitude = $lat;
 					$oGeoData->save();
 
 					$cGeoDataAdded++;
 				}
+				print_r($oGeoData);
+
 
 
 				//
