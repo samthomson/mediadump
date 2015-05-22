@@ -17,6 +17,7 @@
 		
 		<!-- app specific -->
 		<link rel="stylesheet" href="/css/style.css" type="text/css">
+		<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico"/>
 	</head>
 	<body>
 
