@@ -71,55 +71,68 @@ class JPEGProcessor extends BaseController {
 				//
 				// exif
 				//
-				$data = Image::make($oFile->path)->exif();
-
+				if(exif_imagetype($oFile->path) !== false)
+				{
+					// read exif, unless it's corrupt...
+					$data = Image::make($oFile->path)->exif();
 				
-				if(isset($data["Make"]))
-				{
-					TaggingHelper::_QuickTag($oFile->id, "exif.cameramake", $data["Make"]);
-					$cTagsAdded++;
+					if(isset($data["Make"]))
+					{
+						TaggingHelper::_QuickTag($oFile->id, "exif.cameramake", $data["Make"]);
+						$cTagsAdded++;
+					}
+
+					if(isset($data["DateTime"]))
+					{
+						$oFile->datetime = $data["DateTime"];
+						$oFile->save();
+
+						TaggingHelper::_QuickTag($oFile->id, "exif.datetime", $data["DateTime"]);
+						$cTagsAdded++;
+					}
+
+					//
+					// geo
+					//
+
+					$oGeoData = new GeoDataModel();
+					$oGeoData->file_id = $iFileID;
+
+					if(isset($data["GPSLongitude"]) && isset($data["GPSLongitudeRef"]))
+					{
+						$lon = Helper::getGps($data["GPSLongitude"], $data['GPSLongitudeRef']);
+						echo "lon: ", $lon, "<br/>";
+						$oGeoData->longitude = $lon;
+						echo"lon: ",  $oGeoData->longitude, "<br/>";
+						$oGeoData->save();
+						echo"lon: ",  $oGeoData->longitude, "<br/>";
+
+						$cGeoDataAdded++;
+					}
+
+					if(isset($data["GPSLatitude"]) && isset($data["GPSLatitudeRef"]))
+					{
+						$lat = Helper::getGps($data["GPSLatitude"], $data['GPSLatitudeRef']);
+						echo $lat, "<br/>";
+						$oGeoData->latitude = $lat;
+						$oGeoData->save();
+
+						$cGeoDataAdded++;
+					}
 				}
-
-				if(isset($data["DateTime"]))
+				else
 				{
-					$oFile->datetime = $data["DateTime"];
-					$oFile->save();
-
-					TaggingHelper::_QuickTag($oFile->id, "exif.datetime", $data["DateTime"]);
-					$cTagsAdded++;
+					// corrupt image
+					// problem reading exif data, not the end of the world, log it and continue to attempt thumb generation
+					$qiElasticIndex = new QueueModel;
+					$qiElasticIndex->file_id = $oFile->id;
+					$qiElasticIndex->processor = "exif_fail";
+					$qiElasticIndex->date_from = date('Y-m-d H:i:s');
+					$qiElasticIndex->after = 0;
+					$qiElasticIndex->save();
 				}
+				
 
-				$oGeoData = new GeoDataModel();
-				$oGeoData->file_id = $iFileID;
-
-				if(isset($data["GPSLongitude"]) && isset($data["GPSLongitudeRef"]))
-				{
-					$lon = Helper::getGps($data["GPSLongitude"], $data['GPSLongitudeRef']);
-					echo "lon: ", $lon, "<br/>";
-					$oGeoData->longitude = $lon;
-					echo"lon: ",  $oGeoData->longitude, "<br/>";
-					$oGeoData->save();
-					echo"lon: ",  $oGeoData->longitude, "<br/>";
-
-					$cGeoDataAdded++;
-				}
-
-				if(isset($data["GPSLatitude"]) && isset($data["GPSLatitudeRef"]))
-				{
-					$lat = Helper::getGps($data["GPSLatitude"], $data['GPSLatitudeRef']);
-					echo $lat, "<br/>";
-					$oGeoData->latitude = $lat;
-					$oGeoData->save();
-
-					$cGeoDataAdded++;
-				}
-				print_r($oGeoData);
-
-
-
-				//
-				// geo
-				//
 
 				//
 				// thumbs
