@@ -29,7 +29,7 @@
 		<div id="mainBody" ng-controller="mediadumpCtrl">
 
 			<div id="header" class="clearfix">
-				<div class="container">
+				<div class="" >
 
 					<nav class="navbar navbar-default" role="navigation">
 						<div class="container-fluid">

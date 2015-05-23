@@ -90,6 +90,7 @@ Layout
 */
 #header{
 	padding: $padding;
+	padding-left:19px;
 }
 #main{
 	padding: $padding;
@@ -151,7 +152,7 @@ layout parts
 	position: absolute;
 }
 .nav-search-form{
-	width: 50%;
+	width: 56%;
 }
 .nav-search-form div.form-group, .nav-search-input{
 	width: 100% !important;

@@ -65,7 +65,8 @@ Functional
 Layout
 */
 #header {
-  padding: 8px; }
+  padding: 8px;
+  padding-left: 19px; }
 
 #main {
   padding: 8px; }
@@ -123,7 +124,7 @@ layout parts
   position: absolute; }
 
 .nav-search-form {
-  width: 50%; }
+  width: 56%; }
 
 .nav-search-form div.form-group, .nav-search-input {
   width: 100% !important; }
