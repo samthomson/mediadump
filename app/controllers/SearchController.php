@@ -110,6 +110,7 @@ class SearchController extends BaseController {
 			$bShuffle = false;
 			$iPerPage = 100;
 			$iFrom = 0;
+			$sSort = "date";
 
 			$iPage = (Input::get("page")) ? Input::get("page") : 1;
 			
@@ -118,6 +119,16 @@ class SearchController extends BaseController {
 			$oResults = array("info" => null, "results" => null);
 		
 			$sQuery = Input::get("query");
+			if(Input::has("sort"))
+			{
+				switch (Input::get("sort")) {
+					case 'date':
+					case 'conf':
+					case 'rand':
+						$sSort = Input::get("sort");
+						break;
+				}
+			}
 
 			$saQueries = explode("|", $sQuery);
 
@@ -169,7 +180,6 @@ class SearchController extends BaseController {
 							break;
 						
 						default:
-							$bDefaultQuery = true;
 							break;
 					}
 				}else{
@@ -177,6 +187,7 @@ class SearchController extends BaseController {
 				}
 
 				if($bDefaultQuery){
+					$sSort = "conf";
 					if($sQuery == '*')
 					{
 						array_push($ands, array("match_all" => new \stdClass()));
@@ -190,13 +201,23 @@ class SearchController extends BaseController {
 			}
 
 			// shuffle
-			if(!$bShuffle){
-				$searchParams['sort'] = array("longtime:desc", "ignore_unmapped:true");
-			}else{
-				array_push($ands, array("match_all" => new \stdClass()));
+			if($bShuffle){
+				$sSort = "conf";
 			}
-			$filter = [];
 
+			switch ($sSort) {
+				case 'date':
+					$searchParams['sort'] = ["longtime:desc"];
+					break;
+				case 'conf':
+					$searchParams['sort'] = ["confidence:desc"];
+					break;
+				case 'rand':
+					array_push($ands, array("match_all" => new \stdClass()));
+					break;
+			}
+
+			$filter = [];
 
             $filter = ["bool" =>[
 				"must" => $ands,
