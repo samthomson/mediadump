@@ -115,11 +115,6 @@ class SearchController extends BaseController {
 			
 			$iFrom = ($iPage-1)*$iPerPage;
 
-			$searchParams['index'] = 'mediadump_index';
-			$searchParams['size'] = $iPerPage;
-			$searchParams['from'] = $iFrom;
-
-			
 			$oResults = array("info" => null, "results" => null);
 		
 			$sQuery = Input::get("query");
@@ -141,6 +136,7 @@ class SearchController extends BaseController {
 					switch ($saQueryParts[0]) {
 						case 'map':
 							$bShuffle = true;
+							$iPerPage = 50;
 							$iaLatLonParts = explode(",", $saQueryParts[1]);
 							
 							array_push($ands, ["range" => [
@@ -202,12 +198,16 @@ class SearchController extends BaseController {
 			$filter = [];
 
 
-
             $filter = ["bool" =>[
 				"must" => $ands,
 				"must_not" => $nots
 		    ]];
-            
+
+		    $searchParams['index'] = 'mediadump_index';
+			$searchParams['size'] = $iPerPage;
+			$searchParams['from'] = $iFrom;
+
+
 			$searchParams['body']['query']['filtered'] = array(
 			    "filter" => $filter
 			);
