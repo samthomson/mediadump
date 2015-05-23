@@ -977,13 +977,11 @@ function setSolitaryQuery(sDisplay, sValue){
 	removeAllQueriesFromModelAndUI();
 	bQueryInputEventsOn = true;
 	
-	//oaQueries.push(aaQuery);
 
 	addQuery(sDisplay, sValue);
-	//silentAddTag(sDisplay);
 
-	performSearch();
-	queryChange();	
+	//performSearch();
+	//queryChange();	
 }
 function removeAllQueriesFromModelAndUI(){
 	oaQueries = [];
