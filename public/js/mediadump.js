@@ -326,7 +326,8 @@ function renderTree()
 	$("#browse_tree img.lazy").lazyload({
 	 	container: $("#results"),
  		effect : "fadeIn",
- 		placeholder: 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACwAAAAAAQABAAACAkQBADs='
+ 		placeholder: 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACwAAAAAAQABAAACAkQBADs=',
+ 		threshold: 300
 	});
 }
 function sGenerateLinkHref(sDisplay, sValue)
@@ -516,7 +517,8 @@ function renderResults(){
 	$("#thumb_results img.lazy").lazyload({
  		container: $("#results"),
  		effect : "fadeIn",
- 		placeholder: 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACwAAAAAAQABAAACAkQBADs='
+ 		placeholder: 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACwAAAAAAQABAAACAkQBADs=',
+ 		threshold: 300
 	});
 }
 
