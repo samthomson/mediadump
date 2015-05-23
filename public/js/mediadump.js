@@ -324,7 +324,9 @@ function renderTree()
 
 	$("#browse_tree").html(htmlTree);
 	$("#browse_tree img.lazy").lazyload({
-	 	container: $("#results")
+	 	container: $("#results"),
+ 		effect : "fadeIn",
+ 		placeholder: 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACwAAAAAAQABAAACAkQBADs='
 	});
 }
 function sGenerateLinkHref(sDisplay, sValue)
@@ -513,7 +515,8 @@ function renderResults(){
 	
 	$("#thumb_results img.lazy").lazyload({
  		container: $("#results"),
- 		effect : "fadeIn"
+ 		effect : "fadeIn",
+ 		placeholder: 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACwAAAAAAQABAAACAkQBADs='
 	});
 }
 
@@ -1134,12 +1137,6 @@ $(document).keydown(function(e) {
     //e.preventDefault(); // prevent the default action (scroll / move caret)
 });
 
-function applyLazyLoad()
-{
-	$(function() {
-	    $("img.lazy").lazyload();
-	});
-}
 /*
 
 BOILERPLATE HELPER FUNCTIONS
