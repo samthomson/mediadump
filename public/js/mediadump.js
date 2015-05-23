@@ -544,16 +544,16 @@ function renderPagination(){
 function preloadThumb(cIndex){
 	// if image or video?
 	if(cIndex > -1 && cIndex < oResults.length){
-		switch(oResults[cIndex].type)
-		{
-			case "image":
+		//switch(oResults[cIndex].type)
+		//{
+		//	case "image":
 				var imgPreload = new Image();
 			    imgPreload.src = urlFromHash('lightbox', oResults[cIndex].ha, '');
-				break;
-			case "video":
-				// TODO - video preload? thumb?
-				break;
-		}
+		//		break;
+		//	case "video":
+		//		// TODO - video preload? thumb?
+		//		break;
+		//}
 	}
 }
 function preloadNeighbours(iIndex){

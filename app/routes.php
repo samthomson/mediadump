@@ -82,3 +82,7 @@ Route::get('/test', function()
 	}
 	*/
 });
+Route::get('/empty', function()
+{
+	return Response::make("ok", 200);
+});

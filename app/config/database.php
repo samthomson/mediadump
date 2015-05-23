@@ -54,7 +54,7 @@ return array(
 
 		'mysql' => array(
 			'driver'    => 'mysql',
-			'host'      => 'localhost',
+			'host'      => '127.0.0.1',
 			'database'  => 'mediadump_db',
 			'username'  => 'mediadump_user',
 			'password'  => 'K8a7M5YJwZAwm4DT',

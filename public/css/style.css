@@ -603,6 +603,10 @@ ul.nav li a.active {
 #search-input .label {
   font-weight: normal !important; }
 
+#lightbox_info_view a {
+  display: inline-block;
+  margin-right: 2px; }
+
 /*
 tags - flat ui colours
 */

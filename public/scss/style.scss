@@ -648,7 +648,10 @@ ul.nav li a.active{border-bottom: 2px solid $media_dump_colour;}
 	font-weight: normal !important;
 }
 
-
+#lightbox_info_view a{
+	display: inline-block;
+	margin-right: $margin/2;
+}
 
 /*
 tags - flat ui colours
