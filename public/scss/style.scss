@@ -11,6 +11,7 @@ $media_dump_inverse_colour: #ecf0f1; /*  */
 $media_dump_inverse_colour: #fff; /*  */
 $silver_colour: #bdc3c7; /*  */
 $black: #000;
+$white: #fff;
 
 /*
 $small_thumb_width: 115px;
@@ -352,6 +353,8 @@ html {
 	-o-background-size: cover;
 	background-size: cover;
 	*/
+}
+img{
 }
 #header{
 	background-color: $media_dump_inverse_colour;

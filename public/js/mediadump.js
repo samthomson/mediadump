@@ -512,7 +512,8 @@ function renderResults(){
 	$("#thumb_results").html(htmlThumbs);
 	
 	$("#thumb_results img.lazy").lazyload({
- 		container: $("#results")
+ 		container: $("#results"),
+ 		effect : "fadeIn"
 	});
 }
 
