@@ -323,9 +323,9 @@ function renderTree()
 	});
 
 	$("#browse_tree").html(htmlTree);
-	 $("img.lazy").lazyload({
+	$("#browse_tree img.lazy").lazyload({
 	 	container: $("#results")
-	 });
+	});
 }
 function sGenerateLinkHref(sDisplay, sValue)
 {
@@ -404,7 +404,7 @@ function renderResults(){
 				sConfidenceClass = "least-confident";
 			}	
 			sSingleFileItem +='<div class="tree_image_container ' + sThumbnailClass + '">';
-			sSingleFileItem +='<img src="' + urlFromHash(sThumbSize, oFile.ha, '') + '" id="' + oFile.i + '" class="result-thumb ' + sConfidenceClass + '" />';
+			sSingleFileItem +='<img data-original="' + urlFromHash(sThumbSize, oFile.ha, '') + '" id="' + oFile.i + '" class="lazy result-thumb ' + sConfidenceClass + '" />';
 
 
 			sSingleFileItem +='</div>';
@@ -509,7 +509,11 @@ function renderResults(){
 		// no results
 		htmlThumbs = '<div id="no-results" class="centred-message">no results..</div>';
 	}
-	$("#thumb_results").html(htmlThumbs)
+	$("#thumb_results").html(htmlThumbs);
+	
+	$("#thumb_results img.lazy").lazyload({
+ 		container: $("#results")
+	});
 }
 
 function renderPagination(){
