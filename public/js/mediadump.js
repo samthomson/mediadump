@@ -35,6 +35,7 @@ var oTree = [];
 
 var oResults = [];
 var oResultsData = [];
+var iSearchSpeed;
 var oaMarkers = [];
 var iStaggerMapIconLimit = 40;
 
@@ -166,7 +167,14 @@ function performSearch(iFileToRenderAfterSearch)
         	}
         });
 
+        var dtStartSearch = new Date();
+
     	xhrSearch = $.get("/api/search", {query:decodeURIComponent(sQueryValue), page: iPage}, function(results){
+    		var dtFinishSearch = new Date();
+			var difference = new Date();
+			difference.setTime(dtFinishSearch.getTime() - dtStartSearch.getTime());
+			iSearchSpeed = difference.getMilliseconds();
+
 			oResults = results.results;
 			oResultsData = results.info;
 			setLoading(false);
@@ -513,7 +521,7 @@ function renderPagination(){
 		
 		var sShowing = "<span>showing " + oResultsData.lower + " - " + oResultsData.upper + " / " + commafy(oResultsData.count) + '</span>';
 
-		sShowing += '<span><i class="glyphicon glyphicon-flash"></i> found in ~' + parseInt(oResultsData.speed) +' ms</span>';
+		sShowing += '<span title="elastic speed: '+parseInt(oResultsData.speed)+' ms"><i class="glyphicon glyphicon-flash"></i> found in ~' + parseInt(iSearchSpeed) +' ms</span>';
 
 		if(sSearchMode == "browse"){
 			if(iPage > 1){
