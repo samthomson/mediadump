@@ -24,7 +24,7 @@ var xhrFileInfo;
 /* logic vars */
 var bQueryInputEventsOn = true;
 
-var sCdnURL = "http://mediadump.samt.st";
+var sCdnURL = "http://s.mediadump.samt.st";
 //var sCdnURL = "http://mediadump.dev";
 
 var oaQueries = [];
@@ -401,7 +401,7 @@ function renderResults(){
 				sConfidenceClass = "least-confident";
 			}	
 			sSingleFileItem +='<div class="tree_image_container ' + sThumbnailClass + '">';
-			sSingleFileItem +='<img src="' + urlFromHash(sThumbSize, oFile.hash, '') + '" id="' + oFile.id + '" class="result-thumb ' + sConfidenceClass + '" />';
+			sSingleFileItem +='<img src="' + urlFromHash(sThumbSize, oFile.ha, '') + '" id="' + oFile.i + '" class="result-thumb ' + sConfidenceClass + '" />';
 
 
 			sSingleFileItem +='</div>';
@@ -415,7 +415,7 @@ function renderResults(){
 				// do the justified layout		
 				s_current_row += sSingleFileItem;
 
-				i_running_row_width += (parseInt(oFile.width) + i_margin);
+				i_running_row_width += (parseInt(oFile.w) + i_margin);
 				i_row_margin_cumu += i_margin;
 
 				if(i_running_row_width > i_max_row_width || cIndex == (oResults.length-1)){
@@ -459,8 +459,8 @@ function renderResults(){
 
 				if(cIndex % iMapIconModulus == 0){
 					// image
-					var image = urlFromHash('icon', oFile.hash, '');
-					var myLatLng = new google.maps.LatLng(oFile.latitude, oFile.longitude);
+					var image = urlFromHash('icon', oFile.ha, '');
+					var myLatLng = new google.maps.LatLng(oFile.la, oFile.lo);
 					
 					var mkrIcon = new google.maps.Marker({
 						position: myLatLng,
@@ -477,7 +477,7 @@ function renderResults(){
 
 				}else if(cIndex % iMapPinModulus == 0){ // 20%
 					// dot
-					var myLatLng = new google.maps.LatLng(oFile.latitude, oFile.longitude);
+					var myLatLng = new google.maps.LatLng(oFile.la, oFile.lo);
 					var mkrThumbIcon = new google.maps.Marker({
 						position: myLatLng,
 						map: gmapMap,

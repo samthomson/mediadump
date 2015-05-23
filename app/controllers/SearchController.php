@@ -246,15 +246,19 @@ class SearchController extends BaseController {
 				$saResults[$oHit["_source"]["id"]] = $oHit["_source"]["hash"];
 
 				array_push($oaResults, [
-					"id" => (int)$oHit["_source"]["id"],
-					"hash" => $oHit["_source"]["hash"],
+					"i" => (int)$oHit["_source"]["id"],
+					"ha" => $oHit["_source"]["hash"],
+					/*
 					"type" => (isset($oHit["_source"]["media_type"]) ? $oHit["_source"]["media_type"] : null),
-					"latitude" => (isset($oHit["_source"]["latitude"]) ? $oHit["_source"]["latitude"] : null),
-					"longitude" => (isset($oHit["_source"]["longitude"]) ? $oHit["_source"]["longitude"] : null),
-					"address" => (isset($oHit["_source"]["literal_location"]) ? $oHit["_source"]["literal_location"] : null),/*
+					*/
+					"la" => (isset($oHit["_source"]["latitude"]) ? $oHit["_source"]["latitude"] : null),
+					"lo" => (isset($oHit["_source"]["longitude"]) ? $oHit["_source"]["longitude"] : null),
+					/*
+					"a" => (isset($oHit["_source"]["literal_location"]) ? $oHit["_source"]["literal_location"] : null),
+					*//*
 					"tags" => $oHit["_source"]["tags"],*/
-					"width" => (int)$oHit["_source"]["medium_width"],
-					"height" => (int)$oHit["_source"]["medium_height"]
+					"w" => (int)$oHit["_source"]["medium_width"],
+					"h" => (int)$oHit["_source"]["medium_height"]
 					]);
 			}
 
