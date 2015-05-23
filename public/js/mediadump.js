@@ -302,7 +302,7 @@ function renderTree()
 		sSingleTreeItem +='<a class="tree_link col-xs-6 col-sm-4 col-md-3 col-lg-2" onclick="setSolitaryQuery(\'' + sDisplay + '\', \'' + sValue + '\'); return false;" alt="' + sDisplay + '" title="' + sDisplay + '" href="' + sHref + '">';
 
 		sSingleTreeItem +='<div class="tree_image_container">';
-		sSingleTreeItem +='<img src="' + urlFromHash('medium', oLink.hash, '') + '"/>';
+		sSingleTreeItem +='<img class="lazy" data-original="' + urlFromHash('medium', oLink.hash, '') + '"/>';
 		sSingleTreeItem +='</div>';
 		sSingleTreeItem +='<span class="tree_link_title">' + sUIDisplay + '</span>';
 
@@ -323,6 +323,9 @@ function renderTree()
 	});
 
 	$("#browse_tree").html(htmlTree);
+	 $("img.lazy").lazyload({
+	 	container: $("#results")
+	 });
 }
 function sGenerateLinkHref(sDisplay, sValue)
 {
