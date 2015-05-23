@@ -71,9 +71,23 @@ class JPEGProcessor extends BaseController {
 				//
 				// exif
 				//
-				if(exif_imagetype($oFile->path) !== false)
+				// read exif, unless it's corrupt...
+					
+				//if(exif_imagetype($oFile->path) == false)
+				if(Helper::bImageCorrupt($oFile->path))
 				{
-					// read exif, unless it's corrupt...
+					// corrupt image
+					// problem reading exif data, not the end of the world, log it and continue to attempt thumb generation
+					$qiElasticIndex = new QueueModel;
+					$qiElasticIndex->file_id = $oFile->id;
+					$qiElasticIndex->processor = "exif_fail";
+					$qiElasticIndex->date_from = date('Y-m-d H:i:s');
+					$qiElasticIndex->after = 0;
+					$qiElasticIndex->save();
+					
+				}
+				else
+				{
 					$data = Image::make($oFile->path)->exif();
 				
 					if(isset($data["Make"]))
@@ -119,17 +133,6 @@ class JPEGProcessor extends BaseController {
 
 						$cGeoDataAdded++;
 					}
-				}
-				else
-				{
-					// corrupt image
-					// problem reading exif data, not the end of the world, log it and continue to attempt thumb generation
-					$qiElasticIndex = new QueueModel;
-					$qiElasticIndex->file_id = $oFile->id;
-					$qiElasticIndex->processor = "exif_fail";
-					$qiElasticIndex->date_from = date('Y-m-d H:i:s');
-					$qiElasticIndex->after = 0;
-					$qiElasticIndex->save();
 				}
 				
 

@@ -62,6 +62,23 @@ class Helper {
 
 		return floatval($parts[0]) / floatval($parts[1]);
 	}
+
+	//
+	// file stuff
+	//
+	public static function bImageCorrupt($sPath)
+	{
+		if (!is_resource($file = fopen($sPath, 'rb'))) {
+	        return TRUE;
+	    }
+	    // check for the existence of the EOI segment header at the end of the file
+	    if (0 !== fseek($file, -2, SEEK_END) || "\xFF\xD9" !== fread($file, 2)) {
+	        fclose($file);
+	        return TRUE;
+	    }
+	    fclose($file);
+	    return FALSE;
+	}
 }
 
 ?>

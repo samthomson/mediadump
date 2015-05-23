@@ -63,10 +63,22 @@ Route::get('/elastic/re-index', array('uses' => 'ElasticSearchController@schedul
 
 Route::get('/test', function()
 {
-	// go pro camping in forest
-	//VideoProcessor::process(12, "webm");	
-	// goats
-	#VideoProcessor::process(13, "webm");	
-	// cycling
-	#VideoProcessor::process(14, "webm");	
+	$oFile = FileModel::find(1);
+
+	$data = @imagecreatefromjpeg($oFile->path);
+
+	//$data = Image::make($oFile->path)->exif();
+
+	echo (Helper::bImageCorrupt($oFile->path) ? "corrupt" : "okay");
+	
+	
+	/*
+
+	if(!getimagesize($oFile->path))
+	{
+		echo "corrupt";
+	}else{
+		echo "ok";
+	}
+	*/
 });
