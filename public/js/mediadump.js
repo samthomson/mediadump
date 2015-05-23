@@ -1124,9 +1124,10 @@ $(document).keydown(function(e) {
         	lightChange(1);
         break;
 
-        case 27: // close
+        case 27: // close (escape)
         if(bLightboxShowing)
         	closeLightbox();
+        setAutoComplete('');
         break;
 
         case 73: // i - toggle info
