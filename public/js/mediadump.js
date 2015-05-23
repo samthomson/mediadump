@@ -548,7 +548,7 @@ function preloadThumb(cIndex){
 		{
 			case "image":
 				var imgPreload = new Image();
-			    imgPreload.src = urlFromHash('lightbox', oResults[cIndex].hash, '');
+			    imgPreload.src = urlFromHash('lightbox', oResults[cIndex].ha, '');
 				break;
 			case "video":
 				// TODO - video preload? thumb?
@@ -753,16 +753,16 @@ function setFile(iFileIndex){
 }
 function updateFile(){
 	if(iFile > -1){
-		switch(oResults[iFile].type)
-		{
-			case "image":
+		//switch(oResults[iFile].type)
+		//{
+		//	case "image":
 				// render lightbox content
-				$("#lightbox_contents img").attr("src", urlFromHash('lightbox', oResults[iFile].hash, ''));
-				break;
-			case "video":
-				// TODO put video in place
-				break;
-		}
+				$("#lightbox_contents img").attr("src", urlFromHash('lightbox', oResults[iFile].ha, ''));
+		//		break;
+		//	case "video":
+		//		// TODO put video in place
+		//		break;
+		//}
 		preloadNeighbours();
 	}else{
 		// strip lightbox content
@@ -894,7 +894,7 @@ function updateFileInfo(){
     }
 
     if(iFile > -1){
-		xhrFileInfo = $.get("/view/filedata",{hash: oResults[iFile].hash}, function(results){
+		xhrFileInfo = $.get("/view/filedata",{hash: oResults[iFile].ha}, function(results){
 			$("#lightbox_info_view").html(results);
 		});
 	}
