@@ -9,6 +9,7 @@
 		<!-- fonts -->
 		<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 		<link href='http://fonts.googleapis.com/css?family=Muli' rel='stylesheet' type='text/css'>
+		<link rel='stylesheet' id='g_font-css'  href='http://fonts.googleapis.com/css?family=Noto+Sans%3A400%2C700%2C400italic%2C700italic&#038;ver=3.5.1' type='text/css' media='all' />
 		<!-- bootstrap -->
 		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 
@@ -18,6 +19,7 @@
 		<!-- app specific -->
 		<link rel="stylesheet" href="/css/style.css" type="text/css">
 		<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico"/>
+
 	</head>
 	<body>
 
