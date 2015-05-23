@@ -202,16 +202,10 @@ class SearchController extends BaseController {
 
 			// shuffle
 			if($bShuffle){
-				$sSort = "conf";
+				$sSort = "rand";
 			}
 
 			switch ($sSort) {
-				case 'date':
-					$searchParams['sort'] = ["longtime:desc"];
-					break;
-				case 'conf':
-					$searchParams['sort'] = ["confidence:desc"];
-					break;
 				case 'rand':
 					array_push($ands, array("match_all" => new \stdClass()));
 					break;
@@ -223,6 +217,16 @@ class SearchController extends BaseController {
 				"must" => $ands,
 				"must_not" => $nots
 		    ]];
+
+		    switch ($sSort) {
+				case 'date':
+					$searchParams['sort'] = ["longtime:desc"];
+					break;
+				case 'conf':
+					//////$searchParams['sort'] = ["tags.confidence:desc"];
+					//$searchParams['sort'] = ["tags.confidence" => ["order" => "desc", "mode" => "min", "nested_filter" => $filter]];
+					break;
+			}
 
 		    $searchParams['index'] = 'mediadump_index';
 			$searchParams['size'] = $iPerPage;
