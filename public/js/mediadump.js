@@ -145,9 +145,9 @@ function cancelSearch()
     }
 	setLoading(false);
 }
-function performSearch(iFileToRenderAfterSearch)
+function performSearch(sFileToRenderAfterSearch)
 {
-	if(typeof iFileToRenderAfterSearch === 'undefined')
+	if(typeof sFileToRenderAfterSearch === 'undefined')
 	{
 		closeLightbox();
 	}
@@ -184,12 +184,13 @@ function performSearch(iFileToRenderAfterSearch)
 			renderResults();
 			renderPagination();
 
-			if(typeof iFileToRenderAfterSearch !== 'undefined')
+			if(typeof sFileToRenderAfterSearch !== 'undefined')
 			{
-				iFileToRenderAfterSearch = parseInt(iFileToRenderAfterSearch);
-				if(iFileToRenderAfterSearch > -1)
+				var iParsedFile = parseInt(iFileIdFromHash(sFileToRenderAfterSearch));
+				
+				if(iParsedFile > -1)
 				{
-					thumbClick(iFileToRenderAfterSearch);
+					thumbClick(iParsedFile);
 				}
 			}
 		});
@@ -247,11 +248,9 @@ function _buildUrlFromParams(){
 	var saURLParams = {};
 
 	// queries	
-	
 	if(oaQueries.length > 0)
 	{
 		// build querues
-		//log(oaQueries);
 		saURLParams["queries"] = encodeURIComponent(JSON.stringify(oaQueries));	
 	}
 
@@ -265,9 +264,7 @@ function _buildUrlFromParams(){
 
 	// lightbox file
 	if(iFile > -1)
-		saURLParams["file"] = encodeURIComponent(iFile);
-
-	//log(saURLParams);
+		saURLParams["file"] = encodeURIComponent(oResults[iFile].ha);
 
 	window.location.hash = $.param(saURLParams);
 }
@@ -1096,19 +1093,16 @@ $( document ).ready(function() {
 	if(saUrlVars["page"] != undefined){
 		iPage = saUrlVars["page"];
 	}
-	var iLightboxfile = undefined;
+	var sLightboxFile = undefined;
 	if(saUrlVars["file"] != undefined){
-		if(parseInt(saUrlVars["file"]) > -1){
-			iLightboxfile = saUrlVars["file"];
-			iFile = saUrlVars["file"];
-		}
+		var sLightboxFile = saUrlVars["file"];
 	}
 	
 	if(saUrlVars["queries"] != undefined){
 		oaQueries = JSON.parse(decodeURIComponent(saUrlVars["queries"]));
 		silentRefreshSearchInputTagUIFromQueries();
 		queryChange();
-		performSearch(iLightboxfile);
+		performSearch(sLightboxFile);
 	}
 
 	// initial set up
@@ -1149,6 +1143,21 @@ $(document).keydown(function(e) {
 BOILERPLATE HELPER FUNCTIONS
 
 */
+function iFileIdFromHash(sHash)
+{
+	// take hash, look for it in results and return index, or -1 if not found
+	var iReturn = -1;
+	oResults.some(function(oFile, iIndex, _oResults){
+		if(oFile.ha == sHash){
+			iReturn = iIndex;
+			return oFile.ha === sHash;
+		}
+	});
+	return iReturn;
+}
+
+
+
 function sLinkSafeJSString(sString)
 {
 	sString = sString.replace(/\\/g, "\\\\");
