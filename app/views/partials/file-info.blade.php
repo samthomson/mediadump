@@ -25,7 +25,7 @@
 		<?php
 			$sClass = "tag";
 			if($sLast !== $data->type){
-				echo "<br/><strong>", $data->type, "</strong><br/>";
+				echo "<br/><strong>", str_replace(".", ": ", $data->type), "</strong><br/>";
 				$sLast = $data->type;
 			}
 			switch ($data->type) {
