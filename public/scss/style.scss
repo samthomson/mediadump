@@ -720,3 +720,13 @@ tags - flat ui colours
 #pagination a i{
 	top:4px;
 }
+
+a.pagination_button{
+	background: $media_dump_inverse_colour;
+	color: $media_dump_colour;
+	border-color: $media_dump_colour !important;
+}
+a.pagination_button:hover, a.pagination_button:active, #pagination.bottom a.pagination_button{
+	background-color: $media_dump_colour;
+	color: $media_dump_inverse_colour;
+}

@@ -527,6 +527,7 @@ function renderPagination(){
 	// remove pagination
 	$("#map_pagination").html("");
 	$("#grid_pagination").html("");
+	stripPaginationStates();
 
 	var sPagination = "";
 
@@ -539,11 +540,11 @@ function renderPagination(){
 
 		if(sSearchMode == "browse"){
 			if(iPage > 1){
-				sPagination += '<a class="btn active pull-left btn-xs" href="javascript:setPage(' + (iPage - 1) + ');"><i class="glyphicon glyphicon-menu-left"></i> <span>previous</span></a>';
+				sPagination += '<a class="pagination_button btn pull-left btn btn-xs" href="javascript:setPage(' + (iPage - 1) + ');"><i class="glyphicon glyphicon-menu-left"></i> <span>previous</span></a>';
 			}
 
 			if(iPage < oResultsData.available_pages){
-				sPagination += '<a class="pull-right btn active btn-xs" ng-show="page < (result_info.available_pages)" href="javascript:setPage(' + (iPage + 1) + ');"><span>next</span> <i class="glyphicon glyphicon-menu-right"></i></a>';
+				sPagination += '<a class="pagination_button pull-right btn btn-xs" href="javascript:setPage(' + (iPage + 1) + ');"><span>next</span> <i class="glyphicon glyphicon-menu-right"></i></a>';
 			}
 		}
 		sPagination += sShowing;
@@ -1091,7 +1092,7 @@ $( document ).ready(function() {
 		sSearchMode = saUrlVars["mode"];
 	}
 	if(saUrlVars["page"] != undefined){
-		iPage = saUrlVars["page"];
+		iPage = parseInt(saUrlVars["page"]);
 	}
 	var sLightboxFile = undefined;
 	if(saUrlVars["file"] != undefined){
@@ -1137,12 +1138,28 @@ $(document).keydown(function(e) {
     }
     //e.preventDefault(); // prevent the default action (scroll / move caret)
 });
+$("#results").scroll(function() {
+	var iScrolled = parseInt($("#results").scrollTop() + $(window).height());
+	var iScrollHeight = parseInt($("#thumb_results").height());
+
+
+   if(iScrolled > iScrollHeight) {
+       log("bottom!");
+       $("#pagination").addClass("bottom");
+   }else{
+       stripPaginationStates();
+   }
+});
 
 /*
 
 BOILERPLATE HELPER FUNCTIONS
 
 */
+function stripPaginationStates()
+{
+	$("#pagination").removeClass("bottom");
+}
 function iFileIdFromHash(sHash)
 {
 	// take hash, look for it in results and return index, or -1 if not found

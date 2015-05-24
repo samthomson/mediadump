@@ -663,4 +663,13 @@ tags - flat ui colours
 #pagination a i {
   top: 4px; }
 
+a.pagination_button {
+  background: #fff;
+  color: #e74c3c;
+  border-color: #e74c3c !important; }
+
+a.pagination_button:hover, a.pagination_button:active, #pagination.bottom a.pagination_button {
+  background-color: #e74c3c;
+  color: #fff; }
+
 /*# sourceMappingURL=style.css.map */
