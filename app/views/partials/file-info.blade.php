@@ -18,9 +18,16 @@
 	@endif
 
 	<div>
+	<?php
+		$sLast = "";
+	?>
 	@foreach($filedata as $data)
 		<?php
 			$sClass = "tag";
+			if($sLast !== $data->type){
+				echo "<br/><strong>", $data->type, "</strong><br/>";
+				$sLast = $data->type;
+			}
 			switch ($data->type) {
 				case 'exif.cameramake':
 				case 'exif.datetime':
@@ -60,7 +67,7 @@
 			$sHref = '#queries='. urlencode(json_encode($oaTags));
 
 		?>
-		<a onclick="setSolitaryQuery('{{$data->value}}', '{{$data->value}}'); return false;" href="<?php echo $sHref; ?>" title="{{$data->confidence}}%"><span class="label {{$sClass}}">{{$data->type}} : {{$data->value}}</span></a>
+		<a onclick="setSolitaryQuery('{{$data->value}}', '{{$data->value}}'); return false;" href="<?php echo $sHref; ?>" title="{{$data->confidence}}%"><span class="label {{$sClass}}">{{$data->value}}</span></a>
 	@endforeach
 
 </div>

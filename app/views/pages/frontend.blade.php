@@ -8,10 +8,11 @@
 		<!-- css & fonts -->
 		<!-- fonts -->
 		<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+		
 		<link href='http://fonts.googleapis.com/css?family=Muli' rel='stylesheet' type='text/css'>
-		<link rel='stylesheet' id='g_font-css'  href='http://fonts.googleapis.com/css?family=Noto+Sans%3A400%2C700%2C400italic%2C700italic&#038;ver=3.5.1' type='text/css' media='all' />
+		
 		<!-- bootstrap -->
-		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 
 
 		<link rel="stylesheet" href="/vendor/bootstraptags/bootstrap-tags.css">
@@ -105,10 +106,10 @@
 					<i class="fa fa-times"></i>
 				</a>
 				<a class="lightbox_button" id="left_lightbox" href="javascript:lightChange(-1);" title="press '&#8592;' to view previous">
-					<i class="fa fa-arrow-left"></i>
+					<i class="glyphicon glyphicon-menu-left"></i>
 				</a>
 				<a class="lightbox_button" id="right_lightbox" href="javascript:lightChange(1);" title="press '&#8594;' to view next">
-					<i class="fa fa-arrow-right"></i>
+					<i class="glyphicon glyphicon-menu-right"></i>
 				</a>
 				<a class="lightbox_button" id="info_lightbox" href="javascript:toggleInfo();" title="press 'i' to toggle file info">
 					<i class="glyphicon glyphicon-tags"></i>
@@ -128,7 +129,7 @@
 
 
         <script src='//maps.googleapis.com/maps/api/js?sensor=false'></script>
-		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 
 
 
@@ -138,7 +139,7 @@
 
 
 		<!-- app -->
-		<script src="/js/mediadump.min.js?v5"></script>
+		<script src="/js/mediadump.min.js?v6"></script>
 
 		<script>
 		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

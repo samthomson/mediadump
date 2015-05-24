@@ -187,7 +187,7 @@ function performSearch(sFileToRenderAfterSearch)
 			if(typeof sFileToRenderAfterSearch !== 'undefined')
 			{
 				var iParsedFile = parseInt(iFileIdFromHash(sFileToRenderAfterSearch));
-				
+
 				if(iParsedFile > -1)
 				{
 					thumbClick(iParsedFile);
@@ -539,11 +539,11 @@ function renderPagination(){
 
 		if(sSearchMode == "browse"){
 			if(iPage > 1){
-				sPagination += '<a class="btn active pull-left btn-xs" href="javascript:setPage(' + (iPage - 1) + ');"><i class="glyphicon glyphicon-chevron-left"></i> previous</a>';
+				sPagination += '<a class="btn active pull-left btn-xs" href="javascript:setPage(' + (iPage - 1) + ');"><i class="glyphicon glyphicon-menu-left"></i> <span>previous</span></a>';
 			}
 
 			if(iPage < oResultsData.available_pages){
-				sPagination += '<a class="pull-right btn active btn-xs" ng-show="page < (result_info.available_pages)" href="javascript:setPage(' + (iPage + 1) + ');">next <i class="glyphicon glyphicon-chevron-right"></i></a>';
+				sPagination += '<a class="pull-right btn active btn-xs" ng-show="page < (result_info.available_pages)" href="javascript:setPage(' + (iPage + 1) + ');"><span>next</span> <i class="glyphicon glyphicon-menu-right"></i></a>';
 			}
 		}
 		sPagination += sShowing;

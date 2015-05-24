@@ -10,7 +10,6 @@ $small_thumb_height: 115px;
 /* general */
 body {
   font-family: Muli;
-  /*	font-family: 'Noto Sans', sans-serif;*/
   padding: 0px;
   margin: 0px;
   background: none !important; }
@@ -235,7 +234,10 @@ layout parts
   padding: 8px;
   font-size: xx-large; }
 
-.lightbox_button:hover, .lightbox_button:active, .lightbox_button:visited {
+.lightbox_button, .lightbox_button:visited, .lightbox_button:focus {
+  color: #bdc3c7; }
+
+.lightbox_button:hover, .lightbox_button:active {
   color: #e74c3c; }
 
 /* maps */
@@ -617,45 +619,48 @@ ul.nav li a.active {
 
 #lightbox_info_view a {
   display: inline-block;
-  margin-right: 2px; }
+  margin-right: 2px;
+  margin-bottom: 2px; }
 
 /*
 tags - flat ui colours
 */
+#lightbox_info_view .label {
+  border-width: 1px;
+  border-style: solid;
+  color: #bdc3c7 !important; }
+
 .filetype {
-  background: #1abc9c; }
+  border-color: #1abc9c; }
 
 .mediatype {
-  background: #7f8c8d; }
+  border-color: #7f8c8d; }
 
 .filename {
-  background: #e67e22; }
+  border-color: #e67e22; }
 
 .folder {
-  background: #f39c12; }
+  border-color: #f39c12; }
 
 .unique-directory-path {
-  background: #8e44ad; }
+  border-color: #8e44ad; }
 
 .exif {
-  background: #2c3e50; }
+  border-color: #2c3e50; }
 
 .imagga {
-  background: #16a085; }
+  border-color: #16a085; }
 
 .elevation {
-  background: #2980b9; }
+  border-color: #2980b9; }
 
 .place {
-  background: #e67e22; }
+  border-color: #e67e22; }
 
 .tag {
-  background: #e74c3c; }
+  border-color: #e74c3c; }
 
-/*
-img*[src^="/icon/"]{
-    border-radius:16px;
-    border:1px solid #000 !important;
-  }*/
+#pagination a i {
+  top: 4px; }
 
 /*# sourceMappingURL=style.css.map */
