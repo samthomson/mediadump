@@ -180,6 +180,7 @@ class SearchController extends BaseController {
 							break;
 						
 						default:
+							$sSort = "date";
 							break;
 					}
 				}else{
@@ -220,6 +221,8 @@ class SearchController extends BaseController {
 
 		    switch ($sSort) {
 				case 'date':
+				case 'conf':
+					$sSort = "date";
 					$searchParams['sort'] = ["longtime:desc"];
 					break;
 				case 'conf':
@@ -294,7 +297,8 @@ class SearchController extends BaseController {
 			$oaInfo = [
 				"speed" => $iMs,
 				"count" => $retDoc["hits"]["total"],
-				"available_pages" => $iAvailablePages
+				"available_pages" => $iAvailablePages,
+				"order" => $sSort
 			];
 
 			$iMin = (($iPage * $iPerPage) - $iPerPage);

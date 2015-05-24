@@ -38,6 +38,7 @@ var oResultsData = [];
 var iSearchSpeed;
 var oaMarkers = [];
 var iStaggerMapIconLimit = 40;
+var i_fade_in_speed = 250;
 
 var bounds = new google.maps.LatLngBounds();
 
@@ -179,6 +180,7 @@ function performSearch(iFileToRenderAfterSearch)
 			oResultsData = results.info;
 			setLoading(false);
 
+			
 			renderResults();
 			renderPagination();
 
@@ -326,6 +328,7 @@ function renderTree()
 	$("#browse_tree img.lazy").lazyload({
 	 	container: $("#results"),
  		effect : "fadeIn",
+    	effectspeed: i_fade_in_speed,
  		placeholder: 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACwAAAAAAQABAAACAkQBADs=',
  		threshold: 300
 	});
@@ -517,6 +520,7 @@ function renderResults(){
 	$("#thumb_results img.lazy").lazyload({
  		container: $("#results"),
  		effect : "fadeIn",
+    	effectspeed: i_fade_in_speed,
  		placeholder: 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACwAAAAAAQABAAACAkQBADs=',
  		threshold: 300
 	});
@@ -858,9 +862,13 @@ function shuffle(){
 }
 function setMode(sMode){
 	setSearchMode(sMode);
-	emptyQueries();
 	setUIMode(sMode);
 	_buildUrlFromParams();
+}
+function setModeFromUI(sMode)
+{
+	setMode(sMode);
+	emptyQueries();
 }
 function setUIMode(sMode){
 	$("#header-navigation li a").removeClass("active");
@@ -956,7 +964,7 @@ function sizeDivide(){
 		$(".left_position").width("0%");
 		$(".right_position").css("left", "0px");
 
-/*
+		/*
 		if(oaQueries.length == 0)	{
 			// browse, set to full width
 			$(".left_position").width("0%");
@@ -974,7 +982,8 @@ function sizeDivide(){
 			$(".left_position").width("0%");
 			$(".right_position").css("left", (iLeftWidth/2));
 		}
-*/
+		*/
+
 		if(oResults.length > 0)
 			renderResults();
 	}
@@ -990,11 +999,7 @@ function setSolitaryQuery(sDisplay, sValue){
 	removeAllQueriesFromModelAndUI();
 	bQueryInputEventsOn = true;
 	
-
-	addQuery(sDisplay, sValue);
-
-	//performSearch();
-	//queryChange();	
+	addQuery(sDisplay, sValue);	
 }
 function removeAllQueriesFromModelAndUI(){
 	oaQueries = [];
@@ -1055,7 +1060,6 @@ $( document ).ready(function() {
 	        		function(results){
 	        			var htmlAutoComplete = "";
 
-
 	        			results["suggestions"].forEach(function(oResult, cCount){
 
 							var sValue = sReplaceQuote(sLinkSafeJSString(oResult.value));
@@ -1098,14 +1102,13 @@ $( document ).ready(function() {
 			iFile = saUrlVars["file"];
 		}
 	}
+	
 	if(saUrlVars["queries"] != undefined){
 		oaQueries = JSON.parse(decodeURIComponent(saUrlVars["queries"]));
 		silentRefreshSearchInputTagUIFromQueries();
 		queryChange();
 		performSearch(iLightboxfile);
 	}
-
-
 
 	// initial set up
 	initializeGoogleMap();
