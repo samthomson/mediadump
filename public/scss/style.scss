@@ -252,13 +252,17 @@ layout parts
 }
 
 #close_lightbox{top:0px;right:0px;}
-#left_lightbox{bottom:42 + ($margin * 2);right:0px;}
-#right_lightbox{bottom:0px;right:0px;}
-#info_lightbox{top:42 + ($margin * 1);right:2px;font-size:22px;}
+#left_lightbox{bottom:42 + ($margin * 2);right:10px;}
+#right_lightbox{bottom:0px;right:10px;}
+#info_lightbox{top:42 + ($margin * 1);right:4px;font-size:24px;}
 .lightbox_button{
 	position: absolute;
 	padding:$padding;
-	font-size: xx-large;
+	font-size: 36px;
+	/*width:36px;*/
+}
+.lightbox_button, .lightbox_button:hover, .lightbox_button:active, .lightbox_button:visited, .lightbox_button:focus{
+	text-decoration: none;
 }
 .lightbox_button, .lightbox_button:visited, .lightbox_button:focus{
 	color: $silver_colour;

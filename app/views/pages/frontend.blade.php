@@ -19,6 +19,7 @@
 		
 		<!-- app specific -->
 		<link rel="stylesheet" href="/css/style.css" type="text/css">
+		<link rel="stylesheet" href="/css/font.css" type="text/css">
 		<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico"/>
 
 	</head>
@@ -103,16 +104,16 @@
 
 			<div id="lightbox" >
 				<a class="lightbox_button" id="close_lightbox" href="javascript:closeLightbox();" title="press 'Esc' to close">
-					<i class="fa fa-times"></i>
+					<i class="icon icon-close"></i>
 				</a>
 				<a class="lightbox_button" id="left_lightbox" href="javascript:lightChange(-1);" title="press '&#8592;' to view previous">
-					<i class="glyphicon glyphicon-menu-left"></i>
+					<i class="fa fa-angle-left"></i>
 				</a>
 				<a class="lightbox_button" id="right_lightbox" href="javascript:lightChange(1);" title="press '&#8594;' to view next">
-					<i class="glyphicon glyphicon-menu-right"></i>
+					<i class="fa fa-angle-right"></i>
 				</a>
 				<a class="lightbox_button" id="info_lightbox" href="javascript:toggleInfo();" title="press 'i' to toggle file info">
-					<i class="glyphicon glyphicon-tags"></i>
+					<i class="icon-tag"></i>
 				</a>
 				<div id="lightbox_contents">				
 				

@@ -218,21 +218,25 @@ layout parts
 
 #left_lightbox {
   bottom: 50px;
-  right: 0px; }
+  right: 10px; }
 
 #right_lightbox {
   bottom: 0px;
-  right: 0px; }
+  right: 10px; }
 
 #info_lightbox {
   top: 46px;
-  right: 2px;
-  font-size: 22px; }
+  right: 4px;
+  font-size: 24px; }
 
 .lightbox_button {
   position: absolute;
   padding: 8px;
-  font-size: xx-large; }
+  font-size: 36px;
+  /*width:36px;*/ }
+
+.lightbox_button, .lightbox_button:hover, .lightbox_button:active, .lightbox_button:visited, .lightbox_button:focus {
+  text-decoration: none; }
 
 .lightbox_button, .lightbox_button:visited, .lightbox_button:focus {
   color: #bdc3c7; }
