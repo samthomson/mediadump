@@ -958,7 +958,8 @@ function sizeDivide(){
 		$(".left_position").width(iLeftWidth);
 		$(".right_position").css("left", iLeftWidth);
 
-		initializeGoogleMap();
+		// 24/5/15 commented out as resizing window triggered new map search which was bad UX, could also just turn of map events before and reinstate after
+		//initializeGoogleMap();
 	}else{
 
 		$(".left_position").width("0%");
