@@ -13,7 +13,21 @@
 	@if($bGeoData)
 		{{-- show map and tags --}}
 		<div>
-			<img src="https://maps.googleapis.com/maps/api/staticmap?center={{$filedata[0]->latitude}},{{$filedata[0]->longitude}}&zoom=13&size=600x300&maptype=roadmap" />
+			<?php
+				$iGeoOffset = 0.5;
+
+				$oTag = [];
+				$oTag["display"] = "map search";
+				$oTag["value"] = "map=".($filedata[0]->latitude-$iGeoOffset).",".($filedata[0]->latitude+$iGeoOffset).",".($filedata[0]->longitude-$iGeoOffset).",".($filedata[0]->longitude+$iGeoOffset);
+
+				$oaTags = [];
+				array_push($oaTags, $oTag);
+
+				$sHref = '#queries='. rawurlencode(json_encode($oaTags))."&mode=map";
+			?>
+			<a target="_blank" href="/{{$sHref}}">
+				<img src="https://maps.googleapis.com/maps/api/staticmap?center={{$filedata[0]->latitude}},{{$filedata[0]->longitude}}&zoom=13&size=600x300&maptype=roadmap" />
+			</a>
 		</div>
 	@endif
 
