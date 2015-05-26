@@ -221,15 +221,26 @@ class SearchController extends BaseController {
 
 		    switch ($sSort) {
 				case 'date':
-				case 'conf':
 					$sSort = "date";
 					$searchParams['sort'] = ["longtime:desc"];
 					break;
 				case 'conf':
 					//////$searchParams['sort'] = ["tags.confidence:desc"];
-					//$searchParams['sort'] = ["tags.confidence" => ["order" => "desc", "mode" => "min", "nested_filter" => $filter]];
+					$searchParams['sort'] = [
+						"tags.confidence" => [
+							"order" => "desc",
+							"mode" => "min",
+							"nested_path" => "tags",
+							"nested_filter" => [
+								"term" => [
+									"tags.value" => "tree"
+								]
+							]
+						]
+					];
 					break;
 			}
+
 
 		    $searchParams['index'] = 'mediadump_index';
 			$searchParams['size'] = $iPerPage;
@@ -253,7 +264,11 @@ class SearchController extends BaseController {
 			);
 						
 			
+			//print_r($searchParams);exit();
+
 			$retDoc = $client->search($searchParams);
+
+			print_r($retDoc);exit();
 
 			$saStats = [];
 			$soFiles = [];

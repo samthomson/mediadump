@@ -536,7 +536,7 @@ function renderPagination(){
 		
 		var sShowing = "<span>showing " + oResultsData.lower + " - " + oResultsData.upper + " / " + commafy(oResultsData.count) + '</span>';
 
-		sShowing += '<span title="elastic speed: '+parseInt(oResultsData.speed)+' ms"><i class="glyphicon glyphicon-flash"></i> found in ~' + parseInt(iSearchSpeed) +' ms</span>';
+		sShowing += '<span title="elastic speed: '+parseInt(oResultsData.speed)+' ms, sort: ' + oResultsData.order + '"><i class="glyphicon glyphicon-flash"></i> found in ~' + parseInt(iSearchSpeed) +' ms</span>';
 
 		if(sSearchMode == "browse"){
 			if(iPage > 1){

@@ -51,9 +51,9 @@ App::missing(function($exception)
 });
 
 
-/*
-*/
 
+
+/**/
 Route::get('/test/delete', array('uses' => 'ElasticSearchController@deleteIndex'));
 
 Route::get('/elastic/create', array('uses' => 'ElasticSearchController@createIndex'));
@@ -85,4 +85,14 @@ Route::get('/test', function()
 Route::get('/empty', function()
 {
 	return Response::make("ok", 200);
+});
+
+
+Route::get('/elastic/reset', function()
+{
+	ElasticSearchController::deleteIndex();
+	ElasticSearchController::createIndex();
+	ElasticSearchController::scheduleFullReindex();
+
+	return Response::make("<br/><br/>- ok", 200);
 });

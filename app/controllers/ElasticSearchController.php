@@ -22,9 +22,11 @@ class ElasticSearchController extends BaseController {
 			    ),
 			    'properties' => array(
 			        'fieldName' => array("type" => "geo_point"),
-			        'tags.value' => array("type" => "string", "index" => "not_analyzed")
+			        'tags.value' => array("type" => "string", "index" => "not_analyzed"),
+			        'tags.confidence' => array("type" => "long", "index" => "not_analyzed")
 			    )
 			);
+			//print_r($myTypeMapping);
 			$indexParams['body']['mappings']['file'] = $myTypeMapping;
 
 			// Create the index
