@@ -14,7 +14,7 @@ class PlacesProcessor extends BaseController {
 
 
 			$sThumbPath = Helper::thumbPath("large").$oFile->hash.".jpg";
-			$oGeoData = $oFile->geoData();
+			$oGeoData = $oFile->geoData;
 
 			$bHasLatLon = false;
 
@@ -22,7 +22,7 @@ class PlacesProcessor extends BaseController {
 			{
 				if(isset($oGeoData->latitude) && isset($oGeoData->longitude))
 				{
-					if($oGeoData->latitude != 0 && $oGeoData->longitude != 0)
+					if($oGeoData->latitude !== 0 && $oGeoData->longitude !== 0)
 					{
 						$bHasLatLon = true;
 					}

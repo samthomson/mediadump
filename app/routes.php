@@ -70,6 +70,8 @@ Route::get('/test', function()
 	//$data = Image::make($oFile->path)->exif();
 
 	echo (Helper::bImageCorrupt($oFile->path) ? "corrupt" : "okay");
+
+	print_r(exif_read_data($oFile->path));
 	
 	
 	/*

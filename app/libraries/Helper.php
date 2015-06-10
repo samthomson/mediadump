@@ -68,6 +68,7 @@ class Helper {
 	//
 	public static function bImageCorrupt($sPath)
 	{
+		return FALSE;
 		if (!is_resource($file = fopen($sPath, 'rb'))) {
 	        return TRUE;
 	    }

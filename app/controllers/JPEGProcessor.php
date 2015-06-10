@@ -76,6 +76,7 @@ class JPEGProcessor extends BaseController {
 				//if(exif_imagetype($oFile->path) == false)
 				if(Helper::bImageCorrupt($oFile->path))
 				{
+					echo "corrupt image<br/>";
 					// corrupt image
 					// problem reading exif data, not the end of the world, log it and continue to attempt thumb generation
 					$qiElasticIndex = new QueueModel;
@@ -88,8 +89,11 @@ class JPEGProcessor extends BaseController {
 				}
 				else
 				{
-					$data = Image::make($oFile->path)->exif();
-				
+					
+					//$data = Image::make($oFile->path)->exif();
+					$data = exif_read_data($oFile->path);
+
+					print_r($data);
 					if(isset($data["Make"]))
 					{
 						TaggingHelper::_QuickTag($oFile->id, "exif.cameramake", $data["Make"]);
