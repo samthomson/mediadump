@@ -89,11 +89,10 @@ class JPEGProcessor extends BaseController {
 				}
 				else
 				{
-					
 					//$data = Image::make($oFile->path)->exif();
 					$data = exif_read_data($oFile->path);
 
-					print_r($data);
+					//print_r($data);
 					if(isset($data["Make"]))
 					{
 						TaggingHelper::_QuickTag($oFile->id, "exif.cameramake", $data["Make"]);
@@ -119,11 +118,8 @@ class JPEGProcessor extends BaseController {
 					if(isset($data["GPSLongitude"]) && isset($data["GPSLongitudeRef"]))
 					{
 						$lon = Helper::getGps($data["GPSLongitude"], $data['GPSLongitudeRef']);
-						echo "lon: ", $lon, "<br/>";
 						$oGeoData->longitude = $lon;
-						echo"lon: ",  $oGeoData->longitude, "<br/>";
 						$oGeoData->save();
-						echo"lon: ",  $oGeoData->longitude, "<br/>";
 
 						$cGeoDataAdded++;
 					}
@@ -131,7 +127,6 @@ class JPEGProcessor extends BaseController {
 					if(isset($data["GPSLatitude"]) && isset($data["GPSLatitudeRef"]))
 					{
 						$lat = Helper::getGps($data["GPSLatitude"], $data['GPSLatitudeRef']);
-						echo $lat, "<br/>";
 						$oGeoData->latitude = $lat;
 						$oGeoData->save();
 
@@ -181,7 +176,10 @@ class JPEGProcessor extends BaseController {
 					if(File::exists($saMakeThumb["path"]))
 						File::delete($saMakeThumb["path"]);
 
+
 					$img = Image::make($oFile->path)->orientate();
+
+					
 
 					if($saMakeThumb["aspectRatio"])
 					{
@@ -241,6 +239,7 @@ class JPEGProcessor extends BaseController {
 
 
 				// return true, so the processor can delete the work queue item
+				echo "return true";
 				return true;
 			}else{
 				echo "couldn't find: ".$oFile->path;

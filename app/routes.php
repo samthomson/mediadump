@@ -63,6 +63,14 @@ Route::get('/elastic/re-index', array('uses' => 'ElasticSearchController@schedul
 
 Route::get('/test', function()
 {
+
+	//echo imagecreatefromjpeg('C:\wamp\www\mediadump\public\media\test-hungary-2015\DSC09069.JPG');
+
+	$img = Image::make('C:\wamp\www\mediadump\public\media\test-hungary-2015\DSC09069.JPG')->orientate();
+
+	print_r($img);
+	
+	/*
 	$oFile = FileModel::find(1);
 
 	$data = @imagecreatefromjpeg($oFile->path);
@@ -73,7 +81,7 @@ Route::get('/test', function()
 
 	print_r(exif_read_data($oFile->path));
 	
-	
+	*/
 	/*
 
 	if(!getimagesize($oFile->path))

@@ -17,10 +17,10 @@ class AutoController extends BaseController {
 
 			echo '<head><meta charset="utf-8"></head>';
 
-			$saAllFiles = File::allFiles(Config::get('app.mediaFolderPath'));
-			//$saAllFiles = self::files(Config::get('app.mediaFolderPath'));
+			//$saAllFiles = File::allFiles(Config::get('app.mediaFolderPath'));
+			$saAllFiles = self::completeFiles(Config::get('app.mediaFolderPath'));
 
-			//print_r($saAllFiles);
+			//print_r($saAllFiles);exit();
 
 			foreach($saAllFiles as $sFile)
 			{
@@ -60,7 +60,7 @@ class AutoController extends BaseController {
 			}
 		}
 	}
-	public static function files($path)
+	public static function completeFiles($path)
 	{
 		//$path   = '.';
 		$result = array('files' => array(), 'directories' => array());
@@ -71,18 +71,23 @@ class AutoController extends BaseController {
 
 		    $path = $file->getRealPath();
 
+		    /*
 		    if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
 			    $path = utf8_decode($path);
 			} else {
 			    //echo 'This is a server not using Windows!';
 			    $path = (string)$path;
 			}
-
+*/
 
 		    if ($file->isDir()) {
 		        $result['directories'][] = $path;
 		    } elseif ($file->isFile()) {
-		        $result['files'][] = $path;
+		    	{
+		        	if(!Helper::bImageCorrupt($path)){
+		        		$result['files'][] = $path;
+		        	}
+		    	}
 		    }
 		}
 		return $result['files'];

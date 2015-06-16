@@ -193,7 +193,15 @@ class SearchController extends BaseController {
 					{
 						array_push($ands, array("match_all" => new \stdClass()));
 					}else{
-						if($sQuery[0] === '!')
+						$bNotQuery = false;
+
+						if(strlen($sQuery) > 0){
+							if($sQuery[0] === '!'){
+								$bNotQuery = true;
+							}
+						}
+
+						if($bNotQuery)
 							array_push($nots, array("term" => array("tags.value" => substr($sQuery,1))));
 						else
 							array_push($ands, array("term" => array("tags.value" => $sQuery)));
@@ -268,7 +276,7 @@ class SearchController extends BaseController {
 
 			$retDoc = $client->search($searchParams);
 
-			print_r($retDoc);exit();
+			//print_r($retDoc);exit();
 
 			$saStats = [];
 			$soFiles = [];

@@ -68,7 +68,24 @@ class Helper {
 	//
 	public static function bImageCorrupt($sPath)
 	{
-		return FALSE;
+		// slow but no false positives (yet), could use some jpeg info cmd but this is def platform independent
+		$bCorrupt = true;
+		try{
+			if(@imagecreatefromjpeg($sPath)){
+				$bCorrupt = false;
+			}
+		}catch(Exception $r){}
+		//$mResp = imagecreatefromjpeg($sPath);
+		return $bCorrupt;
+
+		/*
+		if(is_file($sPath))
+			return false;
+		else
+			return true;
+		*/
+		/*
+		//return FALSE;
 		if (!is_resource($file = fopen($sPath, 'rb'))) {
 	        return TRUE;
 	    }
@@ -79,6 +96,8 @@ class Helper {
 	    }
 	    fclose($file);
 	    return FALSE;
+
+	    */
 	}
 }
 
