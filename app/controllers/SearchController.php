@@ -98,10 +98,11 @@ class SearchController extends BaseController {
 		//Clockwork::startEvent('elasticSearch', 'elasticSearch');
 		try{
 			$params = array();
+			
 			$params['hosts'] = array (
 				'http://localhost:9200'
 			);
-
+			
 			//$params['hosts'] = array ('http://178.62.251.180:9200');
 			
 			$client = new Elasticsearch\Client($params);
@@ -188,7 +189,7 @@ class SearchController extends BaseController {
 				}
 
 				if($bDefaultQuery){
-					$sSort = "conf";
+					////$sSort = "conf";
 					if($sQuery == '*')
 					{
 						array_push($ands, array("match_all" => new \stdClass()));

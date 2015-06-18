@@ -66,9 +66,21 @@ Route::get('/test', function()
 
 	//echo imagecreatefromjpeg('C:\wamp\www\mediadump\public\media\test-hungary-2015\DSC09069.JPG');
 
-	$img = Image::make('C:\wamp\www\mediadump\public\media\test-hungary-2015\DSC09069.JPG')->orientate();
+	//$img = Image::make('C:\wamp\www\mediadump\public\media\test-hungary-2015\DSC09069.JPG')->orientate();
 
-	print_r($img);
+	//$oaFiles = AutoController::completeFiles(public_path().DIRECTORY_SEPARATOR."mtest");
+
+	echo "9643 is BAD", "<br/>";
+	echo "9649 is GOOD", "<br/>";
+	echo "9181 is GOOD", "<br/>";
+
+	$oaFiles = Helper::completeFiles(public_path().DIRECTORY_SEPARATOR."mtest");
+	print_r($oaFiles);
+/*
+	foreach($oaFiles as $sFilePath){
+		$sRelPath = @end(explode(DIRECTORY_SEPARATOR."public".DIRECTORY_SEPARATOR, $sFilePath));
+		echo '<img width="100px" src="/', $sRelPath, '"/>', "<br/><br/><br/>";
+	}*/
 	
 	/*
 	$oFile = FileModel::find(1);

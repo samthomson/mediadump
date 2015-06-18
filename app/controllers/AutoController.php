@@ -18,7 +18,7 @@ class AutoController extends BaseController {
 			echo '<head><meta charset="utf-8"></head>';
 
 			//$saAllFiles = File::allFiles(Config::get('app.mediaFolderPath'));
-			$saAllFiles = self::completeFiles(Config::get('app.mediaFolderPath'));
+			$saAllFiles = Helper::completeFiles(Config::get('app.mediaFolderPath'));
 
 			//print_r($saAllFiles);exit();
 
@@ -60,38 +60,7 @@ class AutoController extends BaseController {
 			}
 		}
 	}
-	public static function completeFiles($path)
-	{
-		//$path   = '.';
-		$result = array('files' => array(), 'directories' => array());
-
-		$DirectoryIterator = new RecursiveDirectoryIterator($path);
-		$IteratorIterator  = new RecursiveIteratorIterator($DirectoryIterator, RecursiveIteratorIterator::SELF_FIRST);
-		foreach ($IteratorIterator as $file) {
-
-		    $path = $file->getRealPath();
-
-		    /*
-		    if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-			    $path = utf8_decode($path);
-			} else {
-			    //echo 'This is a server not using Windows!';
-			    $path = (string)$path;
-			}
-*/
-
-		    if ($file->isDir()) {
-		        $result['directories'][] = $path;
-		    } elseif ($file->isFile()) {
-		    	{
-		        	if(!Helper::bImageCorrupt($path)){
-		        		$result['files'][] = $path;
-		        	}
-		    	}
-		    }
-		}
-		return $result['files'];
-	}
+	
 	public static function test()
 	{
 		echo "gfdgfd";

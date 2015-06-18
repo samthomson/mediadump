@@ -66,38 +66,96 @@ class Helper {
 	//
 	// file stuff
 	//
+	public static function check_jpeg($f, $fix=false )
+	{
+		# [070203]
+		# check for jpeg file header and footer - also try to fix it
+	    if ( false !== (@$fd = fopen($f, 'r' )) ){
+	        if ( fread($fd,2)==chr(255).chr(216) ){
+	            fseek ( $fd, -2, SEEK_END );
+	            if ( fread($fd,2)==chr(255).chr(217) ){
+	                fclose($fd);
+	                return true;
+	            }else{
+	                if ( $fix && fwrite($fd,chr(255).chr(217)) ){return true;}
+	                fclose($fd);
+	    			echo "2nd fail", "<br/>";
+	                return false;
+	            }
+	        }else{fclose($fd); return false;}
+	    }else{
+	    	echo "first fail", "<br/>";
+	        return false;
+	    }
+	}
+
 	public static function bImageCorrupt($sPath)
 	{
-		// slow but no false positives (yet), could use some jpeg info cmd but this is def platform independent
-		$bCorrupt = true;
-		try{
-			if(@imagecreatefromjpeg($sPath)){
-				$bCorrupt = false;
-			}
-		}catch(Exception $r){}
-		//$mResp = imagecreatefromjpeg($sPath);
-		return $bCorrupt;
 
-		/*
-		if(is_file($sPath))
-			return false;
-		else
-			return true;
-		*/
-		/*
-		//return FALSE;
+		return false;
 		if (!is_resource($file = fopen($sPath, 'rb'))) {
+			echo "1st fail", "<br/>";
 	        return TRUE;
 	    }
 	    // check for the existence of the EOI segment header at the end of the file
 	    if (0 !== fseek($file, -2, SEEK_END) || "\xFF\xD9" !== fread($file, 2)) {
 	        fclose($file);
+			echo "2nd fail", "<br/>";
 	        return TRUE;
 	    }
 	    fclose($file);
 	    return FALSE;
+	}
+	public static function completeFiles($path)
+	{
+		//$path   = '.';
+		$result = array('files' => array(), 'directories' => array());
 
-	    */
+		$DirectoryIterator = new RecursiveDirectoryIterator($path);
+		$IteratorIterator  = new RecursiveIteratorIterator($DirectoryIterator, RecursiveIteratorIterator::SELF_FIRST);
+		foreach ($IteratorIterator as $file) {
+
+		    $path = $file->getRealPath();
+
+		    /*
+		    if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+			    $path = utf8_decode($path);
+			} else {
+			    //echo 'This is a server not using Windows!';
+			    $path = (string)$path;
+			}
+*/
+
+		    if ($file->isDir()) {
+		        $result['directories'][] = $path;
+		    } elseif ($file->isFile()) {
+		    	{
+		    		/*
+		    		$oDateModified = File::lastModified($path);
+		    		$time_difference = strtotime('now') - $oDateModified;
+		    		echo "time diff: ", $time_difference, "<br/>";
+
+		    		// if file hasn't changed in 60 seconds.
+		        	if($time_difference > 60){
+		        		*/
+		        	/*
+		        	if(!Helper::bImageCorrupt($path)){*/
+		        	if(self::endsWith(strtolower($path), ".jpg")){
+		        		$result['files'][] = $path;
+		        	}
+		    	}
+		    }
+		}
+		return $result['files'];
+	}
+
+	public static function startsWith($haystack, $needle) {
+	    // search backwards starting from haystack length characters from the end
+	    return $needle === "" || strrpos($haystack, $needle, -strlen($haystack)) !== FALSE;
+	}
+	public static function endsWith($haystack, $needle) {
+	    // search forward starting from end minus needle length characters
+	    return $needle === "" || (($temp = strlen($haystack) - strlen($needle)) >= 0 && strpos($haystack, $needle, $temp) !== FALSE);
 	}
 }
 
