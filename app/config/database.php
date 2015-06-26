@@ -55,23 +55,12 @@ return array(
 		'mysql' => array(
 			'driver'    => 'mysql',
 			'host'      => '127.0.0.1',
-			'database'  => 'mediadump_db',
-			'username'  => 'mediadump_user',
-			'password'  => 'K8a7M5YJwZAwm4DT',
+			'database'  => 'db_name',
+			'username'  => 'db_username',
+			'password'  => 'db_password',
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
-		),
-
-		'mysql_remote' => array(
-			'driver'    => 'mysql',
-			'host'      => '178.62.251.180',
-			'database'  => 'mediadump_db',
-			'username'  => 'mediadump_user',
-			'password'  => 'K8a7M5YJwZAwm4DT',
-			'charset'   => 'utf8',
-			'collation' => 'utf8_unicode_ci',
-			'prefix'    => '',
-		),
+		)
 
 	),
 
