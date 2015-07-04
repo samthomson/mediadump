@@ -210,5 +210,5 @@ return array(
 	'imaggaKey' => "",
 	'imaggaSecret' => "",
 
-	'sGATrackingCode' => "UA-58188194-1",
+	'sGATrackingCode' => "",
 );

@@ -209,7 +209,7 @@ return array(
 	'iMaxVideoLengthSeconds' => 180,
 
 	'imaggaKey' => "acc_19db373c6879755",
-	'imaggaSecret' => "d397f1a6ab0323a3a7a46ebf0a5af625",
+	'imaggaSecret' => "272b3q33w2gu46455y161752zt39bk6o",
 
 	'sGATrackingCode' => "UA-58188194-1",
 );
