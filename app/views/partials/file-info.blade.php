@@ -31,6 +31,11 @@
 		</div>
 	@endif
 
+	<div id="urls">
+		<strong>direct url</strong>
+		<input class="form-control input-sm" type="text" value="{{URL::to('/thumbs/large/'.$filedata[0]->hash.'.jpg')}}">
+	</div>
+
 	<div>
 	<?php
 		$sLast = "";
