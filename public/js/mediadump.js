@@ -25,7 +25,7 @@ var xhrFileInfo;
 var bQueryInputEventsOn = true;
 
 var sCdnURL = "http://s.mediadump.samt.st";
-var sCdnURL = "http://mediadump.dev";
+//var sCdnURL = "http://mediadump.dev";
 
 var oaQueries = [];
 var iPage = 1;
@@ -1018,6 +1018,22 @@ function autoSuggestSelect(sDisplay, sValue){
 function addedFromInput(sDisplay){
 	// add the query, triggering a search
 	addQuery(sDisplay, sDisplay, false);
+}
+
+function srcToClipboard()
+{
+	//alert($("#srcForClipboard").val());
+
+	var copyTextarea = document.querySelector('#srcForClipboard');
+	copyTextarea.select();
+
+	try {
+		var successful = document.execCommand('copy');
+		var msg = successful ? 'successful' : 'unsuccessful';
+		console.log('Copying text command was ' + msg);
+	} catch (err) {
+		console.log('Oops, unable to copy');
+	}
 }
 
 $( document ).ready(function() {

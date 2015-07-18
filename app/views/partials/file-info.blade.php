@@ -33,7 +33,25 @@
 
 	<div id="urls">
 		<strong>direct url</strong>
-		<input class="form-control input-sm" type="text" value="{{URL::to('/thumbs/large/'.$filedata[0]->hash.'.jpg')}}">
+
+		<div class="form-group input-group" id="">
+            <input class="form-control" id="srcForClipboard" type="text" value="{{URL::to('/thumbs/large/'.$filedata[0]->hash.'.jpg')}}">
+
+            <div class="input-group-btn">
+                <button class="btn" id="" onclick="srcToClipboard();" type="submit"><i class="glyphicon glyphicon-copy"></i>&nbsp;</button>
+            </div>
+        </div>
+
+        <!--
+
+		<div class="form-group">
+			<div class="input-group">
+				<a href="javascript:alert('copied');"><button class="input-group-addon">$</div></a>
+				<button class="btn " id="" title="Copy to clipboard" type="submit"><i class="glyphicon glyphicon-search"></i>&nbsp;</button>
+				<input type="text" class="form-control input-sm" value="{{URL::to('/thumbs/large/'.$filedata[0]->hash.'.jpg')}}">
+			</div>
+		</div>
+		-->
 	</div>
 
 	<div>
