@@ -622,7 +622,7 @@ function addQueryFromMap(){
 	var llNorthEast = llBounds.getNorthEast();
 	var llSouthWest = llBounds.getSouthWest();
 
-	var iRounding = 2;
+	var iRounding = 4;
 
 	var iLatSW = llSouthWest.lat().toFixed(iRounding);
 	var iLatNE = llNorthEast.lat().toFixed(iRounding);
