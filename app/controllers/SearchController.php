@@ -11,8 +11,9 @@ class SearchController extends BaseController {
 			{
 				$join->on("files.id", "=", "tags.file_id")
 				->where("type", "=", "uniquedirectorypath");
-			})		
-		->where("indexed", "=", true)->distinct("value")/**/
+			})		/*
+		->where("indexed", "=", true)*/
+		->distinct("value")/**/
 		->orderBy("datetime", "desc")/**/
         ->groupBy('tags.value')/**/
         ->select("files.id", "files.hash", "tags.value")
@@ -373,8 +374,9 @@ class SearchController extends BaseController {
 						->where("latitude", "<", $iaLatLonRange[1])
 						->where("longitude", ">", $iaLatLonRange[2])
 						->where("longitude", "<", $iaLatLonRange[3]);
-					})	
-					->where("live", "=", true)->distinct("value")
+					})	/*
+					->where("live", "=", true)*/
+					->distinct("value")
 					->orderBy(DB::Raw('RAND()'))
 					->groupBy("id")
 			        ->select($saSelectPropertiesWithoutTags)
@@ -391,8 +393,9 @@ class SearchController extends BaseController {
 					->join("geodata", function($joinGeoData)
 						{
 							$joinGeoData->on("files.id", "=", "geodata.file_id");
-						})	
-					->where("live", "=", true)->distinct("value")
+						})	/*
+					->where("live", "=", true)*/
+					->distinct("value")
 					->orderBy(DB::Raw('RAND()'))
 					->groupBy("id")
 			        ->select($saSelectPropertiesWithoutTags)
@@ -408,8 +411,9 @@ class SearchController extends BaseController {
 					->join("geodata", function($joinGeoData)
 					{
 						$joinGeoData->on("files.id", "=", "geodata.file_id");
-					})	
-					->where("live", "=", true)->distinct("value")
+					})	/*
+					->where("live", "=", true)*/
+					->distinct("value")
 					->where("confidence", ">", Helper::iConfidenceThreshold())
 					->orderBy("confidence", "desc")
 					->orderBy("datetime", "desc")
