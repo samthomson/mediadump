@@ -19,7 +19,7 @@ Route::get('/', function()
 Route::get('/auto/checkfiles', array('uses' => 'AutoController@checkFiles'));
 Route::get('/auto/processqueue', array('uses' => 'AutoController@processQueue'));
 
-Route::get('/api/search', array('uses' => 'SearchController@elasticSearch'));
+Route::get('/api/search', array('uses' => 'SearchController@sqlSearch'));
 Route::get('/api/suggest', array('uses' => 'SearchController@suggest'));
 Route::get('/api/dbsuggest', array('uses' => 'SearchController@dbSuggest'));
 Route::get('/api/suggest/stats', array('uses' => 'SearchController@suggestStats'));

@@ -345,5 +345,177 @@ class SearchController extends BaseController {
 			echo $e;
 		}
 		//Clockwork::endEvent('elasticSearch');
+	}
+
+/*
+array_push($oaResults, [
+					"i" => (int)$oHit["_source"]["id"],
+					"ha" => $oHit["_source"]["hash"],
+
+					"la" => (isset($oHit["_source"]["latitude"]) ? $oHit["_source"]["latitude"] : null),
+					"lo" => (isset($oHit["_source"]["longitude"]) ? $oHit["_source"]["longitude"] : null),
+
+					"w" => (int)$oHit["_source"]["medium_width"],
+					"h" => (int)$oHit["_source"]["medium_height"]
+					]);
+
+*/
+	private static function individualQuery($sQuery){
+		// construct db query based on broken down query (type)
+		$saQueryParts = explode("=", $sQuery);
+		$soFiles = [];
+		$saSelectProperties = array("files.id as id", "files.hash as ha", "tags.value", "geodata.latitude as la", "geodata.longitude as lo", "files.medium_width AS w", "files.medium_height AS h", "tags.confidence as confidence");
+		
+		$saSelectPropertiesWithoutTags = array("files.id as id", "files.hash as ha", "geodata.latitude as la", "geodata.longitude as lo", "files.medium_width AS width", "files.medium_height AS height");
+		// return results
+		$sQueryType = "value"; //default
+		if(count($saQueryParts) > 1){
+			// if actually set, see what it is
+			$sQueryType = $saQueryParts[0];
+		}
+		switch($sQueryType)
+		{
+			case "map":
+				$iaLatLonRange = explode(',', $saQueryParts[1]);
+				$soFiles = DB::table("files")
+					->join("geodata", function($joinGeoData) use ($iaLatLonRange)
+					{
+						$joinGeoData->on("files.id", "=", "geodata.file_id")
+						
+						->where("latitude", ">", $iaLatLonRange[0])
+						->where("latitude", "<", $iaLatLonRange[1])
+						->where("longitude", ">", $iaLatLonRange[2])
+						->where("longitude", "<", $iaLatLonRange[3]);
+					})	
+					->where("live", "=", true)->distinct("value")
+					->orderBy(DB::Raw('RAND()'))
+					->groupBy("id")
+			        ->select($saSelectPropertiesWithoutTags)
+					->get();
+					$queries = DB::getQueryLog();
+					$last_query = end($queries);
+				break;
+			case "shuffle":
+				$soFiles = DB::table("files")/*
+					->join("tags", function($join)
+						{
+							$join->on("files.id", "=", "tags.file_id");
+						})*/
+					->join("geodata", function($joinGeoData)
+						{
+							$joinGeoData->on("files.id", "=", "geodata.file_id");
+						})	
+					->where("live", "=", true)->distinct("value")
+					->orderBy(DB::Raw('RAND()'))
+					->groupBy("id")
+			        ->select($saSelectPropertiesWithoutTags)
+					->get();
+				break;
+			default:
+				$soFiles = DB::table("files")
+					->join("tags", function($join) use ($sQuery)
+						{
+							$join->on("files.id", "=", "tags.file_id")
+							->where("value", "=", $sQuery);
+						})	
+					->join("geodata", function($joinGeoData)
+					{
+						$joinGeoData->on("files.id", "=", "geodata.file_id");
+					})	
+					->where("live", "=", true)->distinct("value")
+					->where("confidence", ">", Helper::iConfidenceThreshold())
+					->orderBy("confidence", "desc")
+					->orderBy("datetime", "desc")
+					->groupBy("id")
+			        ->select($saSelectProperties)
+					->get();
+				break;
+		}
+		return $soFiles;
+	}
+	public static function sqlSearch()
+	{		
+		$mtStart = microtime(true);
+		$iPerPage = 100;
+		$oResults = array("info" => null, "results" => null);
+		
+		$sQuery = Input::get("query");
+		$saQueries = explode("|", $sQuery);
+		$saStats = [];
+		$soFiles = [];
+		$aaSpeeds = [];
+		$aaQueryResultsCount = [];
+		$saQueryResults = [];
+		// get results for all queries
+		$i = 0;
+		foreach ($saQueries as $sQuery) {
+			$saQueryResults[$i] = self::individualQuery($sQuery);
+			$aaQueryResultsCount[$sQuery] = count($saQueryResults[$i]);
+			$i++;
+		}
+		$aaSpeeds["searched"] = Helper::iMillisecondsSince($mtStart);
+		// aggregate queries
+		switch(count($saQueries))
+		{
+			case 0:
+				$soFiles = [];
+				break;
+			case 1:
+				$soFiles = $saQueryResults[0];
+				break;
+			default:
+				// multiple
+				// make an array of files that were contained in all queries' results
+				// start with the shortest
+            	usort($saQueryResults, create_function('$a, $b', 'return bccomp(count($a), count($b));'));
+            	
+				// merge results on intersecting
+                if($saQueryResults[0] == null){$soFiles = array();}
+            
+                for($cArr = 1; $cArr < count($saQueryResults); $cArr++){
+                    if($saQueryResults[$cArr] == null){$soFiles = array();}
+                    
+                	// merge two results on intersecting
+                    $aIntersecting = [];
+                    $index = [];
+                    if(isset($saQueryResults[0])){
+                        foreach ($saQueryResults[0] as $item) {
+                            $index[$item->hash] = true;
+                        }
+                    }
+                    if(isset($saQueryResults[$cArr])){
+                    	foreach ($saQueryResults[$cArr] as $item) {
+                            if (isset($index[$item->hash])) {
+                            	array_push($aIntersecting, $item);
+                            }
+                        }
+                    }
+                    $saQueryResults[0] = $aIntersecting;
+                    
+                    //unset($aIntersecting);
+                    //unset($index);            
+                }
+                $soFiles = $saQueryResults[0];
+				break;
+		}
+		$aaSpeeds["aggregated"] = Helper::iMillisecondsSince($mtStart);
+		// return them, with some stats
+		$saStats["speed"] = Helper::iMillisecondsSince($mtStart);
+		$saStats["speed_breakdown"] = $aaSpeeds;
+		
+		$saStats["count"] = count($soFiles);
+		$saStats["available_pages"] = round(floor((count($soFiles)-1)/$iPerPage))+1;
+		$saStats["queries"] = [];
+		foreach($aaQueryResultsCount as $key => $value){
+			$saStats["queries"][$key] = $value;
+		}
+		$iPage = (Input::get("page")) ? Input::get("page") : 1;
+		$iMin = (($iPage * $iPerPage) - $iPerPage);
+		$iMax = ($iMin + $iPerPage);
+		$oResults["results"] = array_slice($soFiles, $iMin, $iPerPage);
+		$saStats["lower"] = $iMin + 1;
+		$saStats["upper"] = (($iPage - 1 ) * $iPerPage) + count($oResults["results"]);
+		$oResults["info"] = $saStats;
+		return Response::json($oResults);		
 	}	
 }
