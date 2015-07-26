@@ -315,12 +315,14 @@ class AutoController extends BaseController {
 					$qiJpegQueue->save();
 
 
+					/*
 					$qiElasticIndex = new QueueModel;
 					$qiElasticIndex->file_id = $file->id;
 					$qiElasticIndex->processor = "elasticindex";
 					$qiElasticIndex->date_from = date('Y-m-d H:i:s');
 					$qiElasticIndex->after = $qiJpegQueue->id;
 					$qiElasticIndex->save();
+					*/
 
 					// imagga processor afterwards
 					$qiImagga = new QueueModel;
@@ -330,11 +332,13 @@ class AutoController extends BaseController {
 					$qiImagga->after = $qiJpegQueue->id;
 					$qiImagga->save();
 
+					/*
 					$qiElasticIndex->file_id = $file->id;
 					$qiElasticIndex->processor = "elasticindex";
 					$qiElasticIndex->date_from = date('Y-m-d H:i:s');
 					$qiElasticIndex->after = $qiImagga->id;
 					$qiElasticIndex->save();
+					*/
 
 
 					// places processor afterwards
@@ -345,11 +349,13 @@ class AutoController extends BaseController {
 					$qiPlaces->after = $qiJpegQueue->id;
 					$qiPlaces->save();
 
+					/*
 					$qiElasticIndex->file_id = $file->id;
 					$qiElasticIndex->processor = "elasticindex";
 					$qiElasticIndex->date_from = date('Y-m-d H:i:s');
 					$qiElasticIndex->after = $qiPlaces->id;
 					$qiElasticIndex->save();
+					*/
 					
 					break;
 					/*

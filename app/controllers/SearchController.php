@@ -347,19 +347,6 @@ class SearchController extends BaseController {
 		//Clockwork::endEvent('elasticSearch');
 	}
 
-/*
-array_push($oaResults, [
-					"i" => (int)$oHit["_source"]["id"],
-					"ha" => $oHit["_source"]["hash"],
-
-					"la" => (isset($oHit["_source"]["latitude"]) ? $oHit["_source"]["latitude"] : null),
-					"lo" => (isset($oHit["_source"]["longitude"]) ? $oHit["_source"]["longitude"] : null),
-
-					"w" => (int)$oHit["_source"]["medium_width"],
-					"h" => (int)$oHit["_source"]["medium_height"]
-					]);
-
-*/
 	private static function individualQuery($sQuery){
 		// construct db query based on broken down query (type)
 		$saQueryParts = explode("=", $sQuery);
