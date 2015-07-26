@@ -11,3 +11,5 @@ Thumbs.db
 
 /public/media/*
 /public/thumbs/*
+
+/app/config/local/*

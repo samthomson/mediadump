@@ -53,62 +53,12 @@ App::missing(function($exception)
 
 
 
-/**/
+/*
 Route::get('/test/delete', array('uses' => 'ElasticSearchController@deleteIndex'));
 
 Route::get('/elastic/create', array('uses' => 'ElasticSearchController@createIndex'));
 
 Route::get('/elastic/re-index', array('uses' => 'ElasticSearchController@scheduleFullReindex'));
-
-
-Route::get('/test', function()
-{
-
-	//echo imagecreatefromjpeg('C:\wamp\www\mediadump\public\media\test-hungary-2015\DSC09069.JPG');
-
-	//$img = Image::make('C:\wamp\www\mediadump\public\media\test-hungary-2015\DSC09069.JPG')->orientate();
-
-	//$oaFiles = AutoController::completeFiles(public_path().DIRECTORY_SEPARATOR."mtest");
-
-	echo "9643 is BAD", "<br/>";
-	echo "9649 is GOOD", "<br/>";
-	echo "9181 is GOOD", "<br/>";
-
-	$oaFiles = Helper::completeFiles(public_path().DIRECTORY_SEPARATOR."mtest");
-	print_r($oaFiles);
-/*
-	foreach($oaFiles as $sFilePath){
-		$sRelPath = @end(explode(DIRECTORY_SEPARATOR."public".DIRECTORY_SEPARATOR, $sFilePath));
-		echo '<img width="100px" src="/', $sRelPath, '"/>', "<br/><br/><br/>";
-	}*/
-	
-	/*
-	$oFile = FileModel::find(1);
-
-	$data = @imagecreatefromjpeg($oFile->path);
-
-	//$data = Image::make($oFile->path)->exif();
-
-	echo (Helper::bImageCorrupt($oFile->path) ? "corrupt" : "okay");
-
-	print_r(exif_read_data($oFile->path));
-	
-	*/
-	/*
-
-	if(!getimagesize($oFile->path))
-	{
-		echo "corrupt";
-	}else{
-		echo "ok";
-	}
-	*/
-});
-Route::get('/empty', function()
-{
-	return Response::make("ok", 200);
-});
-
 
 Route::get('/elastic/reset', function()
 {
@@ -117,4 +67,13 @@ Route::get('/elastic/reset', function()
 	ElasticSearchController::scheduleFullReindex();
 
 	return Response::make("<br/><br/>- ok", 200);
+});
+
+*/
+Route::get('/test', function()
+{
+});
+Route::get('/empty', function()
+{
+	return Response::make("ok", 200);
 });
