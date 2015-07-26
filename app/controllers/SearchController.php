@@ -365,8 +365,8 @@ array_push($oaResults, [
 		$saQueryParts = explode("=", $sQuery);
 		$soFiles = [];
 		$saSelectProperties = array("files.id as id", "files.hash as ha", "tags.value", "geodata.latitude as la", "geodata.longitude as lo", "files.medium_width AS w", "files.medium_height AS h", "tags.confidence as confidence");
-		
-		$saSelectPropertiesWithoutTags = array("files.id as id", "files.hash as ha", "geodata.latitude as la", "geodata.longitude as lo", "files.medium_width AS width", "files.medium_height AS height");
+
+		$saSelectPropertiesWithoutTags = array("files.id as id", "files.hash as ha", "geodata.latitude as la", "geodata.longitude as lo", "files.medium_width AS w", "files.medium_height AS h");
 		// return results
 		$sQueryType = "value"; //default
 		if(count($saQueryParts) > 1){

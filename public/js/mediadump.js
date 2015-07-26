@@ -435,7 +435,7 @@ function renderResults(){
 						i_height = iMapSquareSize;
 					}	
 					// finish the row
-					//log("finishing the row, running width: "+i_running_row_width+", height: "+i_height);
+					log("finishing the row, running width: "+i_running_row_width+", height: "+i_height);
 					s_current_row = '<div class="justify-row" style="height:'+i_height+'px;">' + s_current_row + '</div>';
 					//$("#thumb_results").append(s_current_row);
 					htmlThumbs += s_current_row;
