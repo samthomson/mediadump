@@ -471,12 +471,12 @@ class SearchController extends BaseController {
                     $index = [];
                     if(isset($saQueryResults[0])){
                         foreach ($saQueryResults[0] as $item) {
-                            $index[$item->hash] = true;
+                            $index[$item->ha] = true;
                         }
                     }
                     if(isset($saQueryResults[$cArr])){
                     	foreach ($saQueryResults[$cArr] as $item) {
-                            if (isset($index[$item->hash])) {
+                            if (isset($index[$item->ha])) {
                             	array_push($aIntersecting, $item);
                             }
                         }
