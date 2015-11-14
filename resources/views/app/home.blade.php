@@ -10,119 +10,30 @@
     <body ng-app="mediadump">
         <div ng-controller="MainUI">
 
-            <nav class="navbar navbar-default">
-              <div class="container-fluid">
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <div class="navbar-header">
-                  <button id="toggle-resp-nav" type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false" ng-show="bLoggedIn">
-                    <span class="sr-only">Toggle navigation</span>
-                    <div class="menu-toggle-button">
-                      <span class="icon-bar"></span>
-                      <span class="icon-bar"></span>
-                      <span class="icon-bar"></span>
-                    </div>
-                    {{--<!--<span class="menu-text">menu</span>-->--}}
-                  </button>
-                  <a class="navbar-brand" ng-click="home()" id="home_link">mediadump</a>
-                </div>
+            mediadump
 
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                  <ul class="nav navbar-nav">
-                      <li>
-                          <div id="fixed_output">
-                              <div class="alert alert-@{{bFeedbackType}} alert-dismissible" role="alert" ng-show="bFeedbackShowing">
-                                  <button ng-click="bFeedbackShowing = false" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                  @{{sFeedbackMessage}}
-                              </div>
-                          </div>
-                      </li>
-                  </ul>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+               
 
 
-                    <ul class="nav navbar-nav navbar-right" ng-show="bLoggedIn">
-                    <li><a ng-click="addFeed()" class="colour-primary"><i class="fa fa-plus"></i> Subscription</a></li>
-                      <li><a ng-click="manageFeeds()" class=""><i class="fa fa-cog"></i> Manage</a></li>
-                      <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" alt="account menu"><i class="fa fa-user"></i> Account <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                          <li><a ng-click="logout()"><i class="fa fa-sign-out"></i> logout</a></li>
-                        </ul>
-                      </li>
-                    </ul>
+                <ul class="nav navbar-nav navbar-right" ng-show="bLoggedIn">
+                    <li><strong>logged in: {{Auth::user()->name}}</strong></li>
+                    <li><a ng-click="logout()"><i class="fa fa-sign-out"></i> logout</a></li>
+                </ul>
 
-                </div><!-- /.navbar-collapse -->
-              </div><!-- /.container-fluid -->
-            </nav>
-            <div class="container-fluid">
+            </div>
 
-
-
-              <div ng-show="bLoggedIn && !bSomethingLoading">
-
-                <div class="row">
-
-                  <div class="col-xs-2 hidden-xs">
-
-                    <div class="row" id="feed_manage_controls">
-                      <div class="col-xs-12"></div>                        
-                    </div>
-
-                    <a class="feed_link" ng-repeat="feed in feeds" ng-click="changeFeed(feed.feed_id)">
-                      <div class="feed-link-thumb-wrapper"><img ng-src="@{{feed.feed.thumb}}" class="feed-link-thumb" imageonerror></div><span class="feed-link-title">@{{feed.name}}</span></a>
-                  </div>
-                  <div class="col-xs-12 col-sm-10">
-
-
-                    <a ng-repeat="feeditem in feeditems" target="_blank" class="feed-item" href="@{{feeditem.url}}">
-                      <div class="row feed-item">
-                        <div class="col-xs-2 col-sm-1">
-                          <img class="feed-thumb" ng-src="@{{feeditem.thumb}}" imageonerror/>
-                        </div>
-
-                        <div class="col-xs-0 col-sm-1 hidden-xs">@{{feeditem.name}}</div>
-
-                        <div class="col-xs-10 col-sm-9">@{{feeditem.title}}</div>
-
-                        <div class="col-xs-0 col-sm-1 hidden-xs">@{{feeditem.date}}</div>
-                      </div>
-                    </a>
-
-                    <div class="row">
-                      <div class="col-xs-5 col-md-3 col-lg-2 pull-left">
-                        <a class="pagination btn btn-primary form-control" ng-click="changePage(iPage - 1)" ng-show="iPage > 1"><i class="fa fa-caret-left"></i> newer</a>
-                      </div>
-                      <div class="col-xs-5 col-md-3 col-lg-2 pull-right">
-                        <a class="pagination btn btn-primary form-control" ng-click="changePage(iPage + 1)" ng-show="iPage < iPagesAvailable">older <i class="fa fa-caret-right"></i></a>
-                      </div>
-                    </div>
-
-                  </div>
-                </div>
-              </div>
-
-
-
-
-              <div ng-show="bLoggedIn == false && !bSomethingLoading">
-                <div class="row">
-
-                  <div class="hidden-xs hidden-sm col-md-6">
-                    <img src="/img/CJnRZi6WUAAsW6I.png" class="aspect-scaled" alt="RSSme - Sign up or Log in" alt="RSSme - Sign up or Log in" />
-                  </div>
-
-                  <div class="col-xs-12 col-md-6">
-                  	@include('app.login')
-                  </div>
-
-                </div>
-              </div>
-
+            <div ng-show="bLoggedIn == false && !bSomethingLoading">
+                @include('app.login')
 
             </div>
 
         </div>
-        <div id="loading" ng-show="bSomethingLoading"><i class="fa fa-spinner fa-spin"></i> loading [todo: youtube style top bar]</div>
+
+        <div id="loading" ng-show="bSomethingLoading">
+            <i class="fa fa-spinner fa-spin"></i> loading [todo: youtube style top bar]
+        </div>
 
         <script type="text/javascript" src="{{ elixir('js/all.js') }}"></script>
     </body>
