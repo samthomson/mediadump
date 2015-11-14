@@ -18,7 +18,7 @@
 
 
                 <ul class="nav navbar-nav navbar-right" ng-show="bLoggedIn">
-                    <li><strong>logged in: {{Auth::user()->name}}</strong></li>
+                    <li><strong>logged in: {{--Auth::user()->name--}}</strong></li>
                     <li><a ng-click="logout()"><i class="fa fa-sign-out"></i> logout</a></li>
                 </ul>
 
