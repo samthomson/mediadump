@@ -13,6 +13,12 @@
 
 Route::get('/', ['uses' => 'MediaDumpController@home']);
 
+
+Route::post('/app/auth/register',  ['uses' => 'CustomAuthController@register']);
+Route::post('/app/auth/login',  ['uses' => 'CustomAuthController@login']);
+Route::post('/app/auth/logout',  ['uses' => 'CustomAuthController@logout']);
+
+
 Route::get('/test/mail', function () {
 
 	Mail::raw('Text to e-mail', function ($message) {

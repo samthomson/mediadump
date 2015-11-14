@@ -15,6 +15,8 @@ class MediaDumpController extends Controller
 
     public static function home()
     {
+    	return view('app.home');
+    	
     	if(User::count() > 0)
     	{
     		// there are registered users
