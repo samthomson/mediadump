@@ -6,6 +6,9 @@ php:
 matrix:
   fast_finish: true
 
+services:
+  - mysql
+
 before_script:
   - sudo apt-get update
   - sudo apt-get install apache2 libapache2-mod-fastcgi
@@ -28,3 +31,4 @@ before_script:
   - npm install --global gulp
   - npm install
   - gulp
+  - php artisan migrate
