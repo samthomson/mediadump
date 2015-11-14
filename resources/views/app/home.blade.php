@@ -26,7 +26,7 @@
 
             <div ng-show="bLoggedIn == false && !bSomethingLoading">
                 @include('app.login')
-
+                not logged in
             </div>
 
         </div>

@@ -13,6 +13,8 @@
 
 Route::get('/', ['uses' => 'MediaDumpController@home']);
 
+Route::get('/app/ping', ['uses' => 'MediaDumpController@ping']);
+
 
 Route::post('/app/auth/register',  ['uses' => 'CustomAuthController@register']);
 Route::post('/app/auth/login',  ['uses' => 'CustomAuthController@login']);

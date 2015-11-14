@@ -20,6 +20,7 @@ app.directive('imageonerror', function() {
 app.controller('MainUI', function($scope, $http, $interval) {
 
 
+    $scope.sMDStatus = null;
 
 	$scope.bLoggedIn = false;
 	$scope.bSomethingLoading = true;
@@ -28,6 +29,25 @@ app.controller('MainUI', function($scope, $http, $interval) {
 	$scope.email = '';
 	$scope.password = '';
 	$scope.name = '';
+
+    $scope.ping = function(){
+        // set loading
+        $scope.bSomethingLoading = true;
+        $http({
+            method: "GET",
+            url: "/app/ping"
+        })
+        .then(function(response) {
+                $scope.sMDStatus = response.data.md_state;
+
+
+                // end loading
+                $scope.bSomethingLoading = false;
+
+        },(function(){
+                $scope.bSomethingLoading = false;
+        }));
+    }
 
 	$scope.login = function(){
 		$scope.bSomethingLoading = true;
@@ -109,6 +129,8 @@ app.controller('MainUI', function($scope, $http, $interval) {
 			$scope.bSomethingLoading = false;
 		});
 	};
+
+    $scope.ping();
 
 });
 

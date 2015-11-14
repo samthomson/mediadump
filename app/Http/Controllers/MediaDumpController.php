@@ -15,15 +15,26 @@ class MediaDumpController extends Controller
 
     public static function home()
     {
+    	// serve angular app!
     	return view('app.home');
-    	
+    }
+
+    public static function ping()
+    {
+    	// client is polling md backend
+    	// maybe there's a ui to be made, maybe md is blank and needs set up, serve them a status code with corresponding data, the client will then choose what to do with it
+
+    	$oReturn = new \StdClass;
+
     	if(User::count() > 0)
     	{
     		// there are registered users
-    		echo 'login?';
+    		$oReturn->md_state = "setup";
     	}else{
     		// no users, empty mediadump?
-    		echo 'register';
+    		$oReturn->md_state = "clean";
     	}
+
+    	return response()->json($oReturn);
     }
 }
