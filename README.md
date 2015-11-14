@@ -1,3 +1,7 @@
+# dead branch
+
+this branch was created to preserve mediadump as it was before 'v5' was started.
+
 mediadump
 =========
 
