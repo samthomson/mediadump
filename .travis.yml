@@ -22,7 +22,7 @@ before_script:
   - sleep 3
   # install packages
   - cp .env.travis .env
-  - mysql -e 'create database homestead_test;'
+  - mysql -e 'create database ci_database;'
   - composer self-update
   - composer install --no-interaction
   - npm install --global gulp

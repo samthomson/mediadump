@@ -21,7 +21,7 @@ Route::get('/test/mail', function () {
 
 
 	Mail::send('emails.test', ['to' =>'sam', 'body' => 'test message'], function ($m) {
-            $m->to('samt@samt.st', 'sam')->subject('test subject');
-            $m->from('no-reply@mydomain.com', 'My Domain Sender');
-        });
+        $m->to('samt@samt.st', 'sam')->subject('test subject');
+        $m->from('no-reply@mydomain.com', 'My Domain Sender');
+    });
 });

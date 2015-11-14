@@ -15,6 +15,13 @@ class MediaDumpController extends Controller
 
     public static function home()
     {
-    	echo "lol ", User::count();
+    	if(User::count() > 0)
+    	{
+    		// there are registered users
+    		echo 'login?';
+    	}else{
+    		// no users, empty mediadump?
+    		echo 'register';
+    	}
     }
 }
