@@ -11,10 +11,17 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', ['uses' => 'MediaDumpController@home']);
 
 Route::get('/test/mail', function () {
-	
+
+	Mail::raw('Text to e-mail', function ($message) {
+    	$message->to('samt@samt.st', 'sam')->subject('test subject');
+	});
+
+
+	Mail::send('emails.test', ['to' =>'sam', 'body' => 'test message'], function ($m) {
+            $m->to('samt@samt.st', 'sam')->subject('test subject');
+            $m->from('no-reply@mydomain.com', 'My Domain Sender');
+        });
 });
