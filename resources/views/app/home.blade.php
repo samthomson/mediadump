@@ -23,7 +23,7 @@
                     </div>
                     {{--<!--<span class="menu-text">menu</span>-->--}}
                   </button>
-                  <a class="navbar-brand" ng-click="home()" id="home_link"><span class="brand rss">RSS</span><span class="brand me">me</span></a>
+                  <a class="navbar-brand" ng-click="home()" id="home_link">mediadump</a>
                 </div>
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
