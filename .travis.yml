@@ -28,6 +28,8 @@ before_script:
   - mysql -e 'create database ci_database;'
   - composer self-update
   - composer install --no-interaction
+  - npm install -g bower
+  - bower update
   - npm install --global gulp
   - npm install
   - gulp
