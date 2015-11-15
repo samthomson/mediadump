@@ -15,10 +15,10 @@ elixir(function(mix) {
 });
 
 elixir(function(mix) {
-    mix.scripts([
+    mix.scripts([/*
         "jquery-2.1.4.min.js",
         "angular-1.4.3.min.js",
-        "mediadump_app.js"/*,
+        "mediadump_app.js",
         "bootstrap.min.js"*/
     ]);
 });
