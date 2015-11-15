@@ -21,7 +21,7 @@ class ApplicationStateTest extends TestCase
 
         $oJson = json_decode(MediaDumpController::ping()->getContent());
 
-        $this->assertEquals($oJson->md_state, "clean");
+        $this->assertEquals($oJson->md_state, "empty");
     }
 
     public function testPingStateSetUp()

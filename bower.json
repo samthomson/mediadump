@@ -1,0 +1,18 @@
+{
+  "name": "mediadump",
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "homepage": "https://github.com/samthomson/mediadump",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.4"
+  }
+}
