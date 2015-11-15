@@ -29,7 +29,7 @@ class MediaDumpController extends Controller
     	if(User::count() > 0)
     	{
     		// there are registered users
-    		$oReturn->md_state = "setup";
+    		$oReturn->md_state = "empty";
     	}else{
     		// no users, empty mediadump?
     		$oReturn->md_state = "clean";

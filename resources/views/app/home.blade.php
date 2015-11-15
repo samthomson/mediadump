@@ -23,16 +23,12 @@
                 </ul>
 
             </div>
-
-            <div ng-show="bLoggedIn == false && !bSomethingLoading">
-                @include('app.login')
-                not logged in
+            @{{sMDStatus}}
+            <div ng-show="sMDStatus == 'empty'">
+                empty
             </div>
 
-        </div>
-
-        <div id="loading" ng-show="bSomethingLoading">
-            <i class="fa fa-spinner fa-spin"></i> loading [todo: youtube style top bar]
+            <div id="loading" ng-show="bSomethingLoading"><i class="fa fa-spinner fa-spin"></i> loading</div>
         </div>
 
         <script type="text/javascript" src="{{ elixir('js/all.js') }}"></script>
