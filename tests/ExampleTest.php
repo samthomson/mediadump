@@ -16,9 +16,4 @@ class ExampleTest extends TestCase
         return $this->visit('/')
         ->see('mediadump');
     }
-    public function testAnyState()
-    {
-        return $this->visit('/')
-        ->see('empty');
-    }
 }
