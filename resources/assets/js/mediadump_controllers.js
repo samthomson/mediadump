@@ -110,8 +110,8 @@ mediadumpControllers.controller('SetupCtrl', ['$scope', '$routeParams',
   }]);
 
 
-mediadumpControllers.controller('HeaderCtrl', ['$scope', '$rootScope', '$routeParams',
- 	function($scope, $rootScope) {
+mediadumpControllers.controller('HeaderCtrl', ['$scope', '$rootScope', '$routeParams', '$location',
+ 	function($scope, $rootScope, $location) {
 		$scope.local = "local data";
   		//$scope.sMDStatus = $rootScope.sMDStatus;
 
@@ -119,5 +119,9 @@ mediadumpControllers.controller('HeaderCtrl', ['$scope', '$rootScope', '$routePa
 
   		$scope.getMDApp = function(){
   			return $rootScope.gblMDApp;
+  		}
+
+  		$scope.home = function(){
+  			$location.path( "/" );
   		}
   }]);
