@@ -4,9 +4,8 @@
     <li><a ng-click="logout()"><i class="fa fa-sign-out"></i> logout</a></li>
 </ul>
 <h2>app ui partial</h2>
-sMDStatus: {{gblMDData.sMDState}}{{Data.FirstName}}
-<div ng-show="sMDStatus == 'empty'">
-    setup/welcome form
+<div ng-show="getMDApp().state == 'empty'">
+    <p>This instance of mediadump doesn't have any register user.. you need to <a ng-href="/#/setup">setup</a> mediadump so it can be used.</p>
 </div>
 
 <div id="loading" ng-show="bSomethingLoading"><i class="fa fa-spinner fa-spin"></i> loading</div>

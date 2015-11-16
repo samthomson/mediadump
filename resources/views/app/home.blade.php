@@ -9,7 +9,7 @@
     <body>
 
         <div ng-controller="HeaderCtrl">
-            <a ng-href="/" ng-disabled="true">mediadump</a> mdstatus: state: @{{getMDApp().state}}, loading: @{{getMDApp().bSomethingLoading}}
+            <a ng-href="/#/" ng-disabled="getMDApp().state != 'empty'">mediadump</a> mdstatus: state: @{{getMDApp().state}}, loading: @{{getMDApp().bSomethingLoading}}
             <hr/>
         </div>
 

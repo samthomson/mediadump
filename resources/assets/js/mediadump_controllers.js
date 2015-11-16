@@ -9,17 +9,12 @@ mediadumpControllers.controller('MainUICtrl', ['$scope', '$rootScope', '$http', 
 
 	$scope.bLoggedIn = false;
 	
-	$rootScope.gblMDApp.bSomethingLoading = true;
 
 	// login / register forms
 	$scope.email = '';
 	$scope.password = '';
 	$scope.name = '';
 
-    $scope.ping = function(){
-        // set loading
-        
-    }
 
 	$scope.login = function(){
 		$scope.bSomethingLoading = true;
@@ -102,7 +97,10 @@ mediadumpControllers.controller('MainUICtrl', ['$scope', '$rootScope', '$http', 
 		});
 	};
 
-    //$scope.ping();
+	$scope.getMDApp = function(){
+		return $rootScope.gblMDApp;
+	}
+
 }]);
 
 
