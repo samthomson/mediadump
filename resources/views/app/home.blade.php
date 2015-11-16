@@ -11,6 +11,9 @@
         <div>
             mediadump
         </div>
+
+        <hr/>
+        
         <div ng-view></div>
 
         <script type="text/javascript" src="{{ elixir('js/all.js') }}"></script>

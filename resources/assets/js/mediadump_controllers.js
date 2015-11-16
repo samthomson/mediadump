@@ -2,7 +2,7 @@ var mediadumpControllers = angular.module('mediadumpControllers', []);
 
 
 
-mediadumpControllers.controller('MainUICtrl', function($scope, $http, $interval) {
+mediadumpControllers.controller('MainUICtrl', function($scope, $http, $interval, $location) {
 
 
     $scope.sMDStatus = null;
@@ -25,6 +25,11 @@ mediadumpControllers.controller('MainUICtrl', function($scope, $http, $interval)
         .then(function(response) {
                 $scope.sMDStatus = response.data.md_state;
 
+                console.log("state: " + $scope.sMDStatus);
+                
+                if($scope.sMDStatus == "empty"){
+                	$location.path( "/setup" );
+                }
 
                 // end loading
                 $scope.bSomethingLoading = false;

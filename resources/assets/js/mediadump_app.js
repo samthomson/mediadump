@@ -1,9 +1,9 @@
 var mediadumpApp = angular
-	.module('mediadumpApp', ['ngRoute', 'mediadumpControllers']);
-    /*
+	.module('mediadumpApp', ['ngRoute', 'mediadumpControllers'])
+    
 	.config(['$httpProvider', function($httpProvider) {
 		$httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
-	}]);*/
+	}]);
 
 /*
 // css hide 'bad' images
@@ -19,6 +19,8 @@ mediadumpApp.directive('imageonerror', function() {
     };
 });
 */
+
+;
 
 
 $(document).ready(function(){
