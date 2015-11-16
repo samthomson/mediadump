@@ -5,28 +5,6 @@ var mediadumpApp = angular
 		$httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
 	}]);
 
-/*
-// css hide 'bad' images
-mediadumpApp.directive('imageonerror', function() {
-    return {
-        restrict: 'A',
-        link: function(scope, element, attrs) {
-            element.bind('error', function() {
-            	$(element).css("background", "purple");
-            	$(element).css("display", "block");
-            });
-        }
-    };
-});
-*/
-
-;
-
-
-$(document).ready(function(){
-	$('body').css("visibility", "visible");
-});
-
 
 
 
@@ -46,4 +24,43 @@ mediadumpApp.config(['$routeProvider',
       otherwise({
         redirectTo: '/'
       });
-  }]);
+  }])
+
+.run(function($rootScope, $http, $location) {
+    $rootScope.rootdata = 'global';
+
+    $rootScope.gblMDApp = {state: null, bSomethingLoading: true};
+
+
+    $rootScope.bSomethingLoading = true;
+
+
+    $http({
+        method: "GET",
+        url: "/app/ping"
+    })
+    .then(function(response) {
+        $rootScope.gblMDApp.state = response.data.md_state;
+            
+    //$rootScope.gblMDData = response.data.md_state;
+
+    //$rootScope.rootdata = response.data.md_state;
+            //console.log("state: " + $scope.sMDStatus);
+            
+            if($rootScope.gblMDApp.state == "empty"){
+              $location.path( "/setup" );
+            }
+
+            // end loading
+            $rootScope.gblMDApp.bSomethingLoading = false;
+
+    },(function(){
+            $rootScope.gblMDApp.bSomethingLoading = false;
+    }));
+});
+
+
+
+$(document).ready(function(){
+    $('body').css("visibility", "visible");
+});

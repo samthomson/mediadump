@@ -7,13 +7,12 @@
         <link rel="stylesheet" href="{{ elixir('css/all.css') }}">
     </head>
     <body>
-        <!--<div ng-controller="MainUI">-->
-        <div>
-            mediadump
+
+        <div ng-controller="HeaderCtrl">
+            <a ng-href="/" ng-disabled="true">mediadump</a> mdstatus: state: @{{getMDApp().state}}, loading: @{{getMDApp().bSomethingLoading}}
+            <hr/>
         </div>
 
-        <hr/>
-        
         <div ng-view></div>
 
         <script type="text/javascript" src="{{ elixir('js/all.js') }}"></script>

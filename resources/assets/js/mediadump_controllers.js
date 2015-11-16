@@ -2,13 +2,14 @@ var mediadumpControllers = angular.module('mediadumpControllers', []);
 
 
 
-mediadumpControllers.controller('MainUICtrl', function($scope, $http, $interval, $location) {
+mediadumpControllers.controller('MainUICtrl', ['$scope', '$rootScope', '$http', '$interval', '$location', function($scope, $rootScope, $http, $interval, $location) {
 
 
     $scope.sMDStatus = null;
 
 	$scope.bLoggedIn = false;
-	$scope.bSomethingLoading = true;
+	
+	$rootScope.gblMDApp.bSomethingLoading = true;
 
 	// login / register forms
 	$scope.email = '';
@@ -17,26 +18,7 @@ mediadumpControllers.controller('MainUICtrl', function($scope, $http, $interval,
 
     $scope.ping = function(){
         // set loading
-        $scope.bSomethingLoading = true;
-        $http({
-            method: "GET",
-            url: "/app/ping"
-        })
-        .then(function(response) {
-                $scope.sMDStatus = response.data.md_state;
-
-                console.log("state: " + $scope.sMDStatus);
-                
-                if($scope.sMDStatus == "empty"){
-                	$location.path( "/setup" );
-                }
-
-                // end loading
-                $scope.bSomethingLoading = false;
-
-        },(function(){
-                $scope.bSomethingLoading = false;
-        }));
+        
     }
 
 	$scope.login = function(){
@@ -120,11 +102,24 @@ mediadumpControllers.controller('MainUICtrl', function($scope, $http, $interval,
 		});
 	};
 
-    $scope.ping();
+    //$scope.ping();
+}]);
 
-});
 
 mediadumpControllers.controller('SetupCtrl', ['$scope', '$routeParams',
   function($scope, $routeParams) {
 
+  }]);
+
+
+mediadumpControllers.controller('HeaderCtrl', ['$scope', '$rootScope', '$routeParams',
+ 	function($scope, $rootScope) {
+		$scope.local = "local data";
+  		//$scope.sMDStatus = $rootScope.sMDStatus;
+
+  		$scope.datatest = $rootScope.test;
+
+  		$scope.getMDApp = function(){
+  			return $rootScope.gblMDApp;
+  		}
   }]);
