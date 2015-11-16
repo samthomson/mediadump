@@ -5,16 +5,49 @@ var mediadumpControllers = angular.module('mediadumpControllers', []);
 mediadumpControllers.controller('MainUICtrl', ['$scope', '$rootScope', '$http', '$interval', '$location', function($scope, $rootScope, $http, $interval, $location) {
 
 
-    $scope.sMDStatus = null;
+	$scope.register = function(){
+		$scope.bSomethingLoading = true;
+		// parse form and submit
+		$http({
+			method: "POST",
+			url: "/app/auth/register",
+			params: {
+				'email': $scope.register_email,
+				'password': $scope.register_password
+			}
+		}).then(function(response) {
 
-	$scope.bLoggedIn = false;
-	
+			if(response.status == 200)
+			{
+				$scope.bLoggedIn = true;
+                // now fetch items
+                $scope.getItems();
+                $(".register_feedback").html('');
+			}else{
+                
+			}
+			// end loading
+			$scope.bSomethingLoading = false;
+		}, (function(response){
+			$(".register_feedback").html(response.data);
+			$scope.bSomethingLoading = false;
+		}));
+	};
+
+	$scope.getMDApp = function(){
+		return $rootScope.gblMDApp;
+	}
+
+}]);
+
+
+mediadumpControllers.controller('SetupCtrl', ['$scope', '$routeParams',
+  function($scope, $routeParams) {
 
 	// login / register forms
 	$scope.email = '';
 	$scope.password = '';
 	$scope.name = '';
-
 
 	$scope.login = function(){
 		$scope.bSomethingLoading = true;
@@ -45,35 +78,6 @@ mediadumpControllers.controller('MainUICtrl', ['$scope', '$rootScope', '$http', 
 		}));
 	};
 
-	$scope.register = function(){
-		$scope.bSomethingLoading = true;
-		// parse form and submit
-		$http({
-			method: "POST",
-			url: "/app/auth/register",
-			params: {
-				'email': $scope.register_email,
-				'password': $scope.register_password
-			}
-		}).then(function(response) {
-
-			if(response.status == 200)
-			{
-				$scope.bLoggedIn = true;
-                // now fetch items
-                $scope.getItems();
-                $(".register_feedback").html('');
-			}else{
-                
-			}
-			// end loading
-			$scope.bSomethingLoading = false;
-		}, (function(response){
-			$(".register_feedback").html(response.data);
-			$scope.bSomethingLoading = false;
-		}));
-	};
-
 	$scope.logout = function(){
 		$scope.bSomethingLoading = true;
 		// parse form and submit
@@ -96,17 +100,6 @@ mediadumpControllers.controller('MainUICtrl', ['$scope', '$rootScope', '$http', 
 			$scope.bSomethingLoading = false;
 		});
 	};
-
-	$scope.getMDApp = function(){
-		return $rootScope.gblMDApp;
-	}
-
-}]);
-
-
-mediadumpControllers.controller('SetupCtrl', ['$scope', '$routeParams',
-  function($scope, $routeParams) {
-
   }]);
 
 
