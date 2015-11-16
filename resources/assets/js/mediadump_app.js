@@ -11,7 +11,7 @@ var mediadumpApp = angular
 
 mediadumpApp.config(['$routeProvider',
   function($routeProvider) {
-    //console.log($routeProvider);
+    // routing
     $routeProvider.
       when('/', {
         templateUrl: '/app/partials/app-ui.html',
@@ -29,7 +29,11 @@ mediadumpApp.config(['$routeProvider',
 .run(function($rootScope, $http, $location) {
     $rootScope.rootdata = 'global';
 
-    $rootScope.gblMDApp = {state: null, bSomethingLoading: true};
+    $rootScope.gblMDApp = {
+        state: null,
+        bSomethingLoading: true,
+        bLoggedIn = false
+    };
 
 
     $rootScope.bSomethingLoading = true;
@@ -42,20 +46,16 @@ mediadumpApp.config(['$routeProvider',
     .then(function(response) {
         $rootScope.gblMDApp.state = response.data.md_state;
             
-    //$rootScope.gblMDData = response.data.md_state;
-
-    //$rootScope.rootdata = response.data.md_state;
-            //console.log("state: " + $scope.sMDStatus);
             
-            if($rootScope.gblMDApp.state == "empty"){
-              $location.path( "/setup" );
-            }
+        if($rootScope.gblMDApp.state == "empty"){
+            $location.path( "/setup" );
+        }
 
-            // end loading
-            $rootScope.gblMDApp.bSomethingLoading = false;
+        // end loading
+        $rootScope.gblMDApp.bSomethingLoading = false;
 
     },(function(){
-            $rootScope.gblMDApp.bSomethingLoading = false;
+        $rootScope.gblMDApp.bSomethingLoading = false;
     }));
 });
 
