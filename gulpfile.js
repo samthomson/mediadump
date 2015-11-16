@@ -16,7 +16,7 @@ elixir(function(mix) {
 
 elixir(function(mix) {
     mix.scripts([
-    	'../../bower_components/jquery/dist/jquery.min.js'/*
+    	'../../../bower_components/jquery/dist/jquery.min.js'/*
         "jquery-2.1.4.min.js",
         "angular-1.4.3.min.js",
         "mediadump_app.js",
