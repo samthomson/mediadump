@@ -25,7 +25,7 @@
             </div>
             @{{sMDStatus}}
             <div ng-show="sMDStatus == 'empty'">
-                empty
+                setup/welcome form
             </div>
 
             <div id="loading" ng-show="bSomethingLoading"><i class="fa fa-spinner fa-spin"></i> loading</div>
