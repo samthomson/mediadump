@@ -8,7 +8,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 use App\User;
-
+use File;
 
 class MediaDumpController extends Controller
 {
@@ -17,6 +17,7 @@ class MediaDumpController extends Controller
     {
     	// serve angular app!
     	return view('app.home');
+        //return File::get(public_path() . '/app/home.html');
     }
 
     public static function ping()

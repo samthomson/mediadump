@@ -17,7 +17,8 @@ elixir(function(mix) {
     	'../../../bower_components/jquery/dist/jquery.min.js',
         '../../../bower_components/angular/angular.min.js',
         '../../../bower_components/angular-route/angular-route.min.js',
-        "mediadump_app.js"
+        'mediadump_app.js',
+        'mediadump_controllers.js'
     ]);
 });
 

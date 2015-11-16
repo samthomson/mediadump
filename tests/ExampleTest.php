@@ -13,7 +13,12 @@ class ExampleTest extends TestCase
      */
     public function testBasicExample()
     {
-        $this->visit('/')
+        return $this->visit('/')
         ->see('mediadump');
+    }
+    public function testAnyState()
+    {
+        return $this->visit('/')
+        ->see('empty');
     }
 }

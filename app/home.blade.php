@@ -1,3 +1,4 @@
+<!-- Stored in resources/views/layouts/master.blade.php -->
 
 <html ng-app="mediadumpApp">
     <head>
@@ -9,9 +10,12 @@
     <body>
         <!--<div ng-controller="MainUI">-->
         <div>
+
             mediadump
+            <div ng-view></div>             
+
+
         </div>
-        <div ng-view></div>
 
         <script type="text/javascript" src="{{ elixir('js/all.js') }}"></script>
     </body>
