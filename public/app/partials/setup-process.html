@@ -3,30 +3,26 @@
 
 	<md-input-container class="md-icon-float md-block">
 		<label>Name</label>
-		<md-icon md-svg-src="img/icons/ic_person_24px.svg" class="name"></md-icon>
-		<i class="material-icons">name</i>
+		<i class="material-icons">person</i>
 		<input ng-model="setup_user.name" type="text"placeholder="Your name e.g. Sam Thomson" ng-required="true">
 	</md-input-container>
 
 
-    <md-input-container class="md-block">
-      <!-- Use floating placeholder instead of label -->
-      
-      <i class="material-icons">email</i>
-      <input ng-model="setup_user.email" type="email" placeholder="Email" ng-required="true">
-    </md-input-container>
+	<md-input-container class="md-icon-float md-block">
+		<label>Email</label>
+		<i class="material-icons">email</i>
+		<input ng-model="setup_user.email" type="email" placeholder="Email" ng-required="true">
+	</md-input-container>
 
 
-    <md-input-container class="md-block">
-      <!-- Use floating placeholder instead of label -->
-      <md-icon md-svg-src="img/icons/ic_email_24px.svg" class="password"></md-icon>
-      <i class="material-icons">face</i>
-      <input ng-model="setup_user.password" type="password" placeholder="Password" ng-required="true">
-    </md-input-container>
+	<md-input-container class="md-icon-float md-block">
+		<label>Password</label>
+		<i class="material-icons">lock</i>
+		<input ng-model="setup_user.password" type="password" placeholder="Password" ng-required="true">
+	</md-input-container>
 
-    <md-input-container class="md-block">
-      <!-- Use floating placeholder instead of label -->
-      <md-icon md-svg-src="img/icons/ic_email_24px.svg" class="password"></md-icon>
-      <i class="material-icons">password</i>
-      <input ng-model="setup_user.password_confirmation" type="password" placeholder="Repeat Password" ng-required="true">
-    </md-input-container>
+	<md-input-container class="md-icon-float md-block">
+		<label>Confirm Password</label>
+		<i class="material-icons">lock</i>
+		<input ng-model="setup_user.password_confirmation" type="password" placeholder="Re-enter Password" ng-required="true">
+	</md-input-container>
