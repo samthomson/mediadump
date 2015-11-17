@@ -115,5 +115,4 @@ class CustomAuthController extends Controller
         }
         return response($sResponseData, $iResponseCode);
     }
-
 }
