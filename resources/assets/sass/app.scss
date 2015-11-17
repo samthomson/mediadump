@@ -1,6 +1,28 @@
 // @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 
 
+/*
+google materialise based color palette
+
+https://www.google.com/design/spec/style/color.html#color-color-palette
+*/
+// backgorund color, to be set for many components to keep them 'blended in' with app
+$c_background_color: #fff;
+
+$c_primary_darker: #D32F2F; // red, 300
+$c_primary_normal: #F44336; // red normal, 500
+$c_primary_lighter: #E57373; // red, 700
+
+$i_padding: 8px;
+
 body{
 	visibility:hidden;
 }
+
+#header{
+	padding-top:(5px + $i_padding); // to counter the loading bar
+}
+
+#app-load-state{position: absolute;}
+#app-load-state .md-container{background:$c_background_color;}
+#app-load-state .md-bar{background:$c_primary_normal;}

@@ -9,9 +9,12 @@
     <body>
 
         <div ng-controller="HeaderCtrl">
-            <md-progress-linear md-mode="indeterminate" ng-show="getMDApp().bSomethingLoading"></md-progress-linear>
-            <button ng-ckick="home()" ng-disabled="getMDApp().state == 'empty'">mediadump</button> mdstatus: state: @{{getMDApp().state}}, loading: @{{getMDApp().bSomethingLoading}}
-            <hr/>
+            <md-progress-linear md-mode="indeterminate" ng-show="getMDApp().bSomethingLoading" id="app-load-state"></md-progress-linear>
+
+            <div id="header">
+                <button ng-ckick="home()" ng-disabled="getMDApp().state == 'empty'">mediadump</button> mdstatus: state: @{{getMDApp().state}}, loading: @{{getMDApp().bSomethingLoading}}
+            </div>
+            </hr>
         </div>
 
         <div ng-view></div>
