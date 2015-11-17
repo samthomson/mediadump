@@ -63,13 +63,12 @@ class CustomAuthController extends Controller
         if(Request::has('email') && 
             Request::has('password') && 
             Request::has('password_confirmation') && 
-            Request::has('name') && 
-            Request::has('public'))
+            Request::has('name'))
         {
             // validate credentials, create user, login them in, return 200
 
             $validator = Validator::make(
-                Request::only(['email','password','password_confirmation', 'name', 'public']),
+                Request::only(['email','password','password_confirmation', 'name']),
                 [
                     'email' => 'required|email|unique:users',
                     'password' => 'required|min:1|confirmed',

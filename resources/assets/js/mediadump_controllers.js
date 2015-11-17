@@ -66,7 +66,7 @@ mediadumpControllers.controller('SetupCtrl', ['$scope', '$routeParams', '$http',
 				'email': $scope.setup_user.email,
 				'password': $scope.setup_user.password,
 				'password_confirmation': $scope.setup_user.password_confirmation,
-				'name': $scope.setup_user.nam
+				'name': $scope.setup_user.name
 			}
 		}).then(function(response) {
 
