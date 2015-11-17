@@ -13,13 +13,6 @@
 
 Route::get('/', ['uses' => 'MediaDumpController@home']);
 
-/*
-Route::any('{path?}', function()
-{
-    return File::get(public_path() . '/angular.html');
-})->where("path", ".+");
-*/
-
 Route::get('/app/ping', ['uses' => 'MediaDumpController@ping']);
 
 
