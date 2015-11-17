@@ -6,7 +6,8 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 use App\Http\Controllers;
 use App\Http\Controllers\MediaDumpController;
-use App\User;
+use App\Models\User;
+use App\Models\MediaDumpState;
 
 class ApplicationStateTest extends TestCase
 {
@@ -15,7 +16,7 @@ class ApplicationStateTest extends TestCase
      *
      * @return void
      */
-    public function testPingStateEmpty()
+    public function testPingValidState()
     {
         //$oJson = json_decode(MediaDumpController::ping());
 
@@ -24,19 +25,24 @@ class ApplicationStateTest extends TestCase
         $this->assertContains($oJson->md_state, ['empty', 'setup']);
     }
 
+    public function testPingStateEmpty()
+    {
+        $oJson = json_decode(MediaDumpController::ping()->getContent());
+
+        $this->assertEquals($oJson->md_state, "empty");
+    }
+
     public function testPingStateSetUp()
     {
         //$oJson = json_decode(MediaDumpController::ping());
 
-        $oUser = new User;
-        $oUser->name = "test";
-        $oUser->email = "test@test.test";
-        $oUser->password = "testpass";
-        $iTempUser = $oUser->save();
+        $oMDState = new MediaDumpState;
+        $oMDState->public = 0;
+        $iTempUser = $oMDState->save();
 
         $oJson = json_decode(MediaDumpController::ping()->getContent());
 
-        $oUser->delete();
+        $oMDState->delete();
 
         $this->assertEquals($oJson->md_state, "setup");
     }

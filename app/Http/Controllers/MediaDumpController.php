@@ -8,6 +8,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 use App\User;
+use App\Models\MediaDumpState;
 use Auth;
 
 class MediaDumpController extends Controller
@@ -26,7 +27,7 @@ class MediaDumpController extends Controller
 
     	$oReturn = new \StdClass;
 
-    	if(User::count() > 0)
+    	if(MediaDumpState::count() > 0)
     	{
     		// there are registered users
     		$oReturn->md_state = "setup";
