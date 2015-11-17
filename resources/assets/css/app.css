@@ -7,7 +7,8 @@ body {
   font-family: 'Noto Sans', sans-serif; }
 
 .header-font {
-  font-family: 'PT Sans Caption', sans-serif; }
+  font-family: "PT Sans Caption", sans-serif;
+  font-size: xx-large; }
 
 #header {
   padding-top: 13px; }

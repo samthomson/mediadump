@@ -23,7 +23,7 @@
             <md-progress-linear md-mode="indeterminate" ng-show="getMDApp().bSomethingLoading" id="app-load-state"></md-progress-linear>
 
             <div id="header">
-                <button ng-ckick="home()" ng-disabled="getMDApp().state == 'empty'" class="header-font">mediadump</button> setup: @{{getMDApp().state}}, loading: @{{getMDApp().bSomethingLoading}}, logged in: @{{getMDApp().bLoggedIn}}
+                <a ng-ckick="home()" ng-hide="getMDApp().state == 'empty'" class="header-font">mediadump</a> setup: @{{getMDApp().state}}, loading: @{{getMDApp().bSomethingLoading}}, logged in: @{{getMDApp().bLoggedIn}}
 
                 <ul><li>login?</li></ul>
             </div>

@@ -15,13 +15,16 @@ $c_primary_lighter: #E57373; // red, 700
 
 $i_padding: 8px;
 
+$font_header_font_family: 'PT Sans Caption', sans-serif;
 
 body {
   font-family: 'Noto Sans', sans-serif;
 }
 .header-font{
-	font-family: 'PT Sans Caption', sans-serif;
+	font-family: $font_header_font_family;
+	font-size:xx-large;
 }
+
 
 #header{
 	padding-top:(5px + $i_padding); // to counter the loading bar
