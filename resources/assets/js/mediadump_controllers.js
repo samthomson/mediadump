@@ -57,8 +57,11 @@ mediadumpControllers.controller('SetupCtrl', ['$scope', '$routeParams', '$http',
 		defaultToPublic: 1
 	};
 
+	$scope.bSetupLoading = false;
+
 	$scope.setupMediaDump = function()
 	{
+		$scope.bSetupLoading = true;
 		$http({
 			method: "POST",
 			url: "/app/auth/setup",
@@ -81,9 +84,11 @@ mediadumpControllers.controller('SetupCtrl', ['$scope', '$routeParams', '$http',
 			}
 			// end loading
 			$scope.bSomethingLoading = false;
+			$scope.bSetupLoading = false;
 		}, (function(response){
 			$(".setup_feedback").html(response.data);
 			$scope.bSomethingLoading = false;
+			$scope.bSetupLoading = false;
 		}));
 	}
 

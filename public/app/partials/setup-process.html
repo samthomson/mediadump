@@ -1,39 +1,41 @@
 
 <div id="setup-form" class="container" ng-cloak>
-	<h3>set up regiser form</h3>
+	<div class="ui segment" ng-class="{loading: bSetupLoading}">
+		<h3>set up regiser form</h3>
 
-	<form ng-submit="setupMediaDump()">
-		<div class="setup_feedback"></div>
-		<md-input-container class="md-icon-float md-block">
-			<label>Name</label>
-			<i class="material-icons">person</i>
-			<input ng-model="setup_user.name" type="text"placeholder="Your name e.g. Sam Thomson" ng-required="true">
-		</md-input-container>
-
-
-		<md-input-container class="md-icon-float md-block">
-			<label>Email</label>
-			<i class="material-icons">email</i>
-			<input ng-model="setup_user.email" type="email" placeholder="Email" ng-required="true">
-		</md-input-container>
+		<form ng-submit="setupMediaDump()">
+			<div class="setup_feedback"></div>
+			<md-input-container class="md-icon-float md-block">
+				<label>Name</label>
+				<i class="material-icons">person</i>
+				<input ng-model="setup_user.name" type="text"placeholder="Your name e.g. Sam Thomson" ng-required="true">
+			</md-input-container>
 
 
-		<md-input-container class="md-icon-float md-block">
-			<label>Password</label>
-			<i class="material-icons">lock</i>
-			<input ng-model="setup_user.password" type="password" placeholder="Password" ng-required="true">
-		</md-input-container>
-
-		<md-input-container class="md-icon-float md-block">
-			<label>Confirm Password</label>
-			<i class="material-icons">lock</i>
-			<input ng-model="setup_user.password_confirmation" type="password" placeholder="Re-enter Password" ng-required="true">
-		</md-input-container>
+			<md-input-container class="md-icon-float md-block">
+				<label>Email</label>
+				<i class="material-icons">email</i>
+				<input ng-model="setup_user.email" type="email" placeholder="Email" ng-required="true">
+			</md-input-container>
 
 
+			<md-input-container class="md-icon-float md-block">
+				<label>Password</label>
+				<i class="material-icons">lock</i>
+				<input ng-model="setup_user.password" type="password" placeholder="Password" ng-required="true">
+			</md-input-container>
 
-		<button class="btn waves-effect waves-light" type="submit" name="setup-mediadump">Submit
-			<i class="material-icons right">done</i>Start mediadump
-		</button>
-	</form>
+			<md-input-container class="md-icon-float md-block">
+				<label>Confirm Password</label>
+				<i class="material-icons">lock</i>
+				<input ng-model="setup_user.password_confirmation" type="password" placeholder="Re-enter Password" ng-required="true">
+			</md-input-container>
+
+
+
+			<button class="btn waves-effect waves-light" type="submit" name="setup-mediadump">Submit
+				<i class="material-icons right">done</i>Start mediadump
+			</button>
+		</form>
+	</div>
 </div>
