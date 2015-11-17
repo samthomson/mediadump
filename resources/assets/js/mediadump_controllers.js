@@ -41,8 +41,8 @@ mediadumpControllers.controller('MainUICtrl', ['$scope', '$rootScope', '$http', 
 }]);
 
 
-mediadumpControllers.controller('SetupCtrl', ['$scope', '$routeParams',
-  function($scope, $routeParams) {
+mediadumpControllers.controller('SetupCtrl', ['$scope', '$routeParams', '$http',
+  function($scope, $routeParams, $http) {
 
 	// login / register forms
 	$scope.email = '';
@@ -54,17 +54,38 @@ mediadumpControllers.controller('SetupCtrl', ['$scope', '$routeParams',
 		email: "",
 		password: "",
 		password_confirmation: "",
-		defaultToPublic: true
+		defaultToPublic: 1
 	};
 
-	$scope.visibility_message = function(){
-		if($scope.setup_user.defaultToPublic)
-		{
-			return "Public - Let anyone search and view my pictures";
-		}else{
-			return "Private - Keep my pictures private unless I say otherwise";
-		}
-	};
+	$scope.setupMediaDump = function()
+	{
+		$http({
+			method: "POST",
+			url: "/app/auth/setup",
+			params: {
+				'email': $scope.setup_user.email,
+				'password': $scope.setup_user.password,
+				'password_confirmation': $scope.setup_user.password_confirmation,
+				'name': $scope.setup_user.nam
+			}
+		}).then(function(response) {
+
+			if(response.status == 200)
+			{
+				$scope.bLoggedIn = true;
+                // now fetch items
+                $scope.getItems();
+                $(".setup_feedback").html('');
+			}else{
+
+			}
+			// end loading
+			$scope.bSomethingLoading = false;
+		}, (function(response){
+			$(".setup_feedback").html(response.data);
+			$scope.bSomethingLoading = false;
+		}));
+	}
 
 	$scope.login = function(){
 		$scope.bSomethingLoading = true;

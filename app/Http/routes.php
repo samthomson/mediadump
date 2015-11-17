@@ -23,7 +23,7 @@ Route::any('{path?}', function()
 Route::get('/app/ping', ['uses' => 'MediaDumpController@ping']);
 
 
-Route::post('/app/auth/register',  ['uses' => 'CustomAuthController@register']);
+Route::post('/app/auth/setup',  ['uses' => 'CustomAuthController@setup']);
 Route::post('/app/auth/login',  ['uses' => 'CustomAuthController@login']);
 Route::post('/app/auth/logout',  ['uses' => 'CustomAuthController@logout']);
 

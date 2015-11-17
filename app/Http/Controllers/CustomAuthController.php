@@ -55,19 +55,24 @@ class CustomAuthController extends Controller
     {
         return response("logged out", (Auth::logout() ? 401 : 200));
     }
-    public function register()
+    public function setup()
     {
         $iResponseCode = -1;
         $sResponseData = '';
 
-        if(Request::has('email') && Request::has('password') && Request::has('name'))
+        if(Request::has('email') && 
+            Request::has('password') && 
+            Request::has('password_confirmation') && 
+            Request::has('name') && 
+            Request::has('public'))
         {
             // validate credentials, create user, login them in, return 200
+
             $validator = Validator::make(
-                Request::only(['email','password', 'name']),
+                Request::only(['email','password','password_confirmation', 'name', 'public']),
                 [
-                    'password' => 'required|min:6',
                     'email' => 'required|email|unique:users',
+                    'password' => 'required|min:1|confirmed',
                     'name' => 'required'
                 ]
             );
@@ -87,10 +92,11 @@ class CustomAuthController extends Controller
             }else{
                 // succesful; create user, log them in, return 200
                 $oUser = new User;
-                $oUser->email = Request::get('email');
                 $oUser->name = Request::get('name');
+                $oUser->email = Request::get('email');
                 $oUser->password = \Hash::make(Request::get('password'));
-
+                $oUser->admin = 1;
+                
                 $oUser->save();
 
                 Auth::attempt(['email' => $oUser->email, 'password' => $oUser->password], true);
