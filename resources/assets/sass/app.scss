@@ -15,7 +15,12 @@ $c_primary_lighter: #E57373; // red, 700
 
 $i_padding: 8px;
 
-body{
+
+body {
+  font-family: 'Noto Sans', sans-serif;
+}
+.header-font{
+	font-family: 'PT Sans Caption', sans-serif;
 }
 
 #header{

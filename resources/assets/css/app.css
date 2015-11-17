@@ -3,6 +3,12 @@ google materialise based color palette
 
 https://www.google.com/design/spec/style/color.html#color-color-palette
 */
+body {
+  font-family: 'Noto Sans', sans-serif; }
+
+.header-font {
+  font-family: 'PT Sans Caption', sans-serif; }
+
 #header {
   padding-top: 13px; }
 
