@@ -2,7 +2,7 @@ var elixir = require('laravel-elixir');
 
 
 elixir(function(mix) {
-    mix.sass('app.scss',
+    mix.sass(['app.scss', '../../../bower_components/Materialize/sass/materialize.scss'],
     	'resources/assets/css'
     	);
 });
@@ -11,7 +11,7 @@ elixir(function(mix) {
     mix.styles([
         "app.css",
     	'../../../bower_components/angular-material/angular-material.css',
-    	'../../../bower_components/Materialize/dist/css/materialize.min.css'
+    	'../../../bower_components/semantic/dist/semantic.min.css'
     ]);
 });
 
@@ -25,7 +25,8 @@ elixir(function(mix) {
         '../../../bower_components/angular-material/angular-material.min.js',
         'mediadump_app.js',
         'mediadump_controllers.js',
-    	'../../../bower_components/Materialize/dist/js/materialize.min.js'
+    	'../../../bower_components/Materialize/dist/js/materialize.min.js',
+    	'../../../bower_components/semantic/dist/semantic.min.js'
     ]);
 });
 
