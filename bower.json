@@ -17,6 +17,7 @@
     "angular": "1.4.x",
     "angular-route": "1.4.x",
     "angular-material": "1.0.x",
-    "Materialize": "materialize#~0.97.3"
+    "Materialize": "materialize#~0.97.3",
+    "semantic": "semantic-ui#~2.1.6"
   }
 }
