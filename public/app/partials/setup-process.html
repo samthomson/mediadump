@@ -6,12 +6,12 @@
 		<form ng-submit="setupMediaDump()">
 
 			<div class="ui icon message" ng-show="formFeedback !== ''">
-				<i class="inbox icon"></i>
+				<i class="icon fa fa-exclamation-circle"></i>
 				<div class="content">
 					<div class="header">
 					Problem setting up mediadump
 					</div>
-					<p>{{formFeedback}}</p>
+					<p ng-bind-html="formFeedback | sanitize"></p>
 				</div>
 			</div>
 

@@ -62,4 +62,10 @@ mediadumpApp.config(['$routeProvider',
     },(function(){
         $rootScope.gblMDApp.bSomethingLoading = false;
     }));
-});
+})
+
+.filter("sanitize", ['$sce', function($sce) {
+  return function(htmlCode){
+    return $sce.trustAsHtml(htmlCode);
+  }
+}]);

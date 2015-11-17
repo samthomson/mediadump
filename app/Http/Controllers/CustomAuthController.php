@@ -78,7 +78,7 @@ class CustomAuthController extends Controller
 
             if ($validator->fails())
             {
-                $sResponseData = '<div class="alert alert-danger"><strong>Registration failed</strong> Make sure your email and password meet the following requirements:';
+                $sResponseData = 'Make sure your email and password meet the following requirements:';
 
                 $iResponseCode = 412;
                 $sResponseData .= '<ul>';
@@ -86,7 +86,7 @@ class CustomAuthController extends Controller
                 {
                     $sResponseData .= $message;
                 }
-                $sResponseData .= '</ul></div>';
+                $sResponseData .= '</ul>';
 
             }else{
                 // succesful; create user, log them in, return 200
@@ -104,7 +104,7 @@ class CustomAuthController extends Controller
             }
         }else{
             $iResponseCode = 412;
-            $sResponseData = '<div class="alert alert-danger"><strong>Registration failed</strong> Enter an email and password to register</div>';
+            $sResponseData = 'Enter an email and password to register';
         }
         return response($sResponseData, $iResponseCode);
     }
