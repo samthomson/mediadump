@@ -41,8 +41,8 @@ mediadumpControllers.controller('MainUICtrl', ['$scope', '$rootScope', '$http', 
 }]);
 
 
-mediadumpControllers.controller('SetupCtrl', ['$scope', '$routeParams', '$http',
-  function($scope, $routeParams, $http) {
+mediadumpControllers.controller('SetupCtrl', ['$scope', '$rootScope', '$routeParams', '$http',
+  function($scope, $rootScope, $routeParams, $http) {
 
 	// login / register forms
 	$scope.email = '';
@@ -76,9 +76,8 @@ mediadumpControllers.controller('SetupCtrl', ['$scope', '$routeParams', '$http',
 
 			if(response.status == 200)
 			{
-				$rootScope.gblMDApp.bLoggedIn = true;
-                // now fetch items
-                $scope.getItems();
+				// all good, md was set up okay, and the user got logged in (according to the backend..)
+                $rootScope.gblMDApp.bLoggedIn = true;
                 $scope.formFeedback = '';
 			}else{
 

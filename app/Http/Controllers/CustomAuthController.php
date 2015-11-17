@@ -104,7 +104,7 @@ class CustomAuthController extends Controller
                     // succesful; create user, log them in, return 200
                     MediaDumpController::setupApplication(Request::get('name'), Request::get('email'), Request::get('password'));
 
-                    Auth::attempt(['email' => $oUser->email, 'password' => $oUser->password], true);
+                    Auth::attempt(['email' => Request::get('email'), 'password' => Request::get('password')], true);
 
                     $iResponseCode = 200;
                 }
