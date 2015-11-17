@@ -1,40 +1,42 @@
 
-<h2>set up regiser form: {{setup_user.name}}</h2>
+<div id="setup-form" class="container">
+	<h2>set up regiser form: {{setup_user.name}}</h2>
 
-<md-input-container class="md-icon-float md-block">
-	<label>Name</label>
-	<i class="material-icons">person</i>
-	<input ng-model="setup_user.name" type="text"placeholder="Your name e.g. Sam Thomson" ng-required="true">
-</md-input-container>
-
-
-<md-input-container class="md-icon-float md-block">
-	<label>Email</label>
-	<i class="material-icons">email</i>
-	<input ng-model="setup_user.email" type="email" placeholder="Email" ng-required="true">
-</md-input-container>
+	<md-input-container class="md-icon-float md-block">
+		<label>Name</label>
+		<i class="material-icons">person</i>
+		<input ng-model="setup_user.name" type="text"placeholder="Your name e.g. Sam Thomson" ng-required="true">
+	</md-input-container>
 
 
-<md-input-container class="md-icon-float md-block">
-	<label>Password</label>
-	<i class="material-icons">lock</i>
-	<input ng-model="setup_user.password" type="password" placeholder="Password" ng-required="true">
-</md-input-container>
-
-<md-input-container class="md-icon-float md-block">
-	<label>Confirm Password</label>
-	<i class="material-icons">lock</i>
-	<input ng-model="setup_user.password_confirmation" type="password" placeholder="Re-enter Password" ng-required="true">
-</md-input-container>
+	<md-input-container class="md-icon-float md-block">
+		<label>Email</label>
+		<i class="material-icons">email</i>
+		<input ng-model="setup_user.email" type="email" placeholder="Email" ng-required="true">
+	</md-input-container>
 
 
+	<md-input-container class="md-icon-float md-block">
+		<label>Password</label>
+		<i class="material-icons">lock</i>
+		<input ng-model="setup_user.password" type="password" placeholder="Password" ng-required="true">
+	</md-input-container>
 
-<md-input-container class="md-icon-float md-block">
+	<md-input-container class="md-icon-float md-block">
+		<label>Confirm Password</label>
+		<i class="material-icons">lock</i>
+		<input ng-model="setup_user.password_confirmation" type="password" placeholder="Re-enter Password" ng-required="true">
+	</md-input-container>
 
-	<label>Public or Private</label>
-	<i class="material-icons">visibility</i>
-	<md-switch ng-model="setup_user.defaultToPublic" class="md-block">
-		<span ng-show="setup_user.defaultToPublic">Public - Let anyone search and view my pictures</span>
-		<span ng-show="!setup_user.defaultToPublic">Private - Keep my pictures private unless I say otherwise</span>
-	</md-switch>
-</md-input-container>
+
+
+	<md-input-container class="md-icon-float md-block">
+
+		<label>Public or Private</label>
+		<i class="material-icons">visibility</i>
+		<md-switch ng-model="setup_user.defaultToPublic" class="md-block">
+			<span ng-show="setup_user.defaultToPublic">Public - Let anyone search and view my pictures</span>
+			<span ng-show="!setup_user.defaultToPublic">Private - Keep my pictures private unless I say otherwise</span>
+		</md-switch>
+	</md-input-container>
+</div>

@@ -23,6 +23,8 @@ body{
 	padding-top:(5px + $i_padding); // to counter the loading bar
 }
 
+#setup-form{}
+
 #app-load-state{position: absolute;}
 #app-load-state .md-container{background:$c_background_color;}
 #app-load-state .md-bar{background:$c_primary_normal;}

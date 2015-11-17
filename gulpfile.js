@@ -10,7 +10,8 @@ elixir(function(mix) {
 elixir(function(mix) {
     mix.styles([
         "app.css",
-    	'../../../bower_components/angular-material/angular-material.css'
+    	'../../../bower_components/angular-material/angular-material.css',
+    	'../../../bower_components/Materialize/dist/css/materialize.min.css'
     ]);
 });
 
@@ -23,7 +24,8 @@ elixir(function(mix) {
         '../../../bower_components/angular-aria/angular-aria.min.js',
         '../../../bower_components/angular-material/angular-material.min.js',
         'mediadump_app.js',
-        'mediadump_controllers.js'
+        'mediadump_controllers.js',
+    	'../../../bower_components/Materialize/dist/js/materialize.min.js'
     ]);
 });
 

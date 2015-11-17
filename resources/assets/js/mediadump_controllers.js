@@ -51,7 +51,7 @@ mediadumpControllers.controller('SetupCtrl', ['$scope', '$routeParams',
 
 	$scope.setup_user = {
 		name: "",
-		email: "samt@samt.st",
+		email: "",
 		password: "",
 		password_confirmation: "",
 		defaultToPublic: true
@@ -117,6 +117,7 @@ mediadumpControllers.controller('SetupCtrl', ['$scope', '$routeParams',
 			$scope.bSomethingLoading = false;
 		});
 	};
+
   }]);
 
 
