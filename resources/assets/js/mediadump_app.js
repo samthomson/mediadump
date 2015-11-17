@@ -1,5 +1,5 @@
 var mediadumpApp = angular
-	.module('mediadumpApp', ['ngRoute', 'mediadumpControllers'])
+	.module('mediadumpApp', ['ngRoute', 'mediadumpControllers', 'ngMaterial'])
     
 	.config(['$httpProvider', function($httpProvider) {
 		$httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
@@ -32,7 +32,7 @@ mediadumpApp.config(['$routeProvider',
     $rootScope.gblMDApp = {
         state: null,
         bSomethingLoading: true,
-        bLoggedIn = false
+        bLoggedIn: false
     };
 
 
