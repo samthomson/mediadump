@@ -45,10 +45,10 @@ class ApplicationStateTest extends TestCase
 
         $oMDState = MediaDumpState::first();
 
-        $oMDState->OwnerUser->delete();
+        $oMDState->ownerUser->delete();
         $oMDState->delete();
 
-        
+
         $this->assertEquals($oJson->md_state, "setup");
     }
 
@@ -61,9 +61,9 @@ class ApplicationStateTest extends TestCase
 
         $oMDState = MediaDumpState::first();
 
-        $sName = $oMDState->OwnerUser->name;
+        $sName = $oMDState->ownerUser->name;
 
-        $oMDState->OwnerUser->delete();
+        $oMDState->ownerUser->delete();
         $oMDState->delete();
 
 

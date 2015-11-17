@@ -64,7 +64,7 @@ class MediaDumpController extends Controller
         $oUser->admin = 1;
         $oUser->save();
 
-        $oMDState->OwnerUser()->save($oUser);
+        $oMDState->ownerUser()->save($oUser);
 
     }
 }
