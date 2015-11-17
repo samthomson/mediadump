@@ -13,8 +13,10 @@
 
             <div id="header">
                 <button ng-ckick="home()" ng-disabled="getMDApp().state == 'empty'">mediadump</button> mdstatus: state: @{{getMDApp().state}}, loading: @{{getMDApp().bSomethingLoading}}
+
+                <ul><li>login?</li></ul>
             </div>
-            </hr>
+            <hr/>
         </div>
 
         <div ng-view></div>
