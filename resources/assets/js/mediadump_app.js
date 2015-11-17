@@ -58,9 +58,3 @@ mediadumpApp.config(['$routeProvider',
         $rootScope.gblMDApp.bSomethingLoading = false;
     }));
 });
-
-
-
-$(document).ready(function(){
-    $('body').css("visibility", "visible");
-});
