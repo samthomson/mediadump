@@ -72,7 +72,7 @@ mediadumpControllers.controller('SetupCtrl', ['$scope', '$routeParams', '$http',
 
 			if(response.status == 200)
 			{
-				$scope.bLoggedIn = true;
+				$rootScope.gblMDApp.bLoggedIn = true;
                 // now fetch items
                 $scope.getItems();
                 $(".setup_feedback").html('');

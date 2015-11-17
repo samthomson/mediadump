@@ -21,6 +21,10 @@ mediadumpApp.config(['$routeProvider',
         templateUrl: '/app/partials/setup-process.html',
         controller: 'SetupCtrl'
       }).
+      when('/admin', {
+        templateUrl: '/app/partials/admin-backend.html',
+        controller: 'AdminCtrl'
+      }).
       otherwise({
         redirectTo: '/'
       });
@@ -45,6 +49,7 @@ mediadumpApp.config(['$routeProvider',
     })
     .then(function(response) {
         $rootScope.gblMDApp.state = response.data.md_state;
+        $rootScope.gblMDApp.bLoggedIn = response.data.bLoggedIn;
             
             
         if($rootScope.gblMDApp.state == "empty"){

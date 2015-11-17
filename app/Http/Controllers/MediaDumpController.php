@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 use App\User;
 use File;
+use Auth;
 
 class MediaDumpController extends Controller
 {
@@ -35,6 +36,8 @@ class MediaDumpController extends Controller
     		// no users, empty mediadump?
     		$oReturn->md_state = "empty";
     	}
+
+        $oReturn->bLoggedIn = Auth::check();
 
     	return response()->json($oReturn);
     }
