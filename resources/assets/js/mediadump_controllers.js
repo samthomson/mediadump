@@ -49,6 +49,8 @@ mediadumpControllers.controller('SetupCtrl', ['$scope', '$routeParams',
 	$scope.password = '';
 	$scope.name = '';
 
+	$scope.setup_user = {name: "", email: "", password: "", password_confirmation: ""};
+
 	$scope.login = function(){
 		$scope.bSomethingLoading = true;
 		// parse form and submit
