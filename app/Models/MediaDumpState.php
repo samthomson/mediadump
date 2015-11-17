@@ -15,4 +15,8 @@ class MediaDumpState extends Model
     protected $table = 'mediadump';
 
 
+    public function OwnerUser()
+    {
+        return $this->hasOne('App\User', 'id', 'owner_user');
+    }
 }

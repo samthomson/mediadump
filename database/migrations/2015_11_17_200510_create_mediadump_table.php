@@ -14,7 +14,7 @@ class CreateMediadumpTable extends Migration
     {
         Schema::create('mediadump', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('admin_user');
+            $table->integer('owner_user');
             $table->boolean('public')->default(true);
             $table->timestamps();
         });

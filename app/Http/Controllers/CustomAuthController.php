@@ -10,6 +10,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 
 use Illuminate\Support\Facades\Request;
+use App\Models\MediaDumpState;
+
+use App\Http\Controllers\MediaDumpController;
 
 
 use Auth;
@@ -59,51 +62,56 @@ class CustomAuthController extends Controller
         $iResponseCode = -1;
         $sResponseData = '';
 
-        if(Request::has('email') && 
-            Request::has('password') && 
-            Request::has('password_confirmation') && 
-            Request::has('name'))
+        if(MediaDumpState::count() > 0)
         {
-            // validate credentials, create user, login them in, return 200
-
-            $validator = Validator::make(
-                Request::only(['email','password','password_confirmation', 'name']),
-                [
-                    'email' => 'required|email|unique:users',
-                    'password' => 'required|min:1|confirmed',
-                    'name' => 'required'
-                ]
-            );
-
-            if ($validator->fails())
-            {
-                $sResponseData = 'Make sure your email and password meet the following requirements:';
-
-                $iResponseCode = 412;
-                $sResponseData .= '<ul>';
-                foreach($validator->messages()->all('<li>:message</li>') as $message)
-                {
-                    $sResponseData .= $message;
-                }
-                $sResponseData .= '</ul>';
-
-            }else{
-                // succesful; create user, log them in, return 200
-                $oUser = new User;
-                $oUser->name = Request::get('name');
-                $oUser->email = Request::get('email');
-                $oUser->password = \Hash::make(Request::get('password'));
-                $oUser->admin = 1;
-                
-                $oUser->save();
-
-                Auth::attempt(['email' => $oUser->email, 'password' => $oUser->password], true);
-
-                $iResponseCode = 200;
-            }
-        }else{
+            // mediadump is already set up?
             $iResponseCode = 412;
-            $sResponseData = 'Enter an email and password to register';
+            $sResponseData = 'Mediadump has already been set up ?!';
+        }else{
+
+
+            // md is clean, validate their data before continuing
+            if(Request::has('email') && 
+                Request::has('password') && 
+                Request::has('password_confirmation') && 
+                Request::has('name'))
+            {
+                // validate credentials, create user, login them in, return 200
+
+                $validator = Validator::make(
+                    Request::only(['email','password','password_confirmation', 'name']),
+                    [
+                        'email' => 'required|email|unique:users',
+                        'password' => 'required|min:1|confirmed',
+                        'name' => 'required'
+                    ]
+                );
+
+                if ($validator->fails())
+                {
+                    $sResponseData = 'Make sure your email and password meet the following requirements:';
+
+                    $iResponseCode = 412;
+                    $sResponseData .= '<ul>';
+                    foreach($validator->messages()->all('<li>:message</li>') as $message)
+                    {
+                        $sResponseData .= $message;
+                    }
+                    $sResponseData .= '</ul>';
+
+                }else{
+
+                    // succesful; create user, log them in, return 200
+                    MediaDumpController::setupApplication(Request::get('name'), Request::get('email'), Request::get('password'));
+
+                    Auth::attempt(['email' => $oUser->email, 'password' => $oUser->password], true);
+
+                    $iResponseCode = 200;
+                }
+            }else{
+                $iResponseCode = 412;
+                $sResponseData = 'Enter an email and password to register';
+            }   
         }
         return response($sResponseData, $iResponseCode);
     }

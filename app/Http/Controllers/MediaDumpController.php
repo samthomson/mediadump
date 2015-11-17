@@ -40,4 +40,31 @@ class MediaDumpController extends Controller
 
     	return response()->json($oReturn);
     }
+
+    public static function setupApplication($sName, $sEmail, $sPassword, $bPublic = true)
+    {
+        // creates md state and associated user
+        
+        //$oUser->save();
+
+        // save user as md state relation
+        
+
+        // create master md state
+        $oMDState = new MediaDumpState;
+        $oMDState->public = true;
+
+        $oMDState->save();
+
+
+        $oUser = new User;
+        $oUser->name = $sName;
+        $oUser->email = $sEmail;
+        $oUser->password = \Hash::make($sPassword);
+        $oUser->admin = 1;
+        $oUser->save();
+
+        $oMDState->OwnerUser()->save($oUser);
+
+    }
 }

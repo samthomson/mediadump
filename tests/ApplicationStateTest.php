@@ -16,6 +16,9 @@ class ApplicationStateTest extends TestCase
      *
      * @return void
      */
+
+
+
     public function testPingValidState()
     {
         //$oJson = json_decode(MediaDumpController::ping());
@@ -36,14 +39,35 @@ class ApplicationStateTest extends TestCase
     {
         //$oJson = json_decode(MediaDumpController::ping());
 
-        $oMDState = new MediaDumpState;
-        $oMDState->public = 0;
-        $iTempUser = $oMDState->save();
+        MediaDumpController::setupApplication("test setup", "test@setup.app", "p", false);
 
         $oJson = json_decode(MediaDumpController::ping()->getContent());
 
+        $oMDState = MediaDumpState::first();
+
+        $oMDState->OwnerUser->delete();
         $oMDState->delete();
 
+        
         $this->assertEquals($oJson->md_state, "setup");
     }
+
+    public function testSetUp()
+    {
+        if(MediaDumpState::count() > 0)
+            return false;
+
+        MediaDumpController::setupApplication("test setup", "test@setup.app", "p", false);
+
+        $oMDState = MediaDumpState::first();
+
+        $sName = $oMDState->OwnerUser->name;
+
+        $oMDState->OwnerUser->delete();
+        $oMDState->delete();
+
+
+        $this->assertEquals($sName, "test setup");
+
+    } 
 }
