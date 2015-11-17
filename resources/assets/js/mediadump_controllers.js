@@ -49,7 +49,22 @@ mediadumpControllers.controller('SetupCtrl', ['$scope', '$routeParams',
 	$scope.password = '';
 	$scope.name = '';
 
-	$scope.setup_user = {name: "", email: "", password: "", password_confirmation: ""};
+	$scope.setup_user = {
+		name: "",
+		email: "samt@samt.st",
+		password: "",
+		password_confirmation: "",
+		defaultToPublic: true
+	};
+
+	$scope.visibility_message = function(){
+		if($scope.setup_user.defaultToPublic)
+		{
+			return "Public - Let anyone search and view my pictures";
+		}else{
+			return "Private - Keep my pictures private unless I say otherwise";
+		}
+	};
 
 	$scope.login = function(){
 		$scope.bSomethingLoading = true;
@@ -108,7 +123,6 @@ mediadumpControllers.controller('SetupCtrl', ['$scope', '$routeParams',
 mediadumpControllers.controller('HeaderCtrl', ['$scope', '$rootScope', '$routeParams', '$location',
  	function($scope, $rootScope, $location) {
 		$scope.local = "local data";
-  		//$scope.sMDStatus = $rootScope.sMDStatus;
 
   		$scope.datatest = $rootScope.test;
 
