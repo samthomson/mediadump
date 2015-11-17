@@ -4,7 +4,18 @@
 		<h3>set up regiser form</h3>
 
 		<form ng-submit="setupMediaDump()">
-			<div class="setup_feedback"></div>
+
+			<div class="ui icon message" ng-show="formFeedback !== ''">
+				<i class="inbox icon"></i>
+				<div class="content">
+					<div class="header">
+					Problem setting up mediadump
+					</div>
+					<p>{{formFeedback}}</p>
+				</div>
+			</div>
+
+
 			<md-input-container class="md-icon-float md-block">
 				<label>Name</label>
 				<i class="material-icons">person</i>

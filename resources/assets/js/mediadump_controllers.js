@@ -58,6 +58,7 @@ mediadumpControllers.controller('SetupCtrl', ['$scope', '$routeParams', '$http',
 	};
 
 	$scope.bSetupLoading = false;
+	$scope.formFeedback = '';
 
 	$scope.setupMediaDump = function()
 	{
@@ -78,7 +79,7 @@ mediadumpControllers.controller('SetupCtrl', ['$scope', '$routeParams', '$http',
 				$rootScope.gblMDApp.bLoggedIn = true;
                 // now fetch items
                 $scope.getItems();
-                $(".setup_feedback").html('');
+                $scope.formFeedback = '';
 			}else{
 
 			}
@@ -86,7 +87,7 @@ mediadumpControllers.controller('SetupCtrl', ['$scope', '$routeParams', '$http',
 			$scope.bSomethingLoading = false;
 			$scope.bSetupLoading = false;
 		}, (function(response){
-			$(".setup_feedback").html(response.data);
+			$scope.formFeedback = response.data;
 			$scope.bSomethingLoading = false;
 			$scope.bSetupLoading = false;
 		}));
