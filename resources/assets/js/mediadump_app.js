@@ -95,7 +95,7 @@ mediadumpApp
     };
 
 
-    $rootScope.bSomethingLoading = true;
+    $rootScope.gblMDApp.bSomethingLoading = true;
 
 
     $http({
@@ -110,28 +110,28 @@ mediadumpApp
 
 
 
-         // routing
-    $routeProviderReference
-        .when('/', {
-            templateUrl: '/app/partials/app-ui.html',
-            controller: 'MainUICtrl'
-        })
-        .when('/setup', {
-            templateUrl: '/app/partials/setup-process.html',
-            controller: 'SetupCtrl'
-        })
-        .when('/admin', {
-            templateUrl: '/app/partials/admin-backend.html',
-            controller: 'AdminCtrl'
-        })
-        .when('/login', {
-            templateUrl: '/app/partials/login.html',
-            controller: 'LoginCtrl'
-        })
-        .otherwise({
-            redirectTo: '/'
-        });
-$route.reload();
+        // routing
+        $routeProviderReference
+            .when('/', {
+                templateUrl: '/app/partials/app-ui.html',
+                controller: 'MainUICtrl'
+            })
+            .when('/setup', {
+                templateUrl: '/app/partials/setup-process.html',
+                controller: 'SetupCtrl'
+            })
+            .when('/admin', {
+                templateUrl: '/app/partials/admin-backend.html',
+                controller: 'AdminCtrl'
+            })
+            .when('/login', {
+                templateUrl: '/app/partials/login.html',
+                controller: 'LoginCtrl'
+            })
+            .otherwise({
+                redirectTo: '/'
+            });
+        $route.reload();
             
             
         if($rootScope.gblMDApp.state == "empty"){
