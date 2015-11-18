@@ -73,6 +73,14 @@ class ApplicationStateTest extends TestCase
     public function testSingleStateOnly()
     {
         // the mediadump table should have only one row, it can't be 'setup' if already set up
-        $this->assertEquals(true, false);
+
+        // set it up at least once
+        MediaDumpController::setupApplication("test setup", "1@setup.app", "p", false);
+
+        // attempty a second set up
+        MediaDumpController::setupApplication("test setup", "2@setup.app", "p", false);
+
+        // check the db just has one
+        $this->assertEquals(MediaDumpState::count(), 1);
     }
 }

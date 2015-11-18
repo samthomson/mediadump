@@ -43,22 +43,30 @@ class MediaDumpController extends Controller
 
     public static function setupApplication($sName, $sEmail, $sPassword, $bPublic = true)
     {
-        // creates md state and associated user
+        // creates md state and associated user, unless already existing
 
-        // create master md state
-        $oMDState = new MediaDumpState;
-        $oMDState->public = $bPublic;
+        if(MediaDumpState::count() === 0)
+        {
 
-        $oMDState->save();
+            // create master md state
+            $oMDState = new MediaDumpState;
+            $oMDState->public = $bPublic;
 
-        $oUser = new User;
-        $oUser->name = $sName;
-        $oUser->email = $sEmail;
-        $oUser->password = \Hash::make($sPassword);
-        $oUser->admin = 1;
-        $oUser->save();
+            $oMDState->save();
 
-        // save user as md state relation
-        $oMDState->ownerUser()->save($oUser);
+            $oUser = new User;
+            $oUser->name = $sName;
+            $oUser->email = $sEmail;
+            $oUser->password = \Hash::make($sPassword);
+            $oUser->admin = 1;
+            $oUser->save();
+
+            // save user as md state relation
+            $oMDState->ownerUser()->save($oUser);
+            return true;
+        }else{
+            // there is already an mdstate in db
+            return false;
+        }
     }
 }
