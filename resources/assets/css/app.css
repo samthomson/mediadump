@@ -53,6 +53,9 @@ RESETS
 .fa {
   font-family: FontAwesome !important; }
 
+.ui.secondary.pointing.menu {
+  border-bottom-color: #fff !important; }
+
 .materialize-red.lighten-5 {
   background-color: #fdeaeb !important; }
 

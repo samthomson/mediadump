@@ -24,9 +24,32 @@
             <md-progress-linear md-mode="indeterminate" ng-show="getMDApp().bSomethingLoading" id="app-load-state"></md-progress-linear>
 
             <div id="header">
-                <a ng-ckick="home()" ng-hide="getMDApp().state == 'empty'" class="header-font">mediadump</a> setup: @{{getMDApp().state}}, loading: @{{getMDApp().bSomethingLoading}}, logged in: @{{getMDApp().bLoggedIn}}
 
-                <ul><li>login?</li></ul>
+                <!--setup: @{{getMDApp().state}}, loading: @{{getMDApp().bSomethingLoading}}, logged in: @{{getMDApp().bLoggedIn}}-->
+
+                <div class="ui secondary pointing menu">
+
+                    <a ng-click="home()" ng-hide="getMDApp().state == 'empty'" class="header-font">mediadump</a>
+
+                    <a class="item">
+                        browse
+                    </a>
+                    <a class="item">
+                        explore
+                    </a>
+                    <a class="item active">
+                        map
+                    </a>
+                    <a class="item">
+                        shuffle
+                    </a>
+                    <div class="right menu">
+                        <a class="ui item">
+                            login
+                        </a>
+                    </div>
+                </div>
+
             </div>
             <hr/>
         </div>
