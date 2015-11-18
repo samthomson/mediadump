@@ -31,22 +31,21 @@
 
                     <a ng-click="home()" ng-hide="getMDApp().state == 'empty'" class="header-font">mediadump</a>
 
-                    <a class="item">
+                    <a class="item active">
                         browse
                     </a>
                     <a class="item">
                         explore
                     </a>
-                    <a class="item active">
+                    <a class="item">
                         map
                     </a>
                     <a class="item">
                         shuffle
                     </a>
+                    <a class="item"><span ng-show="getMDApp().bLoggedIn">logged in</span><span ng-show="!getMDApp().bLoggedIn">logged out</span></a>
                     <div class="right menu">
-                        <a class="ui item">
-                            login
-                        </a>
+                        <a class="ui item" ng-href="/#/admin">manage</a>
                     </div>
                 </div>
 

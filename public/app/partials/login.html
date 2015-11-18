@@ -1,0 +1,29 @@
+
+<div id="login-form" class="container" ng-cloak>
+	<div class="ui segment" ng-class="{loading: bLoginLoading}">
+		<h3>Login</h3>
+
+		<form ng-submit="login()" ng-show="getMDApp().state == 'empty'">
+
+			<div class="ui icon message" ng-show="formFeedback !== ''">
+				<i class="icon fa fa-exclamation-circle"></i>
+				<div class="content">
+					<div class="header">
+					Problem Logging in
+					</div>
+					<p ng-bind-html="formFeedback | sanitize"></p>
+				</div>
+			</div>
+
+
+			
+
+			<button class="btn waves-effect waves-light" type="submit" name="setup-mediadump">Submit
+				<i class="material-icons right">done</i>Login
+			</button>
+		</form>
+
+		<div>
+
+	</div>
+</div>

@@ -163,6 +163,16 @@ mediadumpControllers.controller('AdminCtrl', ['$scope', '$rootScope', '$routePar
   }]);
 
 
+mediadumpControllers.controller('LoginCtrl', ['$scope', '$rootScope', '$routeParams', '$http',
+  function($scope, $rootScope, $routeParams, $http) {
+
+
+	$scope.getMDApp = function(){
+		return $rootScope.gblMDApp;
+	}
+
+  }]);
+
 mediadumpControllers.controller('HeaderCtrl', ['$scope', '$rootScope', '$routeParams', '$location',
  	function($scope, $rootScope, $location) {
 		$scope.local = "local data";

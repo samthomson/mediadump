@@ -25,6 +25,10 @@ mediadumpApp.config(['$routeProvider',
         templateUrl: '/app/partials/admin-backend.html',
         controller: 'AdminCtrl'
       }).
+      when('/login', {
+        templateUrl: '/app/partials/login.html',
+        controller: 'LoginCtrl'
+      }).
       otherwise({
         redirectTo: '/'
       });
