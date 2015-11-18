@@ -96,31 +96,6 @@ mediadumpControllers.controller('SetupCtrl', ['$scope', '$rootScope', '$routePar
 	}
 
 	
-
-	$scope.logout = function(){
-		$scope.bSomethingLoading = true;
-		// parse form and submit
-		$http({
-			method: "POST",
-			url: "/app/auth/logout"
-		})
-		.success(function(response) {
-
-			if(response.status == 200)
-			{
-				$scope.bLoggedIn = false;
-			}
-			// end loading
-			$scope.bSomethingLoading = false;
-			// user may be logged in or out now
-			$scope.bLoggedIn = (response.status == 200 ? true : false);
-		})
-		.error(function(){
-			$scope.bSomethingLoading = false;
-		});
-	};
-
-
 	$scope.getMDApp = function(){
 		return $rootScope.gblMDApp;
 	}
@@ -139,8 +114,8 @@ mediadumpControllers.controller('AdminCtrl', ['$scope', '$rootScope', '$routePar
   }]);
 
 
-mediadumpControllers.controller('LoginCtrl', ['$scope', '$rootScope', '$routeParams', '$http',
-  function($scope, $rootScope, $routeParams, $http) {
+mediadumpControllers.controller('LoginCtrl', ['$scope', '$rootScope', '$routeParams', '$http', '$location',
+  function($scope, $rootScope, $routeParams, $http, $location) {
 
   	$scope.bLoginLoading = false;
 	$scope.formFeedback = '';
@@ -167,15 +142,13 @@ mediadumpControllers.controller('LoginCtrl', ['$scope', '$rootScope', '$routePar
 			}
 		}).then(function(response) {
 
-			if(response.status == 200)
-			{
-				$rootScope.gblMDApp.bLoggedIn = true;
-				$location.path( "#/admin" );
-				$scope.login_data.email = '';
-				$scope.login_data.password = '';
-                // now fetch items
-                $scope.formFeedback = '';
-			}
+			$rootScope.gblMDApp.bLoggedIn = true;
+			$location.path( "#/admin" );
+			$scope.login_data.email = '';
+			$scope.login_data.password = '';
+            // now fetch items
+            $scope.formFeedback = '';
+
 			// end loading
 			$scope.bSomethingLoading = false;
 			$scope.bLoginLoading = false;
@@ -189,8 +162,8 @@ mediadumpControllers.controller('LoginCtrl', ['$scope', '$rootScope', '$routePar
 
 }]);
 
-mediadumpControllers.controller('HeaderCtrl', ['$scope', '$rootScope', '$routeParams', '$location',
- 	function($scope, $rootScope, $routeParams, $location) {
+mediadumpControllers.controller('HeaderCtrl', ['$scope', '$rootScope', '$routeParams', '$location', '$http',
+ 	function($scope, $rootScope, $routeParams, $location, $http) {
 		$scope.local = "local data";
 
   		$scope.datatest = $rootScope.test;
@@ -198,4 +171,30 @@ mediadumpControllers.controller('HeaderCtrl', ['$scope', '$rootScope', '$routePa
   		$scope.getMDApp = function(){
   			return $rootScope.gblMDApp;
   		}
+
+
+
+		$scope.logout = function(){
+			$scope.bSomethingLoading = true;
+			console.log("start logged out");
+			// parse form and submit
+			$http({
+				method: "POST",
+				url: "/app/auth/logout"
+			})
+			.success(function(response) {
+				
+				$rootScope.gblMDApp.bLoggedIn = false;
+
+			    $location.path('#/');
+
+				// end loading
+				$scope.bSomethingLoading = false;
+				// user may be logged in or out now
+				$rootScope.gblMDApp.bLoggedIn = (response.status == 200 ? true : false);
+			})
+			.error(function(){
+				$scope.bSomethingLoading = false;
+			});
+		};
   }]);

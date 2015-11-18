@@ -44,14 +44,20 @@
                     <a class="item">
                         shuffle
                     </a>
-                    <a class="item"><span ng-show="getMDApp().bLoggedIn">logged in</span><span ng-show="!getMDApp().bLoggedIn">logged out</span></a>
+
+
                     <div class="right menu">
-                        <a class="ui item" ng-href="/#/admin">manage</a>
+                        <!-- logged in? admin menu, or logout -->
+                        <a class="ui item" ng-href="/#/admin" ng-show="getMDApp().bLoggedIn">manage</a>
+                        <a class="ui item" ng-click="logout()" ng-show="getMDApp().bLoggedIn">logout</a>
+
+                        <!-- logged out? login link -->
+                        <a class="ui item" ng-href="/#/login" ng-show="!getMDApp().bLoggedIn">log in</a>
+                                                
                     </div>
                 </div>
 
             </div>
-            <hr/>
         </div>
 
         <div ng-view></div>

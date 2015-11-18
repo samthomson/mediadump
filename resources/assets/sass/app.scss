@@ -14,6 +14,7 @@ $c_primary_normal: #F44336; // red normal, 500
 $c_primary_lighter: #E57373; // red, 700
 
 $i_padding: 8px;
+$i_margin: ($i_padding * 1.5);
 
 $font_header_font_family: 'PT Sans Caption', sans-serif;
 
@@ -28,6 +29,7 @@ body {
 
 #header{
 	padding-top:(5px + $i_padding); // to counter the loading bar
+  margin-bottom: $i_margin;
 }
 
 #setup-form{}

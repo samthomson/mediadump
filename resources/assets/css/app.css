@@ -11,7 +11,8 @@ body {
   font-size: xx-large; }
 
 #header {
-  padding-top: 13px; }
+  padding-top: 13px;
+  margin-bottom: 12px; }
 
 #app-load-state {
   position: absolute; }
