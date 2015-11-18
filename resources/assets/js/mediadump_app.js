@@ -15,73 +15,11 @@ var mediadumpApp = angular
 
 
 
-
-/*
-mediadumpApp
-
-.factory('pingService', function($http) {
-
-    var getData = function() {
-
-        return $http({method:"POST", url:"/app/ping"})
-        .then(function(result){
-            $rootScope.gblMDApp.state = response.data.md_state;
-            $rootScope.gblMDApp.bLoggedIn = response.data.bLoggedIn;
-                
-                
-            if($rootScope.gblMDApp.state == "empty"){
-                $location.path( "/setup" );
-            }
-
-            // end loading
-            $rootScope.gblMDApp.bSomethingLoading = false;
-            return true;
-        });
-    };
-    return { getData: getData };
-})
-*/
 mediadumpApp
 .config(['$routeProvider',
   function($routeProvider) {
 
     $routeProviderReference = $routeProvider;
-
-
-
-
-
-/*
-    // routing
-    $routeProvider
-        .when('/', {
-            templateUrl: '/app/partials/app-ui.html',
-            controller: 'MainUICtrl'
-        })
-        .when('/setup', {
-            templateUrl: '/app/partials/setup-process.html',
-            controller: 'SetupCtrl'
-        })
-        .when('/admin', {
-            templateUrl: '/app/partials/admin-backend.html',
-            controller: 'AdminCtrl'
-        })
-        .when('/login', {
-            templateUrl: '/app/partials/login.html',
-            controller: 'LoginCtrl'
-        })
-        .otherwise({
-            redirectTo: '/'
-        });
-
-
-*/
-
-    
-
-
-
-
 
   }])
 
@@ -173,22 +111,3 @@ mediadumpApp
     return $sce.trustAsHtml(htmlCode);
   }
 }]);
-
-
-
-
-/*
-
-$http({method:"POST", url:"/app/ping"})
-    .then(function(result){
-        $rootScope.gblMDApp.state = response.data.md_state;
-        $rootScope.gblMDApp.bLoggedIn = response.data.bLoggedIn;
-            
-            
-        if($rootScope.gblMDApp.state == "empty"){
-            $location.path( "/setup" );
-        }
-
-        // end loading
-        $rootScope.gblMDApp.bSomethingLoading = false;
-    });*/
