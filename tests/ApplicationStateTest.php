@@ -70,4 +70,9 @@ class ApplicationStateTest extends TestCase
         $this->assertEquals($sName, "test setup");
 
     } 
+    public function testSingleStateOnly()
+    {
+        // the mediadump table should have only one row, it can't be 'setup' if already set up
+        $this->assertEquals(true, false);
+    }
 }
