@@ -11,7 +11,7 @@ class MediaDumpState extends Model
      * The database table used by the model.
      *
      * @var string
-     * @property string name
+     * @property string public
      */
     protected $table = 'mediadump';
 

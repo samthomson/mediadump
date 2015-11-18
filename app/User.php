@@ -20,6 +20,10 @@ class User extends Model implements AuthenticatableContract,
      * The database table used by the model.
      *
      * @var string
+     * @property string name
+     * @property string email
+     * @property string password
+     * @property boolean admin
      */
     protected $table = 'users';
 
