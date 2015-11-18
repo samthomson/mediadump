@@ -144,6 +144,22 @@ mediadumpControllers.controller('SetupCtrl', ['$scope', '$rootScope', '$routePar
 		});
 	};
 
+
+	$scope.getMDApp = function(){
+		return $rootScope.gblMDApp;
+	}
+
+  }]);
+
+
+mediadumpControllers.controller('AdminCtrl', ['$scope', '$rootScope', '$routeParams', '$http',
+  function($scope, $rootScope, $routeParams, $http) {
+
+
+	$scope.getMDApp = function(){
+		return $rootScope.gblMDApp;
+	}
+
   }]);
 
 
