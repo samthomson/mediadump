@@ -108,6 +108,8 @@ mediadumpControllers.controller('AdminCtrl', ['$scope', '$rootScope', '$routePar
   function($scope, $rootScope, $routeParams, $http) {
 
 
+    $scope.tabSection = $routeParams.tabSection;
+
 	$scope.getMDApp = function(){
 		return $rootScope.gblMDApp;
 	}
@@ -120,6 +122,7 @@ mediadumpControllers.controller('LoginCtrl', ['$scope', '$rootScope', '$routePar
 
   	$scope.bLoginLoading = false;
 	$scope.formFeedback = '';
+
 
 	$scope.getMDApp = function(){
 		return $rootScope.gblMDApp;

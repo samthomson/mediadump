@@ -58,7 +58,7 @@ mediadumpApp
                 templateUrl: '/app/partials/setup-process.html',
                 controller: 'SetupCtrl'
             })
-            .when('/admin', {
+            .when('/admin/:tabSection?', {
                 templateUrl: '/app/partials/admin-backend.html',
                 controller: 'AdminCtrl'
             })

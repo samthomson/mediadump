@@ -1,29 +1,30 @@
 
 <div id="admin-backend" class="container" ng-cloak>
-	<h3>admin section</h3>
+	<h4>{{tabSection}}</h4>
+
 
 	<div class="ui grid">
 		<div class="four wide column">
 			<div class="ui vertical fluid tabular menu">
-				<a class="active item">
+				<a class="item" ng-href="#/admin" ng-class="{'active':tabSection == null}">
 				overview
 				</a>
-				<a class="item">
+				<a class="item" ng-href="#/admin/filesources" ng-class="{'active':tabSection == 'filesources'}">
 				file sources
 				</a>
-				<a class="item">
+				<a class="item" ng-href="#/admin/taggers" ng-class="{'active':tabSection == 'taggers'}">
 				taggers
 				</a>
-				<a class="item">
+				<a class="item" ng-href="#/admin/settings" ng-class="{'active':tabSection == 'settings'}">
 				settings
 				</a>
-				<a class="item">
+				<a class="item" ng-href="#/admin/users" ng-class="{'active':tabSection == 'users'}">
 				users &amp; groups
 				</a>
-				<a class="item">
+				<a class="item" ng-href="#/admin/auto" ng-class="{'active':tabSection == 'auto'}">
 				auto activity
 				</a>
-				<a class="item">
+				<a class="item" ng-href="#/admin/stats" ng-class="{'active':tabSection == 'stats'}">
 				stats &amp; performance
 				</a>
 			</div>
