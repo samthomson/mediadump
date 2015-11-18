@@ -29,7 +29,8 @@
 
                 <div class="ui secondary pointing menu">
 
-                    <a ng-click="home()" ng-hide="getMDApp().state == 'empty'" class="header-font">mediadump</a>
+                    <a ng-href="#/home" ng-hide="getMDApp().state == 'empty'" class="header-font">mediadump</a>
+                    <!--<a ng-click="home()" ng-hide="getMDApp().state == 'empty'" class="header-font">mediadump</a>-->
 
                     <a class="item active">
                         browse

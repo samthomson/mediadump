@@ -182,8 +182,8 @@ mediadumpControllers.controller('HeaderCtrl', ['$scope', '$rootScope', '$routePa
   		$scope.getMDApp = function(){
   			return $rootScope.gblMDApp;
   		}
-
+  		/*
   		$scope.home = function(){
   			$location.path( "/#/" );
-  		}
+  		}*/
   }]);

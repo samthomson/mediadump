@@ -9,7 +9,8 @@ var mediadumpApp = angular
 
 
 
-mediadumpApp.config(['$routeProvider',
+mediadumpApp
+.config(['$routeProvider',
   function($routeProvider) {
     // routing
     $routeProvider.
@@ -34,7 +35,7 @@ mediadumpApp.config(['$routeProvider',
       });
   }])
 
-.run(function($rootScope, $http, $location) {
+.run(['$rootScope', '$http', '$location', function($rootScope, $http, $location) {
     $rootScope.rootdata = 'global';
 
     $rootScope.gblMDApp = {
@@ -69,20 +70,17 @@ mediadumpApp.config(['$routeProvider',
 
     // register listener to watch route changes, create a front side admin 'check'
     $rootScope.$on( "$routeChangeStart", function(event, next, current) {
-        console.log("going to: " + next.templateUrl);
-        /*
-        if ( $rootScope.gblMDApp.bLoggedIn !== true ) {
+        
+
+        if ($.inArray(sPath, saAdminRoutes) > -1 && $rootScope.gblMDApp.bLoggedIn == false) {
+            // the user is not logged in but going to a route that requires auth
             // no logged user, we should be going to #login
-            if ( next.templateUrl == "partials/login.html" ) {
-                // already going to #login, no redirect needed
-            } else {
-                // not going to #login, we should redirect now
-                $location.path( "/login" );
-            }
+            console.log("must log in for that page")
+            $location.path( "/login" );
         }
-        */     
+             
     });
-})
+}])
 
 .filter("sanitize", ['$sce', function($sce) {
   return function(htmlCode){
