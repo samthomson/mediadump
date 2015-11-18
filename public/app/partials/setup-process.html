@@ -3,7 +3,7 @@
 	<div class="ui segment" ng-class="{loading: bSetupLoading}">
 		<h3>set up mediadump</h3>
 
-		<form ng-submit="setupMediaDump()" ng-show="getMDApp().state == 'empty'">
+		<form ng-submit="setupMediaDump()" class="ui form" ng-show="getMDApp().state == 'empty'">
 
 			<div class="ui icon message" ng-show="formFeedback !== ''">
 				<i class="icon fa fa-exclamation-circle"></i>
@@ -16,37 +16,68 @@
 			</div>
 
 
-			<md-input-container class="md-icon-float md-block">
+
+
+
+
+
+
+
+
+
+
+
+			<!-- form itself -->
+
+			<div class="field">
 				<label>Name</label>
-				<i class="material-icons">person</i>
-				<input ng-model="setup_user.name" type="text"placeholder="Your name e.g. Sam Thomson" ng-required="true">
-			</md-input-container>
+				<div class="ui left icon input">
+					<input type="text" name="name" placeholder="Your name e.g. Sam Thomson" ng-model="setup_user.name" required>
+					<i class="fa fa-user icon"></i>
+				</div>
+			</div>
 
 
-			<md-input-container class="md-icon-float md-block">
+
+
+
+			<div class="field">
 				<label>Email</label>
-				<i class="material-icons">email</i>
-				<input ng-model="setup_user.email" type="email" placeholder="Email" ng-required="true">
-			</md-input-container>
+				<div class="ui left icon input">
+					<input type="email" name="email" placeholder="Email" ng-model="setup_user.email">
+					<i class="fa fa-envelope icon"></i>
+				</div>
+			</div>
 
 
-			<md-input-container class="md-icon-float md-block">
+			<div class="field">
 				<label>Password</label>
-				<i class="material-icons">lock</i>
-				<input ng-model="setup_user.password" type="password" placeholder="Password" ng-required="true">
-			</md-input-container>
+				<div class="ui left icon input">
+					<input type="password" placeholder="Password" name="password" ng-model="setup_user.password">
+					<i class="fa fa-key icon"></i>
+				</div>
+			</div>
 
-			<md-input-container class="md-icon-float md-block">
+
+			<div class="field">
 				<label>Confirm Password</label>
-				<i class="material-icons">lock</i>
-				<input ng-model="setup_user.password_confirmation" type="password" placeholder="Re-enter Password" ng-required="true">
-			</md-input-container>
+				<div class="ui left icon input">
+					<input type="password" placeholder="Re-enter Password" name="password_confirmation" ng-model="setup_user.password_confirmation">
+					<i class="fa fa-key icon"></i>
+				</div>
+			</div>
 
 
 
-			<button class="btn waves-effect waves-light" type="submit" name="setup-mediadump">Submit
-				<i class="material-icons right">done</i>Start mediadump
-			</button>
+			<div class="field">
+				<button class="ui basic button right floated" type="submit">
+					<i class="fa fa-check icon"></i>
+					Start mediadump
+				</button>
+			</div>
+
+
+
 		</form>
 
 		<div>
