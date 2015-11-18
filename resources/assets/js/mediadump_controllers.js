@@ -81,7 +81,7 @@ mediadumpControllers.controller('SetupCtrl', ['$scope', '$rootScope', '$routePar
 				// all good, md was set up okay, and the user got logged in (according to the backend..)
                 $rootScope.gblMDApp.bLoggedIn = true;
                 $rootScope.gblMDApp.state = "setup";
-                $location.path("/");
+                $location.path("/admin");
                 $scope.formFeedback = '';
 			}else{
 
