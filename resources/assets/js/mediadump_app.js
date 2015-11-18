@@ -70,9 +70,11 @@ mediadumpApp
 
     // register listener to watch route changes, create a front side admin 'check'
     $rootScope.$on( "$routeChangeStart", function(event, next, current) {
+
+        var saAdminRoutes = ['/admin'];
         
 
-        if ($.inArray(sPath, saAdminRoutes) > -1 && $rootScope.gblMDApp.bLoggedIn == false) {
+        if ($.inArray($location.path(), saAdminRoutes) > -1 && $rootScope.gblMDApp.bLoggedIn == false) {
             // the user is not logged in but going to a route that requires auth
             // no logged user, we should be going to #login
             console.log("must log in for that page")

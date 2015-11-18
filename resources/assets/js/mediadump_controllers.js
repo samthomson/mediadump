@@ -63,6 +63,8 @@ mediadumpControllers.controller('SetupCtrl', ['$scope', '$rootScope', '$routePar
 	$scope.setupMediaDump = function()
 	{
 		$scope.bSetupLoading = true;
+		$scope.bSomethingLoading = true;
+
 		$http({
 			method: "POST",
 			url: "/app/auth/setup",
@@ -92,34 +94,7 @@ mediadumpControllers.controller('SetupCtrl', ['$scope', '$rootScope', '$routePar
 		}));
 	}
 
-	$scope.login = function(){
-		$scope.bSomethingLoading = true;
-		// parse form and submit
-		$http({
-			method: "POST",
-			url: "/app/auth/login",
-			params: {
-				'email': $scope.email,
-				'password': $scope.password
-			}
-		}).then(function(response) {
-
-			if(response.status == 200)
-			{
-				$scope.bLoggedIn = true;
-				$scope.email = '';
-				$scope.password = '';
-                // now fetch items
-                $scope.getItems();
-                $(".feedback").html('');
-			}
-			// end loading
-			$scope.bSomethingLoading = false;
-		}, (function(response){
-			$(".feedback").html(response.data);
-			$scope.bSomethingLoading = false;
-		}));
-	};
+	
 
 	$scope.logout = function(){
 		$scope.bSomethingLoading = true;
@@ -166,12 +141,52 @@ mediadumpControllers.controller('AdminCtrl', ['$scope', '$rootScope', '$routePar
 mediadumpControllers.controller('LoginCtrl', ['$scope', '$rootScope', '$routeParams', '$http',
   function($scope, $rootScope, $routeParams, $http) {
 
+  	$scope.bLoginLoading = false;
+	$scope.formFeedback = '';
 
 	$scope.getMDApp = function(){
 		return $rootScope.gblMDApp;
 	}
 
-  }]);
+	$scope.login_data = {
+		email: "",
+		password: ""
+	};
+
+	$scope.login = function(){
+		$scope.bLoginLoading = true;
+		$scope.bSomethingLoading = true;
+		// parse form and submit
+		$http({
+			method: "POST",
+			url: "/app/auth/login",
+			params: {
+				'email': $scope.login_data.email,
+				'password': $scope.login_data.password
+			}
+		}).then(function(response) {
+
+			if(response.status == 200)
+			{
+				$rootScope.gblMDApp.bLoggedIn = true;
+				$location.path( "#/admin" );
+				$scope.login_data.email = '';
+				$scope.login_data.password = '';
+                // now fetch items
+                $scope.formFeedback = '';
+			}
+			// end loading
+			$scope.bSomethingLoading = false;
+			$scope.bLoginLoading = false;
+		}, (function(response){
+            // login failed, relay error to user
+            $scope.formFeedback = response.data;
+            $scope.bSomethingLoading = false;
+			$scope.bLoginLoading = false;
+		}));
+	};
+
+}]);
 
 mediadumpControllers.controller('HeaderCtrl', ['$scope', '$rootScope', '$routeParams', '$location',
  	function($scope, $rootScope, $routeParams, $location) {
@@ -182,8 +197,4 @@ mediadumpControllers.controller('HeaderCtrl', ['$scope', '$rootScope', '$routePa
   		$scope.getMDApp = function(){
   			return $rootScope.gblMDApp;
   		}
-  		/*
-  		$scope.home = function(){
-  			$location.path( "/#/" );
-  		}*/
   }]);
