@@ -174,7 +174,7 @@ mediadumpControllers.controller('LoginCtrl', ['$scope', '$rootScope', '$routePar
   }]);
 
 mediadumpControllers.controller('HeaderCtrl', ['$scope', '$rootScope', '$routeParams', '$location',
- 	function($scope, $rootScope, $location) {
+ 	function($scope, $rootScope, $routeParams, $location) {
 		$scope.local = "local data";
 
   		$scope.datatest = $rootScope.test;
@@ -184,6 +184,6 @@ mediadumpControllers.controller('HeaderCtrl', ['$scope', '$rootScope', '$routePa
   		}
 
   		$scope.home = function(){
-  			$location.path( "/" );
+  			$location.path( "/#/" );
   		}
   }]);

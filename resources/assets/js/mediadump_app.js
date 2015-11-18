@@ -66,6 +66,22 @@ mediadumpApp.config(['$routeProvider',
     },(function(){
         $rootScope.gblMDApp.bSomethingLoading = false;
     }));
+
+    // register listener to watch route changes, create a front side admin 'check'
+    $rootScope.$on( "$routeChangeStart", function(event, next, current) {
+        console.log("going to: " + next.templateUrl);
+        /*
+        if ( $rootScope.gblMDApp.bLoggedIn !== true ) {
+            // no logged user, we should be going to #login
+            if ( next.templateUrl == "partials/login.html" ) {
+                // already going to #login, no redirect needed
+            } else {
+                // not going to #login, we should redirect now
+                $location.path( "/login" );
+            }
+        }
+        */     
+    });
 })
 
 .filter("sanitize", ['$sce', function($sce) {
