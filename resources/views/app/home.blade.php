@@ -48,12 +48,12 @@
 
                     <div class="right menu">
                         <!-- logged in? admin menu, or logout -->
-                        <a class="ui item" ng-href="/#/admin" ng-show="getMDApp().bLoggedIn">manage</a>
+                        <a class="ui item" ng-href="#/admin" ng-show="getMDApp().bLoggedIn">manage</a>
                         <a class="ui item" ng-click="logout()" ng-show="getMDApp().bLoggedIn">logout</a>
 
                         <!-- logged out? login link -->
-                        <a class="ui item" ng-href="/#/login" ng-show="!getMDApp().bLoggedIn">log in</a>
-                                                
+                        <a class="ui item" ng-href="#/login" ng-show="!getMDApp().bLoggedIn && getMDApp().state == 'setup'">log in</a>
+
                     </div>
                 </div>
 
