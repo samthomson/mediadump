@@ -1,4 +1,12 @@
+
+var $routeProviderReference;
+
+
+
 var mediadumpApp = angular
+
+
+
 	.module('mediadumpApp', ['ngRoute', 'mediadumpControllers', 'ngMaterial'])
     
 	.config(['$httpProvider', function($httpProvider) {
@@ -8,34 +16,76 @@ var mediadumpApp = angular
 
 
 
+/*
+mediadumpApp
 
+.factory('pingService', function($http) {
+
+    var getData = function() {
+
+        return $http({method:"POST", url:"/app/ping"})
+        .then(function(result){
+            $rootScope.gblMDApp.state = response.data.md_state;
+            $rootScope.gblMDApp.bLoggedIn = response.data.bLoggedIn;
+                
+                
+            if($rootScope.gblMDApp.state == "empty"){
+                $location.path( "/setup" );
+            }
+
+            // end loading
+            $rootScope.gblMDApp.bSomethingLoading = false;
+            return true;
+        });
+    };
+    return { getData: getData };
+})
+*/
 mediadumpApp
 .config(['$routeProvider',
   function($routeProvider) {
+
+    $routeProviderReference = $routeProvider;
+
+
+
+
+
+/*
     // routing
-    $routeProvider.
-      when('/', {
-        templateUrl: '/app/partials/app-ui.html',
-        controller: 'MainUICtrl'
-      }).
-      when('/setup', {
-        templateUrl: '/app/partials/setup-process.html',
-        controller: 'SetupCtrl'
-      }).
-      when('/admin', {
-        templateUrl: '/app/partials/admin-backend.html',
-        controller: 'AdminCtrl'
-      }).
-      when('/login', {
-        templateUrl: '/app/partials/login.html',
-        controller: 'LoginCtrl'
-      }).
-      otherwise({
-        redirectTo: '/'
-      });
+    $routeProvider
+        .when('/', {
+            templateUrl: '/app/partials/app-ui.html',
+            controller: 'MainUICtrl'
+        })
+        .when('/setup', {
+            templateUrl: '/app/partials/setup-process.html',
+            controller: 'SetupCtrl'
+        })
+        .when('/admin', {
+            templateUrl: '/app/partials/admin-backend.html',
+            controller: 'AdminCtrl'
+        })
+        .when('/login', {
+            templateUrl: '/app/partials/login.html',
+            controller: 'LoginCtrl'
+        })
+        .otherwise({
+            redirectTo: '/'
+        });
+
+
+*/
+
+    
+
+
+
+
+
   }])
 
-.run(['$rootScope', '$http', '$location', function($rootScope, $http, $location) {
+.run(['$rootScope', '$http', '$route', '$location', function($rootScope, $http, $route, $location) {
     $rootScope.rootdata = 'global';
 
     $rootScope.gblMDApp = {
@@ -50,11 +100,38 @@ mediadumpApp
 
     $http({
         method: "GET",
-        url: "/app/ping"
+        url: "/app/ping",
+
     })
     .then(function(response) {
         $rootScope.gblMDApp.state = response.data.md_state;
         $rootScope.gblMDApp.bLoggedIn = response.data.bLoggedIn;
+
+
+
+
+         // routing
+    $routeProviderReference
+        .when('/', {
+            templateUrl: '/app/partials/app-ui.html',
+            controller: 'MainUICtrl'
+        })
+        .when('/setup', {
+            templateUrl: '/app/partials/setup-process.html',
+            controller: 'SetupCtrl'
+        })
+        .when('/admin', {
+            templateUrl: '/app/partials/admin-backend.html',
+            controller: 'AdminCtrl'
+        })
+        .when('/login', {
+            templateUrl: '/app/partials/login.html',
+            controller: 'LoginCtrl'
+        })
+        .otherwise({
+            redirectTo: '/'
+        });
+$route.reload();
             
             
         if($rootScope.gblMDApp.state == "empty"){
@@ -96,3 +173,22 @@ mediadumpApp
     return $sce.trustAsHtml(htmlCode);
   }
 }]);
+
+
+
+
+/*
+
+$http({method:"POST", url:"/app/ping"})
+    .then(function(result){
+        $rootScope.gblMDApp.state = response.data.md_state;
+        $rootScope.gblMDApp.bLoggedIn = response.data.bLoggedIn;
+            
+            
+        if($rootScope.gblMDApp.state == "empty"){
+            $location.path( "/setup" );
+        }
+
+        // end loading
+        $rootScope.gblMDApp.bSomethingLoading = false;
+    });*/
