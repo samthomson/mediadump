@@ -49,6 +49,6 @@ class User extends Model implements AuthenticatableContract,
 
     public function dropboxToken()
     {
-        return $this->hasOne('App\Models\DropboxToken', 'id', 'user_id');
+        return $this->hasOne('App\Models\DropboxToken', 'user_id', 'id');
     }
 }

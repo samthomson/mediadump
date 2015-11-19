@@ -10,7 +10,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 
 use Illuminate\Support\Facades\Request;
-use App\Models\MediaDumpState;
+use App\Models\Settings;
 
 use App\Http\Controllers\MediaDumpController;
 
@@ -62,7 +62,7 @@ class CustomAuthController extends Controller
         $iResponseCode = -1;
         $sResponseData = '';
 
-        if(MediaDumpState::count() > 0)
+        if(Settings::count() > 0)
         {
             // mediadump is already set up?
             $iResponseCode = 412;

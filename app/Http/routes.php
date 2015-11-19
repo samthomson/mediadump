@@ -50,6 +50,58 @@ Route::get('/app/callback/{service}', function ($service) {
 	}
 });
 
+Route::get('/app/connect/dropbox', function (Request $request) {
+// get data from request
+    $code = request('code');
+
+    // get google service
+    $dropboxService = \OAuth::consumer('DropBox');
+
+    // check if code is valid
+
+    // if code is provided get user data and sign in
+    if ( ! is_null($code))
+    {
+        // This was a callback request from google, get the token
+        $token = $dropboxService->requestAccessToken($code);
+
+        //$result = json_decode($dropboxService->request('/oauth2/token_from_oauth1'), true);
+        /*
+		*/
+
+        echo 'Your unique dropbox stuff:<br/>';
+
+        $sAccessToken = $token->getAccessToken();
+
+
+        if(Auth::check())
+        {
+        	$oDropboxToken = new App\Models\DropboxToken;
+        	$oDropboxToken->accessToken = $sAccessToken;
+
+        	Auth::user()->dropboxToken()->save($oDropboxToken);
+        	return redirect(url().'/#/admin/filesources');
+        }
+
+
+        print_r($token);
+
+        //Var_dump
+        //display whole array.
+        #dd($result);
+        dd($token);
+    }
+    // if not ask for permission first
+    else
+    {
+        // get googleService authorization
+        $url = $dropboxService->getAuthorizationUri();
+
+        // return to google login url
+        return redirect((string)$url);
+    }
+});
+
 Route::get('/test/dropbox', function (Request $request) {
 
 	

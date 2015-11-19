@@ -104,16 +104,20 @@ mediadumpControllers.controller('SetupCtrl', ['$scope', '$rootScope', '$routePar
   }]);
 
 
-mediadumpControllers.controller('AdminCtrl', ['$scope', '$rootScope', '$routeParams', '$http', 'Dropbox',
-  function($scope, $rootScope, $routeParams, $http, Dropbox) {
+mediadumpControllers.controller('AdminCtrl', ['$scope', '$rootScope', '$routeParams', '$http',
+  function($scope, $rootScope, $routeParams, $http) {
 
 
     $scope.tabSection = $routeParams.tabSection;
-    $scope.accountInfo = Dropbox.accountInfo();
+    //$scope.accountInfo = Dropbox.accountInfo();
 
 	$scope.getMDApp = function(){
 		return $rootScope.gblMDApp;
 	}
+
+	$scope.connectDropbox = function(){
+		window.location.href = '/';
+	};
 
   }]);
 

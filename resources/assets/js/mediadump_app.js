@@ -7,14 +7,14 @@ var mediadumpApp = angular
 
 
 
-	.module('mediadumpApp', ['ngRoute', 'mediadumpControllers', 'ngMaterial', 'dropbox'])
+	.module('mediadumpApp', ['ngRoute', 'mediadumpControllers', 'ngMaterial'])
     
 	.config(['$httpProvider', function($httpProvider) {
 		$httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
-	}])
+	}]);/*
     .config(function (DropboxProvider) {
         DropboxProvider.config('cfjgyp5s0cq1eu7', 'http://localhost/app/callback/dropbox');
-    });
+    });*/
 
 
 
@@ -32,7 +32,8 @@ mediadumpApp
     $rootScope.gblMDApp = {
         state: null,
         bSomethingLoading: true,
-        bLoggedIn: false
+        bLoggedIn: false,
+        oUser: null
     };
 
 
@@ -47,6 +48,10 @@ mediadumpApp
     .then(function(response) {
         $rootScope.gblMDApp.state = response.data.md_state;
         $rootScope.gblMDApp.bLoggedIn = response.data.bLoggedIn;
+
+        $rootScope.gblMDApp.oUser = response.data.oUser;
+
+        //alert($rootScope.gblMDApp.oUser.bDropbox);
 
 
 

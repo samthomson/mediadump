@@ -38,6 +38,16 @@ class MediaDumpController extends Controller
 
         $oReturn->bLoggedIn = Auth::check();
 
+        if(Auth::check())
+        {
+            $oReturn->oUser = new \StdClass;
+            // user logged in, send some user info back?
+            if(Auth::user()->dropboxToken)
+                $oReturn->oUser->bDropbox = true;
+            else
+                $oReturn->oUser->bDropbox = false;
+        }
+
     	return response()->json((array)$oReturn);
     }
 
