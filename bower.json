@@ -18,6 +18,7 @@
     "angular-route": "1.4.x",
     "angular-material": "1.0.x",
     "Materialize": "materialize#~0.97.3",
-    "semantic": "semantic-ui#~2.1.6"
+    "semantic": "semantic-ui#~2.1.6",
+    "ngDropbox": "git://github.com/christiansmith/ngDropbox.git"
   }
 }

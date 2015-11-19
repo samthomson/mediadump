@@ -33,3 +33,19 @@ Route::get('/test/mail', function () {
         $m->from('no-reply@mydomain.com', 'My Domain Sender');
     });
 });
+
+
+
+Route::get('/app/callback/{service}', function ($service) {
+
+	switch ($service) {
+		case 'dropbox':
+			
+			return File::get(public_path().'../../bower_components/ngDropbox/callback.html');
+			break;
+		
+		default:
+			echo "todo: 404?";
+			break;
+	}
+});
