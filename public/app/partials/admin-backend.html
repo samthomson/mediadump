@@ -30,7 +30,13 @@
 			</div>
 		</div>
 		<div class="twelve wide stretched column">
-			This is an stretched grid column. This segment will always match the tab height
+			<div ng-show="tabSection == null">overview</div>
+			<div ng-show="tabSection == 'filesources'">file sources</div>
+			<div ng-show="tabSection == 'taggers'">taggers</div>
+			<div ng-show="tabSection == 'settings'">settings</div>
+			<div ng-show="tabSection == 'users'">users</div>
+			<div ng-show="tabSection == 'auto'">auto</div>
+			<div ng-show="tabSection == 'stats'">stats</div>
 		</div>
 	</div>
 </div>
