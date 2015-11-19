@@ -49,3 +49,45 @@ Route::get('/app/callback/{service}', function ($service) {
 			break;
 	}
 });
+
+Route::get('/test/dropbox', function (Request $request) {
+
+	
+    // get data from request
+    $code = request('code');
+
+    // get google service
+    $dropboxService = \OAuth::consumer('DropBox');
+
+    // check if code is valid
+
+    // if code is provided get user data and sign in
+    if ( ! is_null($code))
+    {
+        // This was a callback request from google, get the token
+        $token = $dropboxService->requestAccessToken($code);
+
+        // Send a request with it
+        $result = json_decode($dropboxService->request('/account/info'), true);
+
+        echo 'Your unique dropbox stuff:<br/>';
+        //print_r($result);
+
+        //Var_dump
+        //display whole array.
+        dd($result);
+    }
+    // if not ask for permission first
+    else
+    {
+        // get googleService authorization
+        $url = $dropboxService->getAuthorizationUri();
+
+        // return to google login url
+        return redirect((string)$url);
+    }
+
+
+
+
+});

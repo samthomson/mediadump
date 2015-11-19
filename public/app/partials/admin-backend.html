@@ -31,7 +31,10 @@
 		</div>
 		<div class="twelve wide stretched column">
 			<div ng-show="tabSection == null">overview</div>
-			<div ng-show="tabSection == 'filesources'">file sources</div>
+			<div ng-show="tabSection == 'filesources'">
+				file sources<br/><br/>
+				n: {{accountInfo.display_name}}
+			</div>
 			<div ng-show="tabSection == 'taggers'">taggers</div>
 			<div ng-show="tabSection == 'settings'">settings</div>
 			<div ng-show="tabSection == 'users'">users</div>

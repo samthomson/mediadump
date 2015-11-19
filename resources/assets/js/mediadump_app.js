@@ -7,11 +7,14 @@ var mediadumpApp = angular
 
 
 
-	.module('mediadumpApp', ['ngRoute', 'mediadumpControllers', 'ngMaterial'])
+	.module('mediadumpApp', ['ngRoute', 'mediadumpControllers', 'ngMaterial', 'dropbox'])
     
 	.config(['$httpProvider', function($httpProvider) {
 		$httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
-	}]);
+	}])
+    .config(function (DropboxProvider) {
+        DropboxProvider.config('cfjgyp5s0cq1eu7', 'http://localhost/app/callback/dropbox');
+    });
 
 
 
