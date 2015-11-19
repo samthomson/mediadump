@@ -65,14 +65,7 @@ Route::get('/app/connect/dropbox', function (Request $request) {
         // This was a callback request from google, get the token
         $token = $dropboxService->requestAccessToken($code);
 
-        //$result = json_decode($dropboxService->request('/oauth2/token_from_oauth1'), true);
-        /*
-		*/
-
-        echo 'Your unique dropbox stuff:<br/>';
-
         $sAccessToken = $token->getAccessToken();
-
 
         if(Auth::check())
         {
@@ -82,14 +75,6 @@ Route::get('/app/connect/dropbox', function (Request $request) {
         	Auth::user()->dropboxToken()->save($oDropboxToken);
         	return redirect(url().'/#/admin/filesources');
         }
-
-
-        print_r($token);
-
-        //Var_dump
-        //display whole array.
-        #dd($result);
-        dd($token);
     }
     // if not ask for permission first
     else

@@ -33,9 +33,9 @@
 			<div ng-show="tabSection == null">overview</div>
 			<div ng-show="tabSection == 'filesources'">
 				file sources<br/><br/>
-				dropbox connected:{{getMDApp().oUser.bDropbox}}<br/>
+				dropbox connected: <strong>{{getMDApp().oUser.bDropbox}}</strong><br/>
 				<div ng-show="!getMDApp().oUser.bDropbox">
-					<a class="button" href="/app/connect/dropbox"><i class="fa fa-dropbox"></i> connect dropbox</a>
+					<a class="ui button" href="/app/connect/dropbox"><i class="fa fa-dropbox"></i> connect dropbox</a>
 				</div>
 				<hr/>
 				show list of connected sources<br/>
