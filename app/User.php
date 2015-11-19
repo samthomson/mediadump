@@ -42,13 +42,13 @@ class User extends Model implements AuthenticatableContract,
     protected $hidden = ['password', 'remember_token'];
 
     
-    public function mdState()
+    public function settings()
     {
-        return $this->belongsTo('App\Models\MediaDumpState', 'admin_user');
+        return $this->hasOne('App\Models\Settings', 'owner_user');
     }
 
     public function dropboxToken()
     {
-        return $this->hasOne('App\Models\DropboxToken', 'user_id', 'id');
+        return $this->hasOne('App\Models\DropboxToken', 'id', 'user_id');
     }
 }

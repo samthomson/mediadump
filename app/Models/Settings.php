@@ -4,7 +4,7 @@ namespace App\models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class MediaDumpState extends Model
+class Settings extends Model
 {
 
     /**
@@ -13,11 +13,11 @@ class MediaDumpState extends Model
      * @var string
      * @property string public
      */
-    protected $table = 'mediadump';
+    protected $table = 'settings';
 
 
     public function ownerUser()
     {
-        return $this->hasOne('App\User', 'id', 'owner_user');
+        return $this->belongsto('App\User', 'owner_user', 'id');
     }
 }

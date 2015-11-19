@@ -8,7 +8,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 use App\User;
-use App\Models\MediaDumpState;
+use App\Models\Settings;
 use Auth;
 
 class MediaDumpController extends Controller
@@ -27,7 +27,7 @@ class MediaDumpController extends Controller
 
     	$oReturn = new \StdClass;
 
-    	if(MediaDumpState::count() > 0)
+    	if(Settings::count() > 0)
     	{
     		// there are registered users
     		$oReturn->md_state = "setup";
@@ -45,11 +45,11 @@ class MediaDumpController extends Controller
     {
         // creates md state and associated user, unless already existing
 
-        if(MediaDumpState::count() === 0)
+        if(Settings::count() === 0)
         {
 
             // create master md state
-            $oMDState = new MediaDumpState;
+            $oMDState = new Settings;
             $oMDState->public = $bPublic;
 
             $oMDState->save();
@@ -62,7 +62,10 @@ class MediaDumpController extends Controller
             $oUser->save();
 
             // save user as md state relation
-            $oMDState->ownerUser()->save($oUser);
+            ///$oMDState->ownerUser()->associate($oUser);
+            $oUser->settings()->save($oMDState);
+
+            // why not $oUser->settings()->save($oUser); ???
             return true;
         }else{
             // there is already an mdstate in db

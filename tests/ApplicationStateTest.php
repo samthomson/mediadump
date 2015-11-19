@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Http\Controllers;
 use App\Http\Controllers\MediaDumpController;
 use App\Models\User;
-use App\Models\MediaDumpState;
+use App\Models\Settings;
 
 class ApplicationStateTest extends TestCase
 {
@@ -43,9 +43,9 @@ class ApplicationStateTest extends TestCase
 
         $oJson = json_decode(MediaDumpController::ping()->getContent());
 
-        $oMDState = MediaDumpState::first();
+        $oMDState = Settings::first();
 
-        $oMDState->ownerUser->delete();
+        $oMDState->ownerUser()->delete();
         $oMDState->delete();
 
 
@@ -54,12 +54,12 @@ class ApplicationStateTest extends TestCase
 
     public function testSetUp()
     {
-        if(MediaDumpState::count() > 0)
+        if(Settings::count() > 0)
             return false;
 
         MediaDumpController::setupApplication("test setup", "test@setup.app", "p", false);
 
-        $oMDState = MediaDumpState::first();
+        $oMDState = Settings::first();
 
         $sName = $oMDState->ownerUser->name;
 
@@ -81,6 +81,6 @@ class ApplicationStateTest extends TestCase
         MediaDumpController::setupApplication("test setup", "2@setup.app", "p", false);
 
         // check the db just has one
-        $this->assertEquals(MediaDumpState::count(), 1);
+        $this->assertEquals(Settings::count(), 1);
     }
 }

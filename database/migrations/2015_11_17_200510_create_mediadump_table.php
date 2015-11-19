@@ -12,7 +12,7 @@ class CreateMediadumpTable extends Migration
      */
     public function up()
     {
-        Schema::create('mediadump', function (Blueprint $table) {
+        Schema::create('settings', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('owner_user');
             $table->boolean('public')->default(true);
@@ -27,6 +27,6 @@ class CreateMediadumpTable extends Migration
      */
     public function down()
     {
-        Schema::drop('mediadump');
+        Schema::drop('settings');
     }
 }
