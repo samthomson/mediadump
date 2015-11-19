@@ -64,6 +64,8 @@ return [
             'strict'    => false,
         ],
 
+
+
         'pgsql' => [
             'driver'   => 'pgsql',
             'host'     => env('DB_HOST', 'localhost'),
