@@ -68,14 +68,42 @@ Route::get('/test/dropbox', function (Request $request) {
         $token = $dropboxService->requestAccessToken($code);
 
         // Send a request with it
-        $result = json_decode($dropboxService->request('/account/info'), true);
+        //$result = json_decode($dropboxService->request('/account/info'), true);
+        /*
+        array:11 [▼
+		"referral_link" => "https://db.tt/Dg8P2FY8"
+		"display_name" => "samt t"
+		"uid" => 137223662
+		"locale" => "en"
+		"email_verified" => true
+		"team" => null
+		"quota_info" => array:4 [▼
+		"datastores" => 0
+		"shared" => 145644415
+		"quota" => 1102732853248.0
+		"normal" => 107675663965.0
+		]
+		"is_paired" => false
+		"country" => "MA"
+		"name_details" => array:3 [▼
+		"familiar_name" => "samt"
+		"surname" => "t"
+		"given_name" => "samt"
+		]
+		"email" => "samt@samt.st"
+		]
+		*/
+        //$result = json_decode($dropboxService->request('/oauth2/token_from_oauth1'), true);
+        /*
+		*/
 
         echo 'Your unique dropbox stuff:<br/>';
         //print_r($result);
 
         //Var_dump
         //display whole array.
-        dd($result);
+        #dd($result);
+        dd($token);
     }
     // if not ask for permission first
     else
@@ -86,8 +114,9 @@ Route::get('/test/dropbox', function (Request $request) {
         // return to google login url
         return redirect((string)$url);
     }
+});
 
+Route::get('/test/dropbox/files', function (Request $request) {
 
-
-
+	
 });

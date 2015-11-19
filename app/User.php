@@ -46,4 +46,9 @@ class User extends Model implements AuthenticatableContract,
     {
         return $this->belongsTo('App\Models\MediaDumpState', 'admin_user');
     }
+
+    public function dropboxToken()
+    {
+        return $this->hasOne('App\Models\DropboxToken', 'user_id', 'id');
+    }
 }
