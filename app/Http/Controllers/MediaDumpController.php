@@ -38,6 +38,8 @@ class MediaDumpController extends Controller
 
         $oReturn->bLoggedIn = Auth::check();
 
+        $oReturn->dropboxFolders = [];
+
         if(Auth::check())
         {
             $oReturn->oUser = new \StdClass;
@@ -46,10 +48,14 @@ class MediaDumpController extends Controller
                 $oReturn->oUser->bDropbox = true;
             else
                 $oReturn->oUser->bDropbox = false;
+
+            $oReturn->dropboxFolders = Auth::user()->dropboxFolders;
         }
+/*
+        $oFolders = Auth::user()->dropboxFolders;
 
-        $oReturn->dropboxFolders = Auth::user()->dropboxFolders;
-
+        $oReturn->dropboxFolders = ($oFolders == null ? [] : $oFolders);
+*/
     	return response()->json((array)$oReturn);
     }
 
