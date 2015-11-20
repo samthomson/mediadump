@@ -90,6 +90,8 @@ Route::get('/app/connect/dropbox', function (Request $request) {
 
 Route::post('/app/filesources/dropbox/test', ['uses' => 'FileSourcesController@testDropboxFolder']);
 
+Route::post('/app/filesources/dropbox/add', ['uses' => 'FileSourcesController@addDropboxFolder']);
+
 
 
 

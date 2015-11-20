@@ -33,7 +33,8 @@ mediadumpApp
         state: null,
         bSomethingLoading: true,
         bLoggedIn: false,
-        oUser: null
+        oUser: null,
+        dropboxFolders: []
     };
 
 
@@ -50,6 +51,7 @@ mediadumpApp
         $rootScope.gblMDApp.bLoggedIn = response.data.bLoggedIn;
 
         $rootScope.gblMDApp.oUser = response.data.oUser;
+        $rootScope.gblMDApp.dropboxFolders = response.data.dropboxFolders;
 
         //alert($rootScope.gblMDApp.oUser.bDropbox);
 

@@ -39,6 +39,10 @@
 				</div>
 				<hr/>
 				show list of connected sources<br/>
+
+				<ul>
+					<li ng-repeat="folder in dropboxFolders">{{folder.folder}}</li>
+				</ul>
 				<hr/>
 				<div ng-show="getMDApp().oUser.bDropbox">
 					<!-- dropbox is connected, so present a a form to let user add new dropbox filesource -->

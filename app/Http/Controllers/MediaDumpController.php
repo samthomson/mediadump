@@ -48,6 +48,8 @@ class MediaDumpController extends Controller
                 $oReturn->oUser->bDropbox = false;
         }
 
+        $oReturn->dropboxFolders = Auth::user()->dropboxFolders;
+
     	return response()->json((array)$oReturn);
     }
 

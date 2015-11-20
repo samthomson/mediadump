@@ -131,9 +131,36 @@ mediadumpControllers.controller('AdminCtrl', ['$scope', '$rootScope', '$routePar
 
 	$scope.newDropboxFolder = '';
 
+	$scope.dropboxFolders = $rootScope.gblMDApp.dropboxFolders;
+
 
 	$scope.addDropboxFileSource = function(){
+		$scope.addDropboxFolder.loading = true;
+		$http({
+			method: "POST",
+			url: "/app/filesources/dropbox/add",
+			params: {
+				'path': $scope.addDropboxFolder.folder
+			}
+		}).then(function(response) {
+			// end loading
+			$scope.addDropboxFolder.loading = false;
+			if(response.status == 200)
+			{
+				// all good
+				$scope.formFeedback = '';
+				$scope.addDropboxFolder.tested = '';
 
+				// update folders structure and clear add form
+				$scope.dropboxFolders = response.data.dropboxFolders;
+			}else{
+				$scope.addDropboxFolder.tested = '';
+				$scope.formFeedback = response.data;
+			}
+		}, (function(response){
+			$scope.addDropboxFolder.loading = false;
+			$scope.formFeedback = response.data;
+		}));
 	}
 
 	$scope.testNewDropboxFileSource = function(){

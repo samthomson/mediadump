@@ -52,7 +52,7 @@ class User extends Model implements AuthenticatableContract,
         return $this->hasOne('App\Models\DropboxToken', 'user_id', 'id');
     }
 
-    public function dropboxToken()
+    public function dropboxFolders()
     {
         return $this->hasMany('App\Models\DropboxFolder', 'user_id', 'id');
     }
