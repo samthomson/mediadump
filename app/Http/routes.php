@@ -95,70 +95,14 @@ Route::post('/app/filesources/dropbox/add', ['uses' => 'FileSourcesController@ad
 
 
 
-Route::get('/test/dropbox', function (Request $request) {
+Route::get('/test/dropbox/folder', function (Request $request) {
+	App\Http\Controllers\FileSourcesController::bTestDropboxFolderIsReal(
+		$request->get('path'),
+		'SS7HiGIa1ZoAAAAAAADMmgWZoeUARjlvFxA7bDNOC4RzJKVDC-xAwlsdfzm7yqP-'
+		);
 
-	
-    // get data from request
-    $code = request('code');
 
-    // get google service
-    $dropboxService = \OAuth::consumer('DropBox');
 
-    // check if code is valid
-
-    // if code is provided get user data and sign in
-    if ( ! is_null($code))
-    {
-        // This was a callback request from google, get the token
-        $token = $dropboxService->requestAccessToken($code);
-
-        // Send a request with it
-        //$result = json_decode($dropboxService->request('/account/info'), true);
-        /*
-        array:11 [▼
-		"referral_link" => "https://db.tt/Dg8P2FY8"
-		"display_name" => "samt t"
-		"uid" => 137223662
-		"locale" => "en"
-		"email_verified" => true
-		"team" => null
-		"quota_info" => array:4 [▼
-		"datastores" => 0
-		"shared" => 145644415
-		"quota" => 1102732853248.0
-		"normal" => 107675663965.0
-		]
-		"is_paired" => false
-		"country" => "MA"
-		"name_details" => array:3 [▼
-		"familiar_name" => "samt"
-		"surname" => "t"
-		"given_name" => "samt"
-		]
-		"email" => "samt@samt.st"
-		]
-		*/
-        //$result = json_decode($dropboxService->request('/oauth2/token_from_oauth1'), true);
-        /*
-		*/
-
-        echo 'Your unique dropbox stuff:<br/>';
-        //print_r($result);
-
-        //Var_dump
-        //display whole array.
-        #dd($result);
-        dd($token);
-    }
-    // if not ask for permission first
-    else
-    {
-        // get googleService authorization
-        $url = $dropboxService->getAuthorizationUri();
-
-        // return to google login url
-        return redirect((string)$url);
-    }
 });
 
 Route::get('/test/dropbox/files', function (Request $request) {
