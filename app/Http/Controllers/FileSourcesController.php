@@ -35,18 +35,24 @@ class FileSourcesController extends Controller
         {
             $oResponse = new \StdClass;
 
+            if(count(Auth::user()->dropboxFolders()->where('folder', Request::get('path'))->get()) > 0)
+            {
+                // alreayd added!
+                return response("folder already added", 428);
+            }else{
 
-            $oDropboxFolder = new DropboxFolder;
-            $oDropboxFolder->folder = Request::get('path');
+                $oDropboxFolder = new DropboxFolder;
+                $oDropboxFolder->folder = Request::get('path');
 
-            Auth::user()->dropboxFolders()->save($oDropboxFolder);
+                Auth::user()->dropboxFolders()->save($oDropboxFolder);
 
 
-            $oResponse->dropboxFolders = Auth::user()->dropboxFolders;
+                $oResponse->dropboxFolders = Auth::user()->dropboxFolders;
 
-            
-            return response()->json((array)$oResponse);
-            //return response("Ok", 200);
+
+                return response()->json((array)$oResponse);
+                //return response("Ok", 200);
+            }
         }else{
             return response("no folder entered", 428);
         }

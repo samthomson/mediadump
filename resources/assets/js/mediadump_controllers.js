@@ -150,6 +150,7 @@ mediadumpControllers.controller('AdminCtrl', ['$scope', '$rootScope', '$routePar
 				// all good
 				$scope.formFeedback = '';
 				$scope.addDropboxFolder.tested = '';
+				$scope.addDropboxFolder.folder = '';
 
 				// update folders structure and clear add form
 				$scope.dropboxFolders = response.data.dropboxFolders;

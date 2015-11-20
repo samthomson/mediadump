@@ -41,10 +41,10 @@
 				show list of connected sources<br/>
 
 				<ul>
-					<li ng-repeat="folder in dropboxFolders">{{folder.folder}}</li>
+					<li ng-repeat="folder in dropboxFolders"><i class="fa fa-dropbox"></i> {{folder.folder}}</li>
 				</ul>
 				<hr/>
-				<div ng-show="getMDApp().oUser.bDropbox">
+				<div ng-show="getMDApp().oUser.bDropbox" class="ui segment" ng-class="{loading: addDropboxFolder.loading}">
 					<!-- dropbox is connected, so present a a form to let user add new dropbox filesource -->
 					<div class="ui icon message" ng-show="formFeedback !== ''">
 						<i class="icon fa fa-exclamation-circle"></i>
@@ -73,7 +73,7 @@
 								Add this folder
 							</button>
 
-							<button class="ui basic button right floated" type="button" ng-click="testNewDropboxFileSource()">
+							<button class="ui basic button right floated" type="button" ng-disabled="addDropboxFolder.folder == ''" ng-click="testNewDropboxFileSource()">
 								<i class="fa fa-check icon"></i>
 								test this folder
 							</button>
