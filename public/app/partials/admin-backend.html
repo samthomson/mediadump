@@ -39,7 +39,44 @@
 				</div>
 				<hr/>
 				show list of connected sources<br/>
-				if dropbox connected, show form to add another dropbox source
+				<hr/>
+				<div ng-show="getMDApp().oUser.bDropbox">
+					<!-- dropbox is connected, so present a a form to let user add new dropbox filesource -->
+					<div class="ui icon message" ng-show="formFeedback !== ''">
+						<i class="icon fa fa-exclamation-circle"></i>
+						<div class="content">
+							<div class="header">
+								Problem with Dropbox folder
+							</div>
+							<p ng-bind-html="formFeedback | sanitize"></p>
+						</div>
+					</div>
+
+					<form ng-submit="addDropboxFileSource()" class="ui form">
+
+						<div class="field">
+							<label>Folder</label>
+							<div class="ui left icon input">
+								<input type="text" name="new-dropbox-folder" placeholder="path of folder within dropbox" ng-model="newDropboxFolder" required>
+								<i class="icon fa fa-folder folder"></i>
+							</div>
+						</div>
+
+						<div class="field">
+
+							<button class="ui basic button right floated" type="submit">
+								<i class="fa fa-plus"></i>
+								Add this folder
+							</button>
+
+							<button class="ui basic button right floated" type="button" ng-click="testNewDropboxFileSource()">
+								<i class="fa fa-check icon"></i>
+								test this folder
+							</button>
+						</div>
+					
+					</form>
+				</div>
 			</div>
 			<div ng-show="tabSection == 'taggers'">taggers</div>
 			<div ng-show="tabSection == 'settings'">settings</div>

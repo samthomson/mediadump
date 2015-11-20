@@ -111,6 +111,9 @@ mediadumpControllers.controller('AdminCtrl', ['$scope', '$rootScope', '$routePar
     $scope.tabSection = $routeParams.tabSection;
     //$scope.accountInfo = Dropbox.accountInfo();
 
+
+    $scope.formFeedback = '';
+
 	$scope.getMDApp = function(){
 		return $rootScope.gblMDApp;
 	}
@@ -118,6 +121,17 @@ mediadumpControllers.controller('AdminCtrl', ['$scope', '$rootScope', '$routePar
 	$scope.connectDropbox = function(){
 		window.location.href = '/';
 	};
+
+	$scope.newDropboxFolder = '';
+
+
+	$scope.addDropboxFileSource = function(){
+
+	}
+
+	$scope.testNewDropboxFileSource = function(){
+		//
+	}
 
   }]);
 
