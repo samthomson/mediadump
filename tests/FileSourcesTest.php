@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 use App\Http\Controllers;
 use App\Http\Controllers\MediaDumpController;
+use App\Http\Controllers\FileSourcesController;
 
 use App\User;
 use App\Models\DropboxFolder;
@@ -28,23 +29,26 @@ class FileSourcesTest extends TestCase
         $sFolderName = "test folder/path";
 
         $oUser = new User;
-
-        $oDropboxFolder = new DropboxFolder;
-        $oDropboxFolder->folder = $sFolderName;
         $oUser->save();
 
-        $oUser->dropboxFolders()->save($oDropboxFolder);
+        FileSourcesController::addDropboxFolderToUser($oUser, $sFolderName);
+
 
         $oFolders = $oUser->dropboxFolders()->where("folder", $sFolderName)->get();
 
-        $this->assertContains($oFolders[0]->folder, $sFolderName);
+        $this->assertEquals($oFolders[0]->folder, $sFolderName);
     }
-/*    public function testCantAddSameFolderTwice()
+    public function testCantAddSameFolderTwice()
     {
-        //$oJson = json_decode(MediaDumpController::ping());
+        $sFolderName = "test folder/path";
 
-        $oJson = json_decode(MediaDumpController::ping()->getContent());
+        $oUser = new User;
+        $oUser->save();
 
-        $this->assertContains($oJson->md_state, ['empty', 'setup']);
-    }*/
+        FileSourcesController::addDropboxFolderToUser($oUser, $sFolderName);
+
+        FileSourcesController::addDropboxFolderToUser($oUser, $sFolderName);
+
+        $this->assertEquals(1, count($oUser->dropboxFolders));
+    }
 }
