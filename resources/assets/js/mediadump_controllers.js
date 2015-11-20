@@ -180,7 +180,13 @@ mediadumpControllers.controller('AdminCtrl', ['$scope', '$rootScope', '$routePar
 			{
 				// all good
 				$scope.formFeedback = '';
-				$scope.addDropboxFolder.tested = response.data.testedPath;
+				if(response.data.bValidFolder)
+				{
+					$scope.addDropboxFolder.tested = response.data.testedPath;
+				}else{
+					$scope.addDropboxFolder.tested = false;
+					$scope.formFeedback = response.sErrorMessage;
+				}
 			}else{
 				$scope.addDropboxFolder.tested = false;
 				$scope.formFeedback = response.data;

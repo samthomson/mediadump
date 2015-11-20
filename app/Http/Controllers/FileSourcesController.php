@@ -19,15 +19,20 @@ class FileSourcesController extends Controller
 
     public static function testDropboxFolder()
     {
+        // return a response with testedPath as what was sent if valid, or
+
+        $oResponse = new \StdClass;
+        $oResponse->bValidFolder = false;
+
         if(Request::has('path'))
         {
-            $oResponse = new \StdClass;
             $oResponse->testedPath = Request::get('path');
-
-            return response()->json((array)$oResponse);
+            $oResponse->bValidFolder = true;
         }else{
-            return response("no folder entered", 428);
+            $oResponse->sErrorMessage = "no folder entered";
         }
+
+        return response()->json((array)$oResponse);
     }
     public static function addDropboxFolder()
     {
