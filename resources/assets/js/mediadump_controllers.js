@@ -114,6 +114,13 @@ mediadumpControllers.controller('AdminCtrl', ['$scope', '$rootScope', '$routePar
 
     $scope.formFeedback = '';
 
+    $scope.addDropboxFolder = {
+    	feedback: '',
+    	tested: '',
+    	folder: '',
+    	loading: false
+    };
+
 	$scope.getMDApp = function(){
 		return $rootScope.gblMDApp;
 	}
@@ -130,7 +137,30 @@ mediadumpControllers.controller('AdminCtrl', ['$scope', '$rootScope', '$routePar
 	}
 
 	$scope.testNewDropboxFileSource = function(){
-		//
+		// send folder to back end service which will 'test' connecting to it via dropbox api, returning true or false? thus allowing user to add it knowing that mediadump will find files in it
+		$scope.addDropboxFolder.loading = true;
+		$http({
+			method: "POST",
+			url: "/app/filesources/dropbox/test",
+			params: {
+				'path': $scope.addDropboxFolder.folder
+			}
+		}).then(function(response) {
+			// end loading
+			$scope.addDropboxFolder.loading = false;
+			if(response.status == 200)
+			{
+				// all good
+				$scope.formFeedback = '';
+				$scope.addDropboxFolder.tested = response.data.testedPath;
+			}else{
+				$scope.addDropboxFolder.tested = false;
+				$scope.formFeedback = response.data;
+			}
+		}, (function(response){
+			$scope.addDropboxFolder.loading = false;
+			$scope.formFeedback = response.data;
+		}));
 	}
 
   }]);

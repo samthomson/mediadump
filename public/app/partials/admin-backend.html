@@ -57,14 +57,14 @@
 						<div class="field">
 							<label>Folder</label>
 							<div class="ui left icon input">
-								<input type="text" name="new-dropbox-folder" placeholder="path of folder within dropbox" ng-model="newDropboxFolder" required>
+								<input type="text" name="new-dropbox-folder" placeholder="path of folder within dropbox" ng-model="addDropboxFolder.folder" required>
 								<i class="icon fa fa-folder folder"></i>
 							</div>
 						</div>
 
 						<div class="field">
 
-							<button class="ui basic button right floated" type="submit">
+							<button class="ui basic button right floated" type="submit" ng-disabled="!(addDropboxFolder.tested == addDropboxFolder.folder && addDropboxFolder.folder != '')">
 								<i class="fa fa-plus"></i>
 								Add this folder
 							</button>
