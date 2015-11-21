@@ -95,9 +95,9 @@ Route::post('/app/filesources/dropbox/add', ['uses' => 'FileSourcesController@ad
 
 
 
-Route::get('/test/dropbox/folder', function (Request $request) {
+Route::get('/test/dropbox/folder', function () {
 	App\Http\Controllers\FileSourcesController::bTestDropboxFolderIsReal(
-		$request->get('path'),
+		Request::get('path'),
 		'SS7HiGIa1ZoAAAAAAADMmgWZoeUARjlvFxA7bDNOC4RzJKVDC-xAwlsdfzm7yqP-'
 		);
 
@@ -105,7 +105,25 @@ Route::get('/test/dropbox/folder', function (Request $request) {
 
 });
 
-Route::get('/test/dropbox/files', function (Request $request) {
+Route::get('/test/dropbox/files', function () {
+
+	#App\Http\Controllers\FileSourcesController::getCompleteDropboxFolderContents('/photos - wilderness retreat', 'SS7HiGIa1ZoAAAAAAADMmgWZoeUARjlvFxA7bDNOC4RzJKVDC-xAwlsdfzm7yqP-');
+
+	/*
+	App\Http\Controllers\FileSourcesController::listDropboxFolderContents(
+		'/pictures/PICTURES - SORTING FOR MEDIADUMP',
+		'SS7HiGIa1ZoAAAAAAADMmgWZoeUARjlvFxA7bDNOC4RzJKVDC-xAwlsdfzm7yqP-'
+		);
+	*/
+
+
+	App\Http\Controllers\FileSourcesController::getCompleteDropboxFolderContents('/pictures/PICTURES - SORTING FOR MEDIADUMP', 'SS7HiGIa1ZoAAAAAAADMmgWZoeUARjlvFxA7bDNOC4RzJKVDC-xAwlsdfzm7yqP-');
+
+	#App\Http\Controllers\FileSourcesController::getCompleteDropboxFolderContents('/pictures/PICTURES - SORTING FOR MEDIADUMP/travel/bike-tours/Safari', 'SS7HiGIa1ZoAAAAAAADMmgWZoeUARjlvFxA7bDNOC4RzJKVDC-xAwlsdfzm7yqP-');
+
+
+	
+	
 
 	
 });

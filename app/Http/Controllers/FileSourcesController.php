@@ -41,15 +41,7 @@ class FileSourcesController extends Controller
 
         #echo "lets test: $sFolderPath";
 
-        $client = new \GuzzleHttp\Client([
-            // Base URI is used with relative requests
-            // You can set any number of default request options.
-            'timeout'  => 8.0,
-            'verify' => false
-        ]);
-
         try{
-
             
             $data = array("path" => $sFolderPath, "recursive" => false, "include_media_info" => false);                                                                    
             $data_string = json_encode($data);
@@ -118,6 +110,125 @@ class FileSourcesController extends Controller
             return false;
         }
         return true;
+    }
+
+    public static function getCompleteDropboxFolderContents($sFolderPath, $sOAuthToken)
+    {
+        // recursively build list of files
+        ini_set('max_execution_time', 600); //300 seconds = 5 minutes
+
+        $time_pre = microtime(true);
+
+
+        $oaEntries = [];
+
+        $bComplete = false;
+        $sCursor = '';
+        $iReqs = 0;
+
+        while(!$bComplete)
+        {
+            $oaNewEntries = self::listDropboxFolderContents($sFolderPath, $sOAuthToken, $sCursor);
+            $iReqs++;
+
+            //print_r($oaNewEntries);die();
+
+            if(count($oaNewEntries['entries']) === 0)
+                $bComplete = true;
+            else{
+                $oaEntries = array_merge($oaEntries, $oaNewEntries['entries']);
+                $sCursor = $oaNewEntries['cursor'];
+            }
+        }
+
+
+
+        $time_post = microtime(true);
+        $exec_time = $time_post - $time_pre;
+
+        echo "count: ", count($oaEntries), ", in ", $exec_time, ", over ",$iReqs, "reqs<hr/>";
+
+        print_r($oaEntries);
+    }
+
+
+    public static function listDropboxFolderContents($sFolderPath, $sOAuthToken, $sCursor = '')
+    {
+        // get all files from folder
+
+        $aHeaders = [
+            'Authorization' => 'Bearer '.$sOAuthToken,
+            'Content-Type' => 'application/json'
+        ];
+
+
+        $data = array("path" => $sFolderPath, "recursive" => true, "include_media_info" => false);   
+
+        $sUrl = "https://api.dropboxapi.com/2/files/list_folder";           
+
+        if($sCursor !== '')
+        {
+            // continue from last time instead
+
+            $data = array("cursor" => $sCursor);   
+
+            $sUrl = "https://api.dropboxapi.com/2/files/list_folder/continue";
+        }
+
+
+        $data_string = json_encode($data);
+
+
+
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL,$sUrl);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+        /**/
+        curl_setopt($curl, CURLOPT_POST, 1);                                                                
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");                                                                     
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $data_string); 
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array( 
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($data_string))
+        );
+
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+            'Authorization: Bearer '.$sOAuthToken,
+            'Content-Type: application/json'
+        ));
+        
+        $result = curl_exec ($curl);
+
+        if(curl_errno($curl))
+        {
+            #echo 'error:' . curl_error($curl);
+        }
+
+
+        curl_close ($curl);
+
+        $oObj = json_decode($result);
+
+        //print_r($oObj);
+
+        if(isset($oObj->error_summary))
+        {
+            #echo "error";
+            return [];
+        }
+        if(isset($oObj->entries))
+        {
+            #echo "yup";
+
+            //echo $result;
+            return ['entries' => $oObj->entries, 'cursor' => $oObj->cursor];
+            //return $oObj->entries;
+        }
+        return [];
+
     }
     public static function addDropboxFolder()
     {
