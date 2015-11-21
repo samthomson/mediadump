@@ -16,9 +16,9 @@ class CreateFilesTable extends Migration
             $table->increments('id');
 
             // relations
+            $table->integer('user_id')->index('user_id_index');
             $table->integer('file_source_type_id')->index('file_source_type_index');
             $table->integer('file_source_id');
-            $table->integer('user_id')->index('user_id_index');
 
             $table->timestamps();
         });

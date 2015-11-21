@@ -16,7 +16,7 @@ class CreateDropboxFilesTable extends Migration
             $table->increments('id');
 
             // relations
-            $table->integer('dropbox_folder_id');
+            $table->integer('dropbox_folder_id'); // this folder is then tied to the user
 
             // dropbox properties
             $table->string('dropbox_id');
