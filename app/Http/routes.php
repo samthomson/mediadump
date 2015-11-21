@@ -121,9 +121,5 @@ Route::get('/test/dropbox/files', function () {
 
 	#App\Http\Controllers\FileSourcesController::getCompleteDropboxFolderContents('/pictures/PICTURES - SORTING FOR MEDIADUMP/travel/bike-tours/Safari', 'SS7HiGIa1ZoAAAAAAADMmgWZoeUARjlvFxA7bDNOC4RzJKVDC-xAwlsdfzm7yqP-');
 
-
-	
-	
-
 	
 });
