@@ -14,8 +14,12 @@ class CreateFilesTable extends Migration
     {
         Schema::create('files', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('file_source_id')->index('file_source_index');
+
+            // relations
+            $table->integer('file_source_type_id')->index('file_source_type_index');
+            $table->integer('file_source_id');
             $table->integer('user_id')->index('user_id_index');
+
             $table->timestamps();
         });
     }

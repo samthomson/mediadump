@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDropboxFilesTable extends Migration
+class CreateFileSourceTypes extends Migration
 {
     /**
      * Run the migrations.
@@ -12,17 +12,9 @@ class CreateDropboxFilesTable extends Migration
      */
     public function up()
     {
-        Schema::create('dropbox_files', function (Blueprint $table) {
+        Schema::create('file_source_types', function (Blueprint $table) {
             $table->increments('id');
-
-            // relations
-            $table->integer('dropbox_folder_id');
-
-            // dropbox properties
-            $table->string('dropbox_id');
-            $table->string('dropbox_path');
-            $table->string('dropbox_name');
-
+            $table->string('name');
             $table->timestamps();
         });
     }
@@ -34,6 +26,6 @@ class CreateDropboxFilesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('dropbox_files');
+        Schema::drop('file_source_types');
     }
 }
