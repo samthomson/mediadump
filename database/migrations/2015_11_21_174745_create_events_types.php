@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateEventsTable extends Migration
+class CreateEventsTypes extends Migration
 {
     /**
      * Run the migrations.
@@ -12,18 +12,9 @@ class CreateEventsTable extends Migration
      */
     public function up()
     {
-        Schema::create('events', function (Blueprint $table) {
-
+        Schema::create('event_types', function (Blueprint $table) {
             $table->increments('id');
-
-            // relations
-            $table->integer('user_id')->index('user_id_index');
-            $table->integer('event_type_id');
-
-            // properties
-            $table->string('message');
-
-
+            $table->string('name');
             $table->timestamps();
         });
     }
@@ -35,6 +26,6 @@ class CreateEventsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('events');
+        Schema::drop('event_types');
     }
 }
